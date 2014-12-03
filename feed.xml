@@ -6,15 +6,128 @@
 </description>
     <link>http://songrgg.github.io/</link>
     <atom:link href="http://songrgg.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 12 Nov 2014 02:11:55 +0800</pubDate>
-    <lastBuildDate>Wed, 12 Nov 2014 02:11:55 +0800</lastBuildDate>
+    <pubDate>Wed, 03 Dec 2014 22:32:25 +0800</pubDate>
+    <lastBuildDate>Wed, 03 Dec 2014 22:32:25 +0800</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>levelDB源码阅读</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;levelDB是基础的Key-Value存储系统，它的存储容器包括内存和磁盘，通过将存储内容按时间分层的原理，在写入的过程中将数据优先存入内存，当内存中的数据到达临界点的时候，将内存的数据持久化到磁盘；在读数据的时候，也是优先从内存查找，在查找失败时向较老的数据中查找。由于写数据是直接操作内存，所以写操作比读操作有更高的效率。出于对这个系统实现的好奇，如何实现高性能读写，以及如何容灾，和事务处理，所以开始阅读它的源码。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;mutexlock&quot;&gt;mutexlock帮助简化加锁操作&lt;/h3&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;cp&quot;&gt;#define EXCLUSIVE_LOCK_FUNCTION(...)&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#define UNLOCK_FUNCTION(...)&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MutexLock&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;explicit&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MutexLock&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;port&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Mutex&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mu&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EXCLUSIVE_LOCK_FUNCTION&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mu&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mu_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mu&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mu_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Lock&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+	&lt;span class=&quot;o&quot;&gt;~&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MutexLock&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;UNLOCK_FUNCTION&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mu_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Unlock&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+  	&lt;span class=&quot;n&quot;&gt;port&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Mutex&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mu_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  	&lt;span class=&quot;c1&quot;&gt;// No copying allowed&lt;/span&gt;
+  	&lt;span class=&quot;n&quot;&gt;MutexLock&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MutexLock&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  	&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;operator&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MutexLock&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;使用方式是申明一个MutexLock对象，并且不保存该指针到变量中，如:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;MutexLock&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mu_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// 申明了一个MutexLock的变量，执行构造函数，即Lock&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;some&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;operations&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+	&lt;span class=&quot;c1&quot;&gt;//当离开函数时l自动被回收，执行析构函数，即Unlock&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;leveldb&quot;&gt;使用leveldb方法&lt;/h3&gt;
+&lt;p&gt;leveldb实际上是c++写的一个集成库，集成到项目中作为键值系统的一个本地持久化方案，它解决的就是如何高效、并发、安全地将数据持久化到本地存储。&lt;br /&gt;
+简易的使用示例可以参考&lt;a href=&quot;http://zhoutall.com/archives/579&quot;&gt;leveldb使用初步&lt;/a&gt;。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;iostream&amp;gt;
+#include &quot;leveldb/db.h&quot;
+ 
+using namespace std;
+ 
+int main()
+{
+    leveldb::DB* db;
+    leveldb::Options options;
+    leveldb::Status s;
+ 
+    options.create_if_missing = true;
+    //options.error_if_exists = true;
+    std::string dbpath = &quot;testdb&quot;;
+    s = leveldb::DB::Open(options, dbpath, &amp;amp;db);
+    if (!s.ok()) {
+        cerr &amp;lt;&amp;lt; s.ToString() &amp;lt;&amp;lt; endl;
+        return -1;
+    }
+ 
+    std::string value;
+    s = db-&amp;gt;Put(leveldb::WriteOptions(), &quot;k1&quot;, &quot;v1&quot;);
+    cout &amp;lt;&amp;lt; s.ok() &amp;lt;&amp;lt; endl;
+    s = db-&amp;gt;Get(leveldb::ReadOptions(), &quot;k1&quot;, &amp;amp;value);
+    cout &amp;lt;&amp;lt; s.ok() &amp;lt;&amp;lt; &quot; &quot; &amp;lt;&amp;lt; value &amp;lt;&amp;lt; std::endl;
+    s = db-&amp;gt;Delete(leveldb::WriteOptions(), &quot;k1&quot;);
+    cout &amp;lt;&amp;lt; s.ok() &amp;lt;&amp;lt; endl;
+    value.clear();
+    s = db-&amp;gt;Get(leveldb::ReadOptions(), &quot;k1&quot;, &amp;amp;value);
+    cout &amp;lt;&amp;lt; s.ok() &amp;lt;&amp;lt; &quot;&quot; &amp;lt;&amp;lt; value &amp;lt;&amp;lt; std::endl;
+ 
+    delete db;
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;初始化&lt;br /&gt;
+ leveldb::DB就是leveldb的功能类，提供了数据CRUD接口，它的接口定义在DB.h，它的实现在DBImpl.h以及DBImpl.cc&lt;br /&gt;
+ DBImpl有些默认参数:&lt;br /&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Options
+        &lt;ul&gt;
+          &lt;li&gt;comparator  键的比较类&lt;/li&gt;
+          &lt;li&gt;create_if_missing 尚未可知&lt;/li&gt;
+          &lt;li&gt;error_if_exists 尚未可知&lt;/li&gt;
+          &lt;li&gt;paranoid_checks 尚未可知&lt;/li&gt;
+          &lt;li&gt;env 平台无关的文件系统环境，支持读写，创建目录等操作&lt;/li&gt;
+          &lt;li&gt;info_log 尚未可知&lt;/li&gt;
+          &lt;li&gt;write_buffer_size 写缓冲区大小，默认是4MB&lt;/li&gt;
+          &lt;li&gt;max_open_files 最大打开文件数，默认是1000&lt;/li&gt;
+          &lt;li&gt;block_cache 块缓存，尚未可知&lt;/li&gt;
+          &lt;li&gt;block_size 块大小，默认是4096byte&lt;/li&gt;
+          &lt;li&gt;block_restart_interval 块重启间隔，默认16 尚待查什么时候会用到&lt;/li&gt;
+          &lt;li&gt;compression 尚未可知&lt;/li&gt;
+          &lt;li&gt;filter_polity 尚未可知&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;std::string dbname 尚未可知&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Thu, 20 Nov 2014 09:27:50 +0800</pubDate>
+        <link>http://songrgg.github.io/jekyll/update/2014/11/20/levelDB-source-reading.html</link>
+        <guid isPermaLink="true">http://songrgg.github.io/jekyll/update/2014/11/20/levelDB-source-reading.html</guid>
+        
+        
+        <category>jekyll</category>
+        
+        <category>update</category>
+        
+      </item>
     
       <item>
         <title>初次使用golang channel</title>
         <description>&lt;h3 id=&quot;goroutine&quot;&gt;goroutine之间的同步&lt;/h3&gt;
-&lt;p&gt;goroutine是golang中在语言级别实现的轻量级线程，仅仅利用&lt;strong&gt;go&lt;/strong&gt;就能立刻起一个新线程。多线程会引入线程之间的同步问题，经典的同步问题如生产者-消费者问题，在c，java级别需要使用锁、信号量进行共享资源的互斥使用和多线程之间的时序控制，而在golang中有channel作为同步的工具。
-####1. channel实现两个goroutine之间的通信&lt;/p&gt;
+&lt;p&gt;goroutine是golang中在语言级别实现的轻量级线程，仅仅利用&lt;strong&gt;go&lt;/strong&gt;就能立刻起一个新线程。多线程会引入线程之间的同步问题，经典的同步问题如生产者-消费者问题，在c，java级别需要使用锁、信号量进行共享资源的互斥使用和多线程之间的时序控制，而在golang中有channel作为同步的工具。&lt;/p&gt;
+
+&lt;h4 id=&quot;channelgoroutine&quot;&gt;1. channel实现两个goroutine之间的通信&lt;/h4&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;main&lt;/span&gt;
 	
@@ -49,9 +162,10 @@
   &lt;li&gt;通知主线程任务执行结束，doneChan的作用是为了让main routine等待这个刚起的goroutine结束，这里显示了channel的另一个特性，如果从empty channel中读取数据，则会阻塞当前routine，直到有数据可以读取。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;上面这个程序就是main routine向另一个routine发送了3条int类型的数据，当3条数据被接收到后，主线程也从阻塞状态恢复运行，随后结束。&lt;br /&gt;
-####2. 不要陷入“死锁”
-我一开始用channel的时候有报过&lt;em&gt;“fatal error: all goroutines are asleep - deadlock! “&lt;/em&gt;的错误，真实的代码是下面这样的:  &lt;/p&gt;
+&lt;p&gt;上面这个程序就是main routine向另一个routine发送了3条int类型的数据，当3条数据被接收到后，主线程也从阻塞状态恢复运行，随后结束。  &lt;/p&gt;
+
+&lt;h4 id=&quot;section&quot;&gt;2. 不要陷入“死锁”&lt;/h4&gt;
+&lt;p&gt;我一开始用channel的时候有报过&lt;em&gt;“fatal error: all goroutines are asleep - deadlock! “&lt;/em&gt;的错误，真实的代码是下面这样的:  &lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;main&lt;/span&gt;
 &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;fmt&amp;quot;&lt;/span&gt;
@@ -74,9 +188,10 @@
   &lt;li&gt;这个程序的main routine先行在&lt;code&gt;ch &amp;lt;- 1&lt;/code&gt;进入休眠状态，程序的余下部分根本来不及运行，那么channel里的数据永远不会被读出，也就不能唤醒main routine，进入“死锁”。  &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;解决这个“死锁”的方法可是是设置channel的容量大小大于1，那么channel就不会因为数据输入而阻塞主程; 或者将数据输入channel的语句置于启动新的goroutine之后。&lt;br /&gt;
-####3. channel作为状态转移的信号源
-我跟着MIT的分布式计算课程做了原型为Map-Reduce的课后练习，目的是实现一个Master向Worker分派任务的功能：Master服务器去等待Worker服务器连接注册，Master先将Map任务和Reduce任务分派给这些注册Worker，等待Map任务全部完成，然后将Reduce任务再分配出去，等待全部完成。&lt;/p&gt;
+&lt;p&gt;解决这个“死锁”的方法可是是设置channel的容量大小大于1，那么channel就不会因为数据输入而阻塞主程; 或者将数据输入channel的语句置于启动新的goroutine之后。  &lt;/p&gt;
+
+&lt;h4 id=&quot;channel&quot;&gt;3. channel作为状态转移的信号源&lt;/h4&gt;
+&lt;p&gt;我跟着MIT的分布式计算课程做了原型为Map-Reduce的课后练习，目的是实现一个Master向Worker分派任务的功能：Master服务器去等待Worker服务器连接注册，Master先将Map任务和Reduce任务分派给这些注册Worker，等待Map任务全部完成，然后将Reduce任务再分配出去，等待全部完成。&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Initialize a channel which records the process of the map jobs.&lt;/span&gt;
 &lt;span class=&quot;nx&quot;&gt;mapJobChannel&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;make&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;chan&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;

@@ -63,8 +63,9 @@
 
   <article class="post-content">
     <h3 id="goroutine">goroutine之间的同步</h3>
-<p>goroutine是golang中在语言级别实现的轻量级线程，仅仅利用<strong>go</strong>就能立刻起一个新线程。多线程会引入线程之间的同步问题，经典的同步问题如生产者-消费者问题，在c，java级别需要使用锁、信号量进行共享资源的互斥使用和多线程之间的时序控制，而在golang中有channel作为同步的工具。
-####1. channel实现两个goroutine之间的通信</p>
+<p>goroutine是golang中在语言级别实现的轻量级线程，仅仅利用<strong>go</strong>就能立刻起一个新线程。多线程会引入线程之间的同步问题，经典的同步问题如生产者-消费者问题，在c，java级别需要使用锁、信号量进行共享资源的互斥使用和多线程之间的时序控制，而在golang中有channel作为同步的工具。</p>
+
+<h4 id="channelgoroutine">1. channel实现两个goroutine之间的通信</h4>
 
 <div class="highlight"><pre><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
 	
@@ -99,9 +100,10 @@
   <li>通知主线程任务执行结束，doneChan的作用是为了让main routine等待这个刚起的goroutine结束，这里显示了channel的另一个特性，如果从empty channel中读取数据，则会阻塞当前routine，直到有数据可以读取。</li>
 </ul>
 
-<p>上面这个程序就是main routine向另一个routine发送了3条int类型的数据，当3条数据被接收到后，主线程也从阻塞状态恢复运行，随后结束。<br />
-####2. 不要陷入“死锁”
-我一开始用channel的时候有报过<em>“fatal error: all goroutines are asleep - deadlock! “</em>的错误，真实的代码是下面这样的:  </p>
+<p>上面这个程序就是main routine向另一个routine发送了3条int类型的数据，当3条数据被接收到后，主线程也从阻塞状态恢复运行，随后结束。  </p>
+
+<h4 id="section">2. 不要陷入“死锁”</h4>
+<p>我一开始用channel的时候有报过<em>“fatal error: all goroutines are asleep - deadlock! “</em>的错误，真实的代码是下面这样的:  </p>
 
 <div class="highlight"><pre><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
 <span class="kn">import</span> <span class="s">&quot;fmt&quot;</span>
@@ -124,9 +126,10 @@
   <li>这个程序的main routine先行在<code>ch &lt;- 1</code>进入休眠状态，程序的余下部分根本来不及运行，那么channel里的数据永远不会被读出，也就不能唤醒main routine，进入“死锁”。  </li>
 </ul>
 
-<p>解决这个“死锁”的方法可是是设置channel的容量大小大于1，那么channel就不会因为数据输入而阻塞主程; 或者将数据输入channel的语句置于启动新的goroutine之后。<br />
-####3. channel作为状态转移的信号源
-我跟着MIT的分布式计算课程做了原型为Map-Reduce的课后练习，目的是实现一个Master向Worker分派任务的功能：Master服务器去等待Worker服务器连接注册，Master先将Map任务和Reduce任务分派给这些注册Worker，等待Map任务全部完成，然后将Reduce任务再分配出去，等待全部完成。</p>
+<p>解决这个“死锁”的方法可是是设置channel的容量大小大于1，那么channel就不会因为数据输入而阻塞主程; 或者将数据输入channel的语句置于启动新的goroutine之后。  </p>
+
+<h4 id="channel">3. channel作为状态转移的信号源</h4>
+<p>我跟着MIT的分布式计算课程做了原型为Map-Reduce的课后练习，目的是实现一个Master向Worker分派任务的功能：Master服务器去等待Worker服务器连接注册，Master先将Map任务和Reduce任务分派给这些注册Worker，等待Map任务全部完成，然后将Reduce任务再分配出去，等待全部完成。</p>
 
 <div class="highlight"><pre><code class="language-go" data-lang="go"><span class="c1">// Initialize a channel which records the process of the map jobs.</span>
 <span class="nx">mapJobChannel</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">string</span><span class="p">)</span>
