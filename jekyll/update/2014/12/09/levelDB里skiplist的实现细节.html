@@ -123,8 +123,11 @@
 	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span></code></pre></div>
 
-<p>就像上面这个简单的sample，成员str可以作为指针指向从数组下标0开始的元素，并且不受申明时的限制，不局限于大小1，索引至分配的最大的内存地址。
-* 简易随机数生成</p>
+<p>就像上面这个简单的sample，成员str可以作为指针指向从数组下标0开始的元素，并且不受申明时的限制，不局限于大小1，索引至分配的最大的内存地址。</p>
+
+<ul>
+  <li>简易随机数生成</li>
+</ul>
 
 <div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="kt">uint32_t</span> <span class="nf">Next</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">static</span> <span class="k">const</span> <span class="kt">uint32_t</span> <span class="n">M</span> <span class="o">=</span> <span class="mi">2147483647L</span><span class="p">;</span>   <span class="c1">// 2^31-1</span>

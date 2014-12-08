@@ -6,8 +6,8 @@
 </description>
     <link>http://songrgg.github.io/</link>
     <atom:link href="http://songrgg.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 09 Dec 2014 00:03:07 +0800</pubDate>
-    <lastBuildDate>Tue, 09 Dec 2014 00:03:07 +0800</lastBuildDate>
+    <pubDate>Tue, 09 Dec 2014 00:06:43 +0800</pubDate>
+    <lastBuildDate>Tue, 09 Dec 2014 00:06:43 +0800</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
     
       <item>
@@ -73,8 +73,11 @@
 	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;就像上面这个简单的sample，成员str可以作为指针指向从数组下标0开始的元素，并且不受申明时的限制，不局限于大小1，索引至分配的最大的内存地址。
-* 简易随机数生成&lt;/p&gt;
+&lt;p&gt;就像上面这个简单的sample，成员str可以作为指针指向从数组下标0开始的元素，并且不受申明时的限制，不局限于大小1，索引至分配的最大的内存地址。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;简易随机数生成&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;kt&quot;&gt;uint32_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Next&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;uint32_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;M&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2147483647L&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;// 2^31-1&lt;/span&gt;
