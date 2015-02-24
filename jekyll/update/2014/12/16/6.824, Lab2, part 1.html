@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width initial-scale=1" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>All I've got to do is to bring my board!</title>
+    <title>MIT 6.824 Lab2, part1小结</title>
     <meta name="description" content="A place to do anything I feel fun to do! Enjoy the writing!
 ">
 
     <link rel="stylesheet" href="/css/main.css">
-    <link rel="canonical" href="http://songrgg.github.io/">
+    <link rel="canonical" href="http://songrgg.github.io/jekyll/update/2014/12/16/6.824,%20Lab2,%20part%201.html">
 </head>
 
 
@@ -54,79 +54,40 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <div class="home">
+        <div class="post">
 
-  <h1 class="page-heading">Posts</h1>
+  <header class="post-header">
+    <h1 class="post-title">MIT 6.824 Lab2, part1小结</h1>
+    <p class="post-meta">Dec 16, 2014</p>
+  </header>
 
-  <ul class="post-list">
-    
-      <li>
-        <span class="post-meta">Feb 22, 2015</span>
+  <article class="post-content">
+    <h3 id="mit-6824lab-2-part-1">关于MIT 6.824课程的Lab 2, part 1</h3>
+<p><del>从昨晚在宾馆到今天飞机上，都在过这几个test case，终于最后有点讨巧的过了。</del></p>
 
-        <h2>
-          <a class="post-link" href="/jekyll/update/2015/02/22/levelDB-cache%E5%AE%9E%E7%8E%B0.html">levelDB里缓存实现</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Feb 13, 2015</span>
+<blockquote>
+  <p>View service是MIT介绍paxos之前用来入门的，它的原理是以时间先后的顺序确定主备服务器，由定期的心跳更新此关系。之所以放在单独的service里获取主备关系，是为了将主备关系从K-V系统中解耦，从而K-V系统不用关心键值操作之外的事情，让更加上层的系统进行处理。</p>
+</blockquote>
 
-        <h2>
-          <a class="post-link" href="/jekyll/update/2015/02/13/leveldb-integer-coding.html">levelDB里integer编码</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Feb 9, 2015</span>
+<p>遇到的问题：</p>
 
-        <h2>
-          <a class="post-link" href="/jekyll/update/2015/02/09/leveldb-status.html">levelDB里自定义的状态</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Dec 16, 2014</span>
+<ul>
+  <li>view service当前的view，和下一个未确认的view在哪些时间点更新？
+    <ul>
+      <li>怎么认为这个服务器作为主，又怎么确认其为Backup，Idle？</li>
+      <li>什么时候能将这些认识更新到服务器当前view上？</li>
+    </ul>
+  </li>
+  <li>服务器看到的view service的当前view是怎样的？
+    <ul>
+      <li>不同服务器查询当前view状态，获得的结果是一样的吗？</li>
+    </ul>
+  </li>
+</ul>
 
-        <h2>
-          <a class="post-link" href="/jekyll/update/2014/12/16/6.824,%20Lab2,%20part%201.html">MIT 6.824 Lab2, part1小结</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Dec 9, 2014</span>
+<p>我用复杂难看的if-else语句最后实现这些逻辑，但不可否认，实现的漏洞很多，我理想的解决方案还是使用状态机，可以更加清晰容易更新（用图表展现）。</p>
 
-        <h2>
-          <a class="post-link" href="/jekyll/update/2014/12/09/levelDB%E9%87%8Cskiplist%E7%9A%84%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82.html">levelDB里skiplist的实现代码赏析</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Nov 20, 2014</span>
-
-        <h2>
-          <a class="post-link" href="/jekyll/update/2014/11/20/levelDB-source-reading.html">levelDB源码阅读</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Nov 12, 2014</span>
-
-        <h2>
-          <a class="post-link" href="/jekyll/update/2014/11/12/golang-channel.html">初次使用golang channel</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Nov 12, 2014</span>
-
-        <h2>
-          <a class="post-link" href="/jekyll/update/2014/11/12/dive-into-leveldb.html">Dive to Leveldb!</a>
-        </h2>
-      </li>
-    
-  </ul>
-
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
+  </article>
 
 </div>
 

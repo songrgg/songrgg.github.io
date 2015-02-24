@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>levelDB里缓存实现</title>
+    <meta name="description" content="A place to do anything I feel fun to do! Enjoy the writing!
+">
+
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="canonical" href="http://songrgg.github.io/jekyll/update/2015/02/22/levelDB-cache%E5%AE%9E%E7%8E%B0.html">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">All I've got to do is to bring my board!</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">levelDB里缓存实现</h1>
+    <p class="post-meta">Feb 22, 2015</p>
+  </header>
+
+  <article class="post-content">
+    <h3 id="leveldb">leveldb的缓存机制</h3>
+<blockquote>
+  <p>leveldb采用最近最少使用缓存(lru)机制, 利用key的哈希值前n位作为索引, 将要插入的key-value分派到指定的缓存区, 当缓存区的使用率大于总容量后, 优先淘汰最近最少使用的缓存, 独立的缓存区总量为2^n .</p>
+</blockquote>
+
+<h4 id="shardedlrucache">初始化ShardedLRUCache</h4>
+<ul>
+  <li>设置初始缓存容量, 并设置16个子分区的容量.</li>
+</ul>
+
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">static</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">kNumShardBits</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">kNumShards</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">kNumShardBits</span><span class="p">;</span>
+<span class="k">explicit</span> <span class="nf">ShardedLRUCache</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">capacity</span><span class="p">)</span>
+       <span class="o">:</span> <span class="n">last_id_</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">const</span> <span class="kt">size_t</span> <span class="n">per_shard</span> <span class="o">=</span> <span class="p">(</span><span class="n">capacity</span> <span class="o">+</span> <span class="p">(</span><span class="n">kNumShards</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="n">kNumShards</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">s</span> <span class="o">&lt;</span> <span class="n">kNumShards</span><span class="p">;</span> <span class="n">s</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">shard_</span><span class="p">[</span><span class="n">s</span><span class="p">].</span><span class="n">SetCapacity</span><span class="p">(</span><span class="n">per_shard</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<h4 id="section">新建缓存</h4>
+<ul>
+  <li>由key的hash值的前kNumShardBits位作为子缓存区索引, 默认为前4位的索引位, 索引到指定的区, 子缓存区LRUCache接管新建缓存的任务.</li>
+</ul>
+
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">class</span> <span class="nc">ShardedLRUCache</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Cache</span> <span class="p">{</span>
+  <span class="p">...</span>
+  <span class="k">virtual</span> <span class="n">Handle</span><span class="o">*</span> <span class="n">Insert</span><span class="p">(</span><span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">value</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">charge</span><span class="p">,</span>
+                         <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">deleter</span><span class="p">)(</span><span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">value</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">const</span> <span class="kt">uint32_t</span> <span class="n">hash</span> <span class="o">=</span> <span class="n">HashSlice</span><span class="p">(</span><span class="n">key</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">shard_</span><span class="p">[</span><span class="n">Shard</span><span class="p">(</span><span class="n">hash</span><span class="p">)].</span><span class="n">Insert</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">hash</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">charge</span><span class="p">,</span> <span class="n">deleter</span><span class="p">);</span>
+  <span class="p">}</span></code></pre></div>
+
+<ul>
+  <li>LRUCache结构</li>
+</ul>
+
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="c1">// A single shard of sharded cache.</span>
+<span class="k">class</span> <span class="nc">LRUCache</span> <span class="p">{</span>
+ <span class="k">public</span><span class="o">:</span>
+  <span class="n">LRUCache</span><span class="p">();</span>
+  <span class="o">~</span><span class="n">LRUCache</span><span class="p">();</span>
+
+  <span class="c1">// Separate from constructor so caller can easily make an array of LRUCache</span>
+  <span class="kt">void</span> <span class="nf">SetCapacity</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">capacity</span><span class="p">)</span> <span class="p">{</span> <span class="n">capacity_</span> <span class="o">=</span> <span class="n">capacity</span><span class="p">;</span> <span class="p">}</span>
+
+  <span class="c1">// Like Cache methods, but with an extra &quot;hash&quot; parameter.</span>
+  <span class="n">Cache</span><span class="o">::</span><span class="n">Handle</span><span class="o">*</span> <span class="n">Insert</span><span class="p">(</span><span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">hash</span><span class="p">,</span>
+                        <span class="kt">void</span><span class="o">*</span> <span class="n">value</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">charge</span><span class="p">,</span>
+                        <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">deleter</span><span class="p">)(</span><span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">value</span><span class="p">));</span>
+  <span class="n">Cache</span><span class="o">::</span><span class="n">Handle</span><span class="o">*</span> <span class="n">Lookup</span><span class="p">(</span><span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">hash</span><span class="p">);</span>
+  <span class="kt">void</span> <span class="nf">Release</span><span class="p">(</span><span class="n">Cache</span><span class="o">::</span><span class="n">Handle</span><span class="o">*</span> <span class="n">handle</span><span class="p">);</span>
+  <span class="kt">void</span> <span class="nf">Erase</span><span class="p">(</span><span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">hash</span><span class="p">);</span>
+
+ <span class="k">private</span><span class="o">:</span>
+  <span class="kt">void</span> <span class="n">LRU_Remove</span><span class="p">(</span><span class="n">LRUHandle</span><span class="o">*</span> <span class="n">e</span><span class="p">);</span>
+  <span class="kt">void</span> <span class="nf">LRU_Append</span><span class="p">(</span><span class="n">LRUHandle</span><span class="o">*</span> <span class="n">e</span><span class="p">);</span>
+  <span class="kt">void</span> <span class="nf">Unref</span><span class="p">(</span><span class="n">LRUHandle</span><span class="o">*</span> <span class="n">e</span><span class="p">);</span>
+
+  <span class="c1">// Initialized before use.</span>
+  <span class="kt">size_t</span> <span class="n">capacity_</span><span class="p">;</span>
+
+  <span class="c1">// mutex_ protects the following state.</span>
+  <span class="n">port</span><span class="o">::</span><span class="n">Mutex</span> <span class="n">mutex_</span><span class="p">;</span>
+  <span class="kt">size_t</span> <span class="n">usage_</span><span class="p">;</span>
+
+  <span class="c1">// Dummy head of LRU list.</span>
+  <span class="c1">// lru.prev is newest entry, lru.next is oldest entry.</span>
+  <span class="n">LRUHandle</span> <span class="n">lru_</span><span class="p">;</span>
+
+  <span class="n">HandleTable</span> <span class="n">table_</span><span class="p">;</span>
+<span class="p">};</span></code></pre></div>
+
+<p>LRUCache才是真正具有缓存功能的结构, capacity_表示它的最大容量, mutex_规范各线程互斥地访问, usage_标志缓存中已用容量, lru_作为哑节点, 它的前节点是最新的缓存对象, 它的后节点是最老的缓存对象, table_是用来统计对象是否被缓存的哈希表.</p>
+
+<ul>
+  <li>LRUCache缓存生成
+    <ol>
+      <li>缓存的基础节点是LRUHandle, 储存节点的(键, 值, 哈希值, next, prev节点, 销毁处理函数等)信息. 综合上面的LRUCache结构也看到, 实际上, 缓存节点是双向列表存储, <code>LRUHandle lru_</code>这个哑节点用来分隔最常更新的节点和最不常更新节点. </li>
+      <li>当要将缓存节点插入缓存区, 先由哈希表判断缓存是否已存在, 若存在, 将其更新至最常更新节点; 若不存在, 则插入为最常更新节点. 同时更新哈希表<code>HandleTable table_</code>.</li>
+      <li>这里的HandleTable实现并没特殊之处, 我看是采用键哈希策略进行哈希, 如果键冲突则以链表进行存储. 有处代码我有些疑问, 是关于插入缓存的逻辑:</li>
+    </ol>
+  </li>
+</ul>
+
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="n">LRUHandle</span><span class="o">*</span> <span class="nf">Insert</span><span class="p">(</span><span class="n">LRUHandle</span><span class="o">*</span> <span class="n">h</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">LRUHandle</span><span class="o">**</span> <span class="n">ptr</span> <span class="o">=</span> <span class="n">FindPointer</span><span class="p">(</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">key</span><span class="p">(),</span> <span class="n">h</span><span class="o">-&gt;</span><span class="n">hash</span><span class="p">);</span>
+  <span class="n">LRUHandle</span><span class="o">*</span> <span class="n">old</span> <span class="o">=</span> <span class="o">*</span><span class="n">ptr</span><span class="p">;</span>
+  <span class="n">h</span><span class="o">-&gt;</span><span class="n">next_hash</span> <span class="o">=</span> <span class="p">(</span><span class="n">old</span> <span class="o">==</span> <span class="nb">NULL</span> <span class="o">?</span> <span class="nb">NULL</span> <span class="o">:</span> <span class="n">old</span><span class="o">-&gt;</span><span class="n">next_hash</span><span class="p">);</span>
+  <span class="o">*</span><span class="n">ptr</span> <span class="o">=</span> <span class="n">h</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">old</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+    <span class="o">++</span><span class="n">elems_</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">elems_</span> <span class="o">&gt;</span> <span class="n">length_</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">// Since each cache entry is fairly large, we aim for a small</span>
+      <span class="c1">// average linked list length (&lt;= 1).</span>
+      <span class="n">Resize</span><span class="p">();</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">old</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<ul>
+  <li>
+    <p>代码疑问<br />
+  逻辑是不是应该是<code>h-&gt;next_hash = (old == NULL ? NULL : old)</code>  </p>
+  </li>
+  <li>
+    <p>LRUCache缓存查找<br />
+  如果缓存存在, 则将其放置到哑节点lru_的prev位置, 即最近使用节点, 相当于提升它的优先级, 便于下次快速查找; 如果不存在这个缓存, 返回NULL.</p>
+  </li>
+</ul>
+
+<h4 id="section-1">小结</h4>
+<p>看完leveldb的缓存实现, 在实现思路上, 是传统的lru算法, 使用哈希表判重, 根据缓存的请求时间提升缓存的优先级. 里面的细节例如使用哈希值的前n位进行路由, 路由到2^n^个独立的缓存区, 各个缓存区维护自己的mutex进行并发控制; 哈希表在插入节点时判断空间使用率, 并进行自动扩容, 保证查找效率在O(1).</p>
+
+  </article>
+
+</div>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">All I've got to do is to bring my board!</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col  footer-col-1">
+        <ul class="contact-list">
+          <li>All I've got to do is to bring my board!</li>
+          <li><a href="mailto:srjiang@outlook.com">srjiang@outlook.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/songrgg">
+              <span class="icon  icon--github">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+                </svg>
+              </span>
+
+              <span class="username">songrgg</span>
+            </a>
+          </li>
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-3">
+        <p class="text">A place to do anything I feel fun to do! Enjoy the writing!
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
