@@ -164,14 +164,27 @@
 <span class="p">}</span></code></pre></div>
 
 <ul>
-  <li>
-    <p>代码疑问<br />
-  逻辑是不是应该是<code>h-&gt;next_hash = (old == NULL ? NULL : old)</code>  </p>
-  </li>
-  <li>
-    <p>LRUCache缓存查找<br />
-  如果缓存存在, 则将其放置到哑节点lru_的prev位置, 即最近使用节点, 相当于提升它的优先级, 便于下次快速查找; 如果不存在这个缓存, 返回NULL.</p>
-  </li>
+  <li>二级指针<br />
+在HandleTable这个哈希表实现里, 有个FindPointer方法用来查找此对象是否已存在, 并返回<code>LRUHandle**</code>, 代码如下:</li>
+</ul>
+
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="c1">// Return a pointer to slot that points to a cache entry that</span>
+<span class="c1">// matches key/hash.  If there is no such cache entry, return a</span>
+<span class="c1">// pointer to the trailing slot in the corresponding linked list.</span>
+<span class="n">LRUHandle</span><span class="o">**</span> <span class="nf">FindPointer</span><span class="p">(</span><span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">hash</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">LRUHandle</span><span class="o">**</span> <span class="n">ptr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">list_</span><span class="p">[</span><span class="n">hash</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">length_</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)];</span>
+  <span class="k">while</span> <span class="p">(</span><span class="o">*</span><span class="n">ptr</span> <span class="o">!=</span> <span class="nb">NULL</span> <span class="o">&amp;&amp;</span>
+         <span class="p">((</span><span class="o">*</span><span class="n">ptr</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">hash</span> <span class="o">!=</span> <span class="n">hash</span> <span class="o">||</span> <span class="n">key</span> <span class="o">!=</span> <span class="p">(</span><span class="o">*</span><span class="n">ptr</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">key</span><span class="p">()))</span> <span class="p">{</span>
+    <span class="n">ptr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="p">(</span><span class="o">*</span><span class="n">ptr</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">next_hash</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">ptr</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>可见, 如果已存在节点, 则返回这个节点的LRUHandle**; 如果不存在, 返回的是可以保存这个<code>LRUHandle*</code>的地址.</p>
+
+<ul>
+  <li>LRUCache缓存查找<br />
+  如果缓存存在, 则将其放置到哑节点lru_的prev位置, 即最近使用节点, 相当于提升它的优先级, 便于下次快速查找; 如果不存在这个缓存, 返回NULL.</li>
 </ul>
 
 <h4 id="section-1">小结</h4>
