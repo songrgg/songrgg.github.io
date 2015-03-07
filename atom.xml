@@ -5,27 +5,27 @@
 
   <title>Thought Hacks</title>
   <generator uri="https://github.com/jekyll/jekyll">Jekyll v2.4.0</generator>
-    <icon>http://localhost:4000/apple-touch-icon-precomposed.png</icon>
+    <icon>https://songrgg.github.io/apple-touch-icon-precomposed.png</icon>
   <subtitle>Record a programmer</subtitle>
-  <link href="http://localhost:4000/atom.xml" rel="self"/>
-  <link href="http://localhost:4000/" rel="alternate" type="text/html"/>
-  <updated>2015-03-08T04:14:04+08:00</updated>
-  <id>http://localhost:4000/</id>
+  <link href="https://songrgg.github.io/atom.xml" rel="self"/>
+  <link href="https://songrgg.github.io/" rel="alternate" type="text/html"/>
+  <updated>2015-03-08T04:20:50+08:00</updated>
+  <id>https://songrgg.github.io/</id>
   <author>
     <name>Songrong Jiang</name>
-    <uri>http://localhost:4000/</uri>
+    <uri>https://songrgg.github.io/</uri>
     <email>srjiang@outlook.com</email>
   </author>
 
   
   <entry>
     <title>levelDB里缓存实现</title>
-    <link href="http://localhost:4000/sourcecode/levelDB-cache%E5%AE%9E%E7%8E%B0/"/>
+    <link href="https://songrgg.github.io/sourcecode/levelDB-cache%E5%AE%9E%E7%8E%B0/"/>
     <updated>2015-02-22T06:27:50+08:00</updated>
-    <id>http://localhost:4000/sourcecode/levelDB-cache实现</id>
+    <id>https://songrgg.github.io/sourcecode/levelDB-cache实现</id>
     <author>
       <name>Songrong Jiang</name>
-      <uri>http://localhost:4000/</uri>
+      <uri>https://songrgg.github.io/</uri>
       <email>srjiang@outlook.com</email>
     </author>
     <content type="html">
@@ -163,12 +163,12 @@
   
   <entry>
     <title>levelDB里integer编码</title>
-    <link href="http://localhost:4000/sourcecode/leveldb-integer-coding/"/>
+    <link href="https://songrgg.github.io/sourcecode/leveldb-integer-coding/"/>
     <updated>2015-02-13T06:27:50+08:00</updated>
-    <id>http://localhost:4000/sourcecode/leveldb-integer-coding</id>
+    <id>https://songrgg.github.io/sourcecode/leveldb-integer-coding</id>
     <author>
       <name>Songrong Jiang</name>
-      <uri>http://localhost:4000/</uri>
+      <uri>https://songrgg.github.io/</uri>
       <email>srjiang@outlook.com</email>
     </author>
     <content type="html">
@@ -270,12 +270,12 @@
   
   <entry>
     <title>levelDB里自定义的状态</title>
-    <link href="http://localhost:4000/sourcecode/leveldb-status/"/>
+    <link href="https://songrgg.github.io/sourcecode/leveldb-status/"/>
     <updated>2015-02-09T06:27:50+08:00</updated>
-    <id>http://localhost:4000/sourcecode/leveldb-status</id>
+    <id>https://songrgg.github.io/sourcecode/leveldb-status</id>
     <author>
       <name>Songrong Jiang</name>
-      <uri>http://localhost:4000/</uri>
+      <uri>https://songrgg.github.io/</uri>
       <email>srjiang@outlook.com</email>
     </author>
     <content type="html">
@@ -316,12 +316,12 @@
   
   <entry>
     <title>MIT 6.824 Lab2, part1小结</title>
-    <link href="http://localhost:4000/problems/6.824,%20Lab2,%20part%201/"/>
+    <link href="https://songrgg.github.io/problems/6.824,%20Lab2,%20part%201/"/>
     <updated>2014-12-16T08:00:50+08:00</updated>
-    <id>http://localhost:4000/problems/6.824, Lab2, part 1</id>
+    <id>https://songrgg.github.io/problems/6.824, Lab2, part 1</id>
     <author>
       <name>Songrong Jiang</name>
-      <uri>http://localhost:4000/</uri>
+      <uri>https://songrgg.github.io/</uri>
       <email>srjiang@outlook.com</email>
     </author>
     <content type="html">
@@ -356,12 +356,12 @@
   
   <entry>
     <title>levelDB里skiplist的实现代码赏析</title>
-    <link href="http://localhost:4000/sourcecode/levelDB%E9%87%8Cskiplist%E7%9A%84%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82/"/>
+    <link href="https://songrgg.github.io/sourcecode/levelDB%E9%87%8Cskiplist%E7%9A%84%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82/"/>
     <updated>2014-12-09T06:27:50+08:00</updated>
-    <id>http://localhost:4000/sourcecode/levelDB里skiplist的实现细节</id>
+    <id>https://songrgg.github.io/sourcecode/levelDB里skiplist的实现细节</id>
     <author>
       <name>Songrong Jiang</name>
-      <uri>http://localhost:4000/</uri>
+      <uri>https://songrgg.github.io/</uri>
       <email>srjiang@outlook.com</email>
     </author>
     <content type="html">
@@ -488,12 +488,12 @@
   
   <entry>
     <title>初次使用golang channel</title>
-    <link href="http://localhost:4000/problems/golang-channel/"/>
+    <link href="https://songrgg.github.io/problems/golang-channel/"/>
     <updated>2014-11-12T09:27:50+08:00</updated>
-    <id>http://localhost:4000/problems/golang-channel</id>
+    <id>https://songrgg.github.io/problems/golang-channel</id>
     <author>
       <name>Songrong Jiang</name>
-      <uri>http://localhost:4000/</uri>
+      <uri>https://songrgg.github.io/</uri>
       <email>srjiang@outlook.com</email>
     </author>
     <content type="html">
