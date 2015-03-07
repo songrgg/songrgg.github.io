@@ -9,7 +9,7 @@
   <subtitle>Record a programmer</subtitle>
   <link href="https://songrgg.github.io/atom.xml" rel="self"/>
   <link href="https://songrgg.github.io/" rel="alternate" type="text/html"/>
-  <updated>2015-03-08T04:20:50+08:00</updated>
+  <updated>2015-03-08T04:26:38+08:00</updated>
   <id>https://songrgg.github.io/</id>
   <author>
     <name>Songrong Jiang</name>
@@ -110,7 +110,8 @@
     &lt;ol&gt;
       &lt;li&gt;缓存的基础节点是LRUHandle, 储存节点的(键, 值, 哈希值, next, prev节点, 销毁处理函数等)信息. 综合上面的LRUCache结构也看到, 实际上, 缓存节点是双向列表存储, &lt;code&gt;LRUHandle lru_&lt;/code&gt;这个哑节点用来分隔最常更新的节点和最不常更新节点. &lt;/li&gt;
       &lt;li&gt;当要将缓存节点插入缓存区, 先由哈希表判断缓存是否已存在, 若存在, 将其更新至最常更新节点; 若不存在, 则插入为最常更新节点. 同时更新哈希表&lt;code&gt;HandleTable table_&lt;/code&gt;.&lt;/li&gt;
-      &lt;li&gt;这里的HandleTable实现并没特殊之处, 我看是采用键哈希策略进行哈希, 如果键冲突则以链表进行存储. 有处代码我有些疑问, 是关于插入缓存的逻辑:&lt;/li&gt;
+      &lt;li&gt;这里的HandleTable实现并没特殊之处, 我看是采用键哈希策略进行哈希, 如果键冲突则以链表进行存储:&lt;/li&gt;
+      &lt;li&gt;利用二级指针对链表进行插入.&lt;/li&gt;
     &lt;/ol&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
