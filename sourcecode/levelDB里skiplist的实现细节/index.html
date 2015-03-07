@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>levelDB里skiplist的实现代码赏析 • Thought Hacks</title>
+    <meta name="description" content="跳表的原理就是利用随机性建立索引，加速搜索，并且简化代码实现难度。具体的跳表原理不再赘述，主要是看了levelDB有一些实现细节的东西，凸显自己写的实现不足之处。
+
+">
+    <meta name="keywords" content="">
+    
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="levelDB里skiplist的实现代码赏析">
+	<meta name="twitter:description" content="跳表的原理就是利用随机性建立索引，加速搜索，并且简化代码实现难度。具体的跳表原理不再赘述，主要是看了levelDB有一些实现细节的东西，凸显自己写的实现不足之处。
+
+">
+	
+	
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:image" content="http://localhost:4000/images/logo.jpg">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="levelDB里skiplist的实现代码赏析">
+	<meta property="og:description" content="跳表的原理就是利用随机性建立索引，加速搜索，并且简化代码实现难度。具体的跳表原理不再赘述，主要是看了levelDB有一些实现细节的东西，凸显自己写的实现不足之处。
+
+">
+	<meta property="og:url" content="http://localhost:4000/sourcecode/levelDB%E9%87%8Cskiplist%E7%9A%84%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82/">
+	<meta property="og:site_name" content="Thought Hacks">
+
+    <link rel="canonical" href="http://localhost:4000/sourcecode/levelDB%E9%87%8Cskiplist%E7%9A%84%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82/">
+
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="Thought Hacks Atom Feed">
+    <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
+      <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="http://localhost:4000/" class="site-title">Thought Hacks</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">Thought Hacks</a></li>
+	
+    
+        
+    
+    <li><a href="http://localhost:4000/" >Home</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>Thought Hacks <span>Table of Contents</span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="http://localhost:4000/">
+        <img src="http://localhost:4000/images/csapp.gif" alt="teaser" class="teaser">
+        <div class="title">Home</div>
+        <p class="excerpt">Thanks for all the great works</p>
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000/sourcecode/" itemprop="url">
+        <span itemprop="title">Sourcecode</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
+
+		<div class="page-title">
+			<h1>levelDB里skiplist的实现代码赏析</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<p>跳表的原理就是利用随机性建立索引，加速搜索，并且简化代码实现难度。具体的跳表原理不再赘述，主要是看了levelDB有一些实现细节的东西，凸显自己写的实现不足之处。</p>
+
+<ul>
+  <li>去除冗余的key</li>
+</ul>
+
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">Key</span><span class="p">,</span> <span class="k">class</span> <span class="nc">Comparator</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">SkipList</span><span class="o">&lt;</span><span class="n">Key</span><span class="p">,</span><span class="n">Comparator</span><span class="o">&gt;::</span><span class="n">Node</span> <span class="p">{</span>
+  <span class="k">explicit</span> <span class="n">Node</span><span class="p">(</span><span class="k">const</span> <span class="n">Key</span><span class="o">&amp;</span> <span class="n">k</span><span class="p">)</span> <span class="o">:</span> <span class="n">key</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="p">{</span> <span class="p">}</span>
+
+  <span class="n">Key</span> <span class="k">const</span> <span class="n">key</span><span class="p">;</span>
+
+  <span class="c1">// Accessors/mutators for links.  Wrapped in methods so we can</span>
+  <span class="c1">// add the appropriate barriers as necessary.</span>
+  <span class="n">Node</span><span class="o">*</span> <span class="nf">Next</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">n</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="c1">// Use an &#39;acquire load&#39; so that we observe a fully initialized</span>
+    <span class="c1">// version of the returned Node.</span>
+    <span class="k">return</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="n">Node</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">next_</span><span class="p">[</span><span class="n">n</span><span class="p">].</span><span class="n">Acquire_Load</span><span class="p">());</span>
+  <span class="p">}</span>
+  <span class="kt">void</span> <span class="nf">SetNext</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="n">Node</span><span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">n</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="c1">// Use a &#39;release store&#39; so that anybody who reads through this</span>
+    <span class="c1">// pointer observes a fully initialized version of the inserted node.</span>
+    <span class="n">next_</span><span class="p">[</span><span class="n">n</span><span class="p">].</span><span class="n">Release_Store</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="c1">// No-barrier variants that can be safely used in a few locations.</span>
+  <span class="n">Node</span><span class="o">*</span> <span class="nf">NoBarrier_Next</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">n</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="k">return</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="n">Node</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">next_</span><span class="p">[</span><span class="n">n</span><span class="p">].</span><span class="n">NoBarrier_Load</span><span class="p">());</span>
+  <span class="p">}</span>
+  <span class="kt">void</span> <span class="nf">NoBarrier_SetNext</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="n">Node</span><span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">n</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">next_</span><span class="p">[</span><span class="n">n</span><span class="p">].</span><span class="n">NoBarrier_Store</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+  <span class="p">}</span>
+
+ <span class="k">private</span><span class="o">:</span>
+  <span class="c1">// Array of length equal to the node height.  next_[0] is lowest level link.</span>
+  <span class="n">port</span><span class="o">::</span><span class="n">AtomicPointer</span> <span class="n">next_</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="p">};</span></code></pre></div>
+
+<p>这里使用一个Node节点表示所有相同key，不同高度的节点集合，仅保留了key和不同高度的向右指针，并且使用NewNode来动态分配随即高度的向右指针集合，而next_就指向这指针集合。这也是c/c++ tricky的地方。</p>
+
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="k">struct</span> <span class="n">Node</span> <span class="p">{</span>
+	<span class="kt">char</span> <span class="n">str</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="p">};</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="kt">char</span><span class="o">*</span> <span class="n">mem</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">char</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">mem</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="sc">&#39;0&#39;</span><span class="p">;</span>
+	<span class="p">}</span>	
+	<span class="n">Node</span><span class="o">*</span> <span class="n">node</span> <span class="o">=</span> <span class="p">(</span><span class="n">Node</span><span class="o">*</span><span class="p">)</span><span class="n">mem</span><span class="p">;</span>
+	<span class="kt">char</span><span class="o">*</span> <span class="k">const</span> <span class="n">pstr</span> <span class="o">=</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">str</span><span class="p">;</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">printf</span><span class="p">(</span><span class="s">&quot;%c&quot;</span><span class="p">,</span> <span class="n">pstr</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>就像上面这个简单的sample，成员str可以作为指针指向从数组下标0开始的元素，并且不受申明时的限制，不局限于大小1，索引至分配的最大的内存地址。</p>
+
+<ul>
+  <li>简易随机数生成</li>
+</ul>
+
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="kt">uint32_t</span> <span class="nf">Next</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="kt">uint32_t</span> <span class="n">M</span> <span class="o">=</span> <span class="mi">2147483647L</span><span class="p">;</span>   <span class="c1">// 2^31-1</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="kt">uint64_t</span> <span class="n">A</span> <span class="o">=</span> <span class="mi">16807</span><span class="p">;</span>  <span class="c1">// bits 14, 8, 7, 5, 2, 1, 0</span>
+    <span class="c1">// We are computing</span>
+    <span class="c1">//       seed_ = (seed_ * A) % M,    where M = 2^31-1</span>
+    <span class="c1">//</span>
+    <span class="c1">// seed_ must not be zero or M, or else all subsequent computed values</span>
+    <span class="c1">// will be zero or M respectively.  For all other values, seed_ will end</span>
+    <span class="c1">// up cycling through every number in [1,M-1]</span>
+    <span class="kt">uint64_t</span> <span class="n">product</span> <span class="o">=</span> <span class="n">seed_</span> <span class="o">*</span> <span class="n">A</span><span class="p">;</span>
+
+    <span class="c1">// Compute (product % M) using the fact that ((x &lt;&lt; 31) % M) == x.</span>
+    <span class="n">seed_</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span><span class="p">((</span><span class="n">product</span> <span class="o">&gt;&gt;</span> <span class="mi">31</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">product</span> <span class="o">&amp;</span> <span class="n">M</span><span class="p">));</span>
+    <span class="c1">// The first reduction may overflow by 1 bit, so we may need to</span>
+    <span class="c1">// repeat.  mod == M is not possible; using &gt; allows the faster</span>
+    <span class="c1">// sign-bit-based test.</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">seed_</span> <span class="o">&gt;</span> <span class="n">M</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">seed_</span> <span class="o">-=</span> <span class="n">M</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">seed_</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>可以看到，他使用A和M对种子进行运算，达到一定数据范围内不会重复的数集，而里面对于(product % M)，使用(product » 31) + (product &amp; M)进行运算优化，考虑右移和与操作的代价远小于取余操作。</p>
+
+<ul>
+  <li>简洁清晰的私有帮助方法，帮助寻找小于指定key的节点</li>
+</ul>
+
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">Key</span><span class="p">,</span> <span class="k">class</span> <span class="nc">Comparator</span><span class="o">&gt;</span>
+<span class="k">typename</span> <span class="n">SkipList</span><span class="o">&lt;</span><span class="n">Key</span><span class="p">,</span><span class="n">Comparator</span><span class="o">&gt;::</span><span class="n">Node</span><span class="o">*</span>
+<span class="n">SkipList</span><span class="o">&lt;</span><span class="n">Key</span><span class="p">,</span><span class="n">Comparator</span><span class="o">&gt;::</span><span class="n">FindLessThan</span><span class="p">(</span><span class="k">const</span> <span class="n">Key</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span>
+  <span class="n">Node</span><span class="o">*</span> <span class="n">x</span> <span class="o">=</span> <span class="n">head_</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">level</span> <span class="o">=</span> <span class="n">GetMaxHeight</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="n">head_</span> <span class="o">||</span> <span class="n">compare_</span><span class="p">(</span><span class="n">x</span><span class="o">-&gt;</span><span class="n">key</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">Node</span><span class="o">*</span> <span class="n">next</span> <span class="o">=</span> <span class="n">x</span><span class="o">-&gt;</span><span class="n">Next</span><span class="p">(</span><span class="n">level</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">next</span> <span class="o">==</span> <span class="nb">NULL</span> <span class="o">||</span> <span class="n">compare_</span><span class="p">(</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">key</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">level</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">x</span><span class="p">;</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="c1">// Switch to next list</span>
+        <span class="n">level</span><span class="o">--</span><span class="p">;</span>
+	  <span class="p">}</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="n">x</span> <span class="o">=</span> <span class="n">next</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+
+				<hr />
+				<footer class="page-footer">
+					
+
+
+<div class="author-image">
+	<img src="http://localhost:4000/images/jiangsongrong.jpg" alt="Songrong Jiang">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" >Written by <span itemprop="author">Songrong Jiang</span></h3>
+	<p class="author-bio">A programmer in Shanghai, China</p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=levelDB里skiplist的实现代码赏析&amp;url=http://localhost:4000/sourcecode/levelDB%E9%87%8Cskiplist%E7%9A%84%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/sourcecode/levelDB%E9%87%8Cskiplist%E7%9A%84%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/sourcecode/levelDB%E9%87%8Cskiplist%E7%9A%84%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+</div><!-- /.share-this -->
+					<div class="page-meta">
+	<p>Updated <time datetime="2014-12-09T06:27:50Z" itemprop="datePublished">December 09, 2014</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					
+                    <hr />
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+	var disqus_shortname = 'srjiang';
+
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+        
+          <li>
+            <a href="https://github.com/songrgg">
+              <span class="icon  icon--github">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+                </svg>
+              </span>
+
+              <span class="username">songrgg</span>
+            </a>
+          </li>
+        
+
+		
+      
+        
+      
+			<li><a href="http://localhost:4000" ></a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2015 <a href="http://localhost:4000">Thought Hacks</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+    </div>
+
+    <script src="http://localhost:4000/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="http://localhost:4000/js/main.js"></script>
+
+  </body>
+
+</html>
