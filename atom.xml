@@ -9,7 +9,7 @@
   <subtitle>Record a programmer</subtitle>
   <link href="https://songrgg.github.io/atom.xml" rel="self"/>
   <link href="https://songrgg.github.io/" rel="alternate" type="text/html"/>
-  <updated>2015-03-08T14:54:25+08:00</updated>
+  <updated>2015-03-12T00:51:58+08:00</updated>
   <id>https://songrgg.github.io/</id>
   <author>
     <name>Songrong Jiang</name>
@@ -17,6 +17,29 @@
     <email>srjiang@outlook.com</email>
   </author>
 
+  
+  <entry>
+    <title>微信本地测试</title>
+    <link href="https://songrgg.github.io/test/%E5%BE%AE%E4%BF%A1%E6%9C%AC%E5%9C%B0%E6%B5%8B%E8%AF%95/"/>
+    <updated>2015-03-12T05:10:00+08:00</updated>
+    <id>https://songrgg.github.io/test/微信本地测试</id>
+    <author>
+      <name>Songrong Jiang</name>
+      <uri>https://songrgg.github.io/</uri>
+      <email>srjiang@outlook.com</email>
+    </author>
+    <content type="html">
+      
+      &lt;h4 id=&quot;section&quot;&gt;微信本地测试&lt;/h4&gt;
+
+&lt;p&gt;项目里要测试微信公众号, 但又不愿意忍受每次改下代码就提交到版本库, 再发布到生产这个琐碎的流程, 所以必须有一个本地能测试的方法, 到知乎上找了一个方法(引用&lt;a href=&quot;http://www.zhihu.com/question/25456655&quot;&gt;知乎操晓峰的回答&lt;/a&gt;).&lt;/p&gt;
+
+&lt;p&gt;原理是HTTP请求重定向, 将微信中要访问的url转发到你设置的代理服务器, 代理服务器转发到你的开发服务器.&lt;/p&gt;
+
+&lt;p&gt;有趣的是, 在公司一直没有完全成功, 总有一个页面是刷不出来, 查看Charles发现传输速度极慢, 真想吐槽公司的网络. 回家后重试了一次, 完全成功.&lt;/p&gt;
+
+    </content>
+  </entry>
   
   <entry>
     <title>levelDB里缓存实现</title>
