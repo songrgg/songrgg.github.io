@@ -9,7 +9,7 @@
   <subtitle>Record a programmer</subtitle>
   <link href="https://songrgg.github.io/atom.xml" rel="self"/>
   <link href="https://songrgg.github.io/" rel="alternate" type="text/html"/>
-  <updated>2015-03-12T00:51:58+08:00</updated>
+  <updated>2015-03-12T00:53:31+08:00</updated>
   <id>https://songrgg.github.io/</id>
   <author>
     <name>Songrong Jiang</name>
@@ -30,9 +30,7 @@
     </author>
     <content type="html">
       
-      &lt;h4 id=&quot;section&quot;&gt;微信本地测试&lt;/h4&gt;
-
-&lt;p&gt;项目里要测试微信公众号, 但又不愿意忍受每次改下代码就提交到版本库, 再发布到生产这个琐碎的流程, 所以必须有一个本地能测试的方法, 到知乎上找了一个方法(引用&lt;a href=&quot;http://www.zhihu.com/question/25456655&quot;&gt;知乎操晓峰的回答&lt;/a&gt;).&lt;/p&gt;
+      &lt;p&gt;项目里要测试微信公众号, 但又不愿意忍受每次改下代码就提交到版本库, 再发布到生产这个琐碎的流程, 所以必须有一个本地能测试的方法, 到知乎上找了一个方法(引用&lt;a href=&quot;http://www.zhihu.com/question/25456655&quot;&gt;知乎操晓峰的回答&lt;/a&gt;).&lt;/p&gt;
 
 &lt;p&gt;原理是HTTP请求重定向, 将微信中要访问的url转发到你设置的代理服务器, 代理服务器转发到你的开发服务器.&lt;/p&gt;
 
