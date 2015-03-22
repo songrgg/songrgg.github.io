@@ -174,8 +174,9 @@
 
 <h3 id="poc">POC</h3>
 
-<p>backup服务器更换时, primary需要同步当前数据库所有数据到backup, 我不想用foreach来每条数据进行同步, 所以想既然rpc能传递这么多类型的参数, 那直接将map传递过去不就不用那么麻烦了?所以进行了一次poc.
-#####server.go</p>
+<p>backup服务器更换时, primary需要同步当前数据库所有数据到backup, 我不想用foreach来每条数据进行同步, 所以想既然rpc能传递这么多类型的参数, 那直接将map传递过去不就不用那么麻烦了?所以进行了一次poc.</p>
+
+<h5 id="servergo">server.go</h5>
 
 <div class="highlight"><pre><code class="language-go" data-lang="go"><span class="kn">import</span> <span class="s">&quot;net&quot;</span>
 <span class="kn">import</span> <span class="s">&quot;net/rpc&quot;</span>
