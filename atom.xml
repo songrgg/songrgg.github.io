@@ -9,7 +9,7 @@
   <subtitle>Record a programmer</subtitle>
   <link href="https://songrgg.github.io/atom.xml" rel="self"/>
   <link href="https://songrgg.github.io/" rel="alternate" type="text/html"/>
-  <updated>2015-03-12T00:53:31+08:00</updated>
+  <updated>2015-03-22T22:39:04+08:00</updated>
   <id>https://songrgg.github.io/</id>
   <author>
     <name>Songrong Jiang</name>
@@ -17,6 +17,171 @@
     <email>srjiang@outlook.com</email>
   </author>
 
+  
+  <entry>
+    <title>Mit分布式系统课程-Lab2-PartB</title>
+    <link href="https://songrgg.github.io/distributed-system/mit-distributed-system-01/"/>
+    <updated>2015-03-20T06:10:00+08:00</updated>
+    <id>https://songrgg.github.io/distributed-system/mit-distributed-system-01</id>
+    <author>
+      <name>Songrong Jiang</name>
+      <uri>https://songrgg.github.io/</uri>
+      <email>srjiang@outlook.com</email>
+    </author>
+    <content type="html">
+      
+      &lt;p&gt;前两天删了在github上的6.824, 因为课程里说了不要把源码放在公共的地方, 之前没删一直心有歉意, 还好进度没这么快, 应该对别人也不会造成影响.&lt;/p&gt;
+
+&lt;p&gt;言归正传, 这星期空余时间一直在看Lab2的Part B, 今天因为身体不适, 请假一天在家, 开始实现思路, 并记录一下自己遇到的一些大小问题.&lt;/p&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;目标&lt;/h3&gt;
+&lt;p&gt;实现基于viewservice(Lab1实现的视图服务器, 用来记录主副服务器的地址)的键值服务器, 分别为primary(主服务器),Backup(备份服务器), 客户端通过viewservice获得primary的地址, 发送键值的存取请求, primary在响应请求的同时, 将数据备份到backup服务器. 实现完成后, 通过所有的unit test.&lt;/p&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;架构&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://songrgg.github.io/images/pbservice-common-state.png&quot; alt=&quot;2个kv服务器, viewservice以及客户端&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;viewservice
+    &lt;ul&gt;
+      &lt;li&gt;存储并提供primary以及backup的信息  &lt;/li&gt;
+      &lt;li&gt;接受primary, backup的定时ping请求, 更新或保持两个服务器的位置&lt;/li&gt;
+      &lt;li&gt;提供查询当前服务器状态&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;primary
+    &lt;ul&gt;
+      &lt;li&gt;接受client的请求&lt;/li&gt;
+      &lt;li&gt;定期向viewservice报备自己的状态&lt;/li&gt;
+      &lt;li&gt;在backup服务器更换时负责将自身全部数据同步过去&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;backup
+    &lt;ul&gt;
+      &lt;li&gt;作为primary的备份存储&lt;/li&gt;
+      &lt;li&gt;定期向viewservice报备自己的状态&lt;/li&gt;
+      &lt;li&gt;在primary挂了之后, 提升为primary, 负责client的请求&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;client
+    &lt;ul&gt;
+      &lt;li&gt;向primary发送数据存储,查询的请求&lt;/li&gt;
+      &lt;li&gt;若primary返回”错误的服务器”时, 询问viewservice, 更新primary&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;遇到的挑战&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;实现时有些golang的特性不是特别了解, 一边打开golang的官方文档, 一边poc.&lt;/li&gt;
+  &lt;li&gt;决定在什么时候需要容错? 是否可恢复? 在反复重试时, 是否要定最大重试次数, 以及失败的处理.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;section-3&quot;&gt;单元测试&lt;/h4&gt;
+&lt;p&gt;当我运行go test来验证逻辑的时候, 实在不得不赞叹老师们详细的测试用例, 有几个case让我挠头.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;TestAtMostOnce
+  模拟服务器返回报文丢失的情况, 利用puthash-get验证, puthash是put操作的一种变体, 它要存储的值是先前的值和当前值的hash结果, 所以这个地方引入了存储状态, 我通过每次请求要求客户端发送一个unique id来记录此次操作, 尽管报文丢失, 客户端重试时还是能用这个id找回上次通信的内容.&lt;/li&gt;
+  &lt;li&gt;TestConcurrentSame&lt;br /&gt;
+  验证primary服务器只有在backup也处理成功的情况才算成功.&lt;/li&gt;
+  &lt;li&gt;TestRepeatedCrash&lt;br /&gt;
+  模拟存储服务器间断崩溃的情况, 就是要保证客户端的每个请求都有重试的可能, primary和backup的通信过程中, backup随时可能崩溃, 这个测试使用put-get验证.&lt;/li&gt;
+  &lt;li&gt;TestRepeatedCrashUnreliable&lt;br /&gt;
+  模拟存储服务器间断崩溃的同时, 网络也不稳定, 服务器的返回报文会丢失. 这个case的难点在它是使用puthash-get来验证的, 就是说, 你要在服务器不时崩溃的情况下保证以前的值不仅在primary服务器上存在, 也要在backup服务器上保存, 以免primary下一秒挂了.&lt;/li&gt;
+  &lt;li&gt;TestPartition1&lt;br /&gt;
+  模拟primary已经过期的情况下, 向他发送的请求, 能被它拒绝.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;poc&quot;&gt;POC&lt;/h3&gt;
+&lt;p&gt;####Scenario 1
+backup服务器更换时, primary需要同步当前数据库所有数据到backup, 我不想用foreach来每条数据进行同步, 所以想既然rpc能传递这么多类型的参数, 那直接将map传递过去不就不用那么麻烦了?所以进行了一次poc.
+#####server.go
+	import “net”
+	import “net/rpc”
+	import “os”
+	import “fmt”&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;type Server struct {
+	db map[string]string
+}
+
+func (server *Server) Sync(database map[string]string, reply *int) error {
+	fmt.Println(&quot;Start syncing...&quot;)
+	server.db = database
+	for k, v := range server.db {
+	  fmt.Println(k, &quot; =&amp;gt; &quot;, v)
+	}
+	*reply = 1
+	fmt.Println(&quot;Finish syncing...&quot;)
+	return nil
+}
+
+func main() {
+	server := new(Server)
+	server.db = make(map[string]string)
+	rpcs := rpc.NewServer()
+	rpcs.Register(server)
+	me := &quot;/var/tmp/test1122&quot;
+	os.Remove(me)
+	l, e := net.Listen(&quot;unix&quot;, me)
+	if e != nil {
+		fmt.Println(&quot;listen error&quot;)
+	}
+
+	for true {
+		conn, e := l.Accept()
+		if e != nil {
+			fmt.Println(&quot;accept error&quot;)
+			conn.Close()
+			return
+		}
+		go func() {
+			rpcs.ServeConn(conn)
+		}()
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&quot;clientgo&quot;&gt;client.go&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;package main
+import &quot;net/rpc&quot;
+import &quot;fmt&quot;
+
+func main() {
+	me := &quot;/var/tmp/test1122&quot;
+	c, e := rpc.Dial(&quot;unix&quot;, me)
+	if e != nil {
+		fmt.Println(&quot;dial error&quot;)
+		return
+	}
+	defer c.Close()
+
+	db := make(map[string]string)
+	db[&quot;name&quot;] = &quot;srg&quot;
+	db[&quot;age&quot;] = &quot;25&quot;
+	reply := 1
+	e = c.Call(&quot;Server.Sync&quot;, db, &amp;amp;reply)
+	if e != nil {
+		fmt.Println(&quot;sync error&quot;)
+		return
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;开两个terminal, 在$GOPATH目录先运行server.go, 再运行client.go, 最后server.go运行后的输出, 看来是可以的&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ go run server.go                                                             
+Start syncing...
+name  =&amp;gt;  srg
+age  =&amp;gt;  25
+Finish syncing...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在我把这页的hint也看完的时候, 发现里面提到这个问题, 建议直接把这个map作为参数传递.&lt;/p&gt;
+
+    </content>
+  </entry>
   
   <entry>
     <title>微信本地测试</title>

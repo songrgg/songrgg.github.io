@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Mit分布式系统课程-Lab2-PartB • Thought Hacks</title>
+    <meta name="description" content="前两天删了在github上的6.824, 因为课程里说了不要把源码放在公共的地方, 之前没删一直心有歉意, 还好进度没这么快, 应该对别人也不会造成影响.
+
+">
+    <meta name="keywords" content="">
+    
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="Mit分布式系统课程-Lab2-PartB">
+	<meta name="twitter:description" content="前两天删了在github上的6.824, 因为课程里说了不要把源码放在公共的地方, 之前没删一直心有歉意, 还好进度没这么快, 应该对别人也不会造成影响.
+
+">
+	
+	
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:image" content="https://songrgg.github.io/images/logo.jpg">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="Mit分布式系统课程-Lab2-PartB">
+	<meta property="og:description" content="前两天删了在github上的6.824, 因为课程里说了不要把源码放在公共的地方, 之前没删一直心有歉意, 还好进度没这么快, 应该对别人也不会造成影响.
+
+">
+	<meta property="og:url" content="https://songrgg.github.io/distributed-system/mit-distributed-system-01/">
+	<meta property="og:site_name" content="Thought Hacks">
+
+    <link rel="canonical" href="https://songrgg.github.io/distributed-system/mit-distributed-system-01/">
+
+    <link href="https://songrgg.github.io/atom.xml" type="application/atom+xml" rel="alternate" title="Thought Hacks Atom Feed">
+    <link href="https://songrgg.github.io/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="https://songrgg.github.io/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="https://songrgg.github.io/js/vendor/html5shiv.min.js"></script>
+      <script src="https://songrgg.github.io/js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="https://songrgg.github.io/" class="site-title">Thought Hacks</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">Thought Hacks</a></li>
+	
+    
+        
+    
+    <li><a href="https://songrgg.github.io/" >Home</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>Thought Hacks <span>Table of Contents</span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="https://songrgg.github.io/">
+        <img src="https://songrgg.github.io/images/csapp.gif" alt="teaser" class="teaser">
+        <div class="title">Home</div>
+        <p class="excerpt">Thanks for all the great works</p>
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="https://songrgg.github.io" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="https://songrgg.github.io/distributed-system/" itemprop="url">
+        <span itemprop="title">Distributed system</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
+
+		<div class="page-title">
+			<h1>Mit分布式系统课程-Lab2-PartB</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<p>前两天删了在github上的6.824, 因为课程里说了不要把源码放在公共的地方, 之前没删一直心有歉意, 还好进度没这么快, 应该对别人也不会造成影响.</p>
+
+<p>言归正传, 这星期空余时间一直在看Lab2的Part B, 今天因为身体不适, 请假一天在家, 开始实现思路, 并记录一下自己遇到的一些大小问题.</p>
+
+<h3 id="section">目标</h3>
+<p>实现基于viewservice(Lab1实现的视图服务器, 用来记录主副服务器的地址)的键值服务器, 分别为primary(主服务器),Backup(备份服务器), 客户端通过viewservice获得primary的地址, 发送键值的存取请求, primary在响应请求的同时, 将数据备份到backup服务器. 实现完成后, 通过所有的unit test.</p>
+
+<h3 id="section-1">架构</h3>
+
+<p><img src="http://songrgg.github.io/images/pbservice-common-state.png" alt="2个kv服务器, viewservice以及客户端" /></p>
+
+<ol>
+  <li>viewservice
+    <ul>
+      <li>存储并提供primary以及backup的信息  </li>
+      <li>接受primary, backup的定时ping请求, 更新或保持两个服务器的位置</li>
+      <li>提供查询当前服务器状态</li>
+    </ul>
+  </li>
+  <li>primary
+    <ul>
+      <li>接受client的请求</li>
+      <li>定期向viewservice报备自己的状态</li>
+      <li>在backup服务器更换时负责将自身全部数据同步过去</li>
+    </ul>
+  </li>
+  <li>backup
+    <ul>
+      <li>作为primary的备份存储</li>
+      <li>定期向viewservice报备自己的状态</li>
+      <li>在primary挂了之后, 提升为primary, 负责client的请求</li>
+    </ul>
+  </li>
+  <li>client
+    <ul>
+      <li>向primary发送数据存储,查询的请求</li>
+      <li>若primary返回”错误的服务器”时, 询问viewservice, 更新primary</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="section-2">遇到的挑战</h3>
+<ol>
+  <li>实现时有些golang的特性不是特别了解, 一边打开golang的官方文档, 一边poc.</li>
+  <li>决定在什么时候需要容错? 是否可恢复? 在反复重试时, 是否要定最大重试次数, 以及失败的处理.</li>
+</ol>
+
+<h4 id="section-3">单元测试</h4>
+<p>当我运行go test来验证逻辑的时候, 实在不得不赞叹老师们详细的测试用例, 有几个case让我挠头.</p>
+
+<ul>
+  <li>TestAtMostOnce
+  模拟服务器返回报文丢失的情况, 利用puthash-get验证, puthash是put操作的一种变体, 它要存储的值是先前的值和当前值的hash结果, 所以这个地方引入了存储状态, 我通过每次请求要求客户端发送一个unique id来记录此次操作, 尽管报文丢失, 客户端重试时还是能用这个id找回上次通信的内容.</li>
+  <li>TestConcurrentSame<br />
+  验证primary服务器只有在backup也处理成功的情况才算成功.</li>
+  <li>TestRepeatedCrash<br />
+  模拟存储服务器间断崩溃的情况, 就是要保证客户端的每个请求都有重试的可能, primary和backup的通信过程中, backup随时可能崩溃, 这个测试使用put-get验证.</li>
+  <li>TestRepeatedCrashUnreliable<br />
+  模拟存储服务器间断崩溃的同时, 网络也不稳定, 服务器的返回报文会丢失. 这个case的难点在它是使用puthash-get来验证的, 就是说, 你要在服务器不时崩溃的情况下保证以前的值不仅在primary服务器上存在, 也要在backup服务器上保存, 以免primary下一秒挂了.</li>
+  <li>TestPartition1<br />
+  模拟primary已经过期的情况下, 向他发送的请求, 能被它拒绝.</li>
+</ul>
+
+<h3 id="poc">POC</h3>
+<p>####Scenario 1
+backup服务器更换时, primary需要同步当前数据库所有数据到backup, 我不想用foreach来每条数据进行同步, 所以想既然rpc能传递这么多类型的参数, 那直接将map传递过去不就不用那么麻烦了?所以进行了一次poc.
+#####server.go
+	import “net”
+	import “net/rpc”
+	import “os”
+	import “fmt”</p>
+
+<pre><code>type Server struct {
+	db map[string]string
+}
+
+func (server *Server) Sync(database map[string]string, reply *int) error {
+	fmt.Println("Start syncing...")
+	server.db = database
+	for k, v := range server.db {
+	  fmt.Println(k, " =&gt; ", v)
+	}
+	*reply = 1
+	fmt.Println("Finish syncing...")
+	return nil
+}
+
+func main() {
+	server := new(Server)
+	server.db = make(map[string]string)
+	rpcs := rpc.NewServer()
+	rpcs.Register(server)
+	me := "/var/tmp/test1122"
+	os.Remove(me)
+	l, e := net.Listen("unix", me)
+	if e != nil {
+		fmt.Println("listen error")
+	}
+
+	for true {
+		conn, e := l.Accept()
+		if e != nil {
+			fmt.Println("accept error")
+			conn.Close()
+			return
+		}
+		go func() {
+			rpcs.ServeConn(conn)
+		}()
+	}
+}
+</code></pre>
+
+<h5 id="clientgo">client.go</h5>
+<pre><code>package main
+import "net/rpc"
+import "fmt"
+
+func main() {
+	me := "/var/tmp/test1122"
+	c, e := rpc.Dial("unix", me)
+	if e != nil {
+		fmt.Println("dial error")
+		return
+	}
+	defer c.Close()
+
+	db := make(map[string]string)
+	db["name"] = "srg"
+	db["age"] = "25"
+	reply := 1
+	e = c.Call("Server.Sync", db, &amp;reply)
+	if e != nil {
+		fmt.Println("sync error")
+		return
+	}
+}
+</code></pre>
+
+<p>开两个terminal, 在$GOPATH目录先运行server.go, 再运行client.go, 最后server.go运行后的输出, 看来是可以的</p>
+
+<pre><code>$ go run server.go                                                             
+Start syncing...
+name  =&gt;  srg
+age  =&gt;  25
+Finish syncing...
+</code></pre>
+
+<p>在我把这页的hint也看完的时候, 发现里面提到这个问题, 建议直接把这个map作为参数传递.</p>
+
+				<hr />
+				<footer class="page-footer">
+					
+
+
+<div class="author-image">
+	<img src="https://songrgg.github.io/images/jiangsongrong.jpg" alt="Songrong Jiang">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" >Written by <span itemprop="author">Songrong Jiang</span></h3>
+	<p class="author-bio">A programmer in Shanghai, China</p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=Mit分布式系统课程-Lab2-PartB&amp;url=https://songrgg.github.io/distributed-system/mit-distributed-system-01/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://songrgg.github.io/distributed-system/mit-distributed-system-01/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=https://songrgg.github.io/distributed-system/mit-distributed-system-01/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+</div><!-- /.share-this -->
+					<div class="page-meta">
+	<p>Updated <time datetime="2015-03-20T06:10:00Z" itemprop="datePublished">March 20, 2015</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					
+                    <hr />
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+	var disqus_shortname = 'srjiang';
+
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+        
+          <li>
+            <a href="https://github.com/songrgg">
+              <span class="icon  icon--github">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+                </svg>
+              </span>
+
+              <span class="username">songrgg</span>
+            </a>
+          </li>
+        
+
+		
+      
+        
+      
+			<li><a href="https://songrgg.github.io" ></a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2015 <a href="https://songrgg.github.io">Thought Hacks</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+    </div>
+
+    <script src="https://songrgg.github.io/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="https://songrgg.github.io/js/main.js"></script>
+
+  </body>
+
+</html>
