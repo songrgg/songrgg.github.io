@@ -173,80 +173,80 @@
 </ul>
 
 <h3 id="poc">POC</h3>
-<p>####Scenario 1
-backup服务器更换时, primary需要同步当前数据库所有数据到backup, 我不想用foreach来每条数据进行同步, 所以想既然rpc能传递这么多类型的参数, 那直接将map传递过去不就不用那么麻烦了?所以进行了一次poc.
-#####server.go
-	import “net”
-	import “net/rpc”
-	import “os”
-	import “fmt”</p>
 
-<pre><code>type Server struct {
-	db map[string]string
-}
+<p>backup服务器更换时, primary需要同步当前数据库所有数据到backup, 我不想用foreach来每条数据进行同步, 所以想既然rpc能传递这么多类型的参数, 那直接将map传递过去不就不用那么麻烦了?所以进行了一次poc.
+#####server.go</p>
 
-func (server *Server) Sync(database map[string]string, reply *int) error {
-	fmt.Println("Start syncing...")
-	server.db = database
-	for k, v := range server.db {
-	  fmt.Println(k, " =&gt; ", v)
-	}
-	*reply = 1
-	fmt.Println("Finish syncing...")
-	return nil
-}
+<div class="highlight"><pre><code class="language-go" data-lang="go"><span class="kn">import</span> <span class="s">&quot;net&quot;</span>
+<span class="kn">import</span> <span class="s">&quot;net/rpc&quot;</span>
+<span class="kn">import</span> <span class="s">&quot;os&quot;</span>
+<span class="kn">import</span> <span class="s">&quot;fmt&quot;</span>
 
-func main() {
-	server := new(Server)
-	server.db = make(map[string]string)
-	rpcs := rpc.NewServer()
-	rpcs.Register(server)
-	me := "/var/tmp/test1122"
-	os.Remove(me)
-	l, e := net.Listen("unix", me)
-	if e != nil {
-		fmt.Println("listen error")
-	}
+<span class="kd">type</span> <span class="nx">Server</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">db</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">string</span>
+<span class="p">}</span>
 
-	for true {
-		conn, e := l.Accept()
-		if e != nil {
-			fmt.Println("accept error")
-			conn.Close()
-			return
-		}
-		go func() {
-			rpcs.ServeConn(conn)
-		}()
-	}
-}
-</code></pre>
+<span class="kd">func</span> <span class="p">(</span><span class="nx">server</span> <span class="o">*</span><span class="nx">Server</span><span class="p">)</span> <span class="nx">Sync</span><span class="p">(</span><span class="nx">database</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">string</span><span class="p">,</span> <span class="nx">reply</span> <span class="o">*</span><span class="kt">int</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;Start syncing...&quot;</span><span class="p">)</span>
+	<span class="nx">server</span><span class="p">.</span><span class="nx">db</span> <span class="p">=</span> <span class="nx">database</span>
+	<span class="k">for</span> <span class="nx">k</span><span class="p">,</span> <span class="nx">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">server</span><span class="p">.</span><span class="nx">db</span> <span class="p">{</span>
+	  <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">k</span><span class="p">,</span> <span class="s">&quot; =&gt; &quot;</span><span class="p">,</span> <span class="nx">v</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="o">*</span><span class="nx">reply</span> <span class="p">=</span> <span class="mi">1</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;Finish syncing...&quot;</span><span class="p">)</span>
+	<span class="k">return</span> <span class="kc">nil</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">server</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">Server</span><span class="p">)</span>
+	<span class="nx">server</span><span class="p">.</span><span class="nx">db</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">string</span><span class="p">)</span>
+	<span class="nx">rpcs</span> <span class="o">:=</span> <span class="nx">rpc</span><span class="p">.</span><span class="nx">NewServer</span><span class="p">()</span>
+	<span class="nx">rpcs</span><span class="p">.</span><span class="nx">Register</span><span class="p">(</span><span class="nx">server</span><span class="p">)</span>
+	<span class="nx">me</span> <span class="o">:=</span> <span class="s">&quot;/var/tmp/test1122&quot;</span>
+	<span class="nx">os</span><span class="p">.</span><span class="nx">Remove</span><span class="p">(</span><span class="nx">me</span><span class="p">)</span>
+	<span class="nx">l</span><span class="p">,</span> <span class="nx">e</span> <span class="o">:=</span> <span class="nx">net</span><span class="p">.</span><span class="nx">Listen</span><span class="p">(</span><span class="s">&quot;unix&quot;</span><span class="p">,</span> <span class="nx">me</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">e</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;listen error&quot;</span><span class="p">)</span>
+	<span class="p">}</span>
+
+	<span class="k">for</span> <span class="kc">true</span> <span class="p">{</span>
+		<span class="nx">conn</span><span class="p">,</span> <span class="nx">e</span> <span class="o">:=</span> <span class="nx">l</span><span class="p">.</span><span class="nx">Accept</span><span class="p">()</span>
+		<span class="k">if</span> <span class="nx">e</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+			<span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;accept error&quot;</span><span class="p">)</span>
+			<span class="nx">conn</span><span class="p">.</span><span class="nx">Close</span><span class="p">()</span>
+			<span class="k">return</span>
+		<span class="p">}</span>
+		<span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+			<span class="nx">rpcs</span><span class="p">.</span><span class="nx">ServeConn</span><span class="p">(</span><span class="nx">conn</span><span class="p">)</span>
+		<span class="p">}()</span>
+	<span class="p">}</span>
+<span class="p">}</span></code></pre></div>
 
 <h5 id="clientgo">client.go</h5>
-<pre><code>package main
-import "net/rpc"
-import "fmt"
 
-func main() {
-	me := "/var/tmp/test1122"
-	c, e := rpc.Dial("unix", me)
-	if e != nil {
-		fmt.Println("dial error")
-		return
-	}
-	defer c.Close()
+<div class="highlight"><pre><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+<span class="kn">import</span> <span class="s">&quot;net/rpc&quot;</span>
+<span class="kn">import</span> <span class="s">&quot;fmt&quot;</span>
 
-	db := make(map[string]string)
-	db["name"] = "srg"
-	db["age"] = "25"
-	reply := 1
-	e = c.Call("Server.Sync", db, &amp;reply)
-	if e != nil {
-		fmt.Println("sync error")
-		return
-	}
-}
-</code></pre>
+<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">me</span> <span class="o">:=</span> <span class="s">&quot;/var/tmp/test1122&quot;</span>
+	<span class="nx">c</span><span class="p">,</span> <span class="nx">e</span> <span class="o">:=</span> <span class="nx">rpc</span><span class="p">.</span><span class="nx">Dial</span><span class="p">(</span><span class="s">&quot;unix&quot;</span><span class="p">,</span> <span class="nx">me</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">e</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;dial error&quot;</span><span class="p">)</span>
+		<span class="k">return</span>
+	<span class="p">}</span>
+	<span class="k">defer</span> <span class="nx">c</span><span class="p">.</span><span class="nx">Close</span><span class="p">()</span>
+
+	<span class="nx">db</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">string</span><span class="p">)</span>
+	<span class="nx">db</span><span class="p">[</span><span class="s">&quot;name&quot;</span><span class="p">]</span> <span class="p">=</span> <span class="s">&quot;srg&quot;</span>
+	<span class="nx">db</span><span class="p">[</span><span class="s">&quot;age&quot;</span><span class="p">]</span> <span class="p">=</span> <span class="s">&quot;25&quot;</span>
+	<span class="nx">reply</span> <span class="o">:=</span> <span class="mi">1</span>
+	<span class="nx">e</span> <span class="p">=</span> <span class="nx">c</span><span class="p">.</span><span class="nx">Call</span><span class="p">(</span><span class="s">&quot;Server.Sync&quot;</span><span class="p">,</span> <span class="nx">db</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">reply</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">e</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;sync error&quot;</span><span class="p">)</span>
+		<span class="k">return</span>
+	<span class="p">}</span>
+<span class="p">}</span></code></pre></div>
 
 <p>开两个terminal, 在$GOPATH目录先运行server.go, 再运行client.go, 最后server.go运行后的输出, 看来是可以的</p>
 
@@ -258,6 +258,8 @@ Finish syncing...
 </code></pre>
 
 <p>在我把这页的hint也看完的时候, 发现里面提到这个问题, 建议直接把这个map作为参数传递.</p>
+
+<p><img src="http://songrgg.github.io/images/Lab2PartB.png" alt="最后贴上过关纪念" /></p>
 
 				<hr />
 				<footer class="page-footer">
