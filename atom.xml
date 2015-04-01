@@ -9,7 +9,7 @@
   <subtitle>Record a programmer</subtitle>
   <link href="https://songrgg.github.io/atom.xml" rel="self"/>
   <link href="https://songrgg.github.io/" rel="alternate" type="text/html"/>
-  <updated>2015-03-22T23:14:49+08:00</updated>
+  <updated>2015-04-01T23:02:16+08:00</updated>
   <id>https://songrgg.github.io/</id>
   <author>
     <name>Songrong Jiang</name>
@@ -17,6 +17,25 @@
     <email>srjiang@outlook.com</email>
   </author>
 
+  
+  <entry>
+    <title>拒绝二手资料</title>
+    <link href="https://songrgg.github.io/imfool/first-hand-doc/"/>
+    <updated>2015-04-02T06:27:50+08:00</updated>
+    <id>https://songrgg.github.io/imfool/first-hand-doc</id>
+    <author>
+      <name>Songrong Jiang</name>
+      <uri>https://songrgg.github.io/</uri>
+      <email>srjiang@outlook.com</email>
+    </author>
+    <content type="html">
+      
+      &lt;p&gt;不扯远了, 缘起是我玩了这么久计算机, 做了这么久的web开发, 竟然tm的没有真正看过http的文档, 不仅是http, 其它的一些, 像写sheme的时候竟然也没有看过scheme的规格文档, 真是服了自己, 这些关于http,scheme,java,php等都是通过间接从别人消化了之后的陈述获得, 这样速度固然快, 但是难免不能完整的经历一个技术的发展思想, 缘何来, 向何处去, 这样子的不完整性是非常不利于深入领域, 钻研核心的. 所以我给自己定下规矩, 凡事准备严肃对待的事物都要去学习它的第一手资料(就是发明这些东西的人写的), 了解它们来龙去脉, 不然绝不说自己是真正会这些东西.&lt;/p&gt;
+
+&lt;p&gt;今天是张国荣先生离开第12年, 感谢他和他的作品给我带来的那么多的正能量。&lt;/p&gt;
+
+    </content>
+  </entry>
   
   <entry>
     <title>Mit分布式系统课程-Lab2-PartB</title>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>拒绝二手资料 • Thought Hacks</title>
+    <meta name="description" content="不扯远了, 缘起是我玩了这么久计算机, 做了这么久的web开发, 竟然tm的没有真正看过http的文档, 不仅是http, 其它的一些, 像写sheme的时候竟然也没有看过scheme的规格文档, 真是服了自己, 这些关于http,scheme,java,php等都是通过间接从别人消化了之后的陈述获得, 这样速度固然快, 但是难免不能完整的经历一个技术的发展思想, 缘何来, 向何处去, 这样子的不完整性是非常不利于深入领域, 钻研核心的. 所以我给自己定下规矩, 凡事准备严肃对待的事物都要去学习它的第一手资料(就是发明这些东西的人写的), 了解它们来龙去脉, 不然绝不说自己是真正会这些东西.
+
+">
+    <meta name="keywords" content="">
+    
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="拒绝二手资料">
+	<meta name="twitter:description" content="不扯远了, 缘起是我玩了这么久计算机, 做了这么久的web开发, 竟然tm的没有真正看过http的文档, 不仅是http, 其它的一些, 像写sheme的时候竟然也没有看过scheme的规格文档, 真是服了自己, 这些关于http,scheme,java,php等都是通过间接从别人消化了之后的陈述获得, 这样速度固然快, 但是难免不能完整的经历一个技术的发展思想, 缘何来, 向何处去, 这样子的不完整性是非常不利于深入领域, 钻研核心的. 所以我给自己定下规矩, 凡事准备严肃对待的事物都要去学习它的第一手资料(就是发明这些东西的人写的), 了解它们来龙去脉, 不然绝不说自己是真正会这些东西.
+
+">
+	
+	
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:image" content="https://songrgg.github.io/images/logo.jpg">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="拒绝二手资料">
+	<meta property="og:description" content="不扯远了, 缘起是我玩了这么久计算机, 做了这么久的web开发, 竟然tm的没有真正看过http的文档, 不仅是http, 其它的一些, 像写sheme的时候竟然也没有看过scheme的规格文档, 真是服了自己, 这些关于http,scheme,java,php等都是通过间接从别人消化了之后的陈述获得, 这样速度固然快, 但是难免不能完整的经历一个技术的发展思想, 缘何来, 向何处去, 这样子的不完整性是非常不利于深入领域, 钻研核心的. 所以我给自己定下规矩, 凡事准备严肃对待的事物都要去学习它的第一手资料(就是发明这些东西的人写的), 了解它们来龙去脉, 不然绝不说自己是真正会这些东西.
+
+">
+	<meta property="og:url" content="https://songrgg.github.io/imfool/first-hand-doc/">
+	<meta property="og:site_name" content="Thought Hacks">
+
+    <link rel="canonical" href="https://songrgg.github.io/imfool/first-hand-doc/">
+
+    <link href="https://songrgg.github.io/atom.xml" type="application/atom+xml" rel="alternate" title="Thought Hacks Atom Feed">
+    <link href="https://songrgg.github.io/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="https://songrgg.github.io/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="https://songrgg.github.io/js/vendor/html5shiv.min.js"></script>
+      <script src="https://songrgg.github.io/js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="https://songrgg.github.io/" class="site-title">Thought Hacks</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">Thought Hacks</a></li>
+	
+    
+        
+    
+    <li><a href="https://songrgg.github.io/" >Home</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>Thought Hacks <span>Table of Contents</span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="https://songrgg.github.io/">
+        <img src="https://songrgg.github.io/images/csapp.gif" alt="teaser" class="teaser">
+        <div class="title">Home</div>
+        <p class="excerpt">Thanks for all the great works</p>
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="https://songrgg.github.io" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="https://songrgg.github.io/imfool/" itemprop="url">
+        <span itemprop="title">Imfool</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
+
+		<div class="page-title">
+			<h1>拒绝二手资料</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<p>不扯远了, 缘起是我玩了这么久计算机, 做了这么久的web开发, 竟然tm的没有真正看过http的文档, 不仅是http, 其它的一些, 像写sheme的时候竟然也没有看过scheme的规格文档, 真是服了自己, 这些关于http,scheme,java,php等都是通过间接从别人消化了之后的陈述获得, 这样速度固然快, 但是难免不能完整的经历一个技术的发展思想, 缘何来, 向何处去, 这样子的不完整性是非常不利于深入领域, 钻研核心的. 所以我给自己定下规矩, 凡事准备严肃对待的事物都要去学习它的第一手资料(就是发明这些东西的人写的), 了解它们来龙去脉, 不然绝不说自己是真正会这些东西.</p>
+
+<p>今天是张国荣先生离开第12年, 感谢他和他的作品给我带来的那么多的正能量。</p>
+
+				<hr />
+				<footer class="page-footer">
+					
+
+
+<div class="author-image">
+	<img src="https://songrgg.github.io/images/jiangsongrong.jpg" alt="Songrong Jiang">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" >Written by <span itemprop="author">Songrong Jiang</span></h3>
+	<p class="author-bio">A programmer in Shanghai, China</p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=拒绝二手资料&amp;url=https://songrgg.github.io/imfool/first-hand-doc/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://songrgg.github.io/imfool/first-hand-doc/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=https://songrgg.github.io/imfool/first-hand-doc/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+</div><!-- /.share-this -->
+					<div class="page-meta">
+	<p>Updated <time datetime="2015-04-02T06:27:50Z" itemprop="datePublished">April 02, 2015</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					
+                    <hr />
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+	var disqus_shortname = 'srjiang';
+
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+        
+          <li>
+            <a href="https://github.com/songrgg">
+              <span class="icon  icon--github">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+                </svg>
+              </span>
+
+              <span class="username">songrgg</span>
+            </a>
+          </li>
+        
+
+		
+      
+        
+      
+			<li><a href="https://songrgg.github.io" ></a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2015 <a href="https://songrgg.github.io">Thought Hacks</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+    </div>
+
+    <script src="https://songrgg.github.io/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="https://songrgg.github.io/js/main.js"></script>
+
+  </body>
+
+</html>
