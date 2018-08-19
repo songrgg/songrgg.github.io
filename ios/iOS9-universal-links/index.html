@@ -1,0 +1,37 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 支持iOS9 Universal links遇到的问题 · Songrgg's Blog</title><meta name="description" content="支持iOS9 Universal links遇到的问题 - songrgg"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="https://songrgg.github.io/atom.xml" title="Songrgg's Blog"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/songrgg" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">支持iOS9 Universal links遇到的问题</h1><div class="post-info">Mar 1, 2016</div><div class="post-content"><p>记录为iOS9上的APP支持Universal links遇到的一些问题。</p>
+<ul>
+<li><p>在Web服务器上传apple-app-site-association文件</p>
+<ul>
+<li>必须支持HTTPS获取配置文件</li>
+<li>文件名后不加<code>.json</code>后缀</li>
+<li>必须在<strong>根目录</strong>下，例如官网地址为<code>www.site.com</code>，那么必须通过<code>https://www.site.com/apple-app-site-association</code>访问到该文件</li>
+<li><code>details</code>为列表，列表元素中的<code>paths</code>是数组，且下标越小匹配优先级越高</li>
+<li><code>paths</code>可以使用<code>*</code>匹配任何字符串，<code>?</code>来匹配单个字符</li>
+<li><code>appID</code>格式为<code>{teamId}.{bundleId}</code><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"applinks"</span>:&#123;</span><br><span class="line">        <span class="attr">"apps"</span>:[],</span><br><span class="line">        <span class="attr">"details"</span>:[</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">"appID"</span>:<span class="string">"U9JEY66N6A.com.ss.iphone.article.News"</span>,</span><br><span class="line">                <span class="attr">"paths"</span>:[<span class="string">"/m/detail/*"</span>,<span class="string">"/"</span>]</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">"appID"</span>:<span class="string">"U9JEY66N6A.com.ss.iphone.article.Explore"</span>,</span><br><span class="line">                <span class="attr">"paths"</span>:[<span class="string">"/m/detail/*"</span>,<span class="string">"/"</span>]</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">"appID"</span>:<span class="string">"U9JEY66N6A.com.ss.iphone.article.NewsSocial"</span>,</span><br><span class="line">                <span class="attr">"paths"</span>:[<span class="string">"/m/detail/*"</span>,<span class="string">"/"</span>]</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>应用增加applinks支持</p>
+</li>
+<li><p>测试效果</p>
+<ul>
+<li>Safari端<br>可以长按链接，选择使用Web browser打开，或者使用Native APP打开，iOS会记录用户记录，下次用户点击链接，默认使用APP打开，反之，如果用户选择使用浏览器打开链接，下次点击链接默认用浏览器打开。<br><strong><u>所以，Safari会根据用户最近行为决定如何打开Universal Links，记住用户习惯。</u></strong></li>
+<li>微信内置浏览器<br>不支持长按链接选择打开方式，默认直接使用APP打开。</li>
+</ul>
+</li>
+<li><p>引用</p>
+<ul>
+<li><a href="https://developer.apple.com/library/ios/documentation/General/Conceptual/AppSearch/UniversalLinks.html" target="_blank" rel="noopener">Support Universal Links</a></li>
+<li><a href="http://www.cocoachina.com/ios/20150902/13321.html" target="_blank" rel="noopener">iOS 9学习系列：打通 iOS 9 的通用链接（Universal Links）</a></li>
+</ul>
+</li>
+</ul>
+</div></article></div></main><footer><div class="paginator"><a href="/java/spring-ioc-groovy/" class="prev">PREV</a><a href="/sourcecode/mahout-tutorial/" class="next">NEXT</a></div><div id="disqus_thread"></div><script>var disqus_shortname = 'srjiang';
+var disqus_identifier = 'ios/iOS9-universal-links/';
+var disqus_title = '支持iOS9 Universal links遇到的问题';
+var disqus_url = 'https://songrgg.github.io/ios/iOS9-universal-links/';
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script id="dsq-count-scr" src="//srjiang.disqus.com/count.js" async></script><div class="copyright"><p>© 2015 - 2018 <a href="https://songrgg.github.io">songrgg</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>

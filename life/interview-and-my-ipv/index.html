@@ -1,0 +1,31 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> PHP面试+怀旧 · Songrgg's Blog</title><meta name="description" content="PHP面试+怀旧 - songrgg"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="https://songrgg.github.io/atom.xml" title="Songrgg's Blog"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/songrgg" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">PHP面试+怀旧</h1><div class="post-info">Apr 8, 2015</div><div class="post-content"><h3 id="面试"><a href="#面试" class="headerlink" title="面试"></a>面试</h3><p>今天去面试了一家公司, 跟自己说面完要写个小结, 记录这次面试的前后历程.</p>
+<p>这次面试的缘起是因为团队有较大变动, 也开始重新审视自己, 正是在这个时候, 发现自己所处的环境还是非常“危险”的, 是指的自己处于一种不温不火的酱油状态, 整天游离在完成工作和无聊消沉的独处中, 并且成为了温吞吞的人, 于是发现现在的环境实在不是特别适合自己当初要进来的初衷, 突然渴望那种每天都在蜕变, 每天都在痛并快乐着的成长日子, 所以准备找面试机会, 看看是否能找到适合自己想法的机会.</p>
+<p>XX公司给了个面试机会, 自己还是非常重视的, 恰逢清明节不回家, 于是在上海的小房子里进行一波准备.</p>
+<h4 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h4><p>由于面的是php岗位, 网站是日pv千万级的电商, 所以准备的东西还是围绕高性能web开发.</p>
+<ul>
+<li><p>我的背景<br>做过的都是企业级的web开发, 所以没有特别多的性能优化, 项目中用过C#, JAVA, PHP进行实际开发, PHP开发经验是半年, 但是胜在基础好, 大学里尽写c了, 也学过scheme, 所以基本上就触类旁通, 语言这些东西都不是大问题, 但一些PHP的细节, 可能不太清楚, api不太熟等.</p>
+</li>
+<li><p>PHP<br>熟悉PHP开发中与Web开发相关的细节, 主要是和HTTP关联的一些内容(如$_GET, $POST, $_FILES变量的意义等), 一些常用的数据结构实现(如array的实现机制, 如何保证哈希和链表特性), 数据库操作相关函数(mysql_query, mysql_connect等).</p>
+</li>
+<li><p>MySQL<br>数据库是常见的性能瓶颈, 所以对于数据库的深入理解是必要的, 《高性能MySQL》是本入门好书, 专门看了下它的第[1,5,6,7]章, 分别是MySQL的概览, 表的创建, 索引建立, 查询解析原理等, 我比较关注innodb引擎, 所以关注了它的实现机制, 什么是聚簇索引, 它和MyISAM的存储方式有何不同, 什么情况下会使用覆盖索引, 什么时候索引会被使用, 排序是否能享受索引……等等. 最主要的是理解innodb的存储结构B+树之后, 就会懂得为什么索引在遇见范围查询后就失效, 而复合索引的顺序也能成为区分索引的一个元素, explain是如何帮助分析查询的效能, 太多以前没注意的点在这个时候突然醒悟.</p>
+</li>
+<li><p>Javascript<br>说实话, 自己对前端一直是属于能上手, 但费劲, JS就够喝一壶了, 不是说难, 是没把它严肃对待, 可能和自己年少时觉得前端太没意思, 属于下乘有关, 呵呵, 年轻的时候, 这种傻傻的思想还是挺多的… 这两天看了下this的意义, prototype和<strong>proto</strong>的关系这些基础的知识, 然后在leetcode上做题也用JS提交, 这两天做水题, 所以代码也不是特别多. 当然项目经验里也有jQuery, AngularJS这些工具的使用, 但认真写JS还是从AngularJS开始, 当初用jQuery的时候大多时间为了赶进度, 所以没有将很多代码模块化起来, 继承jQuery做成公共库, 现在想想真是蠢, 为了这么点进度, 放下自己的节操… AngularJS还是对前端开发的一大进步, 它强迫你用它的种种特性, 如双向绑定, service, directive等, 让你站在抽象层上考虑实现, 而不是整天想着用jQuery操作这个那个dom. 所以在微信端开发的时候, 比较开心.</p>
+</li>
+<li><p>HTML+CSS<br>这个没怎么看.</p>
+</li>
+<li><p>性能优化方面<br>性能优化, 说实话, 最重要的, 第一是经验, 第二是思路, 第一我不具备, 但思路可以站在前辈们的肩膀上, 网站的性能优化, 如果要到骨子里, 必须把自己想象成数据, 想象成报文, 从客户端(浏览器)出发, 从生成请求, 经过网络到达服务器(服务器可能反向代理), 读取请求, 分析请求, 生成报文, 返回到客户端. 每个位置都可以进行优化, 在浏览器端可以通过HTTP报文的Last-Modified-Since, Etag, Expired属性进行缓存协商, 使用浏览器缓存, 将请求量减少甚至消除请求; 服务器读取请求, 涉及到服务器模型, 是基于epoll,kqueue还是select, 最大支持连接数, 并发量大时, nginx作反向代理, 负载均衡, 分摊服务器压力; 分析请求是服务器和后端脚本语言共同完成, 如果是请求静态文件是不是直接就返回, 如果是动态内容, 会解释脚本, 在解释脚本时是否考虑使用opcode缓存优化, 在解释时尽量少引入不需要的文件, 造成额外的解释压力; 分析请求里就有关于动态内容, 对于数据库和其它资源文件的访问优化, 以及最后的动态内容缓存和过期配置. 其实优化就是找到其中的某一环节, 一一解决, 细节只有在真正遇到, 并解决才会有真正的收获.</p>
+</li>
+</ul>
+<h3 id="今天的面试体验"><a href="#今天的面试体验" class="headerlink" title="今天的面试体验"></a>今天的面试体验</h3><p>今天和lead聊了聊, 基本聊的就是以上的内容, 数据库确实是非常重要的, 特别是面对这样的访问量以及查询场景, 经常要查询销量前十的产品, 根据用户搜索进行内容查询, 这种情况下索引要建的好. 不过数据大多是多在用户的购买记录吧, 估计得分库分表了. 最后lead语重心长地道出了”项目到后来要思考的都是哲学问题啊”, 这点我还是挺赞同的, 在我有限的设计程序结构的经验上, 我最分裂的情况都是如果要拓展应该怎么设计架构, 才能易于拓展, 我这代码写的够健壮吗? 那些奇葩的scenario都覆盖了吗? 用的人会觉得好用吗? 我自己哪? 这个产品的思想是什么? 我对这个思想是报什么态度的, 有对错吗?</p>
+<h3 id="之后"><a href="#之后" class="headerlink" title="之后"></a>之后</h3><p>还有家!!公司的面试, 想着还是尽快面了吧, 自己的初衷是为了能认真的提高自己, 不管如何还是要坚定这一想法, 勿忘初衷啊!!!!!!!!!!!!!!!!!!!!!!!!!!!!</p>
+<h3 id="插曲"><a href="#插曲" class="headerlink" title="插曲"></a>插曲</h3><p>前两天看到躺在自家的ipv, 想着和它的快乐日子, 于是决定拯救它于水火之中, 不就是硬盘坏了吗, 换一个就是了, 看到网上有人卖的ssd, 就入了一块, 今天货到了, 就给它换上, 可惜充电线没有, 得到公司才能看到效果了, 拆机似难实易, 换好还是挺高兴的. 上纪念图.</p>
+<p><img src="http://songrgg.github.io/images/fixipod.jpg" alt="拆机成功"></p>
+</div></article></div></main><footer><div class="paginator"><a href="/sourcecode/php-hashtable/" class="prev">PREV</a><a href="/imfool/first-hand-doc/" class="next">NEXT</a></div><div id="disqus_thread"></div><script>var disqus_shortname = 'srjiang';
+var disqus_identifier = 'life/interview-and-my-ipv/';
+var disqus_title = 'PHP面试+怀旧';
+var disqus_url = 'https://songrgg.github.io/life/interview-and-my-ipv/';
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script id="dsq-count-scr" src="//srjiang.disqus.com/count.js" async></script><div class="copyright"><p>© 2015 - 2018 <a href="https://songrgg.github.io">songrgg</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>

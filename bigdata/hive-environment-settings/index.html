@@ -1,0 +1,28 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Hive环境搭建(Ubuntu) · Songrgg's Blog</title><meta name="description" content="Hive环境搭建(Ubuntu) - songrgg"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="https://songrgg.github.io/atom.xml" title="Songrgg's Blog"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/songrgg" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">Hive环境搭建(Ubuntu)</h1><div class="post-info">Feb 27, 2016</div><div class="post-content"><h3 id="Hive是什么？"><a href="#Hive是什么？" class="headerlink" title="Hive是什么？"></a>Hive是什么？</h3><p>基于Hadoop的数据查询工具，可以使用类SQL进行数据查询。</p>
+<h3 id="Hadoop安装"><a href="#Hadoop安装" class="headerlink" title="Hadoop安装"></a>Hadoop安装</h3><ul>
+<li>参考了<a href="http://www.powerxing.com/install-hadoop/" target="_blank" rel="noopener">Hadoop安装</a></li>
+<li>注意到etc/hadoop/hadoop-env.sh里设置JAVA_HOME，不然运行./start_dfs.sh会报没设置JAVA_HOME</li>
+<li>运行程序时，输出目录不能存在</li>
+<li>配置文件<ul>
+<li>hdfs的输出目录需要保证空间充足，我在虚拟机里玩，分配的磁盘空间太小，另外加了空间并挂载，重新设置了输出目录。</li>
+</ul>
+</li>
+</ul>
+<h3 id="Hive安装"><a href="#Hive安装" class="headerlink" title="Hive安装"></a>Hive安装</h3><ul>
+<li>参考了<a href="http://www.cloudera.com/documentation/archive/cdh/4-x/4-2-0/CDH4-Installation-Guide/cdh4ig_topic_18_4.html" target="_blank" rel="noopener">安装hive</a></li>
+<li>MetaStore用了MySQL，结果安装的驱动版本不正确，遇到MetaStoreClient lost connection. Attempting to reconnect。</li>
+</ul>
+<h3 id="实践后感"><a href="#实践后感" class="headerlink" title="实践后感"></a>实践后感</h3><p>真正装环境的坑还是很多的，开始分配的虚拟机磁盘空间太小了，基本运行不了，jdbc驱动版本不正确都会导致Hive客户端开启后时常崩溃，配置文件的一些常用选项需要了解，如果出现问题可以有一个解决思路，当然Google还是常用些，实在解决不了如很难想到是jdbc驱动的原因，我就下了一份源码，定位到报错，通过代码推测了发生问题的地方。</p>
+<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><ul>
+<li><a href="http://www.powerxing.com/install-hadoop/" target="_blank" rel="noopener">安装Hadoop</a></li>
+<li><a href="http://www.cloudera.com/documentation/archive/cdh/4-x/4-2-0/CDH4-Installation-Guide/cdh4ig_topic_18_4.html" target="_blank" rel="noopener">安装hive</a></li>
+</ul>
+</div></article></div></main><footer><div class="paginator"><a href="/sourcecode/mahout-tutorial/" class="prev">PREV</a><a href="/sourcecode/add-syntactic-feature-to-php7/" class="next">NEXT</a></div><div id="disqus_thread"></div><script>var disqus_shortname = 'srjiang';
+var disqus_identifier = 'bigdata/hive-environment-settings/';
+var disqus_title = 'Hive环境搭建(Ubuntu)';
+var disqus_url = 'https://songrgg.github.io/bigdata/hive-environment-settings/';
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script id="dsq-count-scr" src="//srjiang.disqus.com/count.js" async></script><div class="copyright"><p>© 2015 - 2018 <a href="https://songrgg.github.io">songrgg</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>

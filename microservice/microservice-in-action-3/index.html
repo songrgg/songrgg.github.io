@@ -1,0 +1,64 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 微服务实践三: 服务编排 · Songrgg's Blog</title><meta name="description" content="微服务实践三: 服务编排 - songrgg"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="https://songrgg.github.io/atom.xml" title="Songrgg's Blog"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/songrgg" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">微服务实践三: 服务编排</h1><div class="post-info">Apr 14, 2017</div><div class="post-content"><h3 id="物理机部署"><a href="#物理机部署" class="headerlink" title="物理机部署"></a>物理机部署</h3><h4 id="传统发布流程（以Java-spring-boot为例）"><a href="#传统发布流程（以Java-spring-boot为例）" class="headerlink" title="传统发布流程（以Java spring boot为例）"></a>传统发布流程（以Java spring boot为例）</h4><ul>
+<li>编译jar包</li>
+<li>分发到服务器A,B,C</li>
+<li>服务启动，监听到指定端口</li>
+<li>配置负载均衡到已启动服务端口</li>
+<li>服务发布成功</li>
+</ul>
+<p>关于服务更新，为了实现滚动更新，可以让LB绑定的服务逐渐更新</p>
+<h4 id="传统更新流程"><a href="#传统更新流程" class="headerlink" title="传统更新流程"></a>传统更新流程</h4><ul>
+<li>编译jar包</li>
+<li>分发到服务器A,B,C</li>
+<li>将服务器A从LB上解绑，更新服务器A上的服务</li>
+<li>启动服务，通过健康检查和QA之后，将服务器A绑定到LB上</li>
+<li>继续更新服务器B和C</li>
+<li>服务完全更新成功</li>
+</ul>
+<h4 id="拓容流程"><a href="#拓容流程" class="headerlink" title="拓容流程"></a>拓容流程</h4><ul>
+<li>新增机器节点</li>
+<li>启动jar包</li>
+<li>将新节点注册到LB上</li>
+</ul>
+<h4 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h4><ul>
+<li>单机端口有限，同一个服务如果在同一个服务器更新，需要不同的端口</li>
+<li>动态更新LB</li>
+<li>拓容成本高</li>
+</ul>
+<h3 id="服务化部署（这里以kubernetes为例）"><a href="#服务化部署（这里以kubernetes为例）" class="headerlink" title="服务化部署（这里以kubernetes为例）"></a>服务化部署（这里以kubernetes为例）</h3><h4 id="k8s发布流程"><a href="#k8s发布流程" class="headerlink" title="k8s发布流程"></a>k8s发布流程</h4><ul>
+<li>构建docker镜像</li>
+<li>创建deployment和service，可以限制服务的CPU、Memory等资源，k8s寻找空闲节点启动服务</li>
+<li>更新iptables将物理机上指定端口路由到VIP(虚拟服务IP)</li>
+<li>绑定物理机端口到LB</li>
+</ul>
+<h4 id="k8s更新流程"><a href="#k8s更新流程" class="headerlink" title="k8s更新流程"></a>k8s更新流程</h4><ul>
+<li>构建docker镜像</li>
+<li>更新deployment和service，k8s更新某个pod</li>
+<li>轮流更新pod，直到所有pod更新完成</li>
+</ul>
+<h4 id="k8s拓容"><a href="#k8s拓容" class="headerlink" title="k8s拓容"></a>k8s拓容</h4><ul>
+<li>寻找空闲节点启动服务，直到达到指定数量</li>
+</ul>
+<h4 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h4><ul>
+<li>几乎无物理端口限制（k8s需要物理端口作为转发，默认为30000+，数量有限）</li>
+<li>服务间通信，可以使用serviceName或者服务的VIP进行访问，内网访问更方便</li>
+<li>虚拟化物理机资源，隔离物理资源的细节，资源控制如拓容、服务资源限制方便</li>
+</ul>
+<h3 id="Kubernetes-vs-Docker-swarm"><a href="#Kubernetes-vs-Docker-swarm" class="headerlink" title="Kubernetes vs Docker swarm"></a>Kubernetes vs Docker swarm</h3><ul>
+<li>稳定性上，k8s上基于iptables的网络路由比docker swarm的网络更加稳定</li>
+<li>配置性上，k8s比docker swarm要复杂，swarm采用manager-worker架构，由manager调度worker，docker 1.12以上对于swarm原生支持，方便启动集群，不过k8s在新版本之后也越来越易于配置</li>
+<li>管理系统上，swarm比k8s的UI界面更友好，操作性更强</li>
+</ul>
+<h3 id="微服务架构下的应用"><a href="#微服务架构下的应用" class="headerlink" title="微服务架构下的应用"></a>微服务架构下的应用</h3><ul>
+<li>外部访问可以暴露gateway到LB上，外部通过访问LB进行访问</li>
+<li>使用k8s或者swarm，服务间通信可以使用serviceName进行访问，也可以利用容器的IP，使用服务注册进行服务查询</li>
+<li>自动拓容，当检测到服务的CPU和内存利用率升高，通过水平拓展，增加服务节点；服务压力减少后，逐渐减少服务节点数量</li>
+</ul>
+</div></article></div></main><footer><div class="paginator"><a href="/microservice/microservice-in-action-4/" class="prev">PREV</a><a href="/microservice/microservice-in-action-2/" class="next">NEXT</a></div><div id="disqus_thread"></div><script>var disqus_shortname = 'srjiang';
+var disqus_identifier = 'microservice/microservice-in-action-3/';
+var disqus_title = '微服务实践三: 服务编排';
+var disqus_url = 'https://songrgg.github.io/microservice/microservice-in-action-3/';
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script id="dsq-count-scr" src="//srjiang.disqus.com/count.js" async></script><div class="copyright"><p>© 2015 - 2018 <a href="https://songrgg.github.io">songrgg</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>

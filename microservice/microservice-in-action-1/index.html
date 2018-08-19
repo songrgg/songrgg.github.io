@@ -1,0 +1,63 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 微服务实践一: 架构图谱 · Songrgg's Blog</title><meta name="description" content="微服务实践一: 架构图谱 - songrgg"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="https://songrgg.github.io/atom.xml" title="Songrgg's Blog"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/songrgg" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">微服务实践一: 架构图谱</h1><div class="post-info">Mar 26, 2017</div><div class="post-content"><h3 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h3><ol>
+<li>服务拆分与服务发现</li>
+<li>微服务框架选择</li>
+<li>服务间通信</li>
+<li><a href="/microservice/microservice-in-action-3/">服务编排</a></li>
+<li><a href="/microservice/microservice-in-action-4/">配置管理</a></li>
+<li><a href="/microservice/microservice-in-action-2/">服务容错与降级</a></li>
+<li>监控<ul>
+<li>API监控</li>
+<li>服务调用链</li>
+<li>服务负载</li>
+<li>基础依赖监控</li>
+</ul>
+</li>
+<li>日志分析</li>
+</ol>
+<h3 id="Monolithic-vs-Microservice"><a href="#Monolithic-vs-Microservice" class="headerlink" title="Monolithic vs Microservice"></a>Monolithic vs Microservice</h3><table>
+<thead>
+<tr>
+<th></th>
+<th style="text-align:center">Monolithic</th>
+<th style="text-align:right">Microservice</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>开发测试</td>
+<td style="text-align:center">Java类语言项目越大，运行调试需要越多的编译时间，本地调试有较多依赖，况且业务复杂后不易新人上手</td>
+<td style="text-align:right">只有部分功能的代码，运行更快速，根据业务划分，方便新人上手</td>
+</tr>
+<tr>
+<td>部署</td>
+<td style="text-align:center">更新整个项目</td>
+<td style="text-align:right">更新一个微服务</td>
+</tr>
+<tr>
+<td>生产调试</td>
+<td style="text-align:center">日志集中，调试方便</td>
+<td style="text-align:right">日志分散，服务依赖复杂；拓容简便</td>
+</tr>
+</tbody>
+</table>
+<p>这两种架构视乎业务的复杂程度和代码量的大小，复杂程度低于一定程度，还是单一应用开发更快速，部署更加容易，因为服务拆分和线上的调试这些都是需要成本，反之，当业务不断增加，代码不断膨胀，服务拆分显得逐渐重要，公共功能能抽出来做成基础服务，各个业务所需的轮子也不需要重新造一遍，反而节省了开发成本，同时对于新人的加入，由于服务职责单一，让新人进来一个一个服务地熟悉，好过于一个大而全的项目。</p>
+<h3 id="微服务基础架构"><a href="#微服务基础架构" class="headerlink" title="微服务基础架构"></a>微服务基础架构</h3><p><img src="/images/Microservice.png" alt="部署架构"></p>
+<h3 id="处理流程"><a href="#处理流程" class="headerlink" title="处理流程"></a>处理流程</h3><ol>
+<li>浏览器发起下单请求到负载均衡(LB)</li>
+<li>负载均衡派发请求到API gateway</li>
+<li>API gateway查询服务发现，找到user服务和store服务，将用户信息和商品ID发送给store服务，</li>
+<li>store服务查询MySQL，找到商品信息，生成订单信息，将请求发送给payment服务</li>
+<li>payment服务根据用户指定的支付渠道，向第三方服务发起请求，存储订单信息，并返回订单状态</li>
+<li>store服务 -&gt; API gateway -&gt; LB</li>
+<li>LB返回数据到浏览器</li>
+</ol>
+<h3 id="微服务技术"><a href="#微服务技术" class="headerlink" title="微服务技术"></a>微服务技术</h3><p><img src="/images/Microservice-SKILLS.png" alt="技术图谱"></p>
+</div></article></div></main><footer><div class="paginator"><a href="/microservice/microservice-in-action-2/" class="prev">PREV</a><a href="/raspberry/raspberry3-docker/" class="next">NEXT</a></div><div id="disqus_thread"></div><script>var disqus_shortname = 'srjiang';
+var disqus_identifier = 'microservice/microservice-in-action-1/';
+var disqus_title = '微服务实践一: 架构图谱';
+var disqus_url = 'https://songrgg.github.io/microservice/microservice-in-action-1/';
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script id="dsq-count-scr" src="//srjiang.disqus.com/count.js" async></script><div class="copyright"><p>© 2015 - 2018 <a href="https://songrgg.github.io">songrgg</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>

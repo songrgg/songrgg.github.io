@@ -1,0 +1,26 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> MIT 6.824 Lab2, part1小结 · Songrgg's Blog</title><meta name="description" content="MIT 6.824 Lab2, part1小结 - songrgg"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="https://songrgg.github.io/atom.xml" title="Songrgg's Blog"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/songrgg" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">MIT 6.824 Lab2, part1小结</h1><div class="post-info">Dec 16, 2014</div><div class="post-content"><h3 id="关于MIT-6-824课程的Lab-2-part-1"><a href="#关于MIT-6-824课程的Lab-2-part-1" class="headerlink" title="关于MIT 6.824课程的Lab 2, part 1"></a>关于MIT 6.824课程的Lab 2, part 1</h3><p><del>从昨晚在宾馆到今天飞机上，都在过这几个test case，终于最后有点讨巧的过了。</del></p>
+<blockquote>
+<p>View service是MIT介绍paxos之前用来入门的，它的原理是以时间先后的顺序确定主备服务器，由定期的心跳更新此关系。之所以放在单独的service里获取主备关系，是为了将主备关系从K-V系统中解耦，从而K-V系统不用关心键值操作之外的事情，让更加上层的系统进行处理。</p>
+</blockquote>
+<p>遇到的问题：</p>
+<ul>
+<li>view service当前的view，和下一个未确认的view在哪些时间点更新？<ul>
+<li>怎么认为这个服务器作为主，又怎么确认其为Backup，Idle？</li>
+<li>什么时候能将这些认识更新到服务器当前view上？</li>
+</ul>
+</li>
+<li>服务器看到的view service的当前view是怎样的？<ul>
+<li>不同服务器查询当前view状态，获得的结果是一样的吗？</li>
+</ul>
+</li>
+</ul>
+<p>我用复杂难看的if-else语句最后实现这些逻辑，但不可否认，实现的漏洞很多，我理想的解决方案还是使用状态机，可以更加清晰容易更新（用图表展现）。</p>
+</div></article></div></main><footer><div class="paginator"><a href="/sourcecode/leveldb-status/" class="prev">PREV</a><a href="/sourcecode/levelDB里skiplist的实现细节/" class="next">NEXT</a></div><div id="disqus_thread"></div><script>var disqus_shortname = 'srjiang';
+var disqus_identifier = 'problems/6.824, Lab2, part 1/';
+var disqus_title = 'MIT 6.824 Lab2, part1小结';
+var disqus_url = 'https://songrgg.github.io/problems/6.824, Lab2, part 1/';
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script id="dsq-count-scr" src="//srjiang.disqus.com/count.js" async></script><div class="copyright"><p>© 2015 - 2018 <a href="https://songrgg.github.io">songrgg</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>
