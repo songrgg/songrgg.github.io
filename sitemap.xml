@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://songrgg.github.io/kubernetes/extend-kubernetes-dns/</loc>
+    
+    <lastmod>2018-08-19T12:38:33.156Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://songrgg.github.io/sourcecode/mahout-tutorial/</loc>
     
     <lastmod>2018-08-19T11:38:26.052Z</lastmod>
