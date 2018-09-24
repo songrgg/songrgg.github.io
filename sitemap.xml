@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://songrgg.github.io/golang/grpc-go-client-performance-test/</loc>
+    
+    <lastmod>2018-09-24T16:05:09.690Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://songrgg.github.io/kubernetes/extend-kubernetes-dns/</loc>
     
     <lastmod>2018-08-19T12:38:33.156Z</lastmod>

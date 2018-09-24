@@ -6,7 +6,7 @@
 <p>0 ~ 4字节：消息长度(消息1的长度len1+分割符的长度+消息2的长度len2)<br>4 ~ 5字节：状态码<br>5 ~ 5+len1：消息1的长度<br>(若消息2不为空)<br>5+len1 ~ 7+len1：分隔符的长度(分隔符为2个字符，分别为冒号和空格)<br>7+len1 ~ 7+len1+len2：消息2的长度</p>
 <p>这种存储方式，另得所有操作都是基于这个state_变量的下标索引操作。</p>
 <h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>定义异常在其它代码遇到错误时可以抛出适当的异常, 这样的实现方式我认为好处是初始化，销毁和复制操作简单，并且这些内容在内存中的位置紧密，有利于缓存，不知道是不是这样考虑才这么做的，但分成3个变量也无伤大雅。</p>
-</div></article></div></main><footer><div class="paginator"><a href="/sourcecode/leveldb-integer-coding/" class="prev">上一篇</a><a href="/problems/6.824, Lab2, part 1/" class="next">下一篇</a></div><div id="disqus_thread"></div><script>var disqus_shortname = 'srjiang';
+</div></article></div></main><footer><div class="paginator"><a href="/sourcecode/leveldb-integer-coding/" class="prev">PREV</a><a href="/problems/6.824, Lab2, part 1/" class="next">NEXT</a></div><div id="disqus_thread"></div><script>var disqus_shortname = 'srjiang';
 var disqus_identifier = 'sourcecode/leveldb-status/';
 var disqus_title = 'levelDB里自定义的状态';
 var disqus_url = 'https://songrgg.github.io/sourcecode/leveldb-status/';

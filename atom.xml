@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://songrgg.github.io/"/>
-  <updated>2018-08-19T12:38:33.156Z</updated>
+  <updated>2018-09-24T16:05:09.690Z</updated>
   <id>https://songrgg.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>gRPC Golang Client Connection Test</title>
+    <link href="https://songrgg.github.io/golang/grpc-go-client-performance-test/"/>
+    <id>https://songrgg.github.io/golang/grpc-go-client-performance-test/</id>
+    <published>2018-09-24T17:27:50.000Z</published>
+    <updated>2018-09-24T16:05:09.690Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="gRPC-client-connection-test"><a href="#gRPC-client-connection-test" class="headerlink" title="gRPC client connection test"></a>gRPC client connection test</h1><p>How to maximize the client concurrency.</p><h2 id="3-Tests"><a href="#3-Tests" class="headerlink" title="3 Tests"></a>3 Tests</h2><ol><li>One connection per request<br>Create a connection when request is made.</li><li>Only one client, one connection<br>Use a common client by all requests.</li><li>Fixed-size Connection pool<br>If connection pool has enough connections, take it from pool, otherwise create a new connection.<br>The connection pool has fixed max capacity, release unused connection to pool when it’s not full.</li></ol><h2 id="Performance-Comparison"><a href="#Performance-Comparison" class="headerlink" title="Performance Comparison"></a>Performance Comparison</h2><p><strong>Hardware</strong><br>MacBook Pro (15-inch, 2016)<br>Processor 2.7 GHz Intel Core i7<br>Memory 16GB 2133 MHz LPDDR3</p><p><strong>Press tool, client and server run on the same machine</strong></p><h3 id="When-server-just-says-hello-to-client"><a href="#When-server-just-says-hello-to-client" class="headerlink" title="When server just says hello to client"></a>When server just says hello to client</h3><ol><li><p>Only one client, one connection</p> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ wrk -t2 -c100 -d10s http://localhost:10099/performance</span><br><span class="line">Running 10s <span class="built_in">test</span> @ http://localhost:10099/performance</span><br><span class="line">  2 threads and 100 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency     2.85ms    1.24ms  22.24ms   80.47%</span><br><span class="line">    Req/Sec    15.86k     2.86k   21.58k    76.50%</span><br><span class="line">  316674 requests <span class="keyword">in</span> 10.04s, 38.66MB <span class="built_in">read</span></span><br><span class="line">Requests/sec:  31532.58</span><br><span class="line">Transfer/sec:      3.85MB</span><br></pre></td></tr></table></figure></li><li><p>Fixed-size Connection pool<br>Take connection from pool first, otherwise create a new connection.</p> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ wrk -t2 -c100 -d10s http://localhost:10099/performance</span><br><span class="line">Running 10s <span class="built_in">test</span> @ http://localhost:10099/performance</span><br><span class="line">  2 threads and 100 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency    36.86ms   34.35ms 334.72ms   83.30%</span><br><span class="line">    Req/Sec     1.58k   660.95     3.89k    67.86%</span><br><span class="line">  31127 requests <span class="keyword">in</span> 10.04s, 3.80MB <span class="built_in">read</span></span><br><span class="line">Requests/sec:   3100.89</span><br><span class="line">Transfer/sec:    387.61KB</span><br></pre></td></tr></table></figure></li><li><p>One connection per request<br>Close to the second result, about 3000 Requests/sec</p></li></ol><h3 id="When-server-sleeps-0-5s-and-says-hello-to-client"><a href="#When-server-sleeps-0-5s-and-says-hello-to-client" class="headerlink" title="When server sleeps 0.5s and says hello to client"></a>When server sleeps 0.5s and says hello to client</h3><ol><li><p>Only one client, one connection</p> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ wrk -t2 -c100 -d10s http://localhost:10099/performance</span><br><span class="line">Running 10s <span class="built_in">test</span> @ http://localhost:10099/performance</span><br><span class="line">  2 threads and 100 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency   503.43ms    1.95ms 511.62ms   64.35%</span><br><span class="line">    Req/Sec   130.60    119.12   485.00     80.85%</span><br><span class="line">  2000 requests <span class="keyword">in</span> 10.10s, 250.00KB <span class="built_in">read</span></span><br><span class="line">Requests/sec:    198.04</span><br><span class="line">Transfer/sec:     24.75KB</span><br></pre></td></tr></table></figure></li><li><p>Fixed-size Connection pool  </p> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ wrk -t2 -c100 -d10s http://localhost:10099/performance</span><br><span class="line">Running 10s <span class="built_in">test</span> @ http://localhost:10099/performance</span><br><span class="line">  2 threads and 100 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency   504.44ms    5.14ms 529.46ms   92.58%</span><br><span class="line">    Req/Sec   119.40     95.83   470.00     85.11%</span><br><span class="line">  1901 requests <span class="keyword">in</span> 10.07s, 237.62KB <span class="built_in">read</span></span><br><span class="line">Requests/sec:    188.80</span><br><span class="line">Transfer/sec:     23.60KB</span><br></pre></td></tr></table></figure></li><li><p>one connection per request</p> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ wrk -t2 -c100 -d10s http://localhost:10099/performance</span><br><span class="line">Running 10s <span class="built_in">test</span> @ http://localhost:10099/performance</span><br><span class="line">  2 threads and 100 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency   509.30ms    4.85ms 529.65ms   73.74%</span><br><span class="line">    Req/Sec   188.81    188.12   494.00     71.23%</span><br><span class="line">  1900 requests <span class="keyword">in</span> 10.06s, 237.50KB <span class="built_in">read</span></span><br><span class="line">Requests/sec:    188.89</span><br><span class="line">Transfer/sec:     23.61KB</span><br></pre></td></tr></table></figure></li></ol><h2 id="Sample-Code"><a href="#Sample-Code" class="headerlink" title="Sample Code"></a>Sample Code</h2><p>Find <a href="https://github.com/songrgg/go-experiments/tree/master/grpc/clientconn_test" target="_blank" rel="noopener">sample code</a></p><h2 id="Some-Results"><a href="#Some-Results" class="headerlink" title="Some Results"></a>Some Results</h2><p>In gereral, use shared grpc client rather than use a customized connection pool. </p><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://grpc.io" target="_blank" rel="noopener">grpc</a><br><a href="https://mycodesmells.com/post/pooling-grpc-connections" target="_blank" rel="noopener">pooling-grpc-connections</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;gRPC-client-connection-test&quot;&gt;&lt;a href=&quot;#gRPC-client-connection-test&quot; class=&quot;headerlink&quot; title=&quot;gRPC client connection test&quot;&gt;&lt;/a&gt;gRPC 
+      
+    
+    </summary>
+    
+      <category term="golang" scheme="https://songrgg.github.io/categories/golang/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>Kubernetes DNS拓展</title>
@@ -377,6 +400,29 @@
   </entry>
   
   <entry>
+    <title>MySQL支持emoji</title>
+    <link href="https://songrgg.github.io/mysql/mysql-utf8mb4-encode/"/>
+    <id>https://songrgg.github.io/mysql/mysql-utf8mb4-encode/</id>
+    <published>2016-07-30T16:00:00.000Z</published>
+    <updated>2018-08-19T11:36:46.860Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="方案1-应用层支持"><a href="#方案1-应用层支持" class="headerlink" title="方案1: 应用层支持"></a>方案1: 应用层支持</h3><p>MySQL默认的数据库编码是utf8，对于emoji文字是不能直接存储的，要想存储emoji，有许多库支持对emoji的转换，例如将😊转存为<code>:smile:</code>，放在数据库里，在从数据库里取出来的时候，再转换为😊，这是应用层的方案。</p><h3 id="方案2-存储层支持"><a href="#方案2-存储层支持" class="headerlink" title="方案2: 存储层支持"></a>方案2: 存储层支持</h3><p>MySQL编码设置为utf8mb4，直接支持emoji，不需要应用层的改动。  </p><p>注意事项:<br><strong>MySQL索引的长度不能大于767字节, utf8 1个字存3byte, utf8mb4存4byte，相对应VARCHAR的字节数分别是255和191，所以要把索引字段的长度限制到191。</strong></p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> &lt;table1&gt; <span class="keyword">MODIFY</span> <span class="keyword">COLUMN</span> &lt;col1_indexed&gt; <span class="built_in">VARCHAR</span>(<span class="number">191</span>);</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> &lt;table1&gt; <span class="keyword">CONVERT</span> <span class="keyword">TO</span> <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8mb4 <span class="keyword">COLLATE</span> utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol><li><a href="https://mathiasbynens.be/notes/mysql-utf8mb4" target="_blank" rel="noopener">How to support full Unicode in MySQL databases</a></li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;方案1-应用层支持&quot;&gt;&lt;a href=&quot;#方案1-应用层支持&quot; class=&quot;headerlink&quot; title=&quot;方案1: 应用层支持&quot;&gt;&lt;/a&gt;方案1: 应用层支持&lt;/h3&gt;&lt;p&gt;MySQL默认的数据库编码是utf8，对于emoji文字是不能直接存储的，要想存
+      
+    
+    </summary>
+    
+      <category term="mysql" scheme="https://songrgg.github.io/categories/mysql/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>微信分享常见问题</title>
     <link href="https://songrgg.github.io/wechat/wechat-share-problem/"/>
     <id>https://songrgg.github.io/wechat/wechat-share-problem/</id>
@@ -396,29 +442,6 @@
     </summary>
     
       <category term="wechat" scheme="https://songrgg.github.io/categories/wechat/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>MySQL支持emoji</title>
-    <link href="https://songrgg.github.io/mysql/mysql-utf8mb4-encode/"/>
-    <id>https://songrgg.github.io/mysql/mysql-utf8mb4-encode/</id>
-    <published>2016-07-30T16:00:00.000Z</published>
-    <updated>2018-08-19T11:36:46.860Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="方案1-应用层支持"><a href="#方案1-应用层支持" class="headerlink" title="方案1: 应用层支持"></a>方案1: 应用层支持</h3><p>MySQL默认的数据库编码是utf8，对于emoji文字是不能直接存储的，要想存储emoji，有许多库支持对emoji的转换，例如将😊转存为<code>:smile:</code>，放在数据库里，在从数据库里取出来的时候，再转换为😊，这是应用层的方案。</p><h3 id="方案2-存储层支持"><a href="#方案2-存储层支持" class="headerlink" title="方案2: 存储层支持"></a>方案2: 存储层支持</h3><p>MySQL编码设置为utf8mb4，直接支持emoji，不需要应用层的改动。  </p><p>注意事项:<br><strong>MySQL索引的长度不能大于767字节, utf8 1个字存3byte, utf8mb4存4byte，相对应VARCHAR的字节数分别是255和191，所以要把索引字段的长度限制到191。</strong></p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> &lt;table1&gt; <span class="keyword">MODIFY</span> <span class="keyword">COLUMN</span> &lt;col1_indexed&gt; <span class="built_in">VARCHAR</span>(<span class="number">191</span>);</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> &lt;table1&gt; <span class="keyword">CONVERT</span> <span class="keyword">TO</span> <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8mb4 <span class="keyword">COLLATE</span> utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol><li><a href="https://mathiasbynens.be/notes/mysql-utf8mb4" target="_blank" rel="noopener">How to support full Unicode in MySQL databases</a></li></ol>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;方案1-应用层支持&quot;&gt;&lt;a href=&quot;#方案1-应用层支持&quot; class=&quot;headerlink&quot; title=&quot;方案1: 应用层支持&quot;&gt;&lt;/a&gt;方案1: 应用层支持&lt;/h3&gt;&lt;p&gt;MySQL默认的数据库编码是utf8，对于emoji文字是不能直接存储的，要想存
-      
-    
-    </summary>
-    
-      <category term="mysql" scheme="https://songrgg.github.io/categories/mysql/"/>
     
     
   </entry>
@@ -461,29 +484,6 @@
       
       
         &lt;h1 id=&quot;现象&quot;&gt;&lt;a href=&quot;#现象&quot; class=&quot;headerlink&quot; title=&quot;现象&quot;&gt;&lt;/a&gt;现象&lt;/h1&gt;&lt;p&gt;同一套代码，同一个数据源，不同的操作系统，在&lt;code&gt;OSX&lt;/code&gt;上数据提取编码正常，而&lt;code&gt;Ubuntu&lt;/code&gt;上拉
-      
-    
-    </summary>
-    
-      <category term="java" scheme="https://songrgg.github.io/categories/java/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>使用Groovy进行Spring依赖注入</title>
-    <link href="https://songrgg.github.io/java/spring-ioc-groovy/"/>
-    <id>https://songrgg.github.io/java/spring-ioc-groovy/</id>
-    <published>2016-03-27T16:00:00.000Z</published>
-    <updated>2018-08-19T11:37:02.697Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="为什么选择Groovy"><a href="#为什么选择Groovy" class="headerlink" title="为什么选择Groovy?"></a>为什么选择Groovy?</h1><p>传统的依赖注入是XML，对我而言，可读性太差，太不美观，强烈地想换一个方式进行依赖注入，Groovy作为XML的替代方案，在Spring4之后被引入，是基于JVM的一门方言，具有较强的可读性，写更少的更易懂的脚本，完成同样的功能。</p><h1 id="基于Spring-boot框架"><a href="#基于Spring-boot框架" class="headerlink" title="基于Spring boot框架"></a>基于Spring boot框架</h1><p>我选择了Spring boot框架作为MVC，看重了它的惯例大于配置，不用繁琐地配置。</p><blockquote><p><strong>以下代码是伪代码，只是大概说明使用的方式</strong></p></blockquote><h3 id="Application-java"><a href="#Application-java" class="headerlink" title="Application.java"></a>Application.java</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Application</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    Object[] sources = <span class="keyword">new</span> Object[] &#123;</span><br><span class="line">      Application.class,</span><br><span class="line">      <span class="keyword">new</span> ClassPathResource(<span class="string">"application_context.groovy"</span>)</span><br><span class="line">    &#125;;</span><br><span class="line">    SpringApplication.run(sources, args);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>在Application启动的时候读入该脚本，解析出错会抛出异常。</p><h3 id="src-main-resources-application-context-groovy"><a href="#src-main-resources-application-context-groovy" class="headerlink" title="src/main/resources/application_context.groovy"></a>src/main/resources/application_context.groovy</h3><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">beans &#123;</span><br><span class="line">  userService(UserMockService) &#123;</span><br><span class="line">    parameter = <span class="string">"你能在这初始化参数"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>在groovy配置文件里能声明要注入的beans，可以配置初始化时的参数值，这里就是声明一个<code>userService</code>，它的实现是<code>UserMockService</code>。</p><h3 id="UserController-java"><a href="#UserController-java" class="headerlink" title="UserController.java"></a>UserController.java</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Autowired</span></span><br><span class="line">  <span class="keyword">private</span> UserService userService;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> User <span class="title">getUserAction</span><span class="params">(Long userId)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> userService.findByUserId(userId);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="User-java"><a href="#User-java" class="headerlink" title="User.java"></a>User.java</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">  String name;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">User</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="UserService-java"><a href="#UserService-java" class="headerlink" title="UserService.java"></a>UserService.java</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">UserService</span> </span>&#123;</span><br><span class="line">  <span class="function">User <span class="title">findByUserId</span><span class="params">(Long userId)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="UserMockService-java"><a href="#UserMockService-java" class="headerlink" title="UserMockService.java"></a>UserMockService.java</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserMockService</span> <span class="keyword">implements</span> <span class="title">UserService</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> String parameter;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">getParameter</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> parameter; &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setParameter</span><span class="params">(String parameter)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.parameter = parameter;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> User <span class="title">findByUserId</span><span class="params">(Long userId)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> User(<span class="string">"mockUser"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul><li><a href="https://spring.io/blog/2014/03/03/groovy-bean-configuration-in-spring-framework-4" target="_blank" rel="noopener">Spring4支持Groovy依赖注入</a></li><li><a href="https://github.com/forchesatto/estudo-spring/tree/master/spring-boot-ioc" target="_blank" rel="noopener">Spring boot Groovy依赖注入示例代码</a></li></ul><h1 id="lt-fuck-gt-XML-lt-fuck-gt"><a href="#lt-fuck-gt-XML-lt-fuck-gt" class="headerlink" title="&lt; fuck&gt;XML&lt; /fuck&gt;"></a>&lt; fuck&gt;XML&lt; /fuck&gt;</h1>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;为什么选择Groovy&quot;&gt;&lt;a href=&quot;#为什么选择Groovy&quot; class=&quot;headerlink&quot; title=&quot;为什么选择Groovy?&quot;&gt;&lt;/a&gt;为什么选择Groovy?&lt;/h1&gt;&lt;p&gt;传统的依赖注入是XML，对我而言，可读性太差，太不美观，强烈地想
       
     
     </summary>
