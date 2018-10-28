@@ -25,7 +25,7 @@
 <p>通过<code>SCRIPT LOAD</code>上传该脚本获得<code>hash</code>，使用<code>EVALSHA &lt;hash&gt; 2 userA_APIX_token userA_APIX_ts 1 1 &lt;now_time&gt; 1</code>调用该脚本，根据返回的<code>allowed</code>决定此次操作是否进行。</p>
 <h3 id="benchmark"><a href="#benchmark" class="headerlink" title="benchmark"></a>benchmark</h3><p>经过测试，MacBook Pro (Retina, 13-inch, Late 2013), CPU 2.4 GHz Intel Core i5, Memory 8 GB 1600 MHz DDR3上能达到<strong>1w+</strong>QPS。</p>
 <h3 id="项目地址"><a href="#项目地址" class="headerlink" title="项目地址"></a>项目地址</h3><p><a href="https://github.com/wallstreetcn/rate" target="_blank" rel="noopener">ratelimiter的golang实现</a>，目前该版本暂时支持<code>redis client</code>，为了拓展性，可以将其升级为<code>redis cluster</code>，满足大并发系统的需求。</p>
-</div></article></div></main><footer><div class="paginator"><a href="/etcd/etcd-for-production/" class="prev">PREV</a><a href="/gitlab/build-ci-with-gitlab/" class="next">NEXT</a></div><div id="disqus_thread"></div><script>var disqus_shortname = 'srjiang';
+</div></article></div></main><footer><div class="paginator"><a href="/etcd/etcd-for-production/" class="prev">上一篇</a><a href="/gitlab/build-ci-with-gitlab/" class="next">下一篇</a></div><div id="disqus_thread"></div><script>var disqus_shortname = 'srjiang';
 var disqus_identifier = 'ratelimit/rate-limiter-for-distributed-system/';
 var disqus_title = '分布式系统频次限制实现';
 var disqus_url = 'https://songrgg.github.io/ratelimit/rate-limiter-for-distributed-system/';

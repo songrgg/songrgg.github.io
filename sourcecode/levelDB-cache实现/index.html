@@ -33,7 +33,7 @@
 <li>LRUCache缓存查找<br>  如果缓存存在, 则将其放置到哑节点lru_的prev位置, 即最近使用节点, 相当于提升它的优先级, 便于下次快速查找; 如果不存在这个缓存, 返回<code>NULL</code>.</li>
 </ul>
 <h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>看完leveldb的缓存实现, 在实现思路上, 是传统的lru算法, 使用哈希表判重, 根据缓存的请求时间提升缓存的优先级. 里面的细节例如使用哈希值的前n位进行路由, 路由到<code>2^n</code>个独立的缓存区, 各个缓存区维护自己的mutex进行并发控制; 哈希表在插入节点时判断空间使用率, 并进行自动扩容, 保证查找效率在O(1).</p>
-</div></article></div></main><footer><div class="paginator"><a href="/test/微信本地测试/" class="prev">PREV</a><a href="/sourcecode/leveldb-integer-coding/" class="next">NEXT</a></div><div id="disqus_thread"></div><script>var disqus_shortname = 'srjiang';
+</div></article></div></main><footer><div class="paginator"><a href="/test/微信本地测试/" class="prev">上一篇</a><a href="/sourcecode/leveldb-integer-coding/" class="next">下一篇</a></div><div id="disqus_thread"></div><script>var disqus_shortname = 'srjiang';
 var disqus_identifier = 'sourcecode/levelDB-cache实现/';
 var disqus_title = 'levelDB里缓存实现';
 var disqus_url = 'https://songrgg.github.io/sourcecode/levelDB-cache实现/';

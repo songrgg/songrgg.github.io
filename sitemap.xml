@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://songrgg.github.io/microservice/goodbye-micro/</loc>
+    
+    <lastmod>2018-10-28T11:28:28.560Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://songrgg.github.io/golang/grpc-go-client-performance-test/</loc>
     
     <lastmod>2018-09-24T16:05:09.690Z</lastmod>
