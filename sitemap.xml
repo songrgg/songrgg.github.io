@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://songrgg.github.io/istio/istio-version-control-on-k8s/</loc>
+    
+    <lastmod>2019-03-28T10:07:50.383Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://songrgg.github.io/microservice/goodbye-micro/</loc>
     
     <lastmod>2018-10-28T11:34:07.682Z</lastmod>
