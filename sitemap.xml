@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://songrgg.github.io/thoughts/what-interview-brings-to-me/</loc>
+    
+    <lastmod>2019-04-04T05:06:51.616Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://songrgg.github.io/istio/istio-version-control-on-k8s/</loc>
     
     <lastmod>2019-03-28T10:07:50.383Z</lastmod>
