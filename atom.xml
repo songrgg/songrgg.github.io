@@ -446,29 +446,6 @@
   </entry>
   
   <entry>
-    <title>MySQL支持emoji</title>
-    <link href="https://songrgg.github.io/mysql/mysql-utf8mb4-encode/"/>
-    <id>https://songrgg.github.io/mysql/mysql-utf8mb4-encode/</id>
-    <published>2016-07-30T16:00:00.000Z</published>
-    <updated>2018-08-19T11:36:46.860Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="方案1-应用层支持"><a href="#方案1-应用层支持" class="headerlink" title="方案1: 应用层支持"></a>方案1: 应用层支持</h3><p>MySQL默认的数据库编码是utf8，对于emoji文字是不能直接存储的，要想存储emoji，有许多库支持对emoji的转换，例如将😊转存为<code>:smile:</code>，放在数据库里，在从数据库里取出来的时候，再转换为😊，这是应用层的方案。</p><h3 id="方案2-存储层支持"><a href="#方案2-存储层支持" class="headerlink" title="方案2: 存储层支持"></a>方案2: 存储层支持</h3><p>MySQL编码设置为utf8mb4，直接支持emoji，不需要应用层的改动。  </p><p>注意事项:<br><strong>MySQL索引的长度不能大于767字节, utf8 1个字存3byte, utf8mb4存4byte，相对应VARCHAR的字节数分别是255和191，所以要把索引字段的长度限制到191。</strong></p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> &lt;table1&gt; <span class="keyword">MODIFY</span> <span class="keyword">COLUMN</span> &lt;col1_indexed&gt; <span class="built_in">VARCHAR</span>(<span class="number">191</span>);</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> &lt;table1&gt; <span class="keyword">CONVERT</span> <span class="keyword">TO</span> <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8mb4 <span class="keyword">COLLATE</span> utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol><li><a href="https://mathiasbynens.be/notes/mysql-utf8mb4" target="_blank" rel="noopener">How to support full Unicode in MySQL databases</a></li></ol>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;方案1-应用层支持&quot;&gt;&lt;a href=&quot;#方案1-应用层支持&quot; class=&quot;headerlink&quot; title=&quot;方案1: 应用层支持&quot;&gt;&lt;/a&gt;方案1: 应用层支持&lt;/h3&gt;&lt;p&gt;MySQL默认的数据库编码是utf8，对于emoji文字是不能直接存储的，要想存
-      
-    
-    </summary>
-    
-      <category term="mysql" scheme="https://songrgg.github.io/categories/mysql/"/>
-    
-    
-  </entry>
-  
-  <entry>
     <title>微信分享常见问题</title>
     <link href="https://songrgg.github.io/wechat/wechat-share-problem/"/>
     <id>https://songrgg.github.io/wechat/wechat-share-problem/</id>
@@ -488,6 +465,29 @@
     </summary>
     
       <category term="wechat" scheme="https://songrgg.github.io/categories/wechat/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL支持emoji</title>
+    <link href="https://songrgg.github.io/mysql/mysql-utf8mb4-encode/"/>
+    <id>https://songrgg.github.io/mysql/mysql-utf8mb4-encode/</id>
+    <published>2016-07-30T16:00:00.000Z</published>
+    <updated>2018-08-19T11:36:46.860Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="方案1-应用层支持"><a href="#方案1-应用层支持" class="headerlink" title="方案1: 应用层支持"></a>方案1: 应用层支持</h3><p>MySQL默认的数据库编码是utf8，对于emoji文字是不能直接存储的，要想存储emoji，有许多库支持对emoji的转换，例如将😊转存为<code>:smile:</code>，放在数据库里，在从数据库里取出来的时候，再转换为😊，这是应用层的方案。</p><h3 id="方案2-存储层支持"><a href="#方案2-存储层支持" class="headerlink" title="方案2: 存储层支持"></a>方案2: 存储层支持</h3><p>MySQL编码设置为utf8mb4，直接支持emoji，不需要应用层的改动。  </p><p>注意事项:<br><strong>MySQL索引的长度不能大于767字节, utf8 1个字存3byte, utf8mb4存4byte，相对应VARCHAR的字节数分别是255和191，所以要把索引字段的长度限制到191。</strong></p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> &lt;table1&gt; <span class="keyword">MODIFY</span> <span class="keyword">COLUMN</span> &lt;col1_indexed&gt; <span class="built_in">VARCHAR</span>(<span class="number">191</span>);</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> &lt;table1&gt; <span class="keyword">CONVERT</span> <span class="keyword">TO</span> <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8mb4 <span class="keyword">COLLATE</span> utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol><li><a href="https://mathiasbynens.be/notes/mysql-utf8mb4" target="_blank" rel="noopener">How to support full Unicode in MySQL databases</a></li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;方案1-应用层支持&quot;&gt;&lt;a href=&quot;#方案1-应用层支持&quot; class=&quot;headerlink&quot; title=&quot;方案1: 应用层支持&quot;&gt;&lt;/a&gt;方案1: 应用层支持&lt;/h3&gt;&lt;p&gt;MySQL默认的数据库编码是utf8，对于emoji文字是不能直接存储的，要想存
+      
+    
+    </summary>
+    
+      <category term="mysql" scheme="https://songrgg.github.io/categories/mysql/"/>
     
     
   </entry>
