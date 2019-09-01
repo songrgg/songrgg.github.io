@@ -13,6 +13,7 @@
         <meta name="keywords" content="" />
     
     <meta name="description" content="Hive是什么？基于Hadoop的数据查询工具，可以使用类SQL进行数据查询。 Hadoop安装 参考了Hadoop安装 注意到etc/hadoop/hadoop-env.sh里设置JAVA_HOME，不然运行./start_dfs.sh会报没设置JAVA_HOME 运行程序时，输出目录不能存在 配置文件 hdfs的输出目录需要保证空间充足，我在虚拟机里玩，分配的磁盘空间太小，另外加了空间并挂载，">
+<meta name="keywords" content="programming,sre,kubernetes,service mesh,devops">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hive环境搭建(Ubuntu)">
 <meta property="og:url" content="https://songrgg.github.io/bigdata/hive-environment-settings/index.html">
@@ -75,6 +76,10 @@ ga('send', 'pageview');
                     <h1 class="logo-wrap">
                         <a href="/" class="logo"></a>
                     </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">A programmer who likes travelling and cooking :)</p>
+                        </h2>
                     
                 </div>
                 <div id="header-inner" class="nav-container">
@@ -199,7 +204,7 @@ ga('send', 'pageview');
 
 
 
-    <a data-url="https://songrgg.github.io/bigdata/hive-environment-settings/" data-id="cjzfzkc7u000ld4z32du6f2s8" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://songrgg.github.io/bigdata/hive-environment-settings/" data-id="ck01hz9vg000cdzz3a617o1x3" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -283,7 +288,7 @@ Hadoop安装
 注意到etc/hadoop/hadoop-env.sh里设置JAVA_HOME，不然运行./start_dfs.sh会报没设置JAVA_HOME
 运行程序时，输出目录不能存在
 配置文件
-hdfs的输出目录需要保证空间充足，我在虚拟机里玩，分配的磁盘空间太小，另外加了空间并挂载，"
+hdfs的输出目录需要保证空间充足，我在虚拟机里玩，分配的磁盘空间太小，另外加了空间并挂载，",
         "wordCount": 38
     }
 </script>
@@ -378,7 +383,7 @@ hdfs的输出目录需要保证空间充足，我在虚拟机里玩，分配的�
                             <a href="/envoy/deeper-understanding-to-envoy/" class="thumbnail">
     
     
-        <span style="background-image:url(/images/envoy-in-service-mesh.png)" alt="Anatomy of envoy proxy from user traffic and configuration" class="thumbnail-image"></span>
+        <span style="background-image:url(/images/envoy-in-service-mesh.png)" alt="Anatomy of envoy proxy: the architecture of envoy and how it works" class="thumbnail-image"></span>
     
     
 </a>
@@ -387,7 +392,7 @@ hdfs的输出目录需要保证空间充足，我在虚拟机里玩，分配的�
                         
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/envoy/">envoy</a></p>
-                            <p class="item-title"><a href="/envoy/deeper-understanding-to-envoy/" class="title">Anatomy of envoy proxy from user traffic and configuration</a></p>
+                            <p class="item-title"><a href="/envoy/deeper-understanding-to-envoy/" class="title">Anatomy of envoy proxy: the architecture of envoy and how it works</a></p>
                             <p class="item-date"><time datetime="2019-08-13T22:00:00.000Z" itemprop="datePublished">2019-08-14</time></p>
                         </div>
                     </li>
@@ -418,7 +423,7 @@ hdfs的输出目录需要保证空间充足，我在虚拟机里玩，分配的�
                             <a href="/microservice/goodbye-micro/" class="thumbnail">
     
     
-        <span style="background-image:url(/images/micro.png)" alt="再见，micro" class="thumbnail-image"></span>
+        <span style="background-image:url(/images/micro.png)" alt="再见，micro: 迁移go-micro到纯gRPC框架" class="thumbnail-image"></span>
     
     
 </a>
@@ -427,7 +432,7 @@ hdfs的输出目录需要保证空间充足，我在虚拟机里玩，分配的�
                         
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/microservice/">microservice</a></p>
-                            <p class="item-title"><a href="/microservice/goodbye-micro/" class="title">再见，micro</a></p>
+                            <p class="item-title"><a href="/microservice/goodbye-micro/" class="title">再见，micro: 迁移go-micro到纯gRPC框架</a></p>
                             <p class="item-date"><time datetime="2018-10-27T22:00:00.000Z" itemprop="datePublished">2018-10-28</time></p>
                         </div>
                     </li>
@@ -481,7 +486,7 @@ hdfs的输出目录需要保证空间充足，我在虚拟机里玩，分配的�
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/bigdata/">bigdata</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/distributed-system/">distributed-system</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/envoy/">envoy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/etcd/">etcd</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/gitlab/">gitlab</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/golang/">golang</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/imfool/">imfool</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ios/">ios</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/istio/">istio</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/kubernetes/">kubernetes</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">life</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/microservice/">microservice</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/operation/">operation</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/php/">php</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/problems/">problems</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/project/">project</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/raspberry/">raspberry</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ratelimit/">ratelimit</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/sourcecode/">sourcecode</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">spark</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/test/">test</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/">thoughts</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/wechat/">wechat</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/bigdata/">bigdata</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/distributed-system/">distributed-system</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/envoy/">envoy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/etcd/">etcd</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/gitlab/">gitlab</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/golang/">golang</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/imfool/">imfool</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ios/">ios</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/istio/">istio</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/kubernetes/">kubernetes</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">life</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/microservice/">microservice</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/microservice-fault-tolerance-service-degrade/">microservice,fault tolerance,service degrade</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/operation/">operation</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/php/">php</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/problems/">problems</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/project/">project</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/raspberry/">raspberry</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ratelimit/">ratelimit</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/sourcecode/">sourcecode</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">spark</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/test/">test</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/">thoughts</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/wechat/">wechat</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 

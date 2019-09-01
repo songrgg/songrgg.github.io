@@ -6,7 +6,7 @@
     
 
     
-    <title>Category: spark | Songrgg&#39;s Blog</title>
+    <title>Category: microservice,fault tolerance,service degrade | Songrgg&#39;s Blog</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
@@ -14,7 +14,7 @@
 <meta name="keywords" content="programming,sre,kubernetes,service mesh,devops">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Songrgg&#39;s Blog">
-<meta property="og:url" content="https://songrgg.github.io/categories/spark/index.html">
+<meta property="og:url" content="https://songrgg.github.io/categories/microservice-fault-tolerance-service-degrade/index.html">
 <meta property="og:site_name" content="Songrgg&#39;s Blog">
 <meta property="og:description" content="A place to share programming experience and understanding of architecture.">
 <meta property="og:locale" content="en">
@@ -141,7 +141,7 @@ ga('send', 'pageview');
                         <div class="main-body-header">
     <h1 class="header">
     
-    <i class="icon fa fa-folder-open"></i>Category: <em class="page-title-link">spark</em>
+    <i class="icon fa fa-folder-open"></i>Category: <em class="page-title-link">microservice,fault tolerance,service degrade</em>
     </h1>
 </div>
 
@@ -154,7 +154,7 @@ ga('send', 'pageview');
         
         <section class="archives-wrap">
             <div class="archive-year-wrap">
-                <a href="/archives/2018" class="archive-year"><i class="icon fa fa-calendar-o"></i>2018</a>
+                <a href="/archives/2017" class="archive-year"><i class="icon fa fa-calendar-o"></i>2017</a>
             </div>
             <div class="archives">
     
@@ -165,17 +165,17 @@ ga('send', 'pageview');
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/spark/spark-on-hive-app-channel-analytics/" class="thumbnail">
+        <a href="/microservice-fault-tolerance-service-degrade/microservice-in-action-2/" class="thumbnail">
     
     
-        <span style="background-image:url(/images/app-channel-analytics-architecture.png)" alt="Spark on Hive实现APP渠道分析" class="thumbnail-image"></span>
+        <span style="background-image:url(https://raw.githubusercontent.com/wiki/Netflix/Hystrix/images/hystrix-command-flow-chart.png)" alt="微服务实践二: 服务容错与降级" class="thumbnail-image"></span>
     
     
         
 <span class="comment-counter">
     <i class="fa fa-comments-o"></i>
     
-        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/spark/spark-on-hive-app-channel-analytics/">0</span>
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/microservice-fault-tolerance-service-degrade/microservice-in-action-2/">0</span>
     
 </span>
 
@@ -186,29 +186,31 @@ ga('send', 'pageview');
         
         <div class="article-meta">
             <div class="category">
-            <a class="article-category-link" href="/categories/spark/">spark</a>
+            <a class="article-category-link" href="/categories/microservice-fault-tolerance-service-degrade/">microservice,fault tolerance,service degrade</a>
             </div>
-            <div class="date"><time datetime="2018-02-04T20:27:50.000Z" itemprop="datePublished">2018-02-04</time></div>
+            <div class="date"><time datetime="2017-04-01T22:00:00.000Z" itemprop="datePublished">2017-04-02</time></div>
         </div>
         
     
         <h1 class="article-title" itemprop="name">
-        <a href="/spark/spark-on-hive-app-channel-analytics/">Spark on Hive实现APP渠道分析</a>
+        <a href="/microservice-fault-tolerance-service-degrade/microservice-in-action-2/">微服务实践二: 服务容错与降级</a>
         </h1>
     
 
         <p class="article-excerpt">
-            背景最近在做APP投放渠道分析，就是Android应用投放到应用市场，所谓渠道就是huawei,xiaomi,yingyongbao之类，运营人员根据数据分析渠道的下载安装情况、各个渠道的投放效果。
-需求完成一个Android渠道分析的展示面板，包含以下指标：
+            
+保证系统能稳定地运行在生产环境是第一要务，就算是服务质量下降，只要仍在工作，那就是万幸。
 
-APP总新增激活数量
-按渠道划分的新增数量
-各渠道的新增变化走势图（以小时为单位）
-品牌占比
-操作系统占比
+常见服务问题
+服务超时依赖的第三方服务因为某种不可抗力超时了？数据库慢查询拖垮了整个数据库？
 
-架构
-数据APP激活时上报
+服务错误某个服务挂了？
+
+服务负载高突然陡增的访问量？
+
+
+解决方法
+限时针对服务超时，可以通过超时控制保证接口的返回，可以通过设置超时时间为1s，尽快返回结果，因为大多数情况下，接口超时一方面影响用户体验，一
         </p>
     </div>
 </article>

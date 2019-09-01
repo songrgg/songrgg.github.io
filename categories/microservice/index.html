@@ -10,13 +10,17 @@
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-    <meta property="og:type" content="website">
+    <meta name="description" content="A place to share programming experience and understanding of architecture.">
+<meta name="keywords" content="programming,sre,kubernetes,service mesh,devops">
+<meta property="og:type" content="website">
 <meta property="og:title" content="Songrgg&#39;s Blog">
 <meta property="og:url" content="https://songrgg.github.io/categories/microservice/index.html">
 <meta property="og:site_name" content="Songrgg&#39;s Blog">
+<meta property="og:description" content="A place to share programming experience and understanding of architecture.">
 <meta property="og:locale" content="en">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Songrgg&#39;s Blog">
+<meta name="twitter:description" content="A place to share programming experience and understanding of architecture.">
     
 
     
@@ -69,6 +73,10 @@ ga('send', 'pageview');
                     <h1 class="logo-wrap">
                         <a href="/" class="logo"></a>
                     </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">A programmer who likes travelling and cooking :)</p>
+                        </h2>
                     
                 </div>
                 <div id="header-inner" class="nav-container">
@@ -160,7 +168,7 @@ ga('send', 'pageview');
         <a href="/microservice/goodbye-micro/" class="thumbnail">
     
     
-        <span style="background-image:url(/images/micro.png)" alt="再见，micro" class="thumbnail-image"></span>
+        <span style="background-image:url(/images/micro.png)" alt="再见，micro: 迁移go-micro到纯gRPC框架" class="thumbnail-image"></span>
     
     
         
@@ -185,7 +193,7 @@ ga('send', 'pageview');
         
     
         <h1 class="article-title" itemprop="name">
-        <a href="/microservice/goodbye-micro/">再见，micro</a>
+        <a href="/microservice/goodbye-micro/">再见，micro: 迁移go-micro到纯gRPC框架</a>
         </h1>
     
 
@@ -342,64 +350,6 @@ go-micro框架的架构非常具有拓展性，它拥有自己的RPC框架，通
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/microservice/microservice-in-action-2/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://raw.githubusercontent.com/wiki/Netflix/Hystrix/images/hystrix-command-flow-chart.png)" alt="微服务实践二: 服务容错与降级" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/microservice/microservice-in-action-2/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/microservice/">microservice</a>
-            </div>
-            <div class="date"><time datetime="2017-04-01T22:00:00.000Z" itemprop="datePublished">2017-04-02</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/microservice/microservice-in-action-2/">微服务实践二: 服务容错与降级</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-保证系统能稳定地运行在生产环境是第一要务，就算是服务质量下降，只要仍在工作，那就是万幸。
-
-常见服务问题
-服务超时依赖的第三方服务因为某种不可抗力超时了？数据库慢查询拖垮了整个数据库？
-
-服务错误某个服务挂了？
-
-服务负载高突然陡增的访问量？
-
-
-解决方法
-限时针对服务超时，可以通过超时控制保证接口的返回，可以通过设置超时时间为1s，尽快返回结果，因为大多数情况下，接口超时一方面影响用户体验，一
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
         <a href="/microservice/microservice-in-action-1/" class="thumbnail">
     
     
@@ -466,8 +416,6 @@ Java类语言项目越大，运行调试需要越多的编译时间，本地调�
     </div>
 </article>
     
-        </div>
-    
 
 
     </div></section>
@@ -528,7 +476,7 @@ Java类语言项目越大，运行调试需要越多的编译时间，本地调�
                             <a href="/envoy/deeper-understanding-to-envoy/" class="thumbnail">
     
     
-        <span style="background-image:url(/images/envoy-in-service-mesh.png)" alt="Anatomy of envoy proxy from user traffic and configuration" class="thumbnail-image"></span>
+        <span style="background-image:url(/images/envoy-in-service-mesh.png)" alt="Anatomy of envoy proxy: the architecture of envoy and how it works" class="thumbnail-image"></span>
     
     
 </a>
@@ -537,7 +485,7 @@ Java类语言项目越大，运行调试需要越多的编译时间，本地调�
                         
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/envoy/">envoy</a></p>
-                            <p class="item-title"><a href="/envoy/deeper-understanding-to-envoy/" class="title">Anatomy of envoy proxy from user traffic and configuration</a></p>
+                            <p class="item-title"><a href="/envoy/deeper-understanding-to-envoy/" class="title">Anatomy of envoy proxy: the architecture of envoy and how it works</a></p>
                             <p class="item-date"><time datetime="2019-08-13T22:00:00.000Z" itemprop="datePublished">2019-08-14</time></p>
                         </div>
                     </li>
@@ -568,7 +516,7 @@ Java类语言项目越大，运行调试需要越多的编译时间，本地调�
                             <a href="/microservice/goodbye-micro/" class="thumbnail">
     
     
-        <span style="background-image:url(/images/micro.png)" alt="再见，micro" class="thumbnail-image"></span>
+        <span style="background-image:url(/images/micro.png)" alt="再见，micro: 迁移go-micro到纯gRPC框架" class="thumbnail-image"></span>
     
     
 </a>
@@ -577,7 +525,7 @@ Java类语言项目越大，运行调试需要越多的编译时间，本地调�
                         
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/microservice/">microservice</a></p>
-                            <p class="item-title"><a href="/microservice/goodbye-micro/" class="title">再见，micro</a></p>
+                            <p class="item-title"><a href="/microservice/goodbye-micro/" class="title">再见，micro: 迁移go-micro到纯gRPC框架</a></p>
                             <p class="item-date"><time datetime="2018-10-27T22:00:00.000Z" itemprop="datePublished">2018-10-28</time></p>
                         </div>
                     </li>
@@ -631,7 +579,7 @@ Java类语言项目越大，运行调试需要越多的编译时间，本地调�
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/bigdata/">bigdata</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/distributed-system/">distributed-system</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/envoy/">envoy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/etcd/">etcd</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/gitlab/">gitlab</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/golang/">golang</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/imfool/">imfool</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ios/">ios</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/istio/">istio</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/kubernetes/">kubernetes</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">life</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/microservice/">microservice</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/operation/">operation</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/php/">php</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/problems/">problems</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/project/">project</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/raspberry/">raspberry</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ratelimit/">ratelimit</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/sourcecode/">sourcecode</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">spark</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/test/">test</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/">thoughts</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/wechat/">wechat</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/bigdata/">bigdata</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/distributed-system/">distributed-system</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/envoy/">envoy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/etcd/">etcd</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/gitlab/">gitlab</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/golang/">golang</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/imfool/">imfool</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ios/">ios</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/istio/">istio</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/kubernetes/">kubernetes</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">life</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/microservice/">microservice</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/microservice-fault-tolerance-service-degrade/">microservice,fault tolerance,service degrade</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/operation/">operation</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/php/">php</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/problems/">problems</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/project/">project</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/raspberry/">raspberry</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ratelimit/">ratelimit</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/sourcecode/">sourcecode</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">spark</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/test/">test</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/">thoughts</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/wechat/">wechat</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 

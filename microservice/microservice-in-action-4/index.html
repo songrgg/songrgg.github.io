@@ -13,6 +13,7 @@
         <meta name="keywords" content="" />
     
     <meta name="description" content="配置涵盖程序运行的环境，程序依赖的基础资源地址，程序的行为等。  需求 根据环境读取配置 方便更新配置 基础数据格式为list，map等，常见的配置格式是JSON，YAML，XML  配置部署（docker环境）跟随镜像打包最直接的方式也就是将配置文件也打包到docker镜像，配置即代码，更新配置需要构建新的镜像  优点  配置更新随代码库有版本记录和修改记录   缺点  每次更新配置需要进行g">
+<meta name="keywords" content="microservice,configuration management">
 <meta property="og:type" content="article">
 <meta property="og:title" content="微服务实践四: 配置管理">
 <meta property="og:url" content="https://songrgg.github.io/microservice/microservice-in-action-4/index.html">
@@ -20,7 +21,7 @@
 <meta property="og:description" content="配置涵盖程序运行的环境，程序依赖的基础资源地址，程序的行为等。  需求 根据环境读取配置 方便更新配置 基础数据格式为list，map等，常见的配置格式是JSON，YAML，XML  配置部署（docker环境）跟随镜像打包最直接的方式也就是将配置文件也打包到docker镜像，配置即代码，更新配置需要构建新的镜像  优点  配置更新随代码库有版本记录和修改记录   缺点  每次更新配置需要进行g">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://songrgg.github.io/images/config-in-docker.png">
-<meta property="og:updated_time" content="2018-08-19T11:35:37.375Z">
+<meta property="og:updated_time" content="2019-09-01T22:17:49.048Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微服务实践四: 配置管理">
 <meta name="twitter:description" content="配置涵盖程序运行的环境，程序依赖的基础资源地址，程序的行为等。  需求 根据环境读取配置 方便更新配置 基础数据格式为list，map等，常见的配置格式是JSON，YAML，XML  配置部署（docker环境）跟随镜像打包最直接的方式也就是将配置文件也打包到docker镜像，配置即代码，更新配置需要构建新的镜像  优点  配置更新随代码库有版本记录和修改记录   缺点  每次更新配置需要进行g">
@@ -77,6 +78,10 @@ ga('send', 'pageview');
                     <h1 class="logo-wrap">
                         <a href="/" class="logo"></a>
                     </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">A programmer who likes travelling and cooking :)</p>
+                        </h2>
                     
                 </div>
                 <div id="header-inner" class="nav-container">
@@ -239,7 +244,7 @@ ga('send', 'pageview');
 
 
 
-    <a data-url="https://songrgg.github.io/microservice/microservice-in-action-4/" data-id="cjzfzkc840018d4z35h6j1uwv" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://songrgg.github.io/microservice/microservice-in-action-4/" data-id="ck01hz9vt0016dzz30630pc4i" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -315,7 +320,7 @@ ga('send', 'pageview');
         "genre": "microservice",
         "datePublished": "2017-04-15",
         "dateCreated": "2017-04-15",
-        "dateModified": "2018-08-19",
+        "dateModified": "2019-09-02",
         "url": "https://songrgg.github.io/microservice/microservice-in-action-4/",
         "description": "
 配置涵盖程序运行的环境，程序依赖的基础资源地址，程序的行为等。
@@ -334,7 +339,7 @@ ga('send', 'pageview');
 
 缺点
 
-每次更新配置需要进行g"
+每次更新配置需要进行g",
         "wordCount": 43
     }
 </script>
@@ -429,7 +434,7 @@ ga('send', 'pageview');
                             <a href="/envoy/deeper-understanding-to-envoy/" class="thumbnail">
     
     
-        <span style="background-image:url(/images/envoy-in-service-mesh.png)" alt="Anatomy of envoy proxy from user traffic and configuration" class="thumbnail-image"></span>
+        <span style="background-image:url(/images/envoy-in-service-mesh.png)" alt="Anatomy of envoy proxy: the architecture of envoy and how it works" class="thumbnail-image"></span>
     
     
 </a>
@@ -438,7 +443,7 @@ ga('send', 'pageview');
                         
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/envoy/">envoy</a></p>
-                            <p class="item-title"><a href="/envoy/deeper-understanding-to-envoy/" class="title">Anatomy of envoy proxy from user traffic and configuration</a></p>
+                            <p class="item-title"><a href="/envoy/deeper-understanding-to-envoy/" class="title">Anatomy of envoy proxy: the architecture of envoy and how it works</a></p>
                             <p class="item-date"><time datetime="2019-08-13T22:00:00.000Z" itemprop="datePublished">2019-08-14</time></p>
                         </div>
                     </li>
@@ -469,7 +474,7 @@ ga('send', 'pageview');
                             <a href="/microservice/goodbye-micro/" class="thumbnail">
     
     
-        <span style="background-image:url(/images/micro.png)" alt="再见，micro" class="thumbnail-image"></span>
+        <span style="background-image:url(/images/micro.png)" alt="再见，micro: 迁移go-micro到纯gRPC框架" class="thumbnail-image"></span>
     
     
 </a>
@@ -478,7 +483,7 @@ ga('send', 'pageview');
                         
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/microservice/">microservice</a></p>
-                            <p class="item-title"><a href="/microservice/goodbye-micro/" class="title">再见，micro</a></p>
+                            <p class="item-title"><a href="/microservice/goodbye-micro/" class="title">再见，micro: 迁移go-micro到纯gRPC框架</a></p>
                             <p class="item-date"><time datetime="2018-10-27T22:00:00.000Z" itemprop="datePublished">2018-10-28</time></p>
                         </div>
                     </li>
@@ -532,7 +537,7 @@ ga('send', 'pageview');
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/bigdata/">bigdata</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/distributed-system/">distributed-system</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/envoy/">envoy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/etcd/">etcd</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/gitlab/">gitlab</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/golang/">golang</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/imfool/">imfool</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ios/">ios</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/istio/">istio</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/kubernetes/">kubernetes</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">life</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/microservice/">microservice</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/operation/">operation</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/php/">php</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/problems/">problems</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/project/">project</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/raspberry/">raspberry</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ratelimit/">ratelimit</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/sourcecode/">sourcecode</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">spark</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/test/">test</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/">thoughts</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/wechat/">wechat</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/bigdata/">bigdata</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/distributed-system/">distributed-system</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/envoy/">envoy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/etcd/">etcd</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/gitlab/">gitlab</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/golang/">golang</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/imfool/">imfool</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ios/">ios</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/istio/">istio</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/kubernetes/">kubernetes</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">life</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/microservice/">microservice</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/microservice-fault-tolerance-service-degrade/">microservice,fault tolerance,service degrade</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/operation/">operation</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/php/">php</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/problems/">problems</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/project/">project</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/raspberry/">raspberry</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ratelimit/">ratelimit</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/sourcecode/">sourcecode</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">spark</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/test/">test</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/">thoughts</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/wechat/">wechat</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 
