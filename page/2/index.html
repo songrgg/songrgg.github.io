@@ -28,7 +28,7 @@
     
 
     
-        <link rel="icon" href="/favicon.png" />
+        <link rel="icon" href="/css/images/favicon.png" />
     
 
     <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
@@ -702,17 +702,17 @@ Mongo
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/wechat/wechat-share-problem/" class="thumbnail">
+        <a href="/mysql/mysql-utf8mb4-encode/" class="thumbnail">
     
     
-        <span style="background-image:url(/images/wechat.png)" alt="微信分享常见问题" class="thumbnail-image"></span>
+        <span class="thumbnail-image thumbnail-none"></span>
     
     
         
 <span class="comment-counter">
     <i class="fa fa-comments-o"></i>
     
-        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/wechat/wechat-share-problem/">0</span>
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/mysql/mysql-utf8mb4-encode/">0</span>
     
 </span>
 
@@ -723,25 +723,21 @@ Mongo
         
         <div class="article-meta">
             <div class="category">
-            <a class="article-category-link" href="/categories/wechat/">wechat</a>
+            <a class="article-category-link" href="/categories/mysql/">mysql</a>
             </div>
             <div class="date"><time datetime="2016-07-30T22:00:00.000Z" itemprop="datePublished">2016-07-31</time></div>
         </div>
         
     
         <h1 class="article-title" itemprop="name">
-        <a href="/wechat/wechat-share-problem/">微信分享常见问题</a>
+        <a href="/mysql/mysql-utf8mb4-encode/">MySQL支持emoji</a>
         </h1>
     
 
         <p class="article-excerpt">
-            调试前端打开debug模式，浏览器打开时在console里会打印微信分享初始化信息，在微信里会以alert形式出现。
-常见问题
-签名的时候注意大小写
-签名时候用的url需要和当前位置的url保持一致
-微信二次分享失败 微信在第二次分享的链接里增加了后缀，如?from=singlemessage&amp;isappinstalled=1，这里需要转义
-
-12345678910111213$.ajax
+            方案1: 应用层支持MySQL默认的数据库编码是utf8，对于emoji文字是不能直接存储的，要想存储emoji，有许多库支持对emoji的转换，例如将😊转存为:smile:，放在数据库里，在从数据库里取出来的时候，再转换为😊，这是应用层的方案。
+方案2: 存储层支持MySQL编码设置为utf8mb4，直接支持emoji，不需要应用层的改动。  
+注意事项:MySQL索引的长度不能大于767字
         </p>
     </div>
 </article>
