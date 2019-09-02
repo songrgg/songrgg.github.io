@@ -10,7 +10,7 @@
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="" />
+        <meta name="keywords" content="microservice,service orchestration" />
     
     <meta name="description" content="物理机部署传统发布流程（以Java spring boot为例） 编译jar包 分发到服务器A,B,C 服务启动，监听到指定端口 配置负载均衡到已启动服务端口 服务发布成功  关于服务更新，为了实现滚动更新，可以让LB绑定的服务逐渐更新 传统更新流程 编译jar包 分发到服务器A,B,C 将服务器A从LB上解绑，更新服务器A上的服务 启动服务，通过健康检查和QA之后，将服务器A绑定到LB上 继续更">
 <meta name="keywords" content="microservice,service orchestration">
@@ -20,7 +20,7 @@
 <meta property="og:site_name" content="Songrgg&#39;s Blog">
 <meta property="og:description" content="物理机部署传统发布流程（以Java spring boot为例） 编译jar包 分发到服务器A,B,C 服务启动，监听到指定端口 配置负载均衡到已启动服务端口 服务发布成功  关于服务更新，为了实现滚动更新，可以让LB绑定的服务逐渐更新 传统更新流程 编译jar包 分发到服务器A,B,C 将服务器A从LB上解绑，更新服务器A上的服务 启动服务，通过健康检查和QA之后，将服务器A绑定到LB上 继续更">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-09-01T22:18:09.910Z">
+<meta property="og:updated_time" content="2019-09-02T19:33:21.754Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微服务实践三: 服务编排">
 <meta name="twitter:description" content="物理机部署传统发布流程（以Java spring boot为例） 编译jar包 分发到服务器A,B,C 服务启动，监听到指定端口 配置负载均衡到已启动服务端口 服务发布成功  关于服务更新，为了实现滚动更新，可以让LB绑定的服务逐渐更新 传统更新流程 编译jar包 分发到服务器A,B,C 将服务器A从LB上解绑，更新服务器A上的服务 启动服务，通过健康检查和QA之后，将服务器A绑定到LB上 继续更">
@@ -60,6 +60,14 @@ ga('send', 'pageview');
 
 </script>
 
+    
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script> (adsbygoogle = window.adsbygoogle || []).push({
+google_ad_client: "ca-pub-1158113896856372",
+enable_page_level_ads: true
+});
+</script>
     
     
 
@@ -174,6 +182,11 @@ ga('send', 'pageview');
 		
 
                 
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/microservice-service-orchestration/">microservice,service orchestration</a>
+    </div>
+
             </div>
         
         
@@ -240,7 +253,7 @@ ga('send', 'pageview');
 
 
 
-    <a data-url="https://songrgg.github.io/microservice/microservice-in-action-3/" data-id="ck01hz9vu0019dzz35ytj3wlk" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://songrgg.github.io/microservice/microservice-in-action-3/" data-id="ck02sw7a2001le8z3g9v5k6xy" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -310,14 +323,18 @@ ga('send', 'pageview');
             "@type": "Person",
             "name": "songrgg"
         },
+        "publisher": {},
         "headline": "微服务实践三: 服务编排",
-        "image": "https://songrgg.github.io",
-        "keywords": "",
+        "image": [
+            "https://songrgg.github.io"
+        ],
+        "keywords": "microservice,service orchestration",
         "genre": "microservice",
         "datePublished": "2017-04-14",
         "dateCreated": "2017-04-14",
         "dateModified": "2019-09-02",
         "url": "https://songrgg.github.io/microservice/microservice-in-action-3/",
+        "mainEntityOfPage": "https://songrgg.github.io/microservice/microservice-in-action-3/",
         "description": "物理机部署传统发布流程（以Java spring boot为例）
 编译jar包
 分发到服务器A,B,C
@@ -546,9 +563,23 @@ ga('send', 'pageview');
 
             
                 
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/envoy-service-mesh-architecture-request-analysis-microservice-kubernetes/">envoy,service mesh,architecture,request analysis,microservice,kubernetes</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd-operation-etcd-configuration/">etcd,operation,etcd configuration</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go-micro-gRPC-microservice-migration/">go-micro,gRPC,microservice,migration</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc-client-performance/">grpc,client performance</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes-sidecar-nginx/">kubernetes,sidecar,nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microservice-architecture/">microservice,architecture</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microservice-configuration-management/">microservice,configuration management</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microservice-istio-kubernetes-istio-configuration-management/">microservice,istio,kubernetes,istio configuration management</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microservice-service-orchestration/">microservice,service orchestration</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ratelimiter/">ratelimiter</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark-hive-app-channel-analytics/">spark,hive,app channel analytics</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot-database-read-write-split/">spring boot,database read write split</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-groovy-dependency-injection/">spring,groovy,dependency injection</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
 
             
                 
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/envoy-service-mesh-architecture-request-analysis-microservice-kubernetes/" style="font-size: 10px;">envoy,service mesh,architecture,request analysis,microservice,kubernetes</a> <a href="/tags/etcd-operation-etcd-configuration/" style="font-size: 10px;">etcd,operation,etcd configuration</a> <a href="/tags/go-micro-gRPC-microservice-migration/" style="font-size: 10px;">go-micro,gRPC,microservice,migration</a> <a href="/tags/grpc-client-performance/" style="font-size: 10px;">grpc,client performance</a> <a href="/tags/kubernetes-sidecar-nginx/" style="font-size: 10px;">kubernetes,sidecar,nginx</a> <a href="/tags/microservice-architecture/" style="font-size: 10px;">microservice,architecture</a> <a href="/tags/microservice-configuration-management/" style="font-size: 10px;">microservice,configuration management</a> <a href="/tags/microservice-istio-kubernetes-istio-configuration-management/" style="font-size: 10px;">microservice,istio,kubernetes,istio configuration management</a> <a href="/tags/microservice-service-orchestration/" style="font-size: 10px;">microservice,service orchestration</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/spark-hive-app-channel-analytics/" style="font-size: 10px;">spark,hive,app channel analytics</a> <a href="/tags/spring-boot-database-read-write-split/" style="font-size: 10px;">spring boot,database read write split</a> <a href="/tags/spring-groovy-dependency-injection/" style="font-size: 10px;">spring,groovy,dependency injection</a>
+        </div>
+    </div>
+
 
             
                 

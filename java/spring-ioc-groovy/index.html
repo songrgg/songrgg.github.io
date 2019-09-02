@@ -10,17 +10,17 @@
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="" />
+        <meta name="keywords" content="spring,groovy,dependency injection" />
     
     <meta name="description" content="为什么选择Groovy?传统的依赖注入是XML，对我而言，可读性太差，太不美观，强烈地想换一个方式进行依赖注入，Groovy作为XML的替代方案，在Spring4之后被引入，是基于JVM的一门方言，具有较强的可读性，写更少的更易懂的脚本，完成同样的功能。 基于Spring boot框架我选择了Spring boot框架作为MVC，看重了它的惯例大于配置，不用繁琐地配置。  以下代码是伪代码，只是大">
-<meta name="keywords" content="programming,sre,kubernetes,service mesh,devops">
+<meta name="keywords" content="spring,groovy,dependency injection">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用Groovy进行Spring依赖注入">
 <meta property="og:url" content="https://songrgg.github.io/java/spring-ioc-groovy/index.html">
 <meta property="og:site_name" content="Songrgg&#39;s Blog">
 <meta property="og:description" content="为什么选择Groovy?传统的依赖注入是XML，对我而言，可读性太差，太不美观，强烈地想换一个方式进行依赖注入，Groovy作为XML的替代方案，在Spring4之后被引入，是基于JVM的一门方言，具有较强的可读性，写更少的更易懂的脚本，完成同样的功能。 基于Spring boot框架我选择了Spring boot框架作为MVC，看重了它的惯例大于配置，不用繁琐地配置。  以下代码是伪代码，只是大">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-08-19T11:37:02.697Z">
+<meta property="og:updated_time" content="2019-09-02T19:33:46.279Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用Groovy进行Spring依赖注入">
 <meta name="twitter:description" content="为什么选择Groovy?传统的依赖注入是XML，对我而言，可读性太差，太不美观，强烈地想换一个方式进行依赖注入，Groovy作为XML的替代方案，在Spring4之后被引入，是基于JVM的一门方言，具有较强的可读性，写更少的更易懂的脚本，完成同样的功能。 基于Spring boot框架我选择了Spring boot框架作为MVC，看重了它的惯例大于配置，不用繁琐地配置。  以下代码是伪代码，只是大">
@@ -60,6 +60,14 @@ ga('send', 'pageview');
 
 </script>
 
+    
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script> (adsbygoogle = window.adsbygoogle || []).push({
+google_ad_client: "ca-pub-1158113896856372",
+enable_page_level_ads: true
+});
+</script>
     
     
 
@@ -174,6 +182,11 @@ ga('send', 'pageview');
 		
 
                 
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/spring-groovy-dependency-injection/">spring,groovy,dependency injection</a>
+    </div>
+
             </div>
         
         
@@ -202,7 +215,7 @@ ga('send', 'pageview');
 
 
 
-    <a data-url="https://songrgg.github.io/java/spring-ioc-groovy/" data-id="ck01hz9wb002adzz3vygmt0gf" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://songrgg.github.io/java/spring-ioc-groovy/" data-id="ck02sw7ai002pe8z3tmcxnfaf" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -272,14 +285,18 @@ ga('send', 'pageview');
             "@type": "Person",
             "name": "songrgg"
         },
+        "publisher": {},
         "headline": "使用Groovy进行Spring依赖注入",
-        "image": "https://songrgg.github.io",
-        "keywords": "",
+        "image": [
+            "https://songrgg.github.io"
+        ],
+        "keywords": "spring,groovy,dependency injection",
         "genre": "java",
         "datePublished": "2016-03-28",
         "dateCreated": "2016-03-28",
-        "dateModified": "2018-08-19",
+        "dateModified": "2019-09-02",
         "url": "https://songrgg.github.io/java/spring-ioc-groovy/",
+        "mainEntityOfPage": "https://songrgg.github.io/java/spring-ioc-groovy/",
         "description": "为什么选择Groovy?传统的依赖注入是XML，对我而言，可读性太差，太不美观，强烈地想换一个方式进行依赖注入，Groovy作为XML的替代方案，在Spring4之后被引入，是基于JVM的一门方言，具有较强的可读性，写更少的更易懂的脚本，完成同样的功能。
 基于Spring boot框架我选择了Spring boot框架作为MVC，看重了它的惯例大于配置，不用繁琐地配置。
 
@@ -498,9 +515,23 @@ ga('send', 'pageview');
 
             
                 
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/envoy-service-mesh-architecture-request-analysis-microservice-kubernetes/">envoy,service mesh,architecture,request analysis,microservice,kubernetes</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd-operation-etcd-configuration/">etcd,operation,etcd configuration</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go-micro-gRPC-microservice-migration/">go-micro,gRPC,microservice,migration</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc-client-performance/">grpc,client performance</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes-sidecar-nginx/">kubernetes,sidecar,nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microservice-architecture/">microservice,architecture</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microservice-configuration-management/">microservice,configuration management</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microservice-istio-kubernetes-istio-configuration-management/">microservice,istio,kubernetes,istio configuration management</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microservice-service-orchestration/">microservice,service orchestration</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ratelimiter/">ratelimiter</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark-hive-app-channel-analytics/">spark,hive,app channel analytics</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot-database-read-write-split/">spring boot,database read write split</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-groovy-dependency-injection/">spring,groovy,dependency injection</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
 
             
                 
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/envoy-service-mesh-architecture-request-analysis-microservice-kubernetes/" style="font-size: 10px;">envoy,service mesh,architecture,request analysis,microservice,kubernetes</a> <a href="/tags/etcd-operation-etcd-configuration/" style="font-size: 10px;">etcd,operation,etcd configuration</a> <a href="/tags/go-micro-gRPC-microservice-migration/" style="font-size: 10px;">go-micro,gRPC,microservice,migration</a> <a href="/tags/grpc-client-performance/" style="font-size: 10px;">grpc,client performance</a> <a href="/tags/kubernetes-sidecar-nginx/" style="font-size: 10px;">kubernetes,sidecar,nginx</a> <a href="/tags/microservice-architecture/" style="font-size: 10px;">microservice,architecture</a> <a href="/tags/microservice-configuration-management/" style="font-size: 10px;">microservice,configuration management</a> <a href="/tags/microservice-istio-kubernetes-istio-configuration-management/" style="font-size: 10px;">microservice,istio,kubernetes,istio configuration management</a> <a href="/tags/microservice-service-orchestration/" style="font-size: 10px;">microservice,service orchestration</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/spark-hive-app-channel-analytics/" style="font-size: 10px;">spark,hive,app channel analytics</a> <a href="/tags/spring-boot-database-read-write-split/" style="font-size: 10px;">spring boot,database read write split</a> <a href="/tags/spring-groovy-dependency-injection/" style="font-size: 10px;">spring,groovy,dependency injection</a>
+        </div>
+    </div>
+
 
             
                 

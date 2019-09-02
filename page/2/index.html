@@ -59,6 +59,14 @@ ga('send', 'pageview');
 
     
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script> (adsbygoogle = window.adsbygoogle || []).push({
+google_ad_client: "ca-pub-1158113896856372",
+enable_page_level_ads: true
+});
+</script>
+    
+    
 
 
 </head>
@@ -694,17 +702,17 @@ Mongo
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/wechat/wechat-share-problem/" class="thumbnail">
+        <a href="/mysql/mysql-utf8mb4-encode/" class="thumbnail">
     
     
-        <span style="background-image:url(/images/wechat.png)" alt="微信分享常见问题" class="thumbnail-image"></span>
+        <span class="thumbnail-image thumbnail-none"></span>
     
     
         
 <span class="comment-counter">
     <i class="fa fa-comments-o"></i>
     
-        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/wechat/wechat-share-problem/">0</span>
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/mysql/mysql-utf8mb4-encode/">0</span>
     
 </span>
 
@@ -715,25 +723,21 @@ Mongo
         
         <div class="article-meta">
             <div class="category">
-            <a class="article-category-link" href="/categories/wechat/">wechat</a>
+            <a class="article-category-link" href="/categories/mysql/">mysql</a>
             </div>
             <div class="date"><time datetime="2016-07-30T22:00:00.000Z" itemprop="datePublished">2016-07-31</time></div>
         </div>
         
     
         <h1 class="article-title" itemprop="name">
-        <a href="/wechat/wechat-share-problem/">微信分享常见问题</a>
+        <a href="/mysql/mysql-utf8mb4-encode/">MySQL支持emoji</a>
         </h1>
     
 
         <p class="article-excerpt">
-            调试前端打开debug模式，浏览器打开时在console里会打印微信分享初始化信息，在微信里会以alert形式出现。
-常见问题
-签名的时候注意大小写
-签名时候用的url需要和当前位置的url保持一致
-微信二次分享失败 微信在第二次分享的链接里增加了后缀，如?from=singlemessage&amp;isappinstalled=1，这里需要转义
-
-12345678910111213$.ajax
+            方案1: 应用层支持MySQL默认的数据库编码是utf8，对于emoji文字是不能直接存储的，要想存储emoji，有许多库支持对emoji的转换，例如将😊转存为:smile:，放在数据库里，在从数据库里取出来的时候，再转换为😊，这是应用层的方案。
+方案2: 存储层支持MySQL编码设置为utf8mb4，直接支持emoji，不需要应用层的改动。  
+注意事项:MySQL索引的长度不能大于767字
         </p>
     </div>
 </article>
@@ -924,9 +928,23 @@ Mongo
 
             
                 
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/envoy-service-mesh-architecture-request-analysis-microservice-kubernetes/">envoy,service mesh,architecture,request analysis,microservice,kubernetes</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd-operation-etcd-configuration/">etcd,operation,etcd configuration</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go-micro-gRPC-microservice-migration/">go-micro,gRPC,microservice,migration</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc-client-performance/">grpc,client performance</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes-sidecar-nginx/">kubernetes,sidecar,nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microservice-architecture/">microservice,architecture</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microservice-configuration-management/">microservice,configuration management</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microservice-istio-kubernetes-istio-configuration-management/">microservice,istio,kubernetes,istio configuration management</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microservice-service-orchestration/">microservice,service orchestration</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ratelimiter/">ratelimiter</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark-hive-app-channel-analytics/">spark,hive,app channel analytics</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot-database-read-write-split/">spring boot,database read write split</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-groovy-dependency-injection/">spring,groovy,dependency injection</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
 
             
                 
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/envoy-service-mesh-architecture-request-analysis-microservice-kubernetes/" style="font-size: 10px;">envoy,service mesh,architecture,request analysis,microservice,kubernetes</a> <a href="/tags/etcd-operation-etcd-configuration/" style="font-size: 10px;">etcd,operation,etcd configuration</a> <a href="/tags/go-micro-gRPC-microservice-migration/" style="font-size: 10px;">go-micro,gRPC,microservice,migration</a> <a href="/tags/grpc-client-performance/" style="font-size: 10px;">grpc,client performance</a> <a href="/tags/kubernetes-sidecar-nginx/" style="font-size: 10px;">kubernetes,sidecar,nginx</a> <a href="/tags/microservice-architecture/" style="font-size: 10px;">microservice,architecture</a> <a href="/tags/microservice-configuration-management/" style="font-size: 10px;">microservice,configuration management</a> <a href="/tags/microservice-istio-kubernetes-istio-configuration-management/" style="font-size: 10px;">microservice,istio,kubernetes,istio configuration management</a> <a href="/tags/microservice-service-orchestration/" style="font-size: 10px;">microservice,service orchestration</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/spark-hive-app-channel-analytics/" style="font-size: 10px;">spark,hive,app channel analytics</a> <a href="/tags/spring-boot-database-read-write-split/" style="font-size: 10px;">spring boot,database read write split</a> <a href="/tags/spring-groovy-dependency-injection/" style="font-size: 10px;">spring,groovy,dependency injection</a>
+        </div>
+    </div>
+
 
             
                 

@@ -10,17 +10,17 @@
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="" />
+        <meta name="keywords" content="ratelimiter" />
     
     <meta name="description" content="起因频次限制（rate limiting）是Web系统比较常见的功能，防止用户频繁访问接口，导致系统负载增加而影响服务的质量。 系统要求 针对线上的功能，实现对指定对象有访问频次的限制 支持多个客户端访问 低延迟 承受较大的访问量 易于拓展  流程 设置服务频次限制，如针对某个消耗资源很高的API设置1QPS的访问限制，并为单一用户生成访问该API的唯一key，如userA_APIX就是表示use">
-<meta name="keywords" content="programming,sre,kubernetes,service mesh,devops">
+<meta name="keywords" content="ratelimiter">
 <meta property="og:type" content="article">
 <meta property="og:title" content="分布式系统频次限制实现">
 <meta property="og:url" content="https://songrgg.github.io/ratelimit/rate-limiter-for-distributed-system/index.html">
 <meta property="og:site_name" content="Songrgg&#39;s Blog">
 <meta property="og:description" content="起因频次限制（rate limiting）是Web系统比较常见的功能，防止用户频繁访问接口，导致系统负载增加而影响服务的质量。 系统要求 针对线上的功能，实现对指定对象有访问频次的限制 支持多个客户端访问 低延迟 承受较大的访问量 易于拓展  流程 设置服务频次限制，如针对某个消耗资源很高的API设置1QPS的访问限制，并为单一用户生成访问该API的唯一key，如userA_APIX就是表示use">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-08-19T11:35:32.736Z">
+<meta property="og:updated_time" content="2019-09-02T19:33:35.191Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="分布式系统频次限制实现">
 <meta name="twitter:description" content="起因频次限制（rate limiting）是Web系统比较常见的功能，防止用户频繁访问接口，导致系统负载增加而影响服务的质量。 系统要求 针对线上的功能，实现对指定对象有访问频次的限制 支持多个客户端访问 低延迟 承受较大的访问量 易于拓展  流程 设置服务频次限制，如针对某个消耗资源很高的API设置1QPS的访问限制，并为单一用户生成访问该API的唯一key，如userA_APIX就是表示use">
@@ -60,6 +60,14 @@ ga('send', 'pageview');
 
 </script>
 
+    
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script> (adsbygoogle = window.adsbygoogle || []).push({
+google_ad_client: "ca-pub-1158113896856372",
+enable_page_level_ads: true
+});
+</script>
     
     
 
@@ -174,6 +182,11 @@ ga('send', 'pageview');
 		
 
                 
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/ratelimiter/">ratelimiter</a>
+    </div>
+
             </div>
         
         
@@ -212,7 +225,7 @@ ga('send', 'pageview');
 
 
 
-    <a data-url="https://songrgg.github.io/ratelimit/rate-limiter-for-distributed-system/" data-id="ck01hz9w4001vdzz3q1igvqvi" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://songrgg.github.io/ratelimit/rate-limiter-for-distributed-system/" data-id="ck02sw7ac002de8z387wt6qnk" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -282,14 +295,18 @@ ga('send', 'pageview');
             "@type": "Person",
             "name": "songrgg"
         },
+        "publisher": {},
         "headline": "分布式系统频次限制实现",
-        "image": "https://songrgg.github.io",
-        "keywords": "",
+        "image": [
+            "https://songrgg.github.io"
+        ],
+        "keywords": "ratelimiter",
         "genre": "ratelimit",
         "datePublished": "2017-06-03",
         "dateCreated": "2017-06-03",
-        "dateModified": "2018-08-19",
+        "dateModified": "2019-09-02",
         "url": "https://songrgg.github.io/ratelimit/rate-limiter-for-distributed-system/",
+        "mainEntityOfPage": "https://songrgg.github.io/ratelimit/rate-limiter-for-distributed-system/",
         "description": "起因频次限制（rate limiting）是Web系统比较常见的功能，防止用户频繁访问接口，导致系统负载增加而影响服务的质量。
 系统要求
 针对线上的功能，实现对指定对象有访问频次的限制
@@ -514,9 +531,23 @@ ga('send', 'pageview');
 
             
                 
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/envoy-service-mesh-architecture-request-analysis-microservice-kubernetes/">envoy,service mesh,architecture,request analysis,microservice,kubernetes</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd-operation-etcd-configuration/">etcd,operation,etcd configuration</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go-micro-gRPC-microservice-migration/">go-micro,gRPC,microservice,migration</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc-client-performance/">grpc,client performance</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes-sidecar-nginx/">kubernetes,sidecar,nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microservice-architecture/">microservice,architecture</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microservice-configuration-management/">microservice,configuration management</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microservice-istio-kubernetes-istio-configuration-management/">microservice,istio,kubernetes,istio configuration management</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microservice-service-orchestration/">microservice,service orchestration</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ratelimiter/">ratelimiter</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark-hive-app-channel-analytics/">spark,hive,app channel analytics</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot-database-read-write-split/">spring boot,database read write split</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-groovy-dependency-injection/">spring,groovy,dependency injection</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
 
             
                 
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/envoy-service-mesh-architecture-request-analysis-microservice-kubernetes/" style="font-size: 10px;">envoy,service mesh,architecture,request analysis,microservice,kubernetes</a> <a href="/tags/etcd-operation-etcd-configuration/" style="font-size: 10px;">etcd,operation,etcd configuration</a> <a href="/tags/go-micro-gRPC-microservice-migration/" style="font-size: 10px;">go-micro,gRPC,microservice,migration</a> <a href="/tags/grpc-client-performance/" style="font-size: 10px;">grpc,client performance</a> <a href="/tags/kubernetes-sidecar-nginx/" style="font-size: 10px;">kubernetes,sidecar,nginx</a> <a href="/tags/microservice-architecture/" style="font-size: 10px;">microservice,architecture</a> <a href="/tags/microservice-configuration-management/" style="font-size: 10px;">microservice,configuration management</a> <a href="/tags/microservice-istio-kubernetes-istio-configuration-management/" style="font-size: 10px;">microservice,istio,kubernetes,istio configuration management</a> <a href="/tags/microservice-service-orchestration/" style="font-size: 10px;">microservice,service orchestration</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/spark-hive-app-channel-analytics/" style="font-size: 10px;">spark,hive,app channel analytics</a> <a href="/tags/spring-boot-database-read-write-split/" style="font-size: 10px;">spring boot,database read write split</a> <a href="/tags/spring-groovy-dependency-injection/" style="font-size: 10px;">spring,groovy,dependency injection</a>
+        </div>
+    </div>
+
 
             
                 

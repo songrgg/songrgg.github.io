@@ -10,17 +10,17 @@
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="" />
+        <meta name="keywords" content="spring boot,database read write split" />
     
     <meta name="description" content="背景数据库配置主从之后，如何在代码层面实现读写分离？   用户自定义设置数据库路由Spring boot提供了AbstractRoutingDataSource根据用户定义的规则选择当前的数据库，这样我们可以在执行查询之前，设置读取从库，在执行完成后，恢复到主库。   实现可动态路由的数据源，在每次数据库查询操作前执行ReadWriteSplitRoutingDataSource.java1234">
-<meta name="keywords" content="programming,sre,kubernetes,service mesh,devops">
+<meta name="keywords" content="spring boot,database read write split">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring boot实现数据库读写分离">
 <meta property="og:url" content="https://songrgg.github.io/java/spring-boot-database-read-write-split/index.html">
 <meta property="og:site_name" content="Songrgg&#39;s Blog">
 <meta property="og:description" content="背景数据库配置主从之后，如何在代码层面实现读写分离？   用户自定义设置数据库路由Spring boot提供了AbstractRoutingDataSource根据用户定义的规则选择当前的数据库，这样我们可以在执行查询之前，设置读取从库，在执行完成后，恢复到主库。   实现可动态路由的数据源，在每次数据库查询操作前执行ReadWriteSplitRoutingDataSource.java1234">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-08-19T11:36:51.264Z">
+<meta property="og:updated_time" content="2019-09-02T19:33:42.581Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring boot实现数据库读写分离">
 <meta name="twitter:description" content="背景数据库配置主从之后，如何在代码层面实现读写分离？   用户自定义设置数据库路由Spring boot提供了AbstractRoutingDataSource根据用户定义的规则选择当前的数据库，这样我们可以在执行查询之前，设置读取从库，在执行完成后，恢复到主库。   实现可动态路由的数据源，在每次数据库查询操作前执行ReadWriteSplitRoutingDataSource.java1234">
@@ -60,6 +60,14 @@ ga('send', 'pageview');
 
 </script>
 
+    
+    
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script> (adsbygoogle = window.adsbygoogle || []).push({
+google_ad_client: "ca-pub-1158113896856372",
+enable_page_level_ads: true
+});
+</script>
     
     
 
@@ -174,6 +182,11 @@ ga('send', 'pageview');
 		
 
                 
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/spring-boot-database-read-write-split/">spring boot,database read write split</a>
+    </div>
+
             </div>
         
         
@@ -201,7 +214,7 @@ ga('send', 'pageview');
 
 
 
-    <a data-url="https://songrgg.github.io/java/spring-boot-database-read-write-split/" data-id="ck01hz9w90025dzz3k39aeypb" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://songrgg.github.io/java/spring-boot-database-read-write-split/" data-id="ck02sw7af002ke8z36rczf82t" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -271,14 +284,18 @@ ga('send', 'pageview');
             "@type": "Person",
             "name": "songrgg"
         },
+        "publisher": {},
         "headline": "Spring boot实现数据库读写分离",
-        "image": "https://songrgg.github.io",
-        "keywords": "",
+        "image": [
+            "https://songrgg.github.io"
+        ],
+        "keywords": "spring boot,database read write split",
         "genre": "java",
         "datePublished": "2016-06-04",
         "dateCreated": "2016-06-04",
-        "dateModified": "2018-08-19",
+        "dateModified": "2019-09-02",
         "url": "https://songrgg.github.io/java/spring-boot-database-read-write-split/",
+        "mainEntityOfPage": "https://songrgg.github.io/java/spring-boot-database-read-write-split/",
         "description": "背景数据库配置主从之后，如何在代码层面实现读写分离？  
 用户自定义设置数据库路由Spring boot提供了AbstractRoutingDataSource根据用户定义的规则选择当前的数据库，这样我们可以在执行查询之前，设置读取从库，在执行完成后，恢复到主库。  
 实现可动态路由的数据源，在每次数据库查询操作前执行ReadWriteSplitRoutingDataSource.java1234",
@@ -338,11 +355,11 @@ ga('send', 'pageview');
         
 <nav id="article-nav">
     
-        <a href="/mysql/mysql-utf8mb4-encode/" id="article-nav-newer" class="article-nav-link-wrap">
+        <a href="/wechat/wechat-share-problem/" id="article-nav-newer" class="article-nav-link-wrap">
         <strong class="article-nav-caption">newer</strong>
         <p class="article-nav-title">
         
-            MySQL支持emoji
+            微信分享常见问题
         
         </p>
         <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
@@ -496,9 +513,23 @@ ga('send', 'pageview');
 
             
                 
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/envoy-service-mesh-architecture-request-analysis-microservice-kubernetes/">envoy,service mesh,architecture,request analysis,microservice,kubernetes</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd-operation-etcd-configuration/">etcd,operation,etcd configuration</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go-micro-gRPC-microservice-migration/">go-micro,gRPC,microservice,migration</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc-client-performance/">grpc,client performance</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes-sidecar-nginx/">kubernetes,sidecar,nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microservice-architecture/">microservice,architecture</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microservice-configuration-management/">microservice,configuration management</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microservice-istio-kubernetes-istio-configuration-management/">microservice,istio,kubernetes,istio configuration management</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microservice-service-orchestration/">microservice,service orchestration</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ratelimiter/">ratelimiter</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark-hive-app-channel-analytics/">spark,hive,app channel analytics</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot-database-read-write-split/">spring boot,database read write split</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-groovy-dependency-injection/">spring,groovy,dependency injection</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
 
             
                 
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/envoy-service-mesh-architecture-request-analysis-microservice-kubernetes/" style="font-size: 10px;">envoy,service mesh,architecture,request analysis,microservice,kubernetes</a> <a href="/tags/etcd-operation-etcd-configuration/" style="font-size: 10px;">etcd,operation,etcd configuration</a> <a href="/tags/go-micro-gRPC-microservice-migration/" style="font-size: 10px;">go-micro,gRPC,microservice,migration</a> <a href="/tags/grpc-client-performance/" style="font-size: 10px;">grpc,client performance</a> <a href="/tags/kubernetes-sidecar-nginx/" style="font-size: 10px;">kubernetes,sidecar,nginx</a> <a href="/tags/microservice-architecture/" style="font-size: 10px;">microservice,architecture</a> <a href="/tags/microservice-configuration-management/" style="font-size: 10px;">microservice,configuration management</a> <a href="/tags/microservice-istio-kubernetes-istio-configuration-management/" style="font-size: 10px;">microservice,istio,kubernetes,istio configuration management</a> <a href="/tags/microservice-service-orchestration/" style="font-size: 10px;">microservice,service orchestration</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/spark-hive-app-channel-analytics/" style="font-size: 10px;">spark,hive,app channel analytics</a> <a href="/tags/spring-boot-database-read-write-split/" style="font-size: 10px;">spring boot,database read write split</a> <a href="/tags/spring-groovy-dependency-injection/" style="font-size: 10px;">spring,groovy,dependency injection</a>
+        </div>
+    </div>
+
 
             
                 
