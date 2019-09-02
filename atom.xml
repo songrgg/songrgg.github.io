@@ -491,24 +491,25 @@
   </entry>
   
   <entry>
-    <title>MySQL支持emoji</title>
-    <link href="https://songrgg.github.io/mysql/mysql-utf8mb4-encode/"/>
-    <id>https://songrgg.github.io/mysql/mysql-utf8mb4-encode/</id>
+    <title>微信分享常见问题</title>
+    <link href="https://songrgg.github.io/wechat/wechat-share-problem/"/>
+    <id>https://songrgg.github.io/wechat/wechat-share-problem/</id>
     <published>2016-07-30T22:00:00.000Z</published>
-    <updated>2018-08-19T11:36:46.860Z</updated>
+    <updated>2019-04-07T15:19:41.799Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="方案1-应用层支持"><a href="#方案1-应用层支持" class="headerlink" title="方案1: 应用层支持"></a>方案1: 应用层支持</h3><p>MySQL默认的数据库编码是utf8，对于emoji文字是不能直接存储的，要想存储emoji，有许多库支持对emoji的转换，例如将😊转存为<code>:smile:</code>，放在数据库里，在从数据库里取出来的时候，再转换为😊，这是应用层的方案。</p><h3 id="方案2-存储层支持"><a href="#方案2-存储层支持" class="headerlink" title="方案2: 存储层支持"></a>方案2: 存储层支持</h3><p>MySQL编码设置为utf8mb4，直接支持emoji，不需要应用层的改动。  </p><p>注意事项:<br><strong>MySQL索引的长度不能大于767字节, utf8 1个字存3byte, utf8mb4存4byte，相对应VARCHAR的字节数分别是255和191，所以要把索引字段的长度限制到191。</strong></p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> &lt;table1&gt; <span class="keyword">MODIFY</span> <span class="keyword">COLUMN</span> &lt;col1_indexed&gt; <span class="built_in">VARCHAR</span>(<span class="number">191</span>);</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> &lt;table1&gt; <span class="keyword">CONVERT</span> <span class="keyword">TO</span> <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8mb4 <span class="keyword">COLLATE</span> utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol><li><a href="https://mathiasbynens.be/notes/mysql-utf8mb4" target="_blank" rel="noopener">How to support full Unicode in MySQL databases</a></li></ol>]]></content>
+    <content type="html"><![CDATA[<h3 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h3><p>前端打开debug模式，浏览器打开时在console里会打印微信分享初始化信息，在微信里会以alert形式出现。</p><h3 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h3><ol><li>签名的时候注意大小写</li><li>签名时候用的url需要和当前位置的url保持一致</li><li>微信二次分享失败<br> 微信在第二次分享的链接里增加了后缀，如<code>?from=singlemessage&amp;isappinstalled=1</code>，这里需要转义</li></ol><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">    url: <span class="string">'https://domain/wechatshare/sign?url='</span> + <span class="built_in">encodeURIComponent</span>(<span class="built_in">window</span>.location.href.split(<span class="string">'#'</span>)[<span class="number">0</span>]),</span><br><span class="line">    type: <span class="string">'get'</span>,</span><br><span class="line">    success: <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">        data = <span class="built_in">JSON</span>.parse(data)</span><br><span class="line">        data.jsApiList = [</span><br><span class="line">            <span class="string">'onMenuShareTimeline'</span>, <span class="string">'onMenuShareAppMessage'</span>,<span class="string">'onMenuShareQQ'</span></span><br><span class="line">        ];</span><br><span class="line">        wx.config(data);</span><br><span class="line">    &#125;,</span><br><span class="line">    error: <span class="function"><span class="keyword">function</span> (<span class="params">xhr, textStatus</span>) </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h3 id=&quot;方案1-应用层支持&quot;&gt;&lt;a href=&quot;#方案1-应用层支持&quot; class=&quot;headerlink&quot; title=&quot;方案1: 应用层支持&quot;&gt;&lt;/a&gt;方案1: 应用层支持&lt;/h3&gt;&lt;p&gt;MySQL默认的数据库编码是utf8，对于emoji文字是不能直接存储的，要想存
+        &lt;h3 id=&quot;调试&quot;&gt;&lt;a href=&quot;#调试&quot; class=&quot;headerlink&quot; title=&quot;调试&quot;&gt;&lt;/a&gt;调试&lt;/h3&gt;&lt;p&gt;前端打开debug模式，浏览器打开时在console里会打印微信分享初始化信息，在微信里会以alert形式出现。&lt;/p&gt;
+&lt;h3 id=&quot;常
       
     
     </summary>
     
-      <category term="mysql" scheme="https://songrgg.github.io/categories/mysql/"/>
+      <category term="wechat" scheme="https://songrgg.github.io/categories/wechat/"/>
     
     
   </entry>
