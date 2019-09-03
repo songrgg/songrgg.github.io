@@ -162,385 +162,6 @@ enable_page_level_ads: true
         
         <section class="archives-wrap">
             <div class="archive-year-wrap">
-                <a href="/archives/2017" class="archive-year"><i class="icon fa fa-calendar-o"></i>2017</a>
-            </div>
-            <div class="archives">
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/ratelimit/rate-limiter-for-distributed-system/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/ratelimit/rate-limiter-for-distributed-system/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/ratelimit/">ratelimit</a>
-            </div>
-            <div class="date"><time datetime="2017-06-02T22:00:00.000Z" itemprop="datePublished">2017-06-03</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/ratelimit/rate-limiter-for-distributed-system/">分布式系统频次限制实现</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            起因频次限制（rate limiting）是Web系统比较常见的功能，防止用户频繁访问接口，导致系统负载增加而影响服务的质量。
-系统要求
-针对线上的功能，实现对指定对象有访问频次的限制
-支持多个客户端访问
-低延迟
-承受较大的访问量
-易于拓展
-
-流程
-设置服务频次限制，如针对某个消耗资源很高的API设置1QPS的访问限制，并为单一用户生成访问该API的唯一key，如userA_APIX就是表示use
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/gitlab/build-ci-with-gitlab/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/gitlabci.png)" alt="基于gitlab搭建CI" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/gitlab/build-ci-with-gitlab/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/gitlab/">gitlab</a>
-            </div>
-            <div class="date"><time datetime="2017-04-17T22:00:00.000Z" itemprop="datePublished">2017-04-18</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/gitlab/build-ci-with-gitlab/">基于gitlab搭建CI</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            自建gitlab自建gitlab一大优势是快，之前用翻墙走github速度也在1M/s左右，可是自建的gitlab提升了建立连接的速度，可以说体验又上升了一个档次。
-用docker起一个gitlab服务尤其方便 GitLab Docker images
-选择CI如果有人像我一样对Jenkins的UI和配置不感兴趣，那么Gitlab CI runner是不错的选择，配置用YAML，清晰明了，UI集成
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/microservice/microservice-in-action-4/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/config-in-docker.png)" alt="微服务实践四: 配置管理" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/microservice/microservice-in-action-4/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/microservice/">microservice</a>
-            </div>
-            <div class="date"><time datetime="2017-04-14T22:00:00.000Z" itemprop="datePublished">2017-04-15</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/microservice/microservice-in-action-4/">微服务实践四: 配置管理</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-配置涵盖程序运行的环境，程序依赖的基础资源地址，程序的行为等。
-
-需求
-根据环境读取配置
-方便更新配置
-基础数据格式为list，map等，常见的配置格式是JSON，YAML，XML
-
-配置部署（docker环境）跟随镜像打包最直接的方式也就是将配置文件也打包到docker镜像，配置即代码，更新配置需要构建新的镜像
-
-优点
-
-配置更新随代码库有版本记录和修改记录
-
-
-缺点
-
-每次更新配置需要进行g
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/microservice/microservice-in-action-3/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/microservice/microservice-in-action-3/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/microservice/">microservice</a>
-            </div>
-            <div class="date"><time datetime="2017-04-13T22:00:00.000Z" itemprop="datePublished">2017-04-14</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/microservice/microservice-in-action-3/">微服务实践三: 服务编排</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            物理机部署传统发布流程（以Java spring boot为例）
-编译jar包
-分发到服务器A,B,C
-服务启动，监听到指定端口
-配置负载均衡到已启动服务端口
-服务发布成功
-
-关于服务更新，为了实现滚动更新，可以让LB绑定的服务逐渐更新
-传统更新流程
-编译jar包
-分发到服务器A,B,C
-将服务器A从LB上解绑，更新服务器A上的服务
-启动服务，通过健康检查和QA之后，将服务器A绑定到LB上
-继续更
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/microservice-fault-tolerance-service-degrade/microservice-in-action-2/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://raw.githubusercontent.com/wiki/Netflix/Hystrix/images/hystrix-command-flow-chart.png)" alt="微服务实践二: 服务容错与降级" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/microservice-fault-tolerance-service-degrade/microservice-in-action-2/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/microservice-fault-tolerance-service-degrade/">microservice,fault tolerance,service degrade</a>
-            </div>
-            <div class="date"><time datetime="2017-04-01T22:00:00.000Z" itemprop="datePublished">2017-04-02</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/microservice-fault-tolerance-service-degrade/microservice-in-action-2/">微服务实践二: 服务容错与降级</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-保证系统能稳定地运行在生产环境是第一要务，就算是服务质量下降，只要仍在工作，那就是万幸。
-
-常见服务问题
-服务超时依赖的第三方服务因为某种不可抗力超时了？数据库慢查询拖垮了整个数据库？
-
-服务错误某个服务挂了？
-
-服务负载高突然陡增的访问量？
-
-
-解决方法
-限时针对服务超时，可以通过超时控制保证接口的返回，可以通过设置超时时间为1s，尽快返回结果，因为大多数情况下，接口超时一方面影响用户体验，一
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/microservice/microservice-in-action-1/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/Microservice.png)" alt="微服务实践一: 架构图谱" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/microservice/microservice-in-action-1/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/microservice/">microservice</a>
-            </div>
-            <div class="date"><time datetime="2017-03-25T23:00:00.000Z" itemprop="datePublished">2017-03-26</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/microservice/microservice-in-action-1/">微服务实践一: 架构图谱</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            目录
-服务拆分与服务发现
-微服务框架选择
-服务间通信
-服务编排
-配置管理
-服务容错与降级
-监控
-API监控
-服务调用链
-服务负载
-基础依赖监控
-
-
-日志分析
-
-Monolithic vs Microservice
-
-
-
-Monolithic
-Microservice
-
-
-
-
-开发测试
-Java类语言项目越大，运行调试需要越多的编译时间，本地调试有较多依赖，况且业务复杂后不易新人上手
-只有部分功能的
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-        
-            </div></section>
-        
-        
-        <section class="archives-wrap">
-            <div class="archive-year-wrap">
                 <a href="/archives/2016" class="archive-year"><i class="icon fa fa-calendar-o"></i>2016</a>
             </div>
             <div class="archives">
@@ -548,156 +169,6 @@ Java类语言项目越大，运行调试需要越多的编译时间，本地调�
     
     
         <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/raspberry/raspberry3-docker/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/raspberry/raspberry3-docker/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/raspberry/">raspberry</a>
-            </div>
-            <div class="date"><time datetime="2016-10-21T22:00:00.000Z" itemprop="datePublished">2016-10-22</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/raspberry/raspberry3-docker/">Raspberry 3安装docker</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            SD卡制作准备一张4GB或者以上的micro sd卡，下载系统镜像，例如raspbian-jessie-lite.img，并使用刷机工具，如Pi filler将其写入sd卡，当然也可以使用命令行的dd，或者其它工具，要注意的是sd卡必须是fat32格式的文件系统，不然树莓派是无法识别的。
-开机启动先把所有的线材都连上之后，最后再通电，应该很顺利能看到启动的系统。
-设置WIFI1234echo 'n
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/php/xhprof-install-record/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/php/xhprof-install-record/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/php/">php</a>
-            </div>
-            <div class="date"><time datetime="2016-10-15T22:00:00.000Z" itemprop="datePublished">2016-10-16</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/php/xhprof-install-record/">xhprof安装记录</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-选择一个工具分析PHP函数调用的资源耗用明细，以图表化的形式展现，方便优化代码。
-
-安装xhprof1$ pecl install xhprof-beta
-在php.ini引用的extension中添加extension=xhprof.so
-GUI这里选择了xhgui，它的原理是在需要测试性能的脚本前加上PHP的一段代码，将收集到的性能数据存储到文件或者mongodb等存储介质中去。
-Mongo
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/redis/spring-data-redis-issuse/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/redis/spring-data-redis-issuse/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/redis/">redis</a>
-            </div>
-            <div class="date"><time datetime="2016-09-28T22:00:00.000Z" itemprop="datePublished">2016-09-29</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/redis/spring-data-redis-issuse/">Spring data redis的一个bug</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            起因前两天上线了一个新功能，导致线上业务的缓存总是无法更新，报错也是非常奇怪，redis.clients.jedis.exceptions.JedisConnectionException: Unknown reply: 5，google到的原因是Spring data redis中的scan操作，它获取了redis的连接之后，在操作没有完全结束之前就把redis连接放回连接池，其它线程从连接池里
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
     
         <article class="article article-summary">
     <div class="article-summary-inner">
@@ -742,7 +213,997 @@ Mongo
     </div>
 </article>
     
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/java/spring-boot-database-read-write-split/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/java/spring-boot-database-read-write-split/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/java/">java</a>
+            </div>
+            <div class="date"><time datetime="2016-06-03T22:00:00.000Z" itemprop="datePublished">2016-06-04</time></div>
         </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/java/spring-boot-database-read-write-split/">Spring boot实现数据库读写分离</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            背景数据库配置主从之后，如何在代码层面实现读写分离？  
+用户自定义设置数据库路由Spring boot提供了AbstractRoutingDataSource根据用户定义的规则选择当前的数据库，这样我们可以在执行查询之前，设置读取从库，在执行完成后，恢复到主库。  
+实现可动态路由的数据源，在每次数据库查询操作前执行ReadWriteSplitRoutingDataSource.java1234
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/java/jedis-utf8/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/java/jedis-utf8/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/java/">java</a>
+            </div>
+            <div class="date"><time datetime="2016-05-06T22:00:00.000Z" itemprop="datePublished">2016-05-07</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/java/jedis-utf8/">解决Jedis数据读取乱码问题</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            现象同一套代码，同一个数据源，不同的操作系统，在OSX上数据提取编码正常，而Ubuntu上拉取数据乱码，数据拉取代码如下。
+123456789101112131415161718192021222324252627@Overridepublic List&lt;String&gt; mget(String... fields) &#123;    List&lt;byte[]&gt; arrFie
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/java/spring-ioc-groovy/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/java/spring-ioc-groovy/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/java/">java</a>
+            </div>
+            <div class="date"><time datetime="2016-03-27T22:00:00.000Z" itemprop="datePublished">2016-03-28</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/java/spring-ioc-groovy/">使用Groovy进行Spring依赖注入</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            为什么选择Groovy?传统的依赖注入是XML，对我而言，可读性太差，太不美观，强烈地想换一个方式进行依赖注入，Groovy作为XML的替代方案，在Spring4之后被引入，是基于JVM的一门方言，具有较强的可读性，写更少的更易懂的脚本，完成同样的功能。
+基于Spring boot框架我选择了Spring boot框架作为MVC，看重了它的惯例大于配置，不用繁琐地配置。
+
+以下代码是伪代码，只是大
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/ios/iOS9-universal-links/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/ios/iOS9-universal-links/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/ios/">ios</a>
+            </div>
+            <div class="date"><time datetime="2016-02-29T23:00:00.000Z" itemprop="datePublished">2016-03-01</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/ios/iOS9-universal-links/">支持iOS9 Universal links遇到的问题</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            记录为iOS9上的APP支持Universal links遇到的一些问题。
+
+在Web服务器上传apple-app-site-association文件
+
+必须支持HTTPS获取配置文件
+文件名后不加.json后缀
+必须在根目录下，例如官网地址为www.site.com，那么必须通过https://www.site.com/apple-app-site-association访问到该文件
+deta
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/sourcecode/mahout-tutorial/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/sourcecode/mahout-tutorial/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/sourcecode/">sourcecode</a>
+            </div>
+            <div class="date"><time datetime="2016-02-28T00:27:50.000Z" itemprop="datePublished">2016-02-28</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/sourcecode/mahout-tutorial/">Mahout入门-1</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            Mahout是什么？Mahout是用来进行机器学习和推荐算法的一个Java框架。
+一个简单的基于用户的协同过滤的示例读取用户对电影评分的数据集，为ID为2的用户推荐3部电影。12345678910111213141516171819202122232425262728293031323334353637383940package com.mahout;import org.apache.mahou
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/bigdata/hive-environment-settings/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/bigdata/hive-environment-settings/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/bigdata/">bigdata</a>
+            </div>
+            <div class="date"><time datetime="2016-02-27T19:27:50.000Z" itemprop="datePublished">2016-02-27</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/bigdata/hive-environment-settings/">Hive环境搭建(Ubuntu)</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            Hive是什么？基于Hadoop的数据查询工具，可以使用类SQL进行数据查询。
+Hadoop安装
+参考了Hadoop安装
+注意到etc/hadoop/hadoop-env.sh里设置JAVA_HOME，不然运行./start_dfs.sh会报没设置JAVA_HOME
+运行程序时，输出目录不能存在
+配置文件
+hdfs的输出目录需要保证空间充足，我在虚拟机里玩，分配的磁盘空间太小，另外加了空间并挂载，
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+        
+            </div></section>
+        
+        
+        <section class="archives-wrap">
+            <div class="archive-year-wrap">
+                <a href="/archives/2015" class="archive-year"><i class="icon fa fa-calendar-o"></i>2015</a>
+            </div>
+            <div class="archives">
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/sourcecode/add-syntactic-feature-to-php7/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/sourcecode/add-syntactic-feature-to-php7/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/sourcecode/">sourcecode</a>
+            </div>
+            <div class="date"><time datetime="2015-08-17T21:53:30.000Z" itemprop="datePublished">2015-08-17</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/sourcecode/add-syntactic-feature-to-php7/">为PHP7添加新的语法特性</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            好文章！nikic介绍了如何向PHP添加新的语法特性，原文写的非常精彩，具体是添加in语法功能，使最终实现：
+12345678$words = ['hello', 'world', 'foo', 'bar'];var_dump('hello' in $words); // truevar_dump('foo' in $words);   // truevar_dump('blub' in $wor
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/project/php7-new-features-1/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/project/php7-new-features-1/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/project/">project</a>
+            </div>
+            <div class="date"><time datetime="2015-07-23T15:15:07.000Z" itemprop="datePublished">2015-07-23</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/project/php7-new-features-1/">PHP7特性概览(一)</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            了解PHP7的一些特性，搭建PHP7源码编译环境，并运行官网这些新特性的代码。
+
+在64位平台支持64位integer在64位平台支持64位integer，长度为2^64-1字符串。
+更详细查看
+抽象语法树抽象语法树是语法分析之后产物，忽略了语法细节，是解释前端和后端的中间媒介。新增抽象语法树，解耦语法分析和编译，简化开发维护，并为以后新增一些特性，如添加抽象语法树编译hook，深入到语言级别实现
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/project/yongwu-next-step/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/project/yongwu-next-step/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/project/">project</a>
+            </div>
+            <div class="date"><time datetime="2015-07-10T23:15:07.000Z" itemprop="datePublished">2015-07-11</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/project/yongwu-next-step/">下一步用武的目标</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            用武的出发点产生于我自己比较失败的工作经历的一个发泄, 之所以说是失败, 有以下一些原因:  
+
+日益增加的技术渴求和没有匹配的日常工作之间的矛盾  
+工作口味一直没有被满足, 对工作的几个要求也是如此, 造成不能沉下心来做事  
+恶性循环, 导致离自己心里的追求越来越远  
+
+可能有这样那样的原因导致你的工作并不如意, 这可能包括你的技术、业务、薪资、人际等各种期待，与真实的工作并不合拍.  
+
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/sourcecode/php-hashtable2/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/php_array/zend_value.png)" alt="PHP7数组实现(画图版)" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/sourcecode/php-hashtable2/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/sourcecode/">sourcecode</a>
+            </div>
+            <div class="date"><time datetime="2015-06-30T20:27:50.000Z" itemprop="datePublished">2015-06-30</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/sourcecode/php-hashtable2/">PHP7数组实现(画图版)</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            主要介绍一下PHP7对于数组的实现。
+
+预备知识PHP的数据类型
+zend_longphp中的long类型, 在64位机上是64位有符号整数, 不然是32位符号整数。
+1234567891011// zend_long.h/* This is the heart of the whole int64 enablement in zval. */#if defined(__x86_64__) || 
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/sourcecode/php-hashtable/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/php.jpeg)" alt="PHP数组的内存布局" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/sourcecode/php-hashtable/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/sourcecode/">sourcecode</a>
+            </div>
+            <div class="date"><time datetime="2015-06-13T13:34:22.000Z" itemprop="datePublished">2015-06-13</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/sourcecode/php-hashtable/">PHP数组的内存布局</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            内存布局它的内存结构，目前的实现方案是分配一块连续的内存区间，用来存储hash元数据和具体数据。连续的内存，上面部分是存储hash值到值地址的映射，而下面部分就是值的存储区域，如下图（摘自php-src/Zend/zend_types.h）：1234567891011121314/* * HashTable Data Layout * ===================== * *      
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/life/interview-and-my-ipv/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://songrgg.github.io/images/fixipod.jpg)" alt="PHP面试+怀旧" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/life/interview-and-my-ipv/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/life/">life</a>
+            </div>
+            <div class="date"><time datetime="2015-04-08T19:10:00.000Z" itemprop="datePublished">2015-04-08</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/life/interview-and-my-ipv/">PHP面试+怀旧</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            面试今天去面试了一家公司, 跟自己说面完要写个小结, 记录这次面试的前后历程.
+这次面试的缘起是因为团队有较大变动, 也开始重新审视自己, 正是在这个时候, 发现自己所处的环境还是非常“危险”的, 是指的自己处于一种不温不火的酱油状态, 整天游离在完成工作和无聊消沉的独处中, 并且成为了温吞吞的人, 于是发现现在的环境实在不是特别适合自己当初要进来的初衷, 突然渴望那种每天都在蜕变, 每天都在痛并
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/imfool/first-hand-doc/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/imfool/first-hand-doc/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/imfool/">imfool</a>
+            </div>
+            <div class="date"><time datetime="2015-04-01T19:27:50.000Z" itemprop="datePublished">2015-04-01</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/imfool/first-hand-doc/">拒绝二手资料</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            不扯远了, 缘起是我玩了这么久计算机, 做了这么久的web开发, 竟然tm的没有真正看过http的文档, 不仅是http, 其它的一些, 像写sheme的时候竟然也没有看过scheme的规格文档, 真是服了自己, 这些关于http,scheme,java,php等都是通过间接从别人消化了之后的陈述获得, 这样速度固然快, 但是难免不能完整的经历一个技术的发展思想, 缘何来, 向何处去, 这样子的不
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/distributed-system/mit-distributed-system-01/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://songrgg.github.io/images/pbservice-common-state.png)" alt="Mit分布式系统课程-Lab2-PartB" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/distributed-system/mit-distributed-system-01/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/distributed-system/">distributed-system</a>
+            </div>
+            <div class="date"><time datetime="2015-03-19T21:10:00.000Z" itemprop="datePublished">2015-03-19</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/distributed-system/mit-distributed-system-01/">Mit分布式系统课程-Lab2-PartB</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            前两天删了在github上的6.824, 因为课程里说了不要把源码放在公共的地方, 之前没删一直心有歉意, 还好进度没这么快, 应该对别人也不会造成影响.
+言归正传, 这星期空余时间一直在看Lab2的Part B, 今天因为身体不适, 请假一天在家, 开始实现思路, 并记录一下自己遇到的一些大小问题.
+目标实现基于viewservice(Lab1实现的视图服务器, 用来记录主副服务器的地址)的键值
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/test/wechat-local-debug/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/wechat.png)" alt="微信本地测试" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/test/wechat-local-debug/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/test/">test</a>
+            </div>
+            <div class="date"><time datetime="2015-03-11T20:10:00.000Z" itemprop="datePublished">2015-03-11</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/test/wechat-local-debug/">微信本地测试</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            项目里要测试微信公众号, 但又不愿意忍受每次改下代码就提交到版本库, 再发布到生产这个琐碎的流程, 所以必须有一个本地能测试的方法, 到知乎上找了一个方法(引用知乎操晓峰的回答).
+原理是HTTP请求重定向, 将微信中要访问的url转发到你设置的代理服务器, 代理服务器转发到你的开发服务器.
+有趣的是, 在公司一直没有完全成功, 总有一个页面是刷不出来, 查看Charles发现传输速度极慢, 真想
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/sourcecode/levelDB-cache实现/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/sourcecode/levelDB-cache实现/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/sourcecode/">sourcecode</a>
+            </div>
+            <div class="date"><time datetime="2015-02-21T21:27:50.000Z" itemprop="datePublished">2015-02-21</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/sourcecode/levelDB-cache实现/">levelDB里缓存实现</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            leveldb的缓存机制
+leveldb采用LRU机制, 利用键的哈希值前n位作为索引, 将要插入的键值对分派到指定的缓存区, 当缓存区的使用率大于总容量后, 优先淘汰最近最少使用的缓存, 独立的缓存区总量为2^n .
+
+初始化ShardedLRUCache
+设置初始缓存容量, 并设置16个子分区的容量.123456789static const int kNumShardBits = 4;sta
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/sourcecode/leveldb-integer-coding/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/sourcecode/leveldb-integer-coding/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/sourcecode/">sourcecode</a>
+            </div>
+            <div class="date"><time datetime="2015-02-12T21:27:50.000Z" itemprop="datePublished">2015-02-12</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/sourcecode/leveldb-integer-coding/">levelDB里integer编码</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            leveldb的数字编码方法
+EncodeFixed32按照机器的字节存储顺序(大端, 小端), 原样存储到一块32位内存
+
+EncodeFixed64按照机器的字节存储顺序(大端, 小端),  原样存储到一块64位内存
+
+PutFixed32将EncodeFixed32处理过的内存块追加到目的地址
+
+PutFixed64同PutFixed32
+
+EncodeVarint32将32位的无符号整数以
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/sourcecode/leveldb-status/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/sourcecode/leveldb-status/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/sourcecode/">sourcecode</a>
+            </div>
+            <div class="date"><time datetime="2015-02-08T21:27:50.000Z" itemprop="datePublished">2015-02-08</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/sourcecode/leveldb-status/">levelDB里自定义的状态</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            LevelDB状态码LevelDB里专门定义了Status类，自定义了常见的状态码，用于函数的返回。
+状态码类型在Status类中以枚举类型定义Code：
+0 =&gt; 处理成功1 =&gt; 未找到2 =&gt; 崩溃3 =&gt; 不支持4 =&gt; 无效的参数5 =&gt; IO错误
+并且有6个静态方法用来生成对应状态码的Status对象, 和4个判断方法来方便确认状态。  
+存储方式状
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+        
+            </div></section>
+        
+        
+        <section class="archives-wrap">
+            <div class="archive-year-wrap">
+                <a href="/archives/2014" class="archive-year"><i class="icon fa fa-calendar-o"></i>2014</a>
+            </div>
+            <div class="archives">
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/problems/6.824, Lab2, part 1/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/problems/6.824, Lab2, part 1/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/problems/">problems</a>
+            </div>
+            <div class="date"><time datetime="2014-12-15T23:00:50.000Z" itemprop="datePublished">2014-12-16</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/problems/6.824, Lab2, part 1/">MIT 6.824 Lab2, part1小结</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            关于MIT 6.824课程的Lab 2, part 1从昨晚在宾馆到今天飞机上，都在过这几个test case，终于最后有点讨巧的过了。
+
+View service是MIT介绍paxos之前用来入门的，它的原理是以时间先后的顺序确定主备服务器，由定期的心跳更新此关系。之所以放在单独的service里获取主备关系，是为了将主备关系从K-V系统中解耦，从而K-V系统不用关心键值操作之外的事情，让更加上
+        </p>
+    </div>
+</article>
     
 
 
@@ -750,8 +1211,8 @@ Mongo
 
 
     <nav id="page-nav">
-        <span class="pages">Page 2 of 5</span>
-        <a class="extend prev" rel="prev" href="/">&laquo;</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">&raquo;</a>
+        <span class="pages">Page 2 of 3</span>
+        <a class="extend prev" rel="prev" href="/">&laquo;</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">&raquo;</a>
     </nav>
 
 

@@ -691,13 +691,598 @@ Standalone配置了Spark Standalone模式之后，配置Hive遇到一些困难�
 </article>
     
 
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/ratelimit/rate-limiter-for-distributed-system/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/ratelimit/rate-limiter-for-distributed-system/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/ratelimit/">ratelimit</a>
+            </div>
+            <div class="date"><time datetime="2017-06-02T22:00:00.000Z" itemprop="datePublished">2017-06-03</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/ratelimit/rate-limiter-for-distributed-system/">分布式系统频次限制实现</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            起因频次限制（rate limiting）是Web系统比较常见的功能，防止用户频繁访问接口，导致系统负载增加而影响服务的质量。
+系统要求
+针对线上的功能，实现对指定对象有访问频次的限制
+支持多个客户端访问
+低延迟
+承受较大的访问量
+易于拓展
+
+流程
+设置服务频次限制，如针对某个消耗资源很高的API设置1QPS的访问限制，并为单一用户生成访问该API的唯一key，如userA_APIX就是表示use
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/gitlab/build-ci-with-gitlab/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/gitlabci.png)" alt="基于gitlab搭建CI" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/gitlab/build-ci-with-gitlab/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/gitlab/">gitlab</a>
+            </div>
+            <div class="date"><time datetime="2017-04-17T22:00:00.000Z" itemprop="datePublished">2017-04-18</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/gitlab/build-ci-with-gitlab/">基于gitlab搭建CI</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            自建gitlab自建gitlab一大优势是快，之前用翻墙走github速度也在1M/s左右，可是自建的gitlab提升了建立连接的速度，可以说体验又上升了一个档次。
+用docker起一个gitlab服务尤其方便 GitLab Docker images
+选择CI如果有人像我一样对Jenkins的UI和配置不感兴趣，那么Gitlab CI runner是不错的选择，配置用YAML，清晰明了，UI集成
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/microservice/microservice-in-action-4/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/config-in-docker.png)" alt="微服务实践四: 配置管理" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/microservice/microservice-in-action-4/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/microservice/">microservice</a>
+            </div>
+            <div class="date"><time datetime="2017-04-14T22:00:00.000Z" itemprop="datePublished">2017-04-15</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/microservice/microservice-in-action-4/">微服务实践四: 配置管理</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+配置涵盖程序运行的环境，程序依赖的基础资源地址，程序的行为等。
+
+需求
+根据环境读取配置
+方便更新配置
+基础数据格式为list，map等，常见的配置格式是JSON，YAML，XML
+
+配置部署（docker环境）跟随镜像打包最直接的方式也就是将配置文件也打包到docker镜像，配置即代码，更新配置需要构建新的镜像
+
+优点
+
+配置更新随代码库有版本记录和修改记录
+
+
+缺点
+
+每次更新配置需要进行g
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/microservice/microservice-in-action-3/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/microservice/microservice-in-action-3/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/microservice/">microservice</a>
+            </div>
+            <div class="date"><time datetime="2017-04-13T22:00:00.000Z" itemprop="datePublished">2017-04-14</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/microservice/microservice-in-action-3/">微服务实践三: 服务编排</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            物理机部署传统发布流程（以Java spring boot为例）
+编译jar包
+分发到服务器A,B,C
+服务启动，监听到指定端口
+配置负载均衡到已启动服务端口
+服务发布成功
+
+关于服务更新，为了实现滚动更新，可以让LB绑定的服务逐渐更新
+传统更新流程
+编译jar包
+分发到服务器A,B,C
+将服务器A从LB上解绑，更新服务器A上的服务
+启动服务，通过健康检查和QA之后，将服务器A绑定到LB上
+继续更
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/microservice-fault-tolerance-service-degrade/microservice-in-action-2/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://raw.githubusercontent.com/wiki/Netflix/Hystrix/images/hystrix-command-flow-chart.png)" alt="微服务实践二: 服务容错与降级" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/microservice-fault-tolerance-service-degrade/microservice-in-action-2/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/microservice-fault-tolerance-service-degrade/">microservice,fault tolerance,service degrade</a>
+            </div>
+            <div class="date"><time datetime="2017-04-01T22:00:00.000Z" itemprop="datePublished">2017-04-02</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/microservice-fault-tolerance-service-degrade/microservice-in-action-2/">微服务实践二: 服务容错与降级</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+保证系统能稳定地运行在生产环境是第一要务，就算是服务质量下降，只要仍在工作，那就是万幸。
+
+常见服务问题
+服务超时依赖的第三方服务因为某种不可抗力超时了？数据库慢查询拖垮了整个数据库？
+
+服务错误某个服务挂了？
+
+服务负载高突然陡增的访问量？
+
+
+解决方法
+限时针对服务超时，可以通过超时控制保证接口的返回，可以通过设置超时时间为1s，尽快返回结果，因为大多数情况下，接口超时一方面影响用户体验，一
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/microservice/microservice-in-action-1/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/Microservice.png)" alt="微服务实践一: 架构图谱" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/microservice/microservice-in-action-1/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/microservice/">microservice</a>
+            </div>
+            <div class="date"><time datetime="2017-03-25T23:00:00.000Z" itemprop="datePublished">2017-03-26</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/microservice/microservice-in-action-1/">微服务实践一: 架构图谱</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            目录
+服务拆分与服务发现
+微服务框架选择
+服务间通信
+服务编排
+配置管理
+服务容错与降级
+监控
+API监控
+服务调用链
+服务负载
+基础依赖监控
+
+
+日志分析
+
+Monolithic vs Microservice
+
+
+
+Monolithic
+Microservice
+
+
+
+
+开发测试
+Java类语言项目越大，运行调试需要越多的编译时间，本地调试有较多依赖，况且业务复杂后不易新人上手
+只有部分功能的
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+        
+            </div></section>
+        
+        
+        <section class="archives-wrap">
+            <div class="archive-year-wrap">
+                <a href="/archives/2016" class="archive-year"><i class="icon fa fa-calendar-o"></i>2016</a>
+            </div>
+            <div class="archives">
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/raspberry/raspberry3-docker/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/raspberry/raspberry3-docker/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/raspberry/">raspberry</a>
+            </div>
+            <div class="date"><time datetime="2016-10-21T22:00:00.000Z" itemprop="datePublished">2016-10-22</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/raspberry/raspberry3-docker/">Raspberry 3安装docker</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            SD卡制作准备一张4GB或者以上的micro sd卡，下载系统镜像，例如raspbian-jessie-lite.img，并使用刷机工具，如Pi filler将其写入sd卡，当然也可以使用命令行的dd，或者其它工具，要注意的是sd卡必须是fat32格式的文件系统，不然树莓派是无法识别的。
+开机启动先把所有的线材都连上之后，最后再通电，应该很顺利能看到启动的系统。
+设置WIFI1234echo 'n
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/php/xhprof-install-record/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/php/xhprof-install-record/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/php/">php</a>
+            </div>
+            <div class="date"><time datetime="2016-10-15T22:00:00.000Z" itemprop="datePublished">2016-10-16</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/php/xhprof-install-record/">xhprof安装记录</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+选择一个工具分析PHP函数调用的资源耗用明细，以图表化的形式展现，方便优化代码。
+
+安装xhprof1$ pecl install xhprof-beta
+在php.ini引用的extension中添加extension=xhprof.so
+GUI这里选择了xhgui，它的原理是在需要测试性能的脚本前加上PHP的一段代码，将收集到的性能数据存储到文件或者mongodb等存储介质中去。
+Mongo
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/redis/spring-data-redis-issuse/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/redis/spring-data-redis-issuse/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/redis/">redis</a>
+            </div>
+            <div class="date"><time datetime="2016-09-28T22:00:00.000Z" itemprop="datePublished">2016-09-29</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/redis/spring-data-redis-issuse/">Spring data redis的一个bug</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            起因前两天上线了一个新功能，导致线上业务的缓存总是无法更新，报错也是非常奇怪，redis.clients.jedis.exceptions.JedisConnectionException: Unknown reply: 5，google到的原因是Spring data redis中的scan操作，它获取了redis的连接之后，在操作没有完全结束之前就把redis连接放回连接池，其它线程从连接池里
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/wechat/wechat-share-problem/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/wechat.png)" alt="微信分享常见问题" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/wechat/wechat-share-problem/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/wechat/">wechat</a>
+            </div>
+            <div class="date"><time datetime="2016-07-30T22:00:00.000Z" itemprop="datePublished">2016-07-31</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/wechat/wechat-share-problem/">微信分享常见问题</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            调试前端打开debug模式，浏览器打开时在console里会打印微信分享初始化信息，在微信里会以alert形式出现。
+常见问题
+签名的时候注意大小写
+签名时候用的url需要和当前位置的url保持一致
+微信二次分享失败 微信在第二次分享的链接里增加了后缀，如?from=singlemessage&amp;isappinstalled=1，这里需要转义
+
+12345678910111213$.ajax
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
 
     </div></section>
 
 
     <nav id="page-nav">
-        <span class="pages">Page 1 of 5</span>
-        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">&raquo;</a>
+        <span class="pages">Page 1 of 3</span>
+        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">&raquo;</a>
     </nav>
 
 
