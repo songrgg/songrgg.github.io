@@ -10,9 +10,10 @@
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="" />
+        <meta name="keywords" content="microservice,fault tolerance,service degrade" />
     
     <meta name="description" content="保证系统能稳定地运行在生产环境是第一要务，就算是服务质量下降，只要仍在工作，那就是万幸。  常见服务问题 服务超时依赖的第三方服务因为某种不可抗力超时了？数据库慢查询拖垮了整个数据库？  服务错误某个服务挂了？  服务负载高突然陡增的访问量？   解决方法 限时针对服务超时，可以通过超时控制保证接口的返回，可以通过设置超时时间为1s，尽快返回结果，因为大多数情况下，接口超时一方面影响用户体验，一">
+<meta name="keywords" content="microservice,fault tolerance,service degrade">
 <meta property="og:type" content="article">
 <meta property="og:title" content="微服务实践二: 服务容错与降级">
 <meta property="og:url" content="https://songrgg.github.io/microservice/microservice-in-action-2/index.html">
@@ -20,7 +21,7 @@
 <meta property="og:description" content="保证系统能稳定地运行在生产环境是第一要务，就算是服务质量下降，只要仍在工作，那就是万幸。  常见服务问题 服务超时依赖的第三方服务因为某种不可抗力超时了？数据库慢查询拖垮了整个数据库？  服务错误某个服务挂了？  服务负载高突然陡增的访问量？   解决方法 限时针对服务超时，可以通过超时控制保证接口的返回，可以通过设置超时时间为1s，尽快返回结果，因为大多数情况下，接口超时一方面影响用户体验，一">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://raw.githubusercontent.com/wiki/Netflix/Hystrix/images/hystrix-command-flow-chart.png">
-<meta property="og:updated_time" content="2018-08-19T11:34:52.049Z">
+<meta property="og:updated_time" content="2019-09-04T20:48:13.139Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微服务实践二: 服务容错与降级">
 <meta name="twitter:description" content="保证系统能稳定地运行在生产环境是第一要务，就算是服务质量下降，只要仍在工作，那就是万幸。  常见服务问题 服务超时依赖的第三方服务因为某种不可抗力超时了？数据库慢查询拖垮了整个数据库？  服务错误某个服务挂了？  服务负载高突然陡增的访问量？   解决方法 限时针对服务超时，可以通过超时控制保证接口的返回，可以通过设置超时时间为1s，尽快返回结果，因为大多数情况下，接口超时一方面影响用户体验，一">
@@ -32,7 +33,7 @@
     
 
     
-        <link rel="icon" href="/favicon.png" />
+        <link rel="icon" href="/css/images/favicon.png" />
     
 
     <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
@@ -63,6 +64,14 @@ ga('send', 'pageview');
 
     
     
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script> (adsbygoogle = window.adsbygoogle || []).push({
+google_ad_client: "ca-pub-1158113896856372",
+enable_page_level_ads: true
+});
+</script>
+    
+    
 
 
 </head>
@@ -77,6 +86,10 @@ ga('send', 'pageview');
                     <h1 class="logo-wrap">
                         <a href="/" class="logo"></a>
                     </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">A programmer who likes travelling and cooking :)</p>
+                        </h2>
                     
                 </div>
                 <div id="header-inner" class="nav-container">
@@ -171,6 +184,11 @@ ga('send', 'pageview');
 		
 
                 
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/microservice-fault-tolerance-service-degrade/">microservice,fault tolerance,service degrade</a>
+    </div>
+
             </div>
         
         
@@ -213,7 +231,7 @@ ga('send', 'pageview');
 
 
 
-    <a data-url="https://songrgg.github.io/microservice/microservice-in-action-2/" data-id="cjzfzkc85001ad4z3xahr5eyp" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://songrgg.github.io/microservice/microservice-in-action-2/" data-id="ck05qdh4v001a6hz33bfxvjlf" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -283,14 +301,18 @@ ga('send', 'pageview');
             "@type": "Person",
             "name": "songrgg"
         },
+        "publisher": {},
         "headline": "微服务实践二: 服务容错与降级",
-        "image": "https://songrgg.github.iohttps://raw.githubusercontent.com/wiki/Netflix/Hystrix/images/hystrix-command-flow-chart.png",
-        "keywords": "",
+        "image": [
+            "https://songrgg.github.iohttps://raw.githubusercontent.com/wiki/Netflix/Hystrix/images/hystrix-command-flow-chart.png"
+        ],
+        "keywords": "microservice,fault tolerance,service degrade",
         "genre": "microservice",
         "datePublished": "2017-04-02",
         "dateCreated": "2017-04-02",
-        "dateModified": "2018-08-19",
+        "dateModified": "2019-09-04",
         "url": "https://songrgg.github.io/microservice/microservice-in-action-2/",
+        "mainEntityOfPage": "https://songrgg.github.io/microservice/microservice-in-action-2/",
         "description": "
 保证系统能稳定地运行在生产环境是第一要务，就算是服务质量下降，只要仍在工作，那就是万幸。
 
@@ -303,7 +325,7 @@ ga('send', 'pageview');
 
 
 解决方法
-限时针对服务超时，可以通过超时控制保证接口的返回，可以通过设置超时时间为1s，尽快返回结果，因为大多数情况下，接口超时一方面影响用户体验，一"
+限时针对服务超时，可以通过超时控制保证接口的返回，可以通过设置超时时间为1s，尽快返回结果，因为大多数情况下，接口超时一方面影响用户体验，一",
         "wordCount": 40
     }
 </script>
@@ -398,7 +420,7 @@ ga('send', 'pageview');
                             <a href="/envoy/deeper-understanding-to-envoy/" class="thumbnail">
     
     
-        <span style="background-image:url(/images/envoy-in-service-mesh.png)" alt="Anatomy of envoy proxy from user traffic and configuration" class="thumbnail-image"></span>
+        <span style="background-image:url(/images/envoy-in-service-mesh.png)" alt="Anatomy of envoy proxy: the architecture of envoy and how it works" class="thumbnail-image"></span>
     
     
 </a>
@@ -407,7 +429,7 @@ ga('send', 'pageview');
                         
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/envoy/">envoy</a></p>
-                            <p class="item-title"><a href="/envoy/deeper-understanding-to-envoy/" class="title">Anatomy of envoy proxy from user traffic and configuration</a></p>
+                            <p class="item-title"><a href="/envoy/deeper-understanding-to-envoy/" class="title">Anatomy of envoy proxy: the architecture of envoy and how it works</a></p>
                             <p class="item-date"><time datetime="2019-08-13T22:00:00.000Z" itemprop="datePublished">2019-08-14</time></p>
                         </div>
                     </li>
@@ -438,7 +460,7 @@ ga('send', 'pageview');
                             <a href="/microservice/goodbye-micro/" class="thumbnail">
     
     
-        <span style="background-image:url(/images/micro.png)" alt="再见，micro" class="thumbnail-image"></span>
+        <span style="background-image:url(/images/micro.png)" alt="再见，micro: 迁移go-micro到纯gRPC框架" class="thumbnail-image"></span>
     
     
 </a>
@@ -447,7 +469,7 @@ ga('send', 'pageview');
                         
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/microservice/">microservice</a></p>
-                            <p class="item-title"><a href="/microservice/goodbye-micro/" class="title">再见，micro</a></p>
+                            <p class="item-title"><a href="/microservice/goodbye-micro/" class="title">再见，micro: 迁移go-micro到纯gRPC框架</a></p>
                             <p class="item-date"><time datetime="2018-10-27T22:00:00.000Z" itemprop="datePublished">2018-10-28</time></p>
                         </div>
                     </li>
@@ -518,9 +540,23 @@ ga('send', 'pageview');
 
             
                 
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/envoy-service-mesh-architecture-request-analysis-microservice-kubernetes/">envoy,service mesh,architecture,request analysis,microservice,kubernetes</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd-operation-etcd-configuration/">etcd,operation,etcd configuration</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go-micro-gRPC-microservice-migration/">go-micro,gRPC,microservice,migration</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc-client-performance/">grpc,client performance</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes-sidecar-nginx/">kubernetes,sidecar,nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microservice-architecture/">microservice,architecture</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microservice-configuration-management/">microservice,configuration management</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microservice-fault-tolerance-service-degrade/">microservice,fault tolerance,service degrade</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microservice-istio-kubernetes-istio-configuration-management/">microservice,istio,kubernetes,istio configuration management</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microservice-service-orchestration/">microservice,service orchestration</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ratelimiter/">ratelimiter</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark-hive-app-channel-analytics/">spark,hive,app channel analytics</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot-database-read-write-split/">spring boot,database read write split</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-groovy-dependency-injection/">spring,groovy,dependency injection</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
 
             
                 
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/envoy-service-mesh-architecture-request-analysis-microservice-kubernetes/" style="font-size: 10px;">envoy,service mesh,architecture,request analysis,microservice,kubernetes</a> <a href="/tags/etcd-operation-etcd-configuration/" style="font-size: 10px;">etcd,operation,etcd configuration</a> <a href="/tags/go-micro-gRPC-microservice-migration/" style="font-size: 10px;">go-micro,gRPC,microservice,migration</a> <a href="/tags/grpc-client-performance/" style="font-size: 10px;">grpc,client performance</a> <a href="/tags/kubernetes-sidecar-nginx/" style="font-size: 10px;">kubernetes,sidecar,nginx</a> <a href="/tags/microservice-architecture/" style="font-size: 10px;">microservice,architecture</a> <a href="/tags/microservice-configuration-management/" style="font-size: 10px;">microservice,configuration management</a> <a href="/tags/microservice-fault-tolerance-service-degrade/" style="font-size: 10px;">microservice,fault tolerance,service degrade</a> <a href="/tags/microservice-istio-kubernetes-istio-configuration-management/" style="font-size: 10px;">microservice,istio,kubernetes,istio configuration management</a> <a href="/tags/microservice-service-orchestration/" style="font-size: 10px;">microservice,service orchestration</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/spark-hive-app-channel-analytics/" style="font-size: 10px;">spark,hive,app channel analytics</a> <a href="/tags/spring-boot-database-read-write-split/" style="font-size: 10px;">spring boot,database read write split</a> <a href="/tags/spring-groovy-dependency-injection/" style="font-size: 10px;">spring,groovy,dependency injection</a>
+        </div>
+    </div>
+
 
             
                 

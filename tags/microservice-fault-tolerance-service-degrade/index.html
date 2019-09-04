@@ -6,24 +6,21 @@
     
 
     
-    <title>Hive环境搭建(Ubuntu) | Songrgg&#39;s Blog</title>
+    <title>Tag: microservice,fault tolerance,service degrade | Songrgg&#39;s Blog</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="" />
-    
-    <meta name="description" content="Hive是什么？基于Hadoop的数据查询工具，可以使用类SQL进行数据查询。 Hadoop安装 参考了Hadoop安装 注意到etc/hadoop/hadoop-env.sh里设置JAVA_HOME，不然运行./start_dfs.sh会报没设置JAVA_HOME 运行程序时，输出目录不能存在 配置文件 hdfs的输出目录需要保证空间充足，我在虚拟机里玩，分配的磁盘空间太小，另外加了空间并挂载，">
+    <meta name="description" content="A place to share programming experience and understanding of architecture.">
 <meta name="keywords" content="programming,sre,kubernetes,service mesh,devops">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Hive环境搭建(Ubuntu)">
-<meta property="og:url" content="https://songrgg.github.io/bigdata/hive-environment-settings/index.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Songrgg&#39;s Blog">
+<meta property="og:url" content="https://songrgg.github.io/tags/microservice-fault-tolerance-service-degrade/index.html">
 <meta property="og:site_name" content="Songrgg&#39;s Blog">
-<meta property="og:description" content="Hive是什么？基于Hadoop的数据查询工具，可以使用类SQL进行数据查询。 Hadoop安装 参考了Hadoop安装 注意到etc/hadoop/hadoop-env.sh里设置JAVA_HOME，不然运行./start_dfs.sh会报没设置JAVA_HOME 运行程序时，输出目录不能存在 配置文件 hdfs的输出目录需要保证空间充足，我在虚拟机里玩，分配的磁盘空间太小，另外加了空间并挂载，">
+<meta property="og:description" content="A place to share programming experience and understanding of architecture.">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-08-19T11:37:24.316Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hive环境搭建(Ubuntu)">
-<meta name="twitter:description" content="Hive是什么？基于Hadoop的数据查询工具，可以使用类SQL进行数据查询。 Hadoop安装 参考了Hadoop安装 注意到etc/hadoop/hadoop-env.sh里设置JAVA_HOME，不然运行./start_dfs.sh会报没设置JAVA_HOME 运行程序时，输出目录不能存在 配置文件 hdfs的输出目录需要保证空间充足，我在虚拟机里玩，分配的磁盘空间太小，另外加了空间并挂载，">
+<meta name="twitter:title" content="Songrgg&#39;s Blog">
+<meta name="twitter:description" content="A place to share programming experience and understanding of architecture.">
     
 
     
@@ -152,170 +149,85 @@ enable_page_level_ads: true
                         <div class="main-body-header">
     <h1 class="header">
     
-    <a class="page-title-link" href="/categories/bigdata/">bigdata</a>
+    <i class="icon fa fa-tag"></i>Tag: <em>microservice,fault tolerance,service degrade</em>
     </h1>
 </div>
 
                         <div class="main-body-content">
-                            <article id="article-hive-environment-settings" class="article article-single article-type-article" itemscope itemprop="blogPost">
-    <div class="article-inner">
+                            
+
+    
+    
         
-            <header class="article-header">
-                
+        
+        <section class="archives-wrap">
+            <div class="archive-year-wrap">
+                <a href="/archives/2017" class="archive-year"><i class="icon fa fa-calendar-o"></i>2017</a>
+            </div>
+            <div class="archives">
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/microservice/microservice-in-action-2/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://raw.githubusercontent.com/wiki/Netflix/Hystrix/images/hystrix-command-flow-chart.png)" alt="微服务实践二: 服务容错与降级" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/microservice/microservice-in-action-2/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/microservice/">microservice</a>
+            </div>
+            <div class="date"><time datetime="2017-04-01T22:00:00.000Z" itemprop="datePublished">2017-04-02</time></div>
+        </div>
+        
     
         <h1 class="article-title" itemprop="name">
-        Hive环境搭建(Ubuntu)
+        <a href="/microservice/microservice-in-action-2/">微服务实践二: 服务容错与降级</a>
         </h1>
     
 
-            </header>
-        
-        
-            <div class="article-meta">
-                
-    <div class="article-date">
-        <a href="/bigdata/hive-environment-settings/" class="article-date">
-            <time datetime="2016-02-27T19:27:50.000Z" itemprop="datePublished">2016-02-27</time>
-        </a>
-    </div>
-
-		
-
-                
-            </div>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-            <h3 id="Hive是什么？"><a href="#Hive是什么？" class="headerlink" title="Hive是什么？"></a>Hive是什么？</h3><p>基于Hadoop的数据查询工具，可以使用类SQL进行数据查询。</p>
-<h3 id="Hadoop安装"><a href="#Hadoop安装" class="headerlink" title="Hadoop安装"></a>Hadoop安装</h3><ul>
-<li>参考了<a href="http://www.powerxing.com/install-hadoop/" target="_blank" rel="noopener">Hadoop安装</a></li>
-<li>注意到etc/hadoop/hadoop-env.sh里设置JAVA_HOME，不然运行./start_dfs.sh会报没设置JAVA_HOME</li>
-<li>运行程序时，输出目录不能存在</li>
-<li>配置文件<ul>
-<li>hdfs的输出目录需要保证空间充足，我在虚拟机里玩，分配的磁盘空间太小，另外加了空间并挂载，重新设置了输出目录。</li>
-</ul>
-</li>
-</ul>
-<h3 id="Hive安装"><a href="#Hive安装" class="headerlink" title="Hive安装"></a>Hive安装</h3><ul>
-<li>参考了<a href="http://www.cloudera.com/documentation/archive/cdh/4-x/4-2-0/CDH4-Installation-Guide/cdh4ig_topic_18_4.html" target="_blank" rel="noopener">安装hive</a></li>
-<li>MetaStore用了MySQL，结果安装的驱动版本不正确，遇到MetaStoreClient lost connection. Attempting to reconnect。</li>
-</ul>
-<h3 id="实践后感"><a href="#实践后感" class="headerlink" title="实践后感"></a>实践后感</h3><p>真正装环境的坑还是很多的，开始分配的虚拟机磁盘空间太小了，基本运行不了，jdbc驱动版本不正确都会导致Hive客户端开启后时常崩溃，配置文件的一些常用选项需要了解，如果出现问题可以有一个解决思路，当然Google还是常用些，实在解决不了如很难想到是jdbc驱动的原因，我就下了一份源码，定位到报错，通过代码推测了发生问题的地方。</p>
-<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><ul>
-<li><a href="http://www.powerxing.com/install-hadoop/" target="_blank" rel="noopener">安装Hadoop</a></li>
-<li><a href="http://www.cloudera.com/documentation/archive/cdh/4-x/4-2-0/CDH4-Installation-Guide/cdh4ig_topic_18_4.html" target="_blank" rel="noopener">安装hive</a></li>
-</ul>
-
-        </div>
-        <footer class="article-footer">
+        <p class="article-excerpt">
             
+保证系统能稳定地运行在生产环境是第一要务，就算是服务质量下降，只要仍在工作，那就是万幸。
+
+常见服务问题
+服务超时依赖的第三方服务因为某种不可抗力超时了？数据库慢查询拖垮了整个数据库？
+
+服务错误某个服务挂了？
+
+服务负载高突然陡增的访问量？
 
 
-
-    <a data-url="https://songrgg.github.io/bigdata/hive-environment-settings/" data-id="ck05qdh4b000j6hz3xr4mlf15" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-        </footer>
+解决方法
+限时针对服务超时，可以通过超时控制保证接口的返回，可以通过设置超时时间为1s，尽快返回结果，因为大多数情况下，接口超时一方面影响用户体验，一
+        </p>
     </div>
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "author": {
-            "@type": "Person",
-            "name": "songrgg"
-        },
-        "publisher": {},
-        "headline": "Hive环境搭建(Ubuntu)",
-        "image": [
-            "https://songrgg.github.io"
-        ],
-        "keywords": "",
-        "genre": "bigdata",
-        "datePublished": "2016-02-27",
-        "dateCreated": "2016-02-27",
-        "dateModified": "2018-08-19",
-        "url": "https://songrgg.github.io/bigdata/hive-environment-settings/",
-        "mainEntityOfPage": "https://songrgg.github.io/bigdata/hive-environment-settings/",
-        "description": "Hive是什么？基于Hadoop的数据查询工具，可以使用类SQL进行数据查询。
-Hadoop安装
-参考了Hadoop安装
-注意到etc/hadoop/hadoop-env.sh里设置JAVA_HOME，不然运行./start_dfs.sh会报没设置JAVA_HOME
-运行程序时，输出目录不能存在
-配置文件
-hdfs的输出目录需要保证空间充足，我在虚拟机里玩，分配的磁盘空间太小，另外加了空间并挂载，",
-        "wordCount": 38
-    }
-</script>
-
 </article>
-
-    <section id="comments">
     
-        
-    <div id="disqus_thread">
-        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    </div>
-
+        </div>
     
-    </section>
+
+
+    </div></section>
 
 
 
@@ -353,29 +265,6 @@ hdfs的输出目录需要保证空间充足，我在虚拟机里玩，分配的�
             
         </ul>
     </div>
-    
-        
-<nav id="article-nav">
-    
-        <a href="/sourcecode/mahout-tutorial/" id="article-nav-newer" class="article-nav-link-wrap">
-        <strong class="article-nav-caption">newer</strong>
-        <p class="article-nav-title">
-        
-            Mahout入门-1
-        
-        </p>
-        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
-    </a>
-    
-    
-        <a href="/sourcecode/add-syntactic-feature-to-php7/" id="article-nav-older" class="article-nav-link-wrap">
-        <strong class="article-nav-caption">older</strong>
-        <p class="article-nav-title">为PHP7添加新的语法特性</p>
-        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
-        </a>
-    
-</nav>
-
     
     <div class="widgets-container">
         
@@ -580,13 +469,11 @@ hdfs的输出目录需要保证空间充足，我在虚拟机里玩，分配的�
     var disqus_shortname = 'srjiang';
     
     
-    var disqus_url = 'https://songrgg.github.io/bigdata/hive-environment-settings/';
-    
     (function() {
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
     </script>
