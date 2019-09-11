@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://songrgg.github.io/operation/ansible-frequently-used-commands/</loc>
+    
+    <lastmod>2019-09-11T21:50:12.062Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://songrgg.github.io/java/spring-boot-database-read-write-split/</loc>
     
     <lastmod>2019-09-11T21:36:20.765Z</lastmod>
@@ -145,13 +152,6 @@
     <loc>https://songrgg.github.io/kubernetes/extend-kubernetes-dns/</loc>
     
     <lastmod>2019-04-07T15:17:10.811Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/ansible-frequently-used-commands/</loc>
-    
-    <lastmod>2019-04-07T15:17:02.955Z</lastmod>
     
   </url>
   

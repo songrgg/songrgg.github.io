@@ -12,19 +12,19 @@
     
         <meta name="keywords" content="" />
     
-    <meta name="description" content="动机记录一下常用的Ansible指令、模块，方便检索。 Ansible主机/etc/ansible/hosts中，server是目标服务器列表名，包含两个服务器 123[spark]10.0.0.110.0.0.2 Ansible Shell模块12# 在spark集群上执行ls指令$ ansible spark -m shell -a &quot;ls&quot; Ansible-playbook执行较大的复杂任务">
+    <meta name="description" content="动机记录一下常用的Ansible指令、模块，方便检索。 Ansible主机/etc/ansible/hosts中，server是目标服务器列表名，包含两个服务器 123[spark]10.0.0.110.0.0.2 Ansible Shell模块12# 在spark集群上执行ls指令$ ansible spark -m shell -a &apos;ls&apos; Ansible-playbook执行较大的复杂任务">
 <meta name="keywords" content="programming,sre,kubernetes,service mesh,devops">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ansible常用命令">
 <meta property="og:url" content="https://songrgg.github.io/operation/ansible-frequently-used-commands/index.html">
 <meta property="og:site_name" content="Songrgg&#39;s Blog">
-<meta property="og:description" content="动机记录一下常用的Ansible指令、模块，方便检索。 Ansible主机/etc/ansible/hosts中，server是目标服务器列表名，包含两个服务器 123[spark]10.0.0.110.0.0.2 Ansible Shell模块12# 在spark集群上执行ls指令$ ansible spark -m shell -a &quot;ls&quot; Ansible-playbook执行较大的复杂任务">
+<meta property="og:description" content="动机记录一下常用的Ansible指令、模块，方便检索。 Ansible主机/etc/ansible/hosts中，server是目标服务器列表名，包含两个服务器 123[spark]10.0.0.110.0.0.2 Ansible Shell模块12# 在spark集群上执行ls指令$ ansible spark -m shell -a &apos;ls&apos; Ansible-playbook执行较大的复杂任务">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://songrgg.github.io/images/ansible.png">
-<meta property="og:updated_time" content="2019-04-07T15:17:02.955Z">
+<meta property="og:updated_time" content="2019-09-11T21:50:12.062Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ansible常用命令">
-<meta name="twitter:description" content="动机记录一下常用的Ansible指令、模块，方便检索。 Ansible主机/etc/ansible/hosts中，server是目标服务器列表名，包含两个服务器 123[spark]10.0.0.110.0.0.2 Ansible Shell模块12# 在spark集群上执行ls指令$ ansible spark -m shell -a &quot;ls&quot; Ansible-playbook执行较大的复杂任务">
+<meta name="twitter:description" content="动机记录一下常用的Ansible指令、模块，方便检索。 Ansible主机/etc/ansible/hosts中，server是目标服务器列表名，包含两个服务器 123[spark]10.0.0.110.0.0.2 Ansible Shell模块12# 在spark集群上执行ls指令$ ansible spark -m shell -a &apos;ls&apos; Ansible-playbook执行较大的复杂任务">
 <meta name="twitter:image" content="https://songrgg.github.io/images/ansible.png">
     
 
@@ -191,7 +191,7 @@ enable_page_level_ads: true
             <h3 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h3><p>记录一下常用的Ansible指令、模块，方便检索。</p>
 <h3 id="Ansible主机"><a href="#Ansible主机" class="headerlink" title="Ansible主机"></a>Ansible主机</h3><p>/etc/ansible/hosts中，server是目标服务器列表名，包含两个服务器</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[spark]</span><br><span class="line">10.0.0.1</span><br><span class="line">10.0.0.2</span><br></pre></td></tr></table></figure>
-<h3 id="Ansible-Shell模块"><a href="#Ansible-Shell模块" class="headerlink" title="Ansible Shell模块"></a>Ansible Shell模块</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在spark集群上执行ls指令</span></span><br><span class="line">$ ansible spark -m shell -a <span class="string">"ls"</span></span><br></pre></td></tr></table></figure>
+<h3 id="Ansible-Shell模块"><a href="#Ansible-Shell模块" class="headerlink" title="Ansible Shell模块"></a>Ansible Shell模块</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在spark集群上执行ls指令</span></span><br><span class="line">$ ansible spark -m shell -a <span class="string">'ls'</span></span><br></pre></td></tr></table></figure>
 <h3 id="Ansible-playbook"><a href="#Ansible-playbook" class="headerlink" title="Ansible-playbook"></a>Ansible-playbook</h3><p>执行较大的复杂任务时，以<code>YAML</code>的声明语法来配置，并且可以放置一些模板类文件和资源文件等。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">|___python.yml</span><br><span class="line">|___python.host</span><br><span class="line">|___roles</span><br><span class="line">| |___python</span><br><span class="line">| | |___defaults  # 默认变量</span><br><span class="line">| | |___handlers  # 可以被任务使用或者任何该任务之外的地方</span><br><span class="line">| | |___files</span><br><span class="line">| | |___vars      # 其它变量</span><br><span class="line">| | |___templates # 模板</span><br><span class="line">| | |___meta      # 元数据</span><br><span class="line">| | |___tasks     # 主要任务列表</span><br><span class="line">| | | |___main.yml</span><br><span class="line">| |___airflow</span><br><span class="line">| | |___tasks</span><br><span class="line">| | | |___main.yml</span><br><span class="line">| | | |___templates</span><br><span class="line">| | | | |___airflow.cfg</span><br></pre></td></tr></table></figure>
 <h4 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="comment"># 声明变量</span></span><br><span class="line"><span class="attr">foo:</span></span><br><span class="line"><span class="attr">  field1:</span> <span class="string">one</span></span><br><span class="line"><span class="attr">  field2:</span> <span class="string">two</span></span><br></pre></td></tr></table></figure>
@@ -230,7 +230,7 @@ enable_page_level_ads: true
 
 
 
-    <a data-url="https://songrgg.github.io/operation/ansible-frequently-used-commands/" data-id="ck0frde9o0004d9z3v1w4lqer" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://songrgg.github.io/operation/ansible-frequently-used-commands/" data-id="ck0fspilv0003bhz3fi3z9evb" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -309,13 +309,13 @@ enable_page_level_ads: true
         "genre": "operation",
         "datePublished": "2018-03-05",
         "dateCreated": "2018-03-05",
-        "dateModified": "2019-04-07",
+        "dateModified": "2019-09-11",
         "url": "https://songrgg.github.io/operation/ansible-frequently-used-commands/",
         "mainEntityOfPage": "https://songrgg.github.io/operation/ansible-frequently-used-commands/",
         "description": "动机记录一下常用的Ansible指令、模块，方便检索。
 Ansible主机/etc/ansible/hosts中，server是目标服务器列表名，包含两个服务器
 123[spark]10.0.0.110.0.0.2
-Ansible Shell模块12# 在spark集群上执行ls指令$ ansible spark -m shell -a "ls"
+Ansible Shell模块12# 在spark集群上执行ls指令$ ansible spark -m shell -a 'ls'
 Ansible-playbook执行较大的复杂任务",
         "wordCount": 1526
     }
