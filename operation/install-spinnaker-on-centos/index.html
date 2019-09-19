@@ -6,21 +6,26 @@
     
 
     
-    <title>Tag: swagger | Songrgg&#39;s Blog</title>
+    <title>Install Spinnaker on CentOS 7 | Songrgg&#39;s Blog</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-    <meta name="description" content="A place to share programming experience and understanding of architecture.">
-<meta name="keywords" content="programming,sre,kubernetes,service mesh,devops">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Songrgg&#39;s Blog">
-<meta property="og:url" content="https://songrgg.github.io/tags/swagger/index.html">
+        <meta name="keywords" content="spinnaker,centos,docker" />
+    
+    <meta name="description" content="As we know, according to the spinnaker’s official documentation, spinnaker provides a tool for installing the spinnaker cluster in Kubernetes cluster or debian/ubuntu bare metal machine, but there’s n">
+<meta name="keywords" content="spinnaker,centos,docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Install Spinnaker on CentOS 7">
+<meta property="og:url" content="https://songrgg.github.io/operation/install-spinnaker-on-centos/index.html">
 <meta property="og:site_name" content="Songrgg&#39;s Blog">
-<meta property="og:description" content="A place to share programming experience and understanding of architecture.">
+<meta property="og:description" content="As we know, according to the spinnaker’s official documentation, spinnaker provides a tool for installing the spinnaker cluster in Kubernetes cluster or debian/ubuntu bare metal machine, but there’s n">
 <meta property="og:locale" content="en">
+<meta property="og:image" content="https://songrgg.github.io/images/spin-dependencies.jpeg">
+<meta property="og:updated_time" content="2019-09-19T06:04:56.721Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Songrgg&#39;s Blog">
-<meta name="twitter:description" content="A place to share programming experience and understanding of architecture.">
+<meta name="twitter:title" content="Install Spinnaker on CentOS 7">
+<meta name="twitter:description" content="As we know, according to the spinnaker’s official documentation, spinnaker provides a tool for installing the spinnaker cluster in Kubernetes cluster or debian/ubuntu bare metal machine, but there’s n">
+<meta name="twitter:image" content="https://songrgg.github.io/images/spin-dependencies.jpeg">
     
 
     
@@ -151,74 +156,157 @@ enable_page_level_ads: true
                         <div class="main-body-header">
     <h1 class="header">
     
-    <i class="icon fa fa-tag"></i>Tag: <em>swagger</em>
+    <a class="page-title-link" href="/categories/operation/">operation</a>
     </h1>
 </div>
 
                         <div class="main-body-content">
-                            
-
-    
-    
+                            <article id="article-install-spinnaker-on-centos" class="article article-single article-type-article" itemscope itemprop="blogPost">
+    <div class="article-inner">
         
-        
-        <section class="archives-wrap">
-            <div class="archive-year-wrap">
-                <a href="/archives/2019" class="archive-year"><i class="icon fa fa-calendar-o"></i>2019</a>
-            </div>
-            <div class="archives">
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/operation/host-swagger-documentation-with-yaml-json-files/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/images/swagger_editor.png)" alt="How to host Swagger documentation using yaml/json configuration files?" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="https://songrgg.github.io/operation/host-swagger-documentation-with-yaml-json-files/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/operation/">operation</a>
-            </div>
-            <div class="date"><time datetime="2019-09-12T19:11:50.000Z" itemprop="datePublished">2019-09-12</time></div>
-        </div>
-        
+            <header class="article-header">
+                
     
         <h1 class="article-title" itemprop="name">
-        <a href="/operation/host-swagger-documentation-with-yaml-json-files/">How to host Swagger documentation using yaml/json configuration files?</a>
+        Install Spinnaker on CentOS 7
         </h1>
     
 
-        <p class="article-excerpt">
-            You can host the swagger documentation easily with Spring boot. Maintain the swagger documentation by Swagger Editor and then you can use the yaml files to generate online swagger documentation.
-Workf
-        </p>
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/operation/install-spinnaker-on-centos/" class="article-date">
+            <time datetime="2019-09-18T22:00:00.000Z" itemprop="datePublished">2019-09-19</time>
+        </a>
     </div>
-</article>
-    
+
+		
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/centos/">centos</a>, <a class="tag-link" href="/tags/docker/">docker</a>, <a class="tag-link" href="/tags/spinnaker/">spinnaker</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <p>As we know, according to the spinnaker’s official documentation, spinnaker provides a tool for installing the spinnaker cluster in Kubernetes cluster or debian/ubuntu bare metal machine, but there’s not an option to install it on CentOS or other common operating systems. Althogh the <a href="https://github.com/spinnaker/spinnaker/tree/master/experimental/docker-compose" target="_blank" rel="noopener">spinnaker</a> provides a way to start Spinnaker with <a href="https://docs.docker.com/compose/" target="_blank" rel="noopener">Docker Compose</a>, but it’s out of date. So I created a new <a href="https://github.com/songrgg/spinnaker-compose" target="_blank" rel="noopener">docker-compose project</a> to quickstart a spinnaker cluster on any kind of os.</p>
+<h2 id="Quickstart"><a href="#Quickstart" class="headerlink" title="Quickstart"></a>Quickstart</h2><p>Provision a machine with at least 16GB memory and 4 cores, it may need more than this since my macbook pro(4cores, 16GB) was stuck when I started spinnaker.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo curl -L <span class="string">"https://github.com/docker/compose/releases/download/1.24.1/docker-compose-<span class="variable">$(uname -s)</span>-<span class="variable">$(uname -m)</span>"</span> -o /usr/<span class="built_in">local</span>/bin/docker-compose</span><br><span class="line">sudo chmod +x /usr/<span class="built_in">local</span>/bin/docker-compose</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/songrgg/spinnaker-compose</span><br><span class="line"><span class="built_in">cd</span> spinnaker-compose</span><br><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
+<h2 id="To-access-the-spinnaker"><a href="#To-access-the-spinnaker" class="headerlink" title="To access the spinnaker"></a>To access the spinnaker</h2><p>Visit <code>http://localhost:9000</code> in browser if you run spinnaker on local machine.</p>
+<p>Otherwise you can use ssh to create tunnel on local machine. Spinnaker exposes two ports, 9000 for web, 8084 for api gateway.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh -L 8084:localhost:8084 &lt;remote-host&gt;</span><br><span class="line">ssh -L 9000:localhost:9000 &lt;remote-host&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Add-clouddriver"><a href="#Add-clouddriver" class="headerlink" title="Add clouddriver"></a>Add clouddriver</h2><p>You need to edit <code>config/clouddriver.yml</code> to open multiple clouddrivers, it’s not easy to integrate since we don’t have the <code>halyard</code> to do this stuff, but if you already have the clouddriver.yml, it’s easier to make it work.</p>
+<p>Since clouddriver will need credentials, you need to modify the <code>docker-compose.yml</code> to mount the credential files on the docker containers.</p>
+
         </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://songrgg.github.io/operation/install-spinnaker-on-centos/" data-id="ck0qajrmp000tbvz3qqnpjyo2" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "Install Spinnaker on CentOS 7",
+        "image": [
+            "https://songrgg.github.io/images/spin-dependencies.jpeg"
+        ],
+        "keywords": "spinnaker centos docker",
+        "genre": "operation",
+        "datePublished": "2019-09-19",
+        "dateCreated": "2019-09-19",
+        "dateModified": "2019-09-19",
+        "url": "https://songrgg.github.io/operation/install-spinnaker-on-centos/",
+        "mainEntityOfPage": "https://songrgg.github.io/operation/install-spinnaker-on-centos/",
+        "description": "As we know, according to the spinnaker’s official documentation, spinnaker provides a tool for installing the spinnaker cluster in Kubernetes cluster or debian/ubuntu bare metal machine, but there’s n",
+        "wordCount": 267
+    }
+</script>
+
+</article>
+
+    <section id="comments">
     
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
 
-
-    </div></section>
+    
+    </section>
 
 
 
@@ -256,6 +344,19 @@ Workf
             
         </ul>
     </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/operation/host-swagger-documentation-with-yaml-json-files/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">How to host Swagger documentation using yaml/json configuration files?</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
     
     <div class="widgets-container">
         
@@ -440,11 +541,13 @@ Workf
     var disqus_shortname = 'srjiang';
     
     
+    var disqus_url = 'https://songrgg.github.io/operation/install-spinnaker-on-centos/';
+    
     (function() {
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
     </script>

@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://songrgg.github.io/"/>
-  <updated>2019-09-12T20:05:35.369Z</updated>
+  <updated>2019-09-19T06:04:56.721Z</updated>
   <id>https://songrgg.github.io/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Install Spinnaker on CentOS 7</title>
+    <link href="https://songrgg.github.io/operation/install-spinnaker-on-centos/"/>
+    <id>https://songrgg.github.io/operation/install-spinnaker-on-centos/</id>
+    <published>2019-09-18T22:00:00.000Z</published>
+    <updated>2019-09-19T06:04:56.721Z</updated>
+    
+    <content type="html"><![CDATA[<p>As we know, according to the spinnaker’s official documentation, spinnaker provides a tool for installing the spinnaker cluster in Kubernetes cluster or debian/ubuntu bare metal machine, but there’s not an option to install it on CentOS or other common operating systems. Althogh the <a href="https://github.com/spinnaker/spinnaker/tree/master/experimental/docker-compose" target="_blank" rel="noopener">spinnaker</a> provides a way to start Spinnaker with <a href="https://docs.docker.com/compose/" target="_blank" rel="noopener">Docker Compose</a>, but it’s out of date. So I created a new <a href="https://github.com/songrgg/spinnaker-compose" target="_blank" rel="noopener">docker-compose project</a> to quickstart a spinnaker cluster on any kind of os.</p><h2 id="Quickstart"><a href="#Quickstart" class="headerlink" title="Quickstart"></a>Quickstart</h2><p>Provision a machine with at least 16GB memory and 4 cores, it may need more than this since my macbook pro(4cores, 16GB) was stuck when I started spinnaker.</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo curl -L <span class="string">"https://github.com/docker/compose/releases/download/1.24.1/docker-compose-<span class="variable">$(uname -s)</span>-<span class="variable">$(uname -m)</span>"</span> -o /usr/<span class="built_in">local</span>/bin/docker-compose</span><br><span class="line">sudo chmod +x /usr/<span class="built_in">local</span>/bin/docker-compose</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/songrgg/spinnaker-compose</span><br><span class="line"><span class="built_in">cd</span> spinnaker-compose</span><br><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure><h2 id="To-access-the-spinnaker"><a href="#To-access-the-spinnaker" class="headerlink" title="To access the spinnaker"></a>To access the spinnaker</h2><p>Visit <code>http://localhost:9000</code> in browser if you run spinnaker on local machine.</p><p>Otherwise you can use ssh to create tunnel on local machine. Spinnaker exposes two ports, 9000 for web, 8084 for api gateway.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh -L 8084:localhost:8084 &lt;remote-host&gt;</span><br><span class="line">ssh -L 9000:localhost:9000 &lt;remote-host&gt;</span><br></pre></td></tr></table></figure></p><h2 id="Add-clouddriver"><a href="#Add-clouddriver" class="headerlink" title="Add clouddriver"></a>Add clouddriver</h2><p>You need to edit <code>config/clouddriver.yml</code> to open multiple clouddrivers, it’s not easy to integrate since we don’t have the <code>halyard</code> to do this stuff, but if you already have the clouddriver.yml, it’s easier to make it work.</p><p>Since clouddriver will need credentials, you need to modify the <code>docker-compose.yml</code> to mount the credential files on the docker containers.</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;As we know, according to the spinnaker’s official documentation, spinnaker provides a tool for installing the spinnaker cluster in Kubern
+      
+    
+    </summary>
+    
+      <category term="operation" scheme="https://songrgg.github.io/categories/operation/"/>
+    
+    
+      <category term="spinnaker" scheme="https://songrgg.github.io/tags/spinnaker/"/>
+    
+      <category term="centos" scheme="https://songrgg.github.io/tags/centos/"/>
+    
+      <category term="docker" scheme="https://songrgg.github.io/tags/docker/"/>
+    
+  </entry>
   
   <entry>
     <title>How to host Swagger documentation using yaml/json configuration files?</title>
@@ -64,8 +93,6 @@
       <category term="operation" scheme="https://songrgg.github.io/categories/operation/"/>
     
     
-      <category term="kubernetes" scheme="https://songrgg.github.io/tags/kubernetes/"/>
-    
       <category term="sre" scheme="https://songrgg.github.io/tags/sre/"/>
     
       <category term="cicd" scheme="https://songrgg.github.io/tags/cicd/"/>
@@ -73,6 +100,8 @@
       <category term="spinnaker" scheme="https://songrgg.github.io/tags/spinnaker/"/>
     
       <category term="docker-compose" scheme="https://songrgg.github.io/tags/docker-compose/"/>
+    
+      <category term="kubernetes" scheme="https://songrgg.github.io/tags/kubernetes/"/>
     
   </entry>
   
@@ -97,6 +126,8 @@
       <category term="architecture" scheme="https://songrgg.github.io/categories/architecture/"/>
     
     
+      <category term="kubernetes" scheme="https://songrgg.github.io/tags/kubernetes/"/>
+    
       <category term="envoy" scheme="https://songrgg.github.io/tags/envoy/"/>
     
       <category term="service mesh" scheme="https://songrgg.github.io/tags/service-mesh/"/>
@@ -106,8 +137,6 @@
       <category term="request analysis" scheme="https://songrgg.github.io/tags/request-analysis/"/>
     
       <category term="microservice" scheme="https://songrgg.github.io/tags/microservice/"/>
-    
-      <category term="kubernetes" scheme="https://songrgg.github.io/tags/kubernetes/"/>
     
   </entry>
   
@@ -132,11 +161,11 @@
       <category term="operation" scheme="https://songrgg.github.io/categories/operation/"/>
     
     
-      <category term="microservice" scheme="https://songrgg.github.io/tags/microservice/"/>
+      <category term="configuration management" scheme="https://songrgg.github.io/tags/configuration-management/"/>
     
       <category term="kubernetes" scheme="https://songrgg.github.io/tags/kubernetes/"/>
     
-      <category term="configuration management" scheme="https://songrgg.github.io/tags/configuration-management/"/>
+      <category term="microservice" scheme="https://songrgg.github.io/tags/microservice/"/>
     
       <category term="istio" scheme="https://songrgg.github.io/tags/istio/"/>
     
@@ -298,9 +327,9 @@
       <category term="programming" scheme="https://songrgg.github.io/categories/programming/"/>
     
     
-      <category term="spark" scheme="https://songrgg.github.io/tags/spark/"/>
-    
       <category term="hive" scheme="https://songrgg.github.io/tags/hive/"/>
+    
+      <category term="spark" scheme="https://songrgg.github.io/tags/spark/"/>
     
       <category term="app channel analytics" scheme="https://songrgg.github.io/tags/app-channel-analytics/"/>
     
@@ -327,9 +356,9 @@
       <category term="programming" scheme="https://songrgg.github.io/categories/programming/"/>
     
     
-      <category term="spark" scheme="https://songrgg.github.io/tags/spark/"/>
-    
       <category term="hive" scheme="https://songrgg.github.io/tags/hive/"/>
+    
+      <category term="spark" scheme="https://songrgg.github.io/tags/spark/"/>
     
   </entry>
   
@@ -384,9 +413,9 @@
       <category term="programming" scheme="https://songrgg.github.io/categories/programming/"/>
     
     
-      <category term="ratelimiter" scheme="https://songrgg.github.io/tags/ratelimiter/"/>
-    
       <category term="distributed system" scheme="https://songrgg.github.io/tags/distributed-system/"/>
+    
+      <category term="ratelimiter" scheme="https://songrgg.github.io/tags/ratelimiter/"/>
     
   </entry>
   
@@ -438,9 +467,9 @@
       <category term="microservice" scheme="https://songrgg.github.io/categories/microservice/"/>
     
     
-      <category term="microservice" scheme="https://songrgg.github.io/tags/microservice/"/>
-    
       <category term="configuration management" scheme="https://songrgg.github.io/tags/configuration-management/"/>
+    
+      <category term="microservice" scheme="https://songrgg.github.io/tags/microservice/"/>
     
   </entry>
   
@@ -555,39 +584,9 @@
       <category term="life" scheme="https://songrgg.github.io/categories/life/"/>
     
     
-      <category term="raspberry" scheme="https://songrgg.github.io/tags/raspberry/"/>
-    
       <category term="docker" scheme="https://songrgg.github.io/tags/docker/"/>
     
-  </entry>
-  
-  <entry>
-    <title>xhprof安装记录</title>
-    <link href="https://songrgg.github.io/programming/xhprof-install-record/"/>
-    <id>https://songrgg.github.io/programming/xhprof-install-record/</id>
-    <published>2016-10-15T22:00:00.000Z</published>
-    <updated>2019-09-12T20:03:08.174Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote><p>选择一个工具分析PHP函数调用的资源耗用明细，以图表化的形式展现，方便优化代码。</p></blockquote><h2 id="安装xhprof"><a href="#安装xhprof" class="headerlink" title="安装xhprof"></a>安装xhprof</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pecl install xhprof-beta</span><br></pre></td></tr></table></figure><p>在php.ini引用的extension中添加<code>extension=xhprof.so</code></p><h2 id="GUI"><a href="#GUI" class="headerlink" title="GUI"></a>GUI</h2><p>这里选择了xhgui，它的原理是在需要测试性能的脚本前加上PHP的一段代码，将收集到的性能数据存储到文件或者mongodb等存储介质中去。</p><h4 id="MongoDB"><a href="#MongoDB" class="headerlink" title="MongoDB"></a>MongoDB</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install mongodb</span><br></pre></td></tr></table></figure><h4 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /var/www</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/perftools/xhgui.git</span><br><span class="line"><span class="built_in">cd</span> xhgui</span><br><span class="line">php install.php</span><br></pre></td></tr></table></figure><ul><li>如果不能以root身份运行，那么sudo -u www-data php install.php</li><li><p>安装的时候出现<code>the requested PHP extension mongodb is missing from your system</code>问题是平台的拓展名为<strong>mongo.so</strong>，而composer检查的是<strong>mongodb.so</strong>，只要加上<code>--ignore-platform-reqs</code></p></li><li><p>如果composer问题不清楚，建议单独跑composer命令，加上-vvv打开调试模式</p></li></ul><h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><p>如前面说的原理是在头部添加一段PHP代码，这里通过在Nginx里配置，或者PHP ini auto_prepend_file在php.ini中添加auto_prepend_file。</p><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~ \.php</span> &#123;</span><br><span class="line">    <span class="attribute">include</span> fastcgi_params;</span><br><span class="line">    <span class="attribute">fastcgi_buffers</span> <span class="number">128</span> <span class="number">4k</span>;</span><br><span class="line">    <span class="attribute">fastcgi_pass</span>   <span class="number">127.0.0.1:9000</span>;</span><br><span class="line">    <span class="attribute">fastcgi_index</span>  index.php;</span><br><span class="line">    <span class="attribute">fastcgi_param</span>  SCRIPT_FILENAME  <span class="variable">$document_root</span><span class="variable">$fastcgi_script_name</span>;</span><br><span class="line">    <span class="attribute">fastcgi_param</span>  PHP_VALUE <span class="string">"auto_prepend_file=\"/opt/htdocs/xhgui/external/header.php\""</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>在config目录下添加config.php配置<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">return</span> <span class="keyword">array</span>(</span><br><span class="line">    <span class="string">'debug'</span> =&gt; <span class="keyword">false</span>,</span><br><span class="line">    <span class="string">'mode'</span> =&gt; <span class="string">'development'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Can be either mongodb or file.</span></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    'save.handler' =&gt; 'file',</span></span><br><span class="line"><span class="comment">    'save.handler.filename' =&gt; dirname(__DIR__) . '/cache/' . 'xhgui.data.' . microtime(true) . '_' . substr(md5($url), 0, 6),</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="string">'save.handler'</span> =&gt; <span class="string">'mongodb'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Needed for file save handler. Beware of file locking. You can adujst this file path</span></span><br><span class="line">    <span class="comment">// to reduce locking problems (eg uniqid, time ...)</span></span><br><span class="line">    <span class="comment">//'save.handler.filename' =&gt; __DIR__.'/../data/xhgui_'.date('Ymd').'.dat',</span></span><br><span class="line">    <span class="string">'db.host'</span> =&gt; <span class="string">'127.0.0.1:27017'</span>,</span><br><span class="line">    <span class="string">'db.db'</span> =&gt; <span class="string">'xhprof'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Allows you to pass additional options like replicaSet to MongoClient.</span></span><br><span class="line">    <span class="comment">// 'username', 'password' and 'db' (where the user is added)</span></span><br><span class="line">    <span class="string">'db.options'</span> =&gt; <span class="keyword">array</span>(),</span><br><span class="line">    <span class="string">'templates.path'</span> =&gt; dirname(<span class="keyword">__DIR__</span>) . <span class="string">'/src/templates'</span>,</span><br><span class="line">    <span class="string">'date.format'</span> =&gt; <span class="string">'M jS H:i:s'</span>,</span><br><span class="line">    <span class="string">'detail.count'</span> =&gt; <span class="number">6</span>,</span><br><span class="line">    <span class="string">'page.limit'</span> =&gt; <span class="number">25</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Profile 1 in 100 requests.</span></span><br><span class="line">    <span class="comment">// You can return true to profile every request.</span></span><br><span class="line">    <span class="string">'profiler.enable'</span> =&gt; <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> rand(<span class="number">1</span>, <span class="number">100</span>) === <span class="number">3</span>;</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="string">'profiler.simple_url'</span> =&gt; <span class="function"><span class="keyword">function</span><span class="params">($url)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> preg_replace(<span class="string">'/\=\d+/'</span>, <span class="string">''</span>, $url);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">);</span><br></pre></td></tr></table></figure></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;blockquote&gt;
-&lt;p&gt;选择一个工具分析PHP函数调用的资源耗用明细，以图表化的形式展现，方便优化代码。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;安装xhprof&quot;&gt;&lt;a href=&quot;#安装xhprof&quot; class=&quot;headerlink&quot; title=&quot;安
-      
-    
-    </summary>
-    
-      <category term="programming" scheme="https://songrgg.github.io/categories/programming/"/>
-    
-    
-      <category term="php" scheme="https://songrgg.github.io/tags/php/"/>
-    
-      <category term="xhprof" scheme="https://songrgg.github.io/tags/xhprof/"/>
+      <category term="raspberry" scheme="https://songrgg.github.io/tags/raspberry/"/>
     
   </entry>
   

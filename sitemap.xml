@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://songrgg.github.io/operation/install-spinnaker-on-centos/</loc>
+    
+    <lastmod>2019-09-19T06:04:56.721Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://songrgg.github.io/operation/extend-kubernetes-dns/</loc>
     
     <lastmod>2019-09-12T20:25:39.877Z</lastmod>
