@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://songrgg.github.io/"/>
-  <updated>2019-09-19T06:04:56.721Z</updated>
+  <updated>2019-09-22T22:06:21.644Z</updated>
   <id>https://songrgg.github.io/</id>
   
   <author>
@@ -15,6 +15,37 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Generate monitoring dashboards &amp; alertings using Grafana API</title>
+    <link href="https://songrgg.github.io/operation/use-grafana-api-generate-dashboards/"/>
+    <id>https://songrgg.github.io/operation/use-grafana-api-generate-dashboards/</id>
+    <published>2019-09-22T22:00:00.000Z</published>
+    <updated>2019-09-22T22:06:21.644Z</updated>
+    
+    <content type="html"><![CDATA[<p><a href="https://grafana.com" target="_blank" rel="noopener">Grafana</a> has been adopted as a common monitoring dashboard by more and more companies, in many cases, when operators need to create dashboard repeatedly they either choose to use template variables or create dashboards one by one. I think it’s very useful to leverage the <a href="https://grafana.com/docs/http_api/" target="_blank" rel="noopener">Grafana API</a> to generate the monitoring dashboards automatically from template.</p><h2 id="My-thought-on-dashboard-automation"><a href="#My-thought-on-dashboard-automation" class="headerlink" title="My thought on dashboard automation"></a>My thought on dashboard automation</h2><p>There’s a common use case, if you need to create a lot of similar dashboard (like system stats) for different services, the dashboard skeleton may always be the same, you can use template variables to make the difference. However, you can not create alertings on the graphs which use template variables, so in these situations you have to create graphs without variables.</p><p>So we can create a template dashboard first with variables in Grafana, then use scripts to read from the template and render them with variables we specify, finally call Grafana APIs to create/update dashboards.</p><ol><li><p>Listen to what dashboards we need to create/update, collect metadata first.<br>For example, if it’s for server stats, we need to get the server info from cloud provider or other infrastructure.</p></li><li><p>Trigger the change to the dashboard</p><ul><li>Create the template of dashboard with template variables, it’s okay, we’ll replace the template later.</li><li>Render the template with the metadata we collected.</li><li>Add the graphs using CRUD APIs.</li></ul></li></ol><h2 id="Metadata"><a href="#Metadata" class="headerlink" title="Metadata"></a>Metadata</h2><p>Metadata is what you need to generate dashboards, basically it contains:</p><ol><li>How many dashboards you want to create?</li><li>What are each dashboard’s variables?<br>If you use public cloud providers, cloud APIs can be used otherwise you have your own infrastructure management APIs.</li></ol><h2 id="Template-dashboard"><a href="#Template-dashboard" class="headerlink" title="Template dashboard"></a>Template dashboard</h2><p><a href="https://grafana.com/docs/reference/templating/" target="_blank" rel="noopener">Grafana Variables</a> is a good functionality for monitor a great number of servers or application, defining the template dashboard with variables is good for rendering because you can not only view the effect on the template but also the variable is easy to replace for the format is <code>$VARIABLE</code> or <code>[[VARIABLE]]</code>, string replacement is enough for this.<br><img src="/images/grafana_variables_dashboard.png" alt="Grafana Variables"></p><h3 id="Grafana-dashboard-CRUD-API"><a href="#Grafana-dashboard-CRUD-API" class="headerlink" title="Grafana dashboard CRUD API"></a>Grafana dashboard CRUD API</h3><p>Grafana provides enough HTTP APIs to do this, once you create the template dashboard it already has the graphs and alertings, so <a href="https://grafana.com/docs/http_api/dashboard/" target="_blank" rel="noopener">Grafana dashboard API</a> is enough for most cases.</p><p>For authentication, you can create a service account for automating the dashboards and use API token to call APIs.</p><p>The automation scripts can maintain a relationship between the dashboard UID and dashboard name and you can also do the change comparison before updating the dashboards.<br>Delete the dashboards when some of them are deprecated.</p><h3 id="Run-your-automation"><a href="#Run-your-automation" class="headerlink" title="Run your automation"></a>Run your automation</h3><p>It’s okay to run automation scripts as cronjobs.</p><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul><li><a href="https://grafana.com/docs/http_api/dashboard/" target="_blank" rel="noopener">Grafana dashboard API</a></li><li><a href="https://grafana.com/docs/http_api/alerting/" target="_blank" rel="noopener">Grafana alerting API</a> is only used to get alerts, if you need to modify the alerts using dashboard API</li><li><a href="https://grafana.com/docs/tutorials/api_org_token_howto/" target="_blank" rel="noopener">Grafana API token</a></li><li><a href="https://github.com/grafana-tools/sdk" target="_blank" rel="noopener">Grafana SDK</a></li><li><a href="https://grafana.com/docs/reference/dashboard/" target="_blank" rel="noopener">Grafana dashboard reference</a></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;a href=&quot;https://grafana.com&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Grafana&lt;/a&gt; has been adopted as a common monitoring dashboard by more and mo
+      
+    
+    </summary>
+    
+      <category term="operation" scheme="https://songrgg.github.io/categories/operation/"/>
+    
+    
+      <category term="grafana" scheme="https://songrgg.github.io/tags/grafana/"/>
+    
+      <category term="automation" scheme="https://songrgg.github.io/tags/automation/"/>
+    
+      <category term="monitoring" scheme="https://songrgg.github.io/tags/monitoring/"/>
+    
+      <category term="alerting" scheme="https://songrgg.github.io/tags/alerting/"/>
+    
+  </entry>
   
   <entry>
     <title>Install Spinnaker on CentOS 7</title>
@@ -93,6 +124,8 @@
       <category term="operation" scheme="https://songrgg.github.io/categories/operation/"/>
     
     
+      <category term="kubernetes" scheme="https://songrgg.github.io/tags/kubernetes/"/>
+    
       <category term="sre" scheme="https://songrgg.github.io/tags/sre/"/>
     
       <category term="cicd" scheme="https://songrgg.github.io/tags/cicd/"/>
@@ -100,8 +133,6 @@
       <category term="spinnaker" scheme="https://songrgg.github.io/tags/spinnaker/"/>
     
       <category term="docker-compose" scheme="https://songrgg.github.io/tags/docker-compose/"/>
-    
-      <category term="kubernetes" scheme="https://songrgg.github.io/tags/kubernetes/"/>
     
   </entry>
   
@@ -126,8 +157,6 @@
       <category term="architecture" scheme="https://songrgg.github.io/categories/architecture/"/>
     
     
-      <category term="kubernetes" scheme="https://songrgg.github.io/tags/kubernetes/"/>
-    
       <category term="envoy" scheme="https://songrgg.github.io/tags/envoy/"/>
     
       <category term="service mesh" scheme="https://songrgg.github.io/tags/service-mesh/"/>
@@ -137,6 +166,8 @@
       <category term="request analysis" scheme="https://songrgg.github.io/tags/request-analysis/"/>
     
       <category term="microservice" scheme="https://songrgg.github.io/tags/microservice/"/>
+    
+      <category term="kubernetes" scheme="https://songrgg.github.io/tags/kubernetes/"/>
     
   </entry>
   
@@ -161,11 +192,11 @@
       <category term="operation" scheme="https://songrgg.github.io/categories/operation/"/>
     
     
-      <category term="configuration management" scheme="https://songrgg.github.io/tags/configuration-management/"/>
+      <category term="microservice" scheme="https://songrgg.github.io/tags/microservice/"/>
     
       <category term="kubernetes" scheme="https://songrgg.github.io/tags/kubernetes/"/>
     
-      <category term="microservice" scheme="https://songrgg.github.io/tags/microservice/"/>
+      <category term="configuration management" scheme="https://songrgg.github.io/tags/configuration-management/"/>
     
       <category term="istio" scheme="https://songrgg.github.io/tags/istio/"/>
     
@@ -467,9 +498,9 @@
       <category term="microservice" scheme="https://songrgg.github.io/categories/microservice/"/>
     
     
-      <category term="configuration management" scheme="https://songrgg.github.io/tags/configuration-management/"/>
-    
       <category term="microservice" scheme="https://songrgg.github.io/tags/microservice/"/>
+    
+      <category term="configuration management" scheme="https://songrgg.github.io/tags/configuration-management/"/>
     
   </entry>
   
@@ -560,33 +591,6 @@
       <category term="architecture" scheme="https://songrgg.github.io/tags/architecture/"/>
     
       <category term="microservice" scheme="https://songrgg.github.io/tags/microservice/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Raspberry 3安装docker</title>
-    <link href="https://songrgg.github.io/life/raspberry3-docker/"/>
-    <id>https://songrgg.github.io/life/raspberry3-docker/</id>
-    <published>2016-10-21T22:00:00.000Z</published>
-    <updated>2019-09-12T20:00:39.266Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="SD卡制作"><a href="#SD卡制作" class="headerlink" title="SD卡制作"></a>SD卡制作</h3><p>准备一张4GB或者以上的micro sd卡，下载<a href="https://www.raspberrypi.org/downloads/raspbian/" target="_blank" rel="noopener">系统镜像</a>，例如raspbian-jessie-lite.img，并使用刷机工具，如<code>Pi filler</code>将其写入sd卡，当然也可以使用命令行的dd，或者其它工具，要注意的是sd卡必须是fat32格式的文件系统，不然树莓派是无法识别的。</p><h3 id="开机启动"><a href="#开机启动" class="headerlink" title="开机启动"></a>开机启动</h3><p>先把所有的线材都连上之后，最后再通电，应该很顺利能看到启动的系统。</p><h3 id="设置WIFI"><a href="#设置WIFI" class="headerlink" title="设置WIFI"></a>设置WIFI</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'network=&#123;</span></span><br><span class="line"><span class="string">  ssid="your-ssid"</span></span><br><span class="line"><span class="string">  psk="your-psk"</span></span><br><span class="line"><span class="string">&#125;'</span> | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf</span><br></pre></td></tr></table></figure><p>如果你的WIFI设置没有启动<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ifconfig wlan0 up</span><br></pre></td></tr></table></figure></p><h3 id="设置apt国内镜像"><a href="#设置apt国内镜像" class="headerlink" title="设置apt国内镜像"></a>设置apt国内镜像</h3><p>阿里云的镜像还是很快的。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'deb http://mirrors.aliyun.com/raspbian/raspbian/ wheezy main non-free contrib\ndeb-src http://mirrors.aliyun.com/raspbian/raspbian/ wheezy main non-free contrib'</span> | sudo tee /etc/apt/sources.list.d/hypriot.list</span><br></pre></td></tr></table></figure></p><h3 id="docker安装"><a href="#docker安装" class="headerlink" title="docker安装"></a>docker安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ssh pi@raspberrypi.local</span><br><span class="line">sudo apt-get install -y apt-transport-https</span><br><span class="line">wget -q https://packagecloud.io/gpg.key -O - | sudo apt-key add -</span><br><span class="line"><span class="built_in">echo</span> <span class="string">'deb https://packagecloud.io/Hypriot/Schatzkiste/debian/ wheezy main'</span> | sudo tee /etc/apt/sources.list.d/hypriot.list</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install -y docker-hypriot</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> docker</span><br></pre></td></tr></table></figure><p>以非root权限运行docker<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo usermod -aG docker `whoami`</span><br></pre></td></tr></table></figure></p><p>如果没有起作用，需要重新登录</p><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://blog.hypriot.com/post/run-docker-rpi3-with-wifi/" target="_blank" rel="noopener">Run Docker on a Raspberry Pi 3 with onboard WiFi</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;SD卡制作&quot;&gt;&lt;a href=&quot;#SD卡制作&quot; class=&quot;headerlink&quot; title=&quot;SD卡制作&quot;&gt;&lt;/a&gt;SD卡制作&lt;/h3&gt;&lt;p&gt;准备一张4GB或者以上的micro sd卡，下载&lt;a href=&quot;https://www.raspberrypi.o
-      
-    
-    </summary>
-    
-      <category term="life" scheme="https://songrgg.github.io/categories/life/"/>
-    
-    
-      <category term="docker" scheme="https://songrgg.github.io/tags/docker/"/>
-    
-      <category term="raspberry" scheme="https://songrgg.github.io/tags/raspberry/"/>
     
   </entry>
   
