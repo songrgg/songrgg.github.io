@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://songrgg.github.io/"/>
-  <updated>2019-09-22T22:06:21.644Z</updated>
+  <updated>2019-12-13T08:37:59.341Z</updated>
   <id>https://songrgg.github.io/</id>
   
   <author>
@@ -15,6 +15,37 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Practice datacenter failover in production</title>
+    <link href="https://songrgg.github.io/operation/practice-datacenter-failover-in-production/"/>
+    <id>https://songrgg.github.io/operation/practice-datacenter-failover-in-production/</id>
+    <published>2019-12-12T23:00:00.000Z</published>
+    <updated>2019-12-13T08:37:59.341Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Context"><a href="#Context" class="headerlink" title="Context"></a>Context</h2><h3 id="Multiple-data-centers"><a href="#Multiple-data-centers" class="headerlink" title="Multiple data centers"></a>Multiple data centers</h3><p>Companies use data center redundancy to implement service’s high availability, there will be multiple data centers existing with 3 main deployments:</p><ol><li>Disaster Recovery<br>You will have your live traffic served in the primary data center, meanwhile disaster recovery data center is a backup to recover when the primary is down. Usually, it doesn’t allow you to run normal operations in the disaster recovery one.</li><li>Hot Standby<br>The primary data center is taking traffic, the hot standby data center is almost equivalent to primary but doesn’t take traffic. You can switch to hot standby anytime the primary data center is down.</li><li>Live traffic handling<br>There are multiple data centers and they’re taking traffic simultaneously.<h3 id="What-is-DC-failover"><a href="#What-is-DC-failover" class="headerlink" title="What is DC failover?"></a>What is DC failover?</h3>When dc ( data center ) failure happens, the most emergent thing is to use the backup dc to replace the primary one and ensures the business keeps running, so the technical team will failover the data center to backup one.<h3 id="Why-do-we-need-to-do-failover-often"><a href="#Why-do-we-need-to-do-failover-often" class="headerlink" title="Why do we need to do failover often?"></a>Why do we need to do failover often?</h3>In the deployments mentioned before, there will be one or more data centers serving user, once the primary one is down the backup one needs to take over as soon as possible, but it’s not often that the primary data center is down, as the time flies, likely, backup datacenter cannot replace the primary or is hard to replace.<br>To keep the backup dc up-to-date, we should do dc failover often regardless manually or automatically.<h2 id="Preparation"><a href="#Preparation" class="headerlink" title="Preparation"></a>Preparation</h2><h3 id="Top-level-thoughts"><a href="#Top-level-thoughts" class="headerlink" title="Top-level thoughts"></a>Top-level thoughts</h3><h4 id="Define-the-impact"><a href="#Define-the-impact" class="headerlink" title="Define the impact"></a>Define the impact</h4>Service is always for customers, although failover is a long-term project that will improve the service’s availability, it’s better not to interrupt the customer’s experience all of a sudden, so according to different company’s considerations, they need to define the impact they can undertake.<h4 id="Define-the-scope"><a href="#Define-the-scope" class="headerlink" title="Define the scope"></a>Define the scope</h4>After the company decides to practice data center failover in production, there will be a lot of questions to answer, “What’s the scale of this failover?”, “Is it global or partial?”, “What consequences can I bear or how much budget do we have?”, “who should participate in”…<br>Such questions can define the scope of the failover, how many business lines should participate in it, how many teams, how many people will join.<h4 id="Define-the-goal"><a href="#Define-the-goal" class="headerlink" title="Define the goal"></a>Define the goal</h4>Also, define the goal clearly, it’s a long term project that ensures there will be always multiple available data centers online, this failover is the first time and will repeat very soon, finally, it’ll be continuous and automatic like chaos engineering.<h4 id="Team-as-unit"><a href="#Team-as-unit" class="headerlink" title="Team as unit"></a>Team as unit</h4>Every team involved should take care of the servers, services… they need to failover when the failover day comes, the team is the minimal unit.<h4 id="Deadline"><a href="#Deadline" class="headerlink" title="Deadline"></a>Deadline</h4>“Deadline is the first productivity”, since the failover may not seem to be important to everyone, teams may not put them to the priority, so the deadline is a clear signal it will happen sooner or later.<h3 id="From-an-SRE’s-perspective"><a href="#From-an-SRE’s-perspective" class="headerlink" title="From an SRE’s perspective"></a>From an SRE’s perspective</h3>As an SRE, I play a vital role in this failover and will execute the operations.</li></ol><ul><li>You should have a full list of your services.</li><li>Get your operation documentation ready, for example, the operation commands and monitoring dashboard addresses.</li><li>Mini failovers can be done gradually before the entire one.<h2 id="When-the-day-comes"><a href="#When-the-day-comes" class="headerlink" title="When the day comes"></a>When the day comes</h2><h3 id="A-clear-agenda"><a href="#A-clear-agenda" class="headerlink" title="A clear agenda"></a>A clear agenda</h3>A clear agenda is a precondition that everything is under control even if something unexpected happens. Take the unexpected into consideration and make the agenda more flexible.<h3 id="Instant-communication"><a href="#Instant-communication" class="headerlink" title="Instant communication"></a>Instant communication</h3>For the team, the progress must be understood by every team member and their clients.<br>Also, it’s necessary to put everything unexpected into a global channel and everyone is aware of it.<h3 id="Roles-we-play"><a href="#Roles-we-play" class="headerlink" title="Roles we play"></a>Roles we play</h3>The coordinator is the one who’s responsible for connecting all the team players, (s)he’s responsible for recording the matters happening including success and failure, other team players should report what they’ve done and seen to the coordinator.<h2 id="After-the-failover"><a href="#After-the-failover" class="headerlink" title="After the failover"></a>After the failover</h2>After the failover, teams involved in this failover should look back and check what’s the good part and what needs to be improved.<br>Against the weakness, we can make some plans and put them into the backlog, we’ll be more confident facing the next failover.<br>I will spend more time on chaos engineering which is the continuous accidents injection to production and will bring production more resilience.<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2></li></ul><ol><li><a href="https://blog.serverdensity.com/multi-data-center-redundancy-application-considerations/" target="_blank" rel="noopener">Multiple data center redundancy</a></li><li><a href="https://principlesofchaos.org/?lang=ENcontent" target="_blank" rel="noopener">Principles of Chaos Engineering</a> </li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;Context&quot;&gt;&lt;a href=&quot;#Context&quot; class=&quot;headerlink&quot; title=&quot;Context&quot;&gt;&lt;/a&gt;Context&lt;/h2&gt;&lt;h3 id=&quot;Multiple-data-centers&quot;&gt;&lt;a href=&quot;#Multiple-dat
+      
+    
+    </summary>
+    
+      <category term="operation" scheme="https://songrgg.github.io/categories/operation/"/>
+    
+    
+      <category term="distributed system" scheme="https://songrgg.github.io/tags/distributed-system/"/>
+    
+      <category term="data center failover" scheme="https://songrgg.github.io/tags/data-center-failover/"/>
+    
+      <category term="resilience" scheme="https://songrgg.github.io/tags/resilience/"/>
+    
+      <category term="chaos engineering" scheme="https://songrgg.github.io/tags/chaos-engineering/"/>
+    
+  </entry>
   
   <entry>
     <title>Generate monitoring dashboards &amp; alertings using Grafana API</title>
@@ -192,11 +223,11 @@
       <category term="operation" scheme="https://songrgg.github.io/categories/operation/"/>
     
     
+      <category term="configuration management" scheme="https://songrgg.github.io/tags/configuration-management/"/>
+    
       <category term="microservice" scheme="https://songrgg.github.io/tags/microservice/"/>
     
       <category term="kubernetes" scheme="https://songrgg.github.io/tags/kubernetes/"/>
-    
-      <category term="configuration management" scheme="https://songrgg.github.io/tags/configuration-management/"/>
     
       <category term="istio" scheme="https://songrgg.github.io/tags/istio/"/>
     
@@ -498,9 +529,9 @@
       <category term="microservice" scheme="https://songrgg.github.io/categories/microservice/"/>
     
     
-      <category term="microservice" scheme="https://songrgg.github.io/tags/microservice/"/>
-    
       <category term="configuration management" scheme="https://songrgg.github.io/tags/configuration-management/"/>
+    
+      <category term="microservice" scheme="https://songrgg.github.io/tags/microservice/"/>
     
   </entry>
   
@@ -560,37 +591,6 @@
       <category term="fault tolerance" scheme="https://songrgg.github.io/tags/fault-tolerance/"/>
     
       <category term="service degrade" scheme="https://songrgg.github.io/tags/service-degrade/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>微服务实践一: 架构图谱</title>
-    <link href="https://songrgg.github.io/microservice/microservice-in-action-1/"/>
-    <id>https://songrgg.github.io/microservice/microservice-in-action-1/</id>
-    <published>2017-03-25T23:00:00.000Z</published>
-    <updated>2019-09-12T20:12:29.244Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h3><ol><li>服务拆分与服务发现</li><li>微服务框架选择</li><li>服务间通信</li><li><a href="/microservice/microservice-in-action-3/">服务编排</a></li><li><a href="/microservice/microservice-in-action-4/">配置管理</a></li><li><a href="/microservice/microservice-in-action-2/">服务容错与降级</a></li><li>监控<ul><li>API监控</li><li>服务调用链</li><li>服务负载</li><li>基础依赖监控</li></ul></li><li>日志分析</li></ol><h3 id="Monolithic-vs-Microservice"><a href="#Monolithic-vs-Microservice" class="headerlink" title="Monolithic vs Microservice"></a>Monolithic vs Microservice</h3><table><thead><tr><th></th><th style="text-align:center">Monolithic</th><th style="text-align:right">Microservice</th></tr></thead><tbody><tr><td>开发测试</td><td style="text-align:center">Java类语言项目越大，运行调试需要越多的编译时间，本地调试有较多依赖，况且业务复杂后不易新人上手</td><td style="text-align:right">只有部分功能的代码，运行更快速，根据业务划分，方便新人上手</td></tr><tr><td>部署</td><td style="text-align:center">更新整个项目</td><td style="text-align:right">更新一个微服务</td></tr><tr><td>生产调试</td><td style="text-align:center">日志集中，调试方便</td><td style="text-align:right">日志分散，服务依赖复杂；拓容简便</td></tr></tbody></table><p>这两种架构视乎业务的复杂程度和代码量的大小，复杂程度低于一定程度，还是单一应用开发更快速，部署更加容易，因为服务拆分和线上的调试这些都是需要成本，反之，当业务不断增加，代码不断膨胀，服务拆分显得逐渐重要，公共功能能抽出来做成基础服务，各个业务所需的轮子也不需要重新造一遍，反而节省了开发成本，同时对于新人的加入，由于服务职责单一，让新人进来一个一个服务地熟悉，好过于一个大而全的项目。</p><h3 id="微服务基础架构"><a href="#微服务基础架构" class="headerlink" title="微服务基础架构"></a>微服务基础架构</h3><p><img src="/images/Microservice.png" alt="部署架构"></p><h3 id="处理流程"><a href="#处理流程" class="headerlink" title="处理流程"></a>处理流程</h3><ol><li>浏览器发起下单请求到负载均衡(LB)</li><li>负载均衡派发请求到API gateway</li><li>API gateway查询服务发现，找到user服务和store服务，将用户信息和商品ID发送给store服务，</li><li>store服务查询MySQL，找到商品信息，生成订单信息，将请求发送给payment服务</li><li>payment服务根据用户指定的支付渠道，向第三方服务发起请求，存储订单信息，并返回订单状态</li><li>store服务 -&gt; API gateway -&gt; LB</li><li>LB返回数据到浏览器</li></ol><h3 id="微服务技术"><a href="#微服务技术" class="headerlink" title="微服务技术"></a>微服务技术</h3><p><img src="/images/Microservice-SKILLS.png" alt="技术图谱"></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;目录&quot;&gt;&lt;a href=&quot;#目录&quot; class=&quot;headerlink&quot; title=&quot;目录&quot;&gt;&lt;/a&gt;目录&lt;/h3&gt;&lt;ol&gt;
-&lt;li&gt;服务拆分与服务发现&lt;/li&gt;
-&lt;li&gt;微服务框架选择&lt;/li&gt;
-&lt;li&gt;服务间通信&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;/mic
-      
-    
-    </summary>
-    
-      <category term="microservice" scheme="https://songrgg.github.io/categories/microservice/"/>
-    
-    
-      <category term="architecture" scheme="https://songrgg.github.io/tags/architecture/"/>
-    
-      <category term="microservice" scheme="https://songrgg.github.io/tags/microservice/"/>
     
   </entry>
   
