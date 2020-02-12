@@ -147,6 +147,83 @@
 
 <div class="card">
     
+    <div class="card-image">
+        <a href="/operation/etcd-for-production/" class="image is-7by1">
+            <img class="thumbnail" src="/images/etcd-offset-color.png" alt="etcd生产环境实践">
+        </a>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2017-06-12T19:27:50.000Z">2017-06-12</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/operation/">operation</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    6 minutes read (About 862 words)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/operation/etcd-for-production/">etcd生产环境实践</a>
+            
+        </h1>
+        <div class="content">
+            <h3 id="生产环境搭建etcd"><a href="#生产环境搭建etcd" class="headerlink" title="生产环境搭建etcd"></a>生产环境搭建etcd</h3><p>以搭建3节点高可用ETCD集群为例，分别在三台主机上初始化<code>ETCD1</code>,<code>ETCD2</code>,<code>ETCD3</code>作为机器IP地址。</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">$ ETCD1=http://10.0.0.1</span><br><span class="line">$ ETCD2=http://10.0.0.2</span><br><span class="line">$ ETCD2=http://10.0.0.3</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 节点1为4核4GB的机器</span></span><br><span class="line">$ etcd --name etcd1 \</span><br><span class="line">--initial-advertise-peer-urls <span class="hljs-variable">$ETCD1</span>:2380  \</span><br><span class="line">--listen-peer-urls <span class="hljs-variable">$ETCD1</span>:2380  \</span><br><span class="line">--listen-client-urls <span class="hljs-variable">$ETCD1</span>:2379,http://127.0.0.1:2379 \</span><br><span class="line">--advertise-client-urls <span class="hljs-variable">$ETCD1</span>:2379  \</span><br><span class="line">--initial-cluster-token etcd-cluster \</span><br><span class="line">--initial-cluster etcd1=<span class="hljs-variable">$ETCD1</span>:2380,etcd2=<span class="hljs-variable">$ETCD2</span>:2380,etcd3=<span class="hljs-variable">$ETCD3</span>:2380 \</span><br><span class="line">--auto-compaction-retention=1 \</span><br><span class="line">--quota-backend-bytes=$((4*1024*1024*1024)) \</span><br><span class="line">--initial-cluster-state new</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 节点2为4核4GB的机器</span></span><br><span class="line">$ etcd  --name etcd2 \</span><br><span class="line">--initial-advertise-peer-urls <span class="hljs-variable">$ETCD2</span>:2380 \</span><br><span class="line">--listen-peer-urls <span class="hljs-variable">$ETCD2</span>:2380 \</span><br><span class="line">--listen-client-urls <span class="hljs-variable">$ETCD2</span>:2379,http://127.0.0.1:2379 \</span><br><span class="line">--advertise-client-urls <span class="hljs-variable">$ETCD2</span>:2379 \</span><br><span class="line">--initial-cluster-token etcd-cluster \</span><br><span class="line">--initial-cluster etcd1=<span class="hljs-variable">$ETCD1</span>:2380,etcd2=<span class="hljs-variable">$ETCD2</span>:2380,etcd3=<span class="hljs-variable">$ETCD3</span>:2380 \</span><br><span class="line">--auto-compaction-retention=1 \</span><br><span class="line">--quota-backend-bytes=$((4*1024*1024*1024)) \</span><br><span class="line">--initial-cluster-state new</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 节点3为4核4GB的机器</span></span><br><span class="line">$ etcd  --name etcd3 \</span><br><span class="line">--initial-advertise-peer-urls <span class="hljs-variable">$ETCD3</span>:2380 \</span><br><span class="line">--listen-peer-urls <span class="hljs-variable">$ETCD3</span>:2380 \</span><br><span class="line">--listen-client-urls <span class="hljs-variable">$ETCD3</span>:2379,http://127.0.0.1:2379 \</span><br><span class="line">--advertise-client-urls <span class="hljs-variable">$ETCD3</span>:2379 \</span><br><span class="line">--initial-cluster-token etcd-cluster \</span><br><span class="line">--initial-cluster etcd1=<span class="hljs-variable">$ETCD1</span>:2380,etcd2=<span class="hljs-variable">$ETCD2</span>:2380,etcd3=<span class="hljs-variable">$ETCD3</span>:2380 \</span><br><span class="line">--auto-compaction-retention=1 \</span><br><span class="line">--quota-backend-bytes=$((4*1024*1024*1024)) \</span><br><span class="line">--initial-cluster-state new</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 检查集群是否正确启动</span></span><br><span class="line">$ etcdctl --endpoints=<span class="hljs-variable">$ETCD1</span>:2379 member list</span><br><span class="line">400938f1eaf1d0ed: name=etcd3 peerURLs=http://10.0.0.1:2380 clientURLs=http://10.0.0.1:2379 isLeader=<span class="hljs-literal">false</span></span><br><span class="line">bd0ff97b33ac1165: name=etcd2 peerURLs=http://10.0.0.2:2380 clientURLs=http://10.0.0.2:2379 isLeader=<span class="hljs-literal">false</span></span><br><span class="line">be62429afec4445f: name=etcd1 peerURLs=http://10.0.0.3:2380 clientURLs=http://10.0.0.3:2379 isLeader=<span class="hljs-literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="历史记录压缩"><a href="#历史记录压缩" class="headerlink" title="历史记录压缩"></a>历史记录压缩</h3><p>如果将etcd用作服务发现，每次服务注册和更新都可以看做一条新数据，日积月累，这些数据的量会导致etcd占用内存越来越大，直到etcd到达空间配额限制的时候，etcd的写入将会被静止，影响线上服务，定期删除历史记录就是避免这种情况。</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 只保留一个小时的历史数据</span></span><br><span class="line">$ etcd --auto-compaction-retention=1</span><br></pre></td></tr></table></figure>
+
+<h3 id="磁盘去碎片化"><a href="#磁盘去碎片化" class="headerlink" title="磁盘去碎片化"></a>磁盘去碎片化</h3><p><a href="https://coreos.com/etcd/docs/latest/op-guide/maintenance.html#defragmentation" target="_blank" rel="noopener">etcd官方</a>是说在进行compaction操作之后，旧的revision被压缩，会产生内部的碎片，内部碎片是指空闲状态的，能被后端使用但是仍然消耗存储空间的磁盘空间。去碎片化实际上是将存储空间还给文件系统。</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ etcdctl defrag</span><br></pre></td></tr></table></figure>
+
+<h3 id="空间配额"><a href="#空间配额" class="headerlink" title="空间配额"></a>空间配额</h3><p>空间配额用来保障集群可靠地进行操作。如果没有限制配额，当键空间变大之后，直到用光了磁盘空间，它就会影响etcd集群的表现。当任意节点超出空间配额， 那么它将进入维护状态，只接受读/删操作。只有释放了足够空间、去碎片化了后端数据库并且清理了空间配额之后，集群才能继续正常操作。</p>
+<p>默认限制是<strong>2GB</strong>，可以通过<code>--quota-backend-bytes</code>配置，最高上限为<strong>8GB</strong>。</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 显式配置配额为16MB</span></span><br><span class="line">$ etcd --quota-backend-bytes=$((16*1024*1024))</span><br><span class="line">$ ETCDCTL_API=3 etcdctl --write-out=table endpoint status</span><br></pre></td></tr></table></figure>
+
+<p>如果遇到空间配额不足的情况，那么需要对etcd进行操作。</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 获取当前版本号</span></span><br><span class="line">$ rev=$(ETCDCTL_API=3 etcdctl --endpoints=:2379 endpoint status --write-out=<span class="hljs-string">"json"</span> | egrep -o <span class="hljs-string">'"revision":[0-9]*'</span> | egrep -o <span class="hljs-string">'[0-9]*'</span>）</span><br><span class="line"><span class="hljs-comment"># 压缩所有旧版本</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl compact <span class="hljs-variable">$rev</span></span><br><span class="line"><span class="hljs-comment"># 去碎片化</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl defrag</span><br><span class="line"><span class="hljs-comment"># 取消警报</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl alarm disarm</span><br><span class="line"><span class="hljs-comment"># 测试通过</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl put newkey 123</span><br></pre></td></tr></table></figure>
+
+<h3 id="快照备份"><a href="#快照备份" class="headerlink" title="快照备份"></a>快照备份</h3><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ etcdctl snapshot save backup.db</span><br><span class="line">$ etcdctl --write-out=table snapshot status backup.db</span><br><span class="line">+----------+----------+------------+------------+</span><br><span class="line">|   HASH   | REVISION | TOTAL KEYS | TOTAL SIZE |</span><br><span class="line">+----------+----------+------------+------------+</span><br><span class="line">| fe01cf57 |       10 |          7 | 2.1 MB     |</span><br><span class="line">+----------+----------+------------+------------+</span><br></pre></td></tr></table></figure>
+
+<h3 id="调优"><a href="#调优" class="headerlink" title="调优"></a>调优</h3><p>跨数据中心时，需要调整心跳间隔和选举超时时间<br>默认的心跳时间是100ms，建议为round trip时间<br>默认选举超时是1000ms</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
+<li><a href="https://coreos.com/etcd/docs/latest/op-guide/configuration.html" target="_blank" rel="noopener">详细配置</a></li>
+<li><a href="https://github.com/coreos/etcd/blob/master/Documentation/op-guide/maintenance.md" target="_blank" rel="noopener">etcd运维</a></li>
+</ol>
+
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+    
+
+<div class="card">
+    
     <div class="card-content article ">
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
@@ -398,7 +475,7 @@
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            48
+                            49
                         </p>
                     </a>
                 </div>
@@ -422,7 +499,7 @@
                     </p>
                     <a href="/tags">
                         <p class="title has-text-weight-normal">
-                            56
+                            57
                         </p>
                     </a>
                 </div>
@@ -511,7 +588,7 @@
                 <span class="level-item">operation</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">13</span>
+                <span class="level-item tag">14</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/programming/">
@@ -532,7 +609,7 @@
         <h3 class="menu-label">
             Tag Cloud
         </h3>
-        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 10px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
+        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 12.5px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
     </div>
 </div>
     
@@ -544,6 +621,25 @@
         <h3 class="menu-label">
             Recent
         </h3>
+        
+        <article class="media">
+            
+            <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/certificate-expiration%20-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-11T21:11:50.000Z">2020-02-11</time></div>
+                    <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
+                    </p>
+                </div>
+            </div>
+        </article>
         
         <article class="media">
             
@@ -621,25 +717,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/hackathon-spinnaker/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/spin-deployment-strategies.png" alt="My first Hackathon: bring Spinnaker to my company">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-11T21:11:50.000Z">2019-09-11</time></div>
-                    <a href="/operation/hackathon-spinnaker/" class="title has-link-black-ter is-size-6 has-text-weight-normal">My first Hackathon: bring Spinnaker to my company</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
         
@@ -650,6 +727,17 @@
             Archives
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/02/">
+                <span class="level-start">
+                    <span class="level-item">February 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2019/12/">
@@ -1030,6 +1118,13 @@
                 </div>
                 
                 <div class="control">
+                    <a class="tags has-addons" href="/tags/certificate/">
+                        <span class="tag">certificate</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
                     <a class="tags has-addons" href="/tags/chaos-engineering/">
                         <span class="tag">chaos engineering</span>
                         <span class="tag is-grey">1</span>
@@ -1228,7 +1323,7 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/monitoring/">
                         <span class="tag">monitoring</span>
-                        <span class="tag is-grey">1</span>
+                        <span class="tag is-grey">2</span>
                     </a>
                 </div>
                 
@@ -1410,6 +1505,25 @@
         
         <article class="media">
             
+            <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/certificate-expiration%20-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-11T21:11:50.000Z">2020-02-11</time></div>
+                    <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/operation/practice-datacenter-failover-in-production/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/datacenter.jpg" alt="Practice datacenter failover in production">
@@ -1484,25 +1598,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/hackathon-spinnaker/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/spin-deployment-strategies.png" alt="My first Hackathon: bring Spinnaker to my company">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-11T21:11:50.000Z">2019-09-11</time></div>
-                    <a href="/operation/hackathon-spinnaker/" class="title has-link-black-ter is-size-6 has-text-weight-normal">My first Hackathon: bring Spinnaker to my company</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
     
@@ -1513,6 +1608,17 @@
             Archives
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/02/">
+                <span class="level-start">
+                    <span class="level-item">February 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2019/12/">
@@ -1893,6 +1999,13 @@
                 </div>
                 
                 <div class="control">
+                    <a class="tags has-addons" href="/tags/certificate/">
+                        <span class="tag">certificate</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
                     <a class="tags has-addons" href="/tags/chaos-engineering/">
                         <span class="tag">chaos engineering</span>
                         <span class="tag is-grey">1</span>
@@ -2091,7 +2204,7 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/monitoring/">
                         <span class="tag">monitoring</span>
-                        <span class="tag is-grey">1</span>
+                        <span class="tag is-grey">2</span>
                     </a>
                 </div>
                 
@@ -2270,7 +2383,7 @@
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2019 songrgg&nbsp;
+                &copy; 2020 songrgg&nbsp;
                 Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a
                         href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
                 

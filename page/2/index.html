@@ -137,6 +137,95 @@
 <div class="card">
     
     <div class="card-image">
+        <a href="/microservice/goodbye-micro/" class="image is-7by1">
+            <img class="thumbnail" src="/images/micro.png" alt="再见，micro: 迁移go-micro到纯gRPC框架">
+        </a>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2018-10-27T22:00:00.000Z">2018-10-28</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/microservice/">microservice</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    11 minutes read (About 1641 words)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/microservice/goodbye-micro/">再见，micro: 迁移go-micro到纯gRPC框架</a>
+            
+        </h1>
+        <div class="content">
+            <h1 id="go-micro迁移到gRPC"><a href="#go-micro迁移到gRPC" class="headerlink" title="go-micro迁移到gRPC"></a>go-micro迁移到gRPC</h1><p><a href="https://github.com/micro/micro" target="_blank" rel="noopener">micro</a>是基于golang的微服务框架，之前华尔街见闻架构升级中谈到了我们是基于go-micro的后端架构，随着我们对服务网格的调研、测试和实施，为了打通不同语言之间的服务调用，我们选择了gRPC作为服务内部的通用协议。</p>
+<p>go-micro框架的架构非常具有拓展性，它拥有自己的RPC框架，通过抽象codec,transport,selector等微服务组件，你既可以使用官方实现的各种插件<a href="https://github.com/micro/go-plugins" target="_blank" rel="noopener">go-plugins</a>进行组装，又可以根据实际的情况实现自己的组件。然而，我们打算利用服务网格的优势，将微服务的基础组件下沉到基础设施中去，将组件代码从代码库中剥离开来。</p>
+<p>这样一来，我们相当于只需要最简的RPC框架，只需要服务之间有统一、稳定、高效的通信协议，由于micro在我们新架构中略显臃肿，于是我们选择逐渐剥除micro。还有一个重要原因，我们选择的服务网格方案是istio，它的代理原生支持gRPC，而micro只是将gRPC当做transport层，相当于复写了gRPC的服务路由逻辑，这样有损于istio的一些特性，譬如流量监控等功能。</p>
+<p>出于这些考虑，第一步需要将micro改成纯gRPC模式，这里的改造部分我们考虑只应该去更改基础库的代码，而尽量不要使业务代码更改，减少对已有逻辑的影响，和一些软性的譬如开发人员的工作量。</p>
+<h2 id="服务发现模块"><a href="#服务发现模块" class="headerlink" title="服务发现模块"></a>服务发现模块</h2><p>istio的服务发现支持etcd、consul等，我们需要将其改成使用kubernetes的服务名进行访问。通过实现<a href="https://gist.github.com/songrgg/22999fb7ab76a30dcac17cb28ed412d4" target="_blank" rel="noopener">istio selector</a>的方式，我们将RPC调用的服务名与k8s的服务名端口做映射。</p>
+<figure class="highlight go hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">package</span> istio</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">import</span> (</span><br><span class="line">	<span class="hljs-string">"fmt"</span></span><br><span class="line"></span><br><span class="line">	<span class="hljs-string">"github.com/micro/go-micro/registry"</span></span><br><span class="line">	<span class="hljs-string">"github.com/micro/go-micro/selector"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">const</span> (</span><br><span class="line">	svcPort = <span class="hljs-number">10088</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">var</span> (</span><br><span class="line">	serviceHostMapping = <span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]<span class="hljs-keyword">string</span>&#123;</span><br><span class="line">		<span class="hljs-string">"payment"</span>: <span class="hljs-string">"payment.common"</span>,</span><br><span class="line">		<span class="hljs-string">"content"</span>: <span class="hljs-string">"content.ns1"</span>,</span><br><span class="line">		<span class="hljs-string">"user"</span>:    <span class="hljs-string">"user.ns1"</span>,</span><br><span class="line">	&#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">type</span> istio <span class="hljs-keyword">struct</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(r *istio)</span> <span class="hljs-title">Select</span><span class="hljs-params">(service <span class="hljs-keyword">string</span>, opts ...selector.SelectOption)</span> <span class="hljs-params">(selector.Next, error)</span></span> &#123;</span><br><span class="line">	<span class="hljs-keyword">if</span> host, exist := serviceHostMapping[service]; exist &#123;</span><br><span class="line">		node := &amp;registry.Node&#123;</span><br><span class="line">			Id:      service,</span><br><span class="line">			Address: host,</span><br><span class="line">			Port:    svcPort,</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span> <span class="hljs-params">(*registry.Node, error)</span></span> &#123;</span><br><span class="line">			<span class="hljs-keyword">return</span> node, <span class="hljs-literal">nil</span></span><br><span class="line">		&#125;, <span class="hljs-literal">nil</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, fmt.Errorf(<span class="hljs-string">"service %s(%s) not found"</span>, service, svc)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>这里注意的是由于服务之间调用需要指定service name和端口，所以在这里我们把端口设置了一个magic number。</p>
+<h2 id="传输模块"><a href="#传输模块" class="headerlink" title="传输模块"></a>传输模块</h2><p>go-micro采用各种协议作为传输报文的工具，可以从<a href="https://github.com/micro/go-plugins/tree/master/transport" target="_blank" rel="noopener">transport</a>中了解到，有http/grpc/tcp/utp等，我们曾先后使用过tcp、utp、gRPC，经过测试gRPC是其中最为稳定的。之前提到过gRPC只是作为传输信道，micro定义了自己的RPC接口，实现了RPC的路由、传输、重试等功能，通过自定义了protobuf的插件生成符合micro标准的proto文件。</p>
+<p>为了向后兼容，在使用grpc替换原RPC时，我也需要根据protobuf文件生成新的golang代码，其中包括client端、server端代码的变更，实际上我的更新是针对<a href="https://github.com/golang/protobuf/tree/master/protoc-gen-go" target="_blank" rel="noopener">protoc-gen-go</a>，fork之后修改<a href="https://github.com/golang/protobuf/blob/master/protoc-gen-go/grpc/grpc.go" target="_blank" rel="noopener">grpc/grpc.go</a>部分，在<code>func generateService()</code>中对Client端代码进行micro的适配。</p>
+<h3 id="Client"><a href="#Client" class="headerlink" title="Client"></a>Client</h3><figure class="highlight go hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c *someClient)</span> <span class="hljs-title">DoSomething</span><span class="hljs-params">(ctx context.Context, in *SomeRequest, opts ...grpc.CallOption)</span> <span class="hljs-params">(*SomeResponse, error)</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Server"><a href="#Server" class="headerlink" title="Server"></a>Server</h3><p>Server端代码的更新除了接口的适配，有一个关注点是micro的接口设计是</p>
+<figure class="highlight go hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DoSomething(context.Context, *SomeRequest, *SomeResponse) error</span><br></pre></td></tr></table></figure>
+<p>而gRPC是</p>
+<figure class="highlight go hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DoSomething(context.Context, *SomeRequest) (*SomeResponse, error)</span><br></pre></td></tr></table></figure>
+
+<p>micro接口设计的好处是支持服务端缓存的应用，当服务端handler触发时，cache interceptor可以将response缓存，当缓存命中时可以将其返回。而由于gRPC的版本将response放在了返回值中，运行时无法将譬如redis中字符串格式的response解码成<code>SomeResponse</code>，而micro版本由于将其放在了参数位置，所以可以通过</p>
+<figure class="highlight go hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">json.Unmarshall([]<span class="hljs-keyword">byte</span>(<span class="hljs-string">""</span>), &amp;SomeResponse&#123;&#125;)</span><br></pre></td></tr></table></figure>
+<p>从字符串恢复response。</p>
+<p>我们的做法是不改变接口的设计，而是在自动生成的golang代码中，在interceptor运行之前将response object塞入context。</p>
+<figure class="highlight go hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// Server</span></span><br><span class="line">ctx = ctx.WithValue(<span class="hljs-string">"IstioResponseBody"</span>, &amp;SomeResponse&#123;&#125;)</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// Interceptor</span></span><br><span class="line">obj := ctx.Value(<span class="hljs-string">"IstioResponseBody"</span>)</span><br><span class="line">json.Unmarshall([]<span class="hljs-keyword">byte</span>(<span class="hljs-string">""</span>), obj)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Interceptor模块"><a href="#Interceptor模块" class="headerlink" title="Interceptor模块"></a>Interceptor模块</h2><p>一些interceptor的迁移工作，例如logger、cache、recover等。</p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
+<li><p>向后兼容<br>更新的过程开发人员实际上并不是特别感兴趣，我们SRE能做的是对他们基本上无改动，第一个版本不要让开发感知。虽然实际上测试时由于我们的变动，测试环境不断受到稳定性质疑。</p>
+</li>
+<li><p>micro和gRPC的context传递不同<br>gRPC是基于http2，metadata是基于HTTP header传递，Client利用<code>metadata.NewOutgoingContext(ctx, MD)</code>携带metadata，而Server端利用<code>metadata.FromIncomingContext(ctx)</code>提取metadata。而micro则用<code>context.WithValue(metaKey{}, MD)</code>传递。</p>
+</li>
+<li><p>使用环境变量做一些特殊处理<br>我们通过环境变量在基础库里做了一些判断，在新老架构并存下进行一些特殊处理，譬如刚才说到的metadata获取逻辑。</p>
+</li>
+<li><p>关于proto自动生成<br>我们通过在CI中配置istio版本镜像的编译打包逻辑和原有逻辑共存，在编译前我们运行proto编译工具，生成gRPC的golang文件，从而打出新的镜像。</p>
+</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>micro陪伴了我们一年多的时间，期间它的架构设计给了我们很大的弹性可以去适配一些我们的架构，可以选择很多好的开源工具，譬如zipkin、prometheus、etcd等，适合于刚上微服务不久的项目进行技术摸索和选择，而这一年的时间，我们的架构也逐渐明晰和稳定，我们更倾向于一个精简的基础库，并且由于在线项目的不断增加，运维成本可以通过下沉基础组件进行降低。</p>
+
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+    
+
+<div class="card">
+    
+    <div class="card-image">
         <a href="/programming/grpc-go-client-performance-test/" class="image is-7by1">
             <img class="thumbnail" src="/images/grpc.png" alt="gRPC Golang Client Connection Test">
         </a>
@@ -754,83 +843,6 @@
 
 
 
-    
-
-<div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2017-06-02T22:00:00.000Z">2017-06-03</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/programming/">programming</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    7 minutes read (About 1078 words)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/programming/rate-limiter-for-distributed-system/">分布式系统频次限制实现</a>
-            
-        </h1>
-        <div class="content">
-            <h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>频次限制（rate limiting）是Web系统比较常见的功能，防止用户频繁访问接口，导致系统负载增加而影响服务的质量。</p>
-<h3 id="系统要求"><a href="#系统要求" class="headerlink" title="系统要求"></a>系统要求</h3><ul>
-<li>针对线上的功能，实现对指定对象有访问频次的限制</li>
-<li>支持多个客户端访问</li>
-<li>低延迟</li>
-<li>承受较大的访问量</li>
-<li>易于拓展</li>
-</ul>
-<h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3><ol>
-<li>设置服务频次限制，如针对某个消耗资源很高的API设置1QPS的访问限制，并为单一用户生成访问该API的唯一<code>key</code>，如<code>userA_APIX</code>就是表示userA访问APIX的情况</li>
-<li>根据指定<code>key</code>，服务向<code>ratelimiter</code>询问是否允许此次访问</li>
-</ol>
-<h4 id="基于令牌桶算法的伪代码"><a href="#基于令牌桶算法的伪代码" class="headerlink" title="基于令牌桶算法的伪代码"></a>基于令牌桶算法的伪代码</h4><figure class="highlight golang hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// 初始换状态</span></span><br><span class="line">rate := <span class="hljs-number">1</span> <span class="hljs-comment">// 设置频率为1ops</span></span><br><span class="line">needed := <span class="hljs-number">1</span> <span class="hljs-comment">// 设置访问1次API需要的令牌数量为1</span></span><br><span class="line">key := <span class="hljs-string">"userA_APIX"</span> <span class="hljs-comment">// userA访问APIX的场景</span></span><br><span class="line">tokens := <span class="hljs-number">0</span> <span class="hljs-comment">// 当前可用令牌数</span></span><br><span class="line">lastTime := time.Now() <span class="hljs-comment">// 上次令牌更新时间</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 时间过去1s</span></span><br><span class="line">time.Sleep(time.Second)</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// userA请求访问APIX</span></span><br><span class="line">nowTime := time.Now()</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 计算这段时间新生成的令牌数量</span></span><br><span class="line">newTokens := (nowTime-lastTime)*rate</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 判断是否允许访问</span></span><br><span class="line">allow := (newTokens+tokens)&gt;needed</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 更新数据</span></span><br><span class="line"><span class="hljs-keyword">if</span> allow &#123;</span><br><span class="line">    tokens = newTokens+tokens-needed</span><br><span class="line">    lastTime = nowTime</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// 响应用户操作</span></span><br><span class="line">&#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">    tokens = tokens+newTokens</span><br><span class="line">    lastTime = nowTime</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// 提示用户操作超过限制</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h3><ol>
-<li><p>频次限制应该统一存储<br>webserver是任意可拓展个数的服务，一开始，我将<code>ratelimiter</code>的存储放在了各自服务中，导致明明我限制的是整个集群这个<code>API</code>的访问单人不可超过<code>1</code>QPS，如果N个服务，实际上是<code>N</code>QPS。所以这个频次限制需要集中存储，统一整个系统的访问频次。</p>
-</li>
-<li><p>频次限制本质是一个服务<br>我试着把存储挪到了<code>redis</code>，并且使用了一些<code>redis</code>的<code>WATCH</code>命令实现了<strong>CAS</strong>(Compare And Set)，<code>redis</code>里存了<code>key</code>，<code>tokens</code>，<code>lastTime</code>，算法逻辑仍然放在<code>client</code>端（也就是那些web server）。<br>经过压测，QPS比较低，主要是因为CAS的重试率随着并发量上升不断升高，况且重试过程不断访问<code>redis</code>增加了网络开销，于是考虑如何将逻辑和数据放到一起。</p>
-</li>
-<li><p>控制成本<br>重新开发一个频限服务，需要考虑多节点数据同步，请求转发，failover等功能，我希望以最小的开支实现这个系统。</p>
-</li>
-</ol>
-<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>最终选择了<code>redis</code>的<code>lua</code>脚本实现了频限功能，既统一了存储，又可以利用<code>redis cluster</code>实现了可拓展的频限服务，以最小的成本实现功能。<br>我司技术栈是<code>Golang</code>，所以实现了<code>Golang</code>的简单库，逻辑是初始化<code>redis client</code>并将<code>lua</code>脚本上传，在判断是否超过频率限制的时候，使用<code>EVALSHA</code>命令执行。由于逻辑都在<code>redis</code>端，所以客户端实际上代码极少，只要注意<code>redis</code>挂了不影响服务的响应，并且<code>redis</code>重启后保证<code>lua</code>脚本上传等。</p>
-<p><code>lua</code>脚本是来自<code>Stripe</code>公司的一位工程师：</p>
-<figure class="highlight lua hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">local</span> tokens_key = KEYS[<span class="hljs-number">1</span>]</span><br><span class="line"><span class="hljs-keyword">local</span> timestamp_key = KEYS[<span class="hljs-number">2</span>]</span><br><span class="line"><span class="hljs-keyword">local</span> rate = <span class="hljs-built_in">tonumber</span>(ARGV[<span class="hljs-number">1</span>])</span><br><span class="line"><span class="hljs-keyword">local</span> capacity = <span class="hljs-built_in">tonumber</span>(ARGV[<span class="hljs-number">2</span>])</span><br><span class="line"><span class="hljs-keyword">local</span> now = <span class="hljs-built_in">tonumber</span>(ARGV[<span class="hljs-number">3</span>])</span><br><span class="line"><span class="hljs-keyword">local</span> requested = <span class="hljs-built_in">tonumber</span>(ARGV[<span class="hljs-number">4</span>])</span><br><span class="line"><span class="hljs-keyword">local</span> fill_time = capacity/rate</span><br><span class="line"><span class="hljs-keyword">local</span> ttl = <span class="hljs-built_in">math</span>.<span class="hljs-built_in">floor</span>(fill_time*<span class="hljs-number">2</span>)</span><br><span class="line"><span class="hljs-keyword">local</span> last_tokens = <span class="hljs-built_in">tonumber</span>(redis.call(<span class="hljs-string">"get"</span>, tokens_key))</span><br><span class="line"><span class="hljs-keyword">if</span> last_tokens == <span class="hljs-literal">nil</span> <span class="hljs-keyword">then</span></span><br><span class="line">    last_tokens = capacity</span><br><span class="line"><span class="hljs-keyword">end</span></span><br><span class="line"><span class="hljs-keyword">local</span> last_refreshed = <span class="hljs-built_in">tonumber</span>(redis.call(<span class="hljs-string">"get"</span>, timestamp_key))</span><br><span class="line"><span class="hljs-keyword">if</span> last_refreshed == <span class="hljs-literal">nil</span> <span class="hljs-keyword">then</span></span><br><span class="line">    last_refreshed = <span class="hljs-number">0</span></span><br><span class="line"><span class="hljs-keyword">end</span></span><br><span class="line"><span class="hljs-keyword">local</span> delta = <span class="hljs-built_in">math</span>.<span class="hljs-built_in">max</span>(<span class="hljs-number">0</span>, now-last_refreshed)</span><br><span class="line"><span class="hljs-keyword">local</span> filled_tokens = <span class="hljs-built_in">math</span>.<span class="hljs-built_in">min</span>(capacity, last_tokens+(delta*rate))</span><br><span class="line"><span class="hljs-keyword">local</span> allowed = filled_tokens &gt;= requested</span><br><span class="line"><span class="hljs-keyword">local</span> new_tokens = filled_tokens</span><br><span class="line"><span class="hljs-keyword">if</span> allowed <span class="hljs-keyword">then</span></span><br><span class="line">    new_tokens = filled_tokens - requested</span><br><span class="line"><span class="hljs-keyword">end</span></span><br><span class="line">redis.call(<span class="hljs-string">"setex"</span>, tokens_key, ttl, new_tokens)</span><br><span class="line">redis.call(<span class="hljs-string">"setex"</span>, timestamp_key, ttl, now)</span><br><span class="line"><span class="hljs-keyword">return</span> &#123; allowed, new_tokens &#125;</span><br></pre></td></tr></table></figure>
-
-<p>通过<code>SCRIPT LOAD</code>上传该脚本获得<code>hash</code>，使用<code>EVALSHA &lt;hash&gt; 2 userA_APIX_token userA_APIX_ts 1 1 &lt;now_time&gt; 1</code>调用该脚本，根据返回的<code>allowed</code>决定此次操作是否进行。</p>
-<h3 id="benchmark"><a href="#benchmark" class="headerlink" title="benchmark"></a>benchmark</h3><p>经过测试，MacBook Pro (Retina, 13-inch, Late 2013), CPU 2.4 GHz Intel Core i5, Memory 8 GB 1600 MHz DDR3上能达到<strong>1w+</strong>QPS。</p>
-<h3 id="项目地址"><a href="#项目地址" class="headerlink" title="项目地址"></a>项目地址</h3><p><a href="https://github.com/wallstreetcn/rate" target="_blank" rel="noopener">ratelimiter的golang实现</a>，目前该版本暂时支持<code>redis client</code>，为了拓展性，可以将其升级为<code>redis cluster</code>，满足大并发系统的需求。</p>
-
-        </div>
-        
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-
-
 
     
 <div class="card card-transparent">
@@ -851,7 +863,7 @@
             
             <li><span class="pagination-ellipsis has-text-black-ter">&hellip;</span></li>
             
-            <li><a class="pagination-link has-text-black-ter" href="/page/6/">6</a></li>
+            <li><a class="pagination-link has-text-black-ter" href="/page/7/">7</a></li>
             
         </ul>
     </nav>
@@ -901,7 +913,7 @@
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            48
+                            49
                         </p>
                     </a>
                 </div>
@@ -925,7 +937,7 @@
                     </p>
                     <a href="/tags">
                         <p class="title has-text-weight-normal">
-                            56
+                            57
                         </p>
                     </a>
                 </div>
@@ -1014,7 +1026,7 @@
                 <span class="level-item">operation</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">13</span>
+                <span class="level-item tag">14</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/programming/">
@@ -1035,7 +1047,7 @@
         <h3 class="menu-label">
             Tag Cloud
         </h3>
-        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 10px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
+        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 12.5px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
     </div>
 </div>
     
@@ -1047,6 +1059,25 @@
         <h3 class="menu-label">
             Recent
         </h3>
+        
+        <article class="media">
+            
+            <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/certificate-expiration%20-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-11T21:11:50.000Z">2020-02-11</time></div>
+                    <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
+                    </p>
+                </div>
+            </div>
+        </article>
         
         <article class="media">
             
@@ -1124,25 +1155,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/hackathon-spinnaker/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/spin-deployment-strategies.png" alt="My first Hackathon: bring Spinnaker to my company">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-11T21:11:50.000Z">2019-09-11</time></div>
-                    <a href="/operation/hackathon-spinnaker/" class="title has-link-black-ter is-size-6 has-text-weight-normal">My first Hackathon: bring Spinnaker to my company</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
         
@@ -1153,6 +1165,17 @@
             Archives
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/02/">
+                <span class="level-start">
+                    <span class="level-item">February 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2019/12/">
@@ -1533,6 +1556,13 @@
                 </div>
                 
                 <div class="control">
+                    <a class="tags has-addons" href="/tags/certificate/">
+                        <span class="tag">certificate</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
                     <a class="tags has-addons" href="/tags/chaos-engineering/">
                         <span class="tag">chaos engineering</span>
                         <span class="tag is-grey">1</span>
@@ -1731,7 +1761,7 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/monitoring/">
                         <span class="tag">monitoring</span>
-                        <span class="tag is-grey">1</span>
+                        <span class="tag is-grey">2</span>
                     </a>
                 </div>
                 
@@ -1913,6 +1943,25 @@
         
         <article class="media">
             
+            <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/certificate-expiration%20-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-11T21:11:50.000Z">2020-02-11</time></div>
+                    <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/operation/practice-datacenter-failover-in-production/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/datacenter.jpg" alt="Practice datacenter failover in production">
@@ -1987,25 +2036,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/hackathon-spinnaker/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/spin-deployment-strategies.png" alt="My first Hackathon: bring Spinnaker to my company">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-11T21:11:50.000Z">2019-09-11</time></div>
-                    <a href="/operation/hackathon-spinnaker/" class="title has-link-black-ter is-size-6 has-text-weight-normal">My first Hackathon: bring Spinnaker to my company</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
     
@@ -2016,6 +2046,17 @@
             Archives
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/02/">
+                <span class="level-start">
+                    <span class="level-item">February 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2019/12/">
@@ -2396,6 +2437,13 @@
                 </div>
                 
                 <div class="control">
+                    <a class="tags has-addons" href="/tags/certificate/">
+                        <span class="tag">certificate</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
                     <a class="tags has-addons" href="/tags/chaos-engineering/">
                         <span class="tag">chaos engineering</span>
                         <span class="tag is-grey">1</span>
@@ -2594,7 +2642,7 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/monitoring/">
                         <span class="tag">monitoring</span>
-                        <span class="tag is-grey">1</span>
+                        <span class="tag is-grey">2</span>
                     </a>
                 </div>
                 
@@ -2773,7 +2821,7 @@
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2019 songrgg&nbsp;
+                &copy; 2020 songrgg&nbsp;
                 Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a
                         href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
                 

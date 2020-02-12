@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://songrgg.github.io/"/>
-  <updated>2019-12-14T09:26:05.976Z</updated>
+  <updated>2020-02-12T20:16:22.199Z</updated>
   <id>https://songrgg.github.io/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf</title>
+    <link href="https://songrgg.github.io/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/"/>
+    <id>https://songrgg.github.io/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/</id>
+    <published>2020-02-11T21:11:50.000Z</published>
+    <updated>2020-02-12T20:16:22.199Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>Certificates are broadly used for security reasons, they can be used within internal service or public service communication. The most common certificate is TLS used for verifying the identity of the HTTPS service. To increase security, the certificate will not be always valid because of expiration. To prevent the certificate expiry, we should rotate them periodically and meanwhile monitor them and alert if expired. Telegraf is a popular metric collecting tool to implement this.</p><h2 id="Overview-for-certificate-types"><a href="#Overview-for-certificate-types" class="headerlink" title="Overview for certificate types"></a>Overview for certificate types</h2><ol><li>.csr<br>Certificate Signing Request used to request a certificate from the certificate authority.</li><li>.pem<br>This is a container format that may include just the public certificate or may include an entire certificate chain including public key, private key, and root certificates. Confusingly, it may also encode a CSR (e.g. as used here) as the PKCS10 format can be translated into PEM.</li><li>.key<br>This is a PEM formatted file containing just the private-key of a specific certificate and is merely a conventional name and not a standardized one.</li><li>.pkcs12 .pfx .p12<br>This is a passworded container format that contains both public and private certificate pairs. Unlike .pem files, this container is fully encrypted. Openssl can turn this into a .pem file with both public and private keys.</li><li>.cert .cer .crt<br>A .pem (or rarely .der) formatted file with a different extension, one that is recognized by Windows Explorer as a certificate, which .pem is not.</li><li>.jks<br>A Java KeyStore (JKS) is a repository of security certificates – either authorization certificates or public key certificates – plus corresponding private keys, used for instance in SSL encryption.</li></ol><h2 id="Check-certificate-expiry-time"><a href="#Check-certificate-expiry-time" class="headerlink" title="Check certificate expiry time"></a>Check certificate expiry time</h2><ol><li><p>check the JKS expiry time</p> <figure class="highlight bash hljs"><figcaption><span>check_jks.sh</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># to check keystore.jks expiry time</span></span><br><span class="line">keytool -list -v -keystore keystore.jks -storepass <span class="hljs-string">"pass"</span> | grep until</span><br></pre></td></tr></table></figure></li><li><p>check the PKCS#12 expiry time</p> <figure class="highlight bash hljs"><figcaption><span>check_p12.sh</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># to check certicate.p12 expiry time</span></span><br><span class="line">openssl pkcs12 -<span class="hljs-keyword">in</span> certicate.p12 -nokeys | openssl x509 -noout -enddate</span><br></pre></td></tr></table></figure></li></ol><h2 id="Customize-telegraf-plugin"><a href="#Customize-telegraf-plugin" class="headerlink" title="Customize telegraf plugin"></a>Customize telegraf plugin</h2><p>In this case, we can use a bash script to collect the metrics and output it as <a href="https://docs.influxdata.com/influxdb/v1.7/write_protocols/line_protocol_tutorial/" target="_blank" rel="noopener">influxDB line protocol</a>, it does not need you to use influxDB, you can use any kind of monitoring backend that can read from telegraf, for example, Prometheus.</p><p><a href="https://www.influxdata.com/time-series-platform/telegraf/" target="_blank" rel="noopener">Telegraf</a> is a daemon that can be running on servers to collect system metrics, it supports multiple input plugins to collect metrics. <a href="https://github.com/influxdata/telegraf/tree/master/plugins/inputs/exec" target="_blank" rel="noopener"><code>intput.exec</code></a> is an input plugin which will run the specified script, the output of the script will be treated as a data point.</p><h3 id="Bash-script-to-generate-the-metric"><a href="#Bash-script-to-generate-the-metric" class="headerlink" title="Bash script to generate the metric"></a>Bash script to generate the metric</h3><p>We can write a bash script to generate an influxDB line formatted metric, the script will use <code>openssl</code> to resolve the certificate.</p><ol><li><p>This is a script used to resolve PKCS#12 files.</p> <figure class="highlight bash hljs"><figcaption><span>generate_p12_metric.sh</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">FILE_PATH=<span class="hljs-string">"path-to-pkcs#12-cert"</span></span><br><span class="line">P12_UNTIL=$(openssl pkcs12 -<span class="hljs-keyword">in</span> <span class="hljs-variable">$FILE_PATH</span> -nokeys 2&gt;/dev/null | openssl x509 -text -noout 2&gt;/dev/null | grep After | sed <span class="hljs-string">'s/.*After : //'</span> )</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># return 1 year when there's no existing file</span></span><br><span class="line"><span class="hljs-keyword">if</span> [ -z <span class="hljs-string">"<span class="hljs-variable">$P12_UNTIL</span>"</span> ]</span><br><span class="line"><span class="hljs-keyword">then</span></span><br><span class="line">    <span class="hljs-built_in">echo</span> <span class="hljs-string">"<span class="hljs-variable">$((360*24*60*60)</span>)"</span></span><br><span class="line">    <span class="hljs-built_in">exit</span> 0</span><br><span class="line"><span class="hljs-keyword">fi</span></span><br><span class="line"></span><br><span class="line">P12_UNTIL_EPOCH=$(date +%s --date=<span class="hljs-string">"<span class="hljs-variable">$P12_UNTIL</span>"</span>)</span><br><span class="line">NOW_EPOCH=$(date +%s)</span><br><span class="line"></span><br><span class="line"><span class="hljs-built_in">echo</span> <span class="hljs-string">"pkcs12_cert,source=<span class="hljs-variable">$FILE_PATH</span> expiry=<span class="hljs-variable">$(($P12_UNTIL_EPOCH-$NOW_EPOCH)</span>) <span class="hljs-variable">$&#123;NOW_EPOCH&#125;</span>000000000"</span></span><br></pre></td></tr></table></figure></li><li><p>Another script to resolve the JKS file</p> <figure class="highlight bash hljs"><figcaption><span>generate_jks_metric.sh</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">FILE_PATH=<span class="hljs-string">"path-to-jks-cert"</span></span><br><span class="line">KEYSTORE_UNTIL=$(<span class="hljs-built_in">echo</span> <span class="hljs-string">'dummydummy'</span> | keytool -list -v -keystore <span class="hljs-variable">$FILE_PATH</span> 2&gt;/dev/null | grep -i Until  | sed <span class="hljs-string">'s/.*until: //'</span>)</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># This may be caused by unexistent file, return 1 year to skip checking.</span></span><br><span class="line"><span class="hljs-keyword">if</span> [ -z <span class="hljs-string">"<span class="hljs-variable">$KEYSTORE_UNTIL</span>"</span> ]</span><br><span class="line"><span class="hljs-keyword">then</span></span><br><span class="line">    <span class="hljs-built_in">echo</span> <span class="hljs-string">"<span class="hljs-variable">$((360*24*60*60)</span>)"</span></span><br><span class="line">    <span class="hljs-built_in">exit</span> 0</span><br><span class="line"><span class="hljs-keyword">fi</span></span><br><span class="line"></span><br><span class="line">KEYSTORE_UNTIL_EPOCH=$(date +%s --date=<span class="hljs-string">"<span class="hljs-variable">$KEYSTORE_UNTIL</span>"</span>)</span><br><span class="line">NOW_EPOCH=$(date +%s)</span><br><span class="line"></span><br><span class="line"><span class="hljs-built_in">echo</span> <span class="hljs-string">"jks_cert,source=<span class="hljs-variable">$FILE_PATH</span> expiry=<span class="hljs-variable">$(($KEYSTORE_UNTIL_EPOCH-$NOW_EPOCH)</span>) <span class="hljs-variable">$&#123;NOW_EPOCH&#125;</span>000000000"</span></span><br></pre></td></tr></table></figure></li><li><p>X509 Cert<br>There’s an <a href="https://github.com/influxdata/telegraf/tree/master/plugins/inputs/x509_cert" target="_blank" rel="noopener">X509 Cert Input Plugin</a> already there.</p></li></ol><h3 id="Telegraf-configuration"><a href="#Telegraf-configuration" class="headerlink" title="Telegraf configuration"></a>Telegraf configuration</h3><p>Put the <code>jks_cert.conf</code> under the telegraf’s configuration folder, restart telegraf and it will take effect.</p><figure class="highlight hljs"><figcaption><span>jks_cert.conf</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-section">[[inputs.exec]]</span></span><br><span class="line">  commands = [ "/usr/local/bin/jks_certificate_metric.sh" ]</span><br><span class="line"></span><br><span class="line">  data_format = "influx"</span><br></pre></td></tr></table></figure><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol><li><a href="https://serverfault.com/questions/9708/what-is-a-pem-file-and-how-does-it-differ-from-other-openssl-generated-key-file" target="_blank" rel="noopener">What is a pem file and how does it differ from other OpenSSL generated key files?</a></li><li><a href="https://pingtool.org/openssl-check-p12-expiration-date/" target="_blank" rel="noopener">OpenSSL check p12 expiration date</a></li><li><a href="https://serverfault.com/questions/9708/what-is-a-pem-file-and-how-does-it-differ-from-other-openssl-generated-key-file" target="_blank" rel="noopener">What is a PEM file and how does it differ from other OpenSSL generated key file</a></li><li><a href="https://en.wikipedia.org/wiki/PKCS_12" target="_blank" rel="noopener">pkcs#12</a></li><li><a href="https://www.digitalocean.com/community/tutorials/openssl-essentials-working-with-ssl-certificates-private-keys-and-csrs" target="_blank" rel="noopener">OpenSSL essentials</a></li><li><a href="https://www.digitalocean.com/community/tutorials/java-keytool-essentials-working-with-java-keystores" target="_blank" rel="noopener">Java keytool essentials</a></li><li><a href="https://en.wikipedia.org/wiki/Java_KeyStore" target="_blank" rel="noopener">Java KeyStore</a></li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;Background&quot;&gt;&lt;a href=&quot;#Background&quot; class=&quot;headerlink&quot; title=&quot;Background&quot;&gt;&lt;/a&gt;Background&lt;/h2&gt;&lt;p&gt;Certificates are broadly used for secu
+      
+    
+    </summary>
+    
+    
+      <category term="operation" scheme="https://songrgg.github.io/categories/operation/"/>
+    
+    
+      <category term="monitoring" scheme="https://songrgg.github.io/tags/monitoring/"/>
+    
+      <category term="certificate" scheme="https://songrgg.github.io/tags/certificate/"/>
+    
+  </entry>
   
   <entry>
     <title>Practice datacenter failover in production</title>
@@ -570,39 +598,6 @@
       <category term="microservice" scheme="https://songrgg.github.io/tags/microservice/"/>
     
       <category term="service orchestration" scheme="https://songrgg.github.io/tags/service-orchestration/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>微服务实践二: 服务容错与降级</title>
-    <link href="https://songrgg.github.io/microservice/microservice-in-action-2/"/>
-    <id>https://songrgg.github.io/microservice/microservice-in-action-2/</id>
-    <published>2017-04-01T22:00:00.000Z</published>
-    <updated>2019-09-12T20:12:35.463Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote><p>保证系统能稳定地运行在生产环境是第一要务，就算是服务质量下降，只要仍在工作，那就是万幸。</p></blockquote><h4 id="常见服务问题"><a href="#常见服务问题" class="headerlink" title="常见服务问题"></a>常见服务问题</h4><ol><li><p>服务超时<br>依赖的第三方服务因为某种不可抗力超时了？数据库慢查询拖垮了整个数据库？</p></li><li><p>服务错误<br>某个服务挂了？</p></li><li><p>服务负载高<br>突然陡增的访问量？</p></li></ol><h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><ol><li><p>限时<br>针对服务超时，可以通过超时控制保证接口的返回，可以通过设置超时时间为1s，尽快返回结果，因为大多数情况下，接口超时一方面影响用户体验，一方面可能是由于后端依赖出现了问题，如负载过高，机器故障等。某个互联网公司曾经说，当系统故障时，fail fast。</p></li><li><p>fallback<br>有些情况下，即使服务出错，对用户而言，也希望是透明的，无感的，设置一些fallback，做一些服务降级，保证用户的体验，即使这个服务实际上是挂掉的，返回内容是空的或者是旧的，在此故障期间，程序员能赶紧修复，对用户几乎没有造成不良体验。</p></li><li><p>电路熔断<br>这里的电路熔断是对于后端服务的保护，当错误、超时、负载上升到一定的高度，那么负载再高下去，对后端来说肯定是无法承受，好像和电路熔断一样，这三个因素超过了阈值，客户端就可以停止对后端服务的调用，这个保护的措施，帮助了运维人员能迅速通过增加机器和优化系统，帮助系统度过难关。</p></li></ol><h4 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h4><p><a href="https://github.com/Netflix/Hystrix" target="_blank" rel="noopener">Hystrix</a>能保护客户端，服务降级，它的dashboard上有一句标语，<strong>defend your app</strong>，确实，当后端程序能对异常，超时，错误等进行处理，那么客户端能获得的数据能更加稳定统一，同时它也是对后端服务的保护，hystrix有上述的电路熔断机制和用户可以自定义fallback，对服务限时等功能。</p><p>hystrix运行流程可见<a href="https://github.com/Netflix/Hystrix/wiki/How-it-Works" target="_blank" rel="noopener">How it works</a><br><img src="https://raw.githubusercontent.com/wiki/Netflix/Hystrix/images/hystrix-command-flow-chart.png" alt="How-it-works"></p><p>以构建一个对内部RPC调用的HystrixCommand为例:  </p><ol><li>构建一个HystrixCommand用于RPC调用，设置超时时间为1s，fallback为返回空数据  </li><li>如果缓存打开，结果优先从缓存中获取  </li><li>如果电路被熔断，尝试fallback  </li><li>如果并发量超过限制，尝试fallback  </li><li>不然，运行实际的RPC调用，如果调用失败或者超时，尝试fallback</li></ol><h4 id="根据实际情况设置"><a href="#根据实际情况设置" class="headerlink" title="根据实际情况设置"></a>根据实际情况设置</h4><p>hystrix的超时时间，fallback，并发量都可以根据需要封装的指令进行设置，可以说非常灵活，根据自己的具体业务进行合适的设置，能优化用户体验。</p><p>例如：文章列表API依赖的服务超时，可以通过服务降级拉取缓存中的旧数据进行返回，虽然即时性稍逊，但是起码用户能读到几分钟前的文章，在此期间，赶紧修复问题。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;blockquote&gt;
-&lt;p&gt;保证系统能稳定地运行在生产环境是第一要务，就算是服务质量下降，只要仍在工作，那就是万幸。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h4 id=&quot;常见服务问题&quot;&gt;&lt;a href=&quot;#常见服务问题&quot; class=&quot;headerlink&quot; title=&quot;常
-      
-    
-    </summary>
-    
-    
-      <category term="microservice" scheme="https://songrgg.github.io/categories/microservice/"/>
-    
-    
-      <category term="microservice" scheme="https://songrgg.github.io/tags/microservice/"/>
-    
-      <category term="fault tolerance" scheme="https://songrgg.github.io/tags/fault-tolerance/"/>
-    
-      <category term="service degrade" scheme="https://songrgg.github.io/tags/service-degrade/"/>
     
   </entry>
   
