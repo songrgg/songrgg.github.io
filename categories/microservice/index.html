@@ -180,28 +180,28 @@
             
         </h1>
         <div class="content">
-            <h1 id="go-micro迁移到gRPC"><a href="#go-micro迁移到gRPC" class="headerlink" title="go-micro迁移到gRPC"></a>go-micro迁移到gRPC</h1><p><a href="https://github.com/micro/micro" target="_blank" rel="noopener">micro</a>是基于golang的微服务框架，之前华尔街见闻架构升级中谈到了我们是基于go-micro的后端架构，随着我们对服务网格的调研、测试和实施，为了打通不同语言之间的服务调用，我们选择了gRPC作为服务内部的通用协议。</p>
-<p>go-micro框架的架构非常具有拓展性，它拥有自己的RPC框架，通过抽象codec,transport,selector等微服务组件，你既可以使用官方实现的各种插件<a href="https://github.com/micro/go-plugins" target="_blank" rel="noopener">go-plugins</a>进行组装，又可以根据实际的情况实现自己的组件。然而，我们打算利用服务网格的优势，将微服务的基础组件下沉到基础设施中去，将组件代码从代码库中剥离开来。</p>
+            <h1 id="go-micro迁移到gRPC"><a href="#go-micro迁移到gRPC" class="headerlink" title="go-micro迁移到gRPC"></a>go-micro迁移到gRPC</h1><p><a href="https://github.com/micro/micro">micro</a>是基于golang的微服务框架，之前华尔街见闻架构升级中谈到了我们是基于go-micro的后端架构，随着我们对服务网格的调研、测试和实施，为了打通不同语言之间的服务调用，我们选择了gRPC作为服务内部的通用协议。</p>
+<p>go-micro框架的架构非常具有拓展性，它拥有自己的RPC框架，通过抽象codec,transport,selector等微服务组件，你既可以使用官方实现的各种插件<a href="https://github.com/micro/go-plugins">go-plugins</a>进行组装，又可以根据实际的情况实现自己的组件。然而，我们打算利用服务网格的优势，将微服务的基础组件下沉到基础设施中去，将组件代码从代码库中剥离开来。</p>
 <p>这样一来，我们相当于只需要最简的RPC框架，只需要服务之间有统一、稳定、高效的通信协议，由于micro在我们新架构中略显臃肿，于是我们选择逐渐剥除micro。还有一个重要原因，我们选择的服务网格方案是istio，它的代理原生支持gRPC，而micro只是将gRPC当做transport层，相当于复写了gRPC的服务路由逻辑，这样有损于istio的一些特性，譬如流量监控等功能。</p>
 <p>出于这些考虑，第一步需要将micro改成纯gRPC模式，这里的改造部分我们考虑只应该去更改基础库的代码，而尽量不要使业务代码更改，减少对已有逻辑的影响，和一些软性的譬如开发人员的工作量。</p>
-<h2 id="服务发现模块"><a href="#服务发现模块" class="headerlink" title="服务发现模块"></a>服务发现模块</h2><p>istio的服务发现支持etcd、consul等，我们需要将其改成使用kubernetes的服务名进行访问。通过实现<a href="https://gist.github.com/songrgg/22999fb7ab76a30dcac17cb28ed412d4" target="_blank" rel="noopener">istio selector</a>的方式，我们将RPC调用的服务名与k8s的服务名端口做映射。</p>
-<figure class="highlight go hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">package</span> istio</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">import</span> (</span><br><span class="line">	<span class="hljs-string">"fmt"</span></span><br><span class="line"></span><br><span class="line">	<span class="hljs-string">"github.com/micro/go-micro/registry"</span></span><br><span class="line">	<span class="hljs-string">"github.com/micro/go-micro/selector"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">const</span> (</span><br><span class="line">	svcPort = <span class="hljs-number">10088</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">var</span> (</span><br><span class="line">	serviceHostMapping = <span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]<span class="hljs-keyword">string</span>&#123;</span><br><span class="line">		<span class="hljs-string">"payment"</span>: <span class="hljs-string">"payment.common"</span>,</span><br><span class="line">		<span class="hljs-string">"content"</span>: <span class="hljs-string">"content.ns1"</span>,</span><br><span class="line">		<span class="hljs-string">"user"</span>:    <span class="hljs-string">"user.ns1"</span>,</span><br><span class="line">	&#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">type</span> istio <span class="hljs-keyword">struct</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(r *istio)</span> <span class="hljs-title">Select</span><span class="hljs-params">(service <span class="hljs-keyword">string</span>, opts ...selector.SelectOption)</span> <span class="hljs-params">(selector.Next, error)</span></span> &#123;</span><br><span class="line">	<span class="hljs-keyword">if</span> host, exist := serviceHostMapping[service]; exist &#123;</span><br><span class="line">		node := &amp;registry.Node&#123;</span><br><span class="line">			Id:      service,</span><br><span class="line">			Address: host,</span><br><span class="line">			Port:    svcPort,</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span> <span class="hljs-params">(*registry.Node, error)</span></span> &#123;</span><br><span class="line">			<span class="hljs-keyword">return</span> node, <span class="hljs-literal">nil</span></span><br><span class="line">		&#125;, <span class="hljs-literal">nil</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, fmt.Errorf(<span class="hljs-string">"service %s(%s) not found"</span>, service, svc)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h2 id="服务发现模块"><a href="#服务发现模块" class="headerlink" title="服务发现模块"></a>服务发现模块</h2><p>istio的服务发现支持etcd、consul等，我们需要将其改成使用kubernetes的服务名进行访问。通过实现<a href="https://gist.github.com/songrgg/22999fb7ab76a30dcac17cb28ed412d4">istio selector</a>的方式，我们将RPC调用的服务名与k8s的服务名端口做映射。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> istio</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line">	<span class="string">"github.com/micro/go-micro/registry"</span></span><br><span class="line">	<span class="string">"github.com/micro/go-micro/selector"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	svcPort = <span class="number">10088</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	serviceHostMapping = <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>&#123;</span><br><span class="line">		<span class="string">"payment"</span>: <span class="string">"payment.common"</span>,</span><br><span class="line">		<span class="string">"content"</span>: <span class="string">"content.ns1"</span>,</span><br><span class="line">		<span class="string">"user"</span>:    <span class="string">"user.ns1"</span>,</span><br><span class="line">	&#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> istio <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(r *istio)</span> <span class="title">Select</span><span class="params">(service <span class="keyword">string</span>, opts ...selector.SelectOption)</span> <span class="params">(selector.Next, error)</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> host, exist := serviceHostMapping[service]; exist &#123;</span><br><span class="line">		node := &amp;registry.Node&#123;</span><br><span class="line">			Id:      service,</span><br><span class="line">			Address: host,</span><br><span class="line">			Port:    svcPort,</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="params">(*registry.Node, error)</span></span> &#123;</span><br><span class="line">			<span class="keyword">return</span> node, <span class="literal">nil</span></span><br><span class="line">		&#125;, <span class="literal">nil</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span>, fmt.Errorf(<span class="string">"service %s(%s) not found"</span>, service, svc)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 
 <p>这里注意的是由于服务之间调用需要指定service name和端口，所以在这里我们把端口设置了一个magic number。</p>
-<h2 id="传输模块"><a href="#传输模块" class="headerlink" title="传输模块"></a>传输模块</h2><p>go-micro采用各种协议作为传输报文的工具，可以从<a href="https://github.com/micro/go-plugins/tree/master/transport" target="_blank" rel="noopener">transport</a>中了解到，有http/grpc/tcp/utp等，我们曾先后使用过tcp、utp、gRPC，经过测试gRPC是其中最为稳定的。之前提到过gRPC只是作为传输信道，micro定义了自己的RPC接口，实现了RPC的路由、传输、重试等功能，通过自定义了protobuf的插件生成符合micro标准的proto文件。</p>
-<p>为了向后兼容，在使用grpc替换原RPC时，我也需要根据protobuf文件生成新的golang代码，其中包括client端、server端代码的变更，实际上我的更新是针对<a href="https://github.com/golang/protobuf/tree/master/protoc-gen-go" target="_blank" rel="noopener">protoc-gen-go</a>，fork之后修改<a href="https://github.com/golang/protobuf/blob/master/protoc-gen-go/grpc/grpc.go" target="_blank" rel="noopener">grpc/grpc.go</a>部分，在<code>func generateService()</code>中对Client端代码进行micro的适配。</p>
-<h3 id="Client"><a href="#Client" class="headerlink" title="Client"></a>Client</h3><figure class="highlight go hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c *someClient)</span> <span class="hljs-title">DoSomething</span><span class="hljs-params">(ctx context.Context, in *SomeRequest, opts ...grpc.CallOption)</span> <span class="hljs-params">(*SomeResponse, error)</span></span></span><br></pre></td></tr></table></figure>
+<h2 id="传输模块"><a href="#传输模块" class="headerlink" title="传输模块"></a>传输模块</h2><p>go-micro采用各种协议作为传输报文的工具，可以从<a href="https://github.com/micro/go-plugins/tree/master/transport">transport</a>中了解到，有http/grpc/tcp/utp等，我们曾先后使用过tcp、utp、gRPC，经过测试gRPC是其中最为稳定的。之前提到过gRPC只是作为传输信道，micro定义了自己的RPC接口，实现了RPC的路由、传输、重试等功能，通过自定义了protobuf的插件生成符合micro标准的proto文件。</p>
+<p>为了向后兼容，在使用grpc替换原RPC时，我也需要根据protobuf文件生成新的golang代码，其中包括client端、server端代码的变更，实际上我的更新是针对<a href="https://github.com/golang/protobuf/tree/master/protoc-gen-go">protoc-gen-go</a>，fork之后修改<a href="https://github.com/golang/protobuf/blob/master/protoc-gen-go/grpc/grpc.go">grpc/grpc.go</a>部分，在<code>func generateService()</code>中对Client端代码进行micro的适配。</p>
+<h3 id="Client"><a href="#Client" class="headerlink" title="Client"></a>Client</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *someClient)</span> <span class="title">DoSomething</span><span class="params">(ctx context.Context, in *SomeRequest, opts ...grpc.CallOption)</span> <span class="params">(*SomeResponse, error)</span></span></span><br></pre></td></tr></table></figure>
 
 <h3 id="Server"><a href="#Server" class="headerlink" title="Server"></a>Server</h3><p>Server端代码的更新除了接口的适配，有一个关注点是micro的接口设计是</p>
-<figure class="highlight go hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DoSomething(context.Context, *SomeRequest, *SomeResponse) error</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DoSomething(context.Context, *SomeRequest, *SomeResponse) error</span><br></pre></td></tr></table></figure>
 <p>而gRPC是</p>
-<figure class="highlight go hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DoSomething(context.Context, *SomeRequest) (*SomeResponse, error)</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DoSomething(context.Context, *SomeRequest) (*SomeResponse, error)</span><br></pre></td></tr></table></figure>
 
 <p>micro接口设计的好处是支持服务端缓存的应用，当服务端handler触发时，cache interceptor可以将response缓存，当缓存命中时可以将其返回。而由于gRPC的版本将response放在了返回值中，运行时无法将譬如redis中字符串格式的response解码成<code>SomeResponse</code>，而micro版本由于将其放在了参数位置，所以可以通过</p>
-<figure class="highlight go hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">json.Unmarshall([]<span class="hljs-keyword">byte</span>(<span class="hljs-string">""</span>), &amp;SomeResponse&#123;&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">json.Unmarshall([]<span class="keyword">byte</span>(<span class="string">""</span>), &amp;SomeResponse&#123;&#125;)</span><br></pre></td></tr></table></figure>
 <p>从字符串恢复response。</p>
 <p>我们的做法是不改变接口的设计，而是在自动生成的golang代码中，在interceptor运行之前将response object塞入context。</p>
-<figure class="highlight go hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// Server</span></span><br><span class="line">ctx = ctx.WithValue(<span class="hljs-string">"IstioResponseBody"</span>, &amp;SomeResponse&#123;&#125;)</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// Interceptor</span></span><br><span class="line">obj := ctx.Value(<span class="hljs-string">"IstioResponseBody"</span>)</span><br><span class="line">json.Unmarshall([]<span class="hljs-keyword">byte</span>(<span class="hljs-string">""</span>), obj)</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Server</span></span><br><span class="line">ctx = ctx.WithValue(<span class="string">"IstioResponseBody"</span>, &amp;SomeResponse&#123;&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Interceptor</span></span><br><span class="line">obj := ctx.Value(<span class="string">"IstioResponseBody"</span>)</span><br><span class="line">json.Unmarshall([]<span class="keyword">byte</span>(<span class="string">""</span>), obj)</span><br></pre></td></tr></table></figure>
 
 <h2 id="Interceptor模块"><a href="#Interceptor模块" class="headerlink" title="Interceptor模块"></a>Interceptor模块</h2><p>一些interceptor的迁移工作，例如logger、cache、recover等。</p>
 <h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
@@ -454,8 +454,8 @@
 <li><p>电路熔断<br>这里的电路熔断是对于后端服务的保护，当错误、超时、负载上升到一定的高度，那么负载再高下去，对后端来说肯定是无法承受，好像和电路熔断一样，这三个因素超过了阈值，客户端就可以停止对后端服务的调用，这个保护的措施，帮助了运维人员能迅速通过增加机器和优化系统，帮助系统度过难关。</p>
 </li>
 </ol>
-<h4 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h4><p><a href="https://github.com/Netflix/Hystrix" target="_blank" rel="noopener">Hystrix</a>能保护客户端，服务降级，它的dashboard上有一句标语，<strong>defend your app</strong>，确实，当后端程序能对异常，超时，错误等进行处理，那么客户端能获得的数据能更加稳定统一，同时它也是对后端服务的保护，hystrix有上述的电路熔断机制和用户可以自定义fallback，对服务限时等功能。</p>
-<p>hystrix运行流程可见<a href="https://github.com/Netflix/Hystrix/wiki/How-it-Works" target="_blank" rel="noopener">How it works</a><br><img src="https://raw.githubusercontent.com/wiki/Netflix/Hystrix/images/hystrix-command-flow-chart.png" alt="How-it-works"></p>
+<h4 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h4><p><a href="https://github.com/Netflix/Hystrix">Hystrix</a>能保护客户端，服务降级，它的dashboard上有一句标语，<strong>defend your app</strong>，确实，当后端程序能对异常，超时，错误等进行处理，那么客户端能获得的数据能更加稳定统一，同时它也是对后端服务的保护，hystrix有上述的电路熔断机制和用户可以自定义fallback，对服务限时等功能。</p>
+<p>hystrix运行流程可见<a href="https://github.com/Netflix/Hystrix/wiki/How-it-Works">How it works</a><br><img src="https://raw.githubusercontent.com/wiki/Netflix/Hystrix/images/hystrix-command-flow-chart.png" alt="How-it-works"></p>
 <p>以构建一个对内部RPC调用的HystrixCommand为例:  </p>
 <ol>
 <li>构建一个HystrixCommand用于RPC调用，设置超时时间为1s，fallback为返回空数据  </li>
@@ -660,7 +660,7 @@
         </nav>
         
         <div class="level">
-            <a class="level-item button is-link is-rounded" href="https://github.com/songrgg" target="_blank">
+            <a class="level-item button is-link is-rounded" href="https://github.com/songrgg" target="_blank" rel="noopener">
                 Follow</a>
         </div>
         
@@ -668,28 +668,28 @@
         
         <div class="level is-mobile">
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Github" href="https://github.com/songrgg">
                 
                 <i class="fab fa-github"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Instagram" href="https://www.instagram.com/jiangsongrong">
                 
                 <i class="fab fa-instagram"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
                 
                 <i class="fab fa-linkedin"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="RSS" href="/atom.xml">
                 
                 <i class="fas fa-rss"></i>
@@ -779,7 +779,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration%20-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -1660,7 +1660,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration%20-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -2537,8 +2537,8 @@
                 </a>
                 <p class="is-size-7">
                 &copy; 2020 songrgg&nbsp;
-                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a
-                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
                 
                 </p>
             </div>
@@ -2547,7 +2547,7 @@
                 <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Creative Commons" href="https://creativecommons.org/">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
                         
                         <i class="fab fa-creative-commons"></i>
                         
@@ -2555,7 +2555,7 @@
                 </p>
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
                         
                         <i class="fab fa-creative-commons-by"></i>
                         
@@ -2563,7 +2563,7 @@
                 </p>
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
                         
                         <i class="fab fa-github"></i>
                         
@@ -2580,8 +2580,13 @@
 <script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
 <script>moment.locale("en");</script>
 
+
 <script>
 var IcarusThemeSettings = {
+    site: {
+        url: 'https://songrgg.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
     article: {
         highlight: {
             clipboard: true,
@@ -2592,23 +2597,23 @@ var IcarusThemeSettings = {
 </script>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
 
 
 
-    
-    
-    
-    
+
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
 <script src="/js/gallery.js" defer></script>
 
-    
-    
+
+
 <div id="outdated">
     <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
             my browser now </a></p>
     <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
 </div>
@@ -2623,8 +2628,8 @@ var IcarusThemeSettings = {
     });
 </script>
 
-    
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     MathJax.Hub.Config({
@@ -2646,24 +2651,24 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
-    
-    
+
+
 <a id="back-to-top" title="Back to Top" href="javascript:;">
     <i class="fas fa-chevron-up"></i>
 </a>
 <script src="/js/back-to-top.js" defer></script>
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
 
 
 <script src="/js/main.js" defer></script>

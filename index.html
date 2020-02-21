@@ -138,7 +138,7 @@
     
     <div class="card-image">
         <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="image is-7by1">
-            <img class="thumbnail" src="/images/certificate-expiration%20-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
+            <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
         </a>
     </div>
     
@@ -180,37 +180,37 @@
 </ol>
 <h2 id="Check-certificate-expiry-time"><a href="#Check-certificate-expiry-time" class="headerlink" title="Check certificate expiry time"></a>Check certificate expiry time</h2><ol>
 <li><p>check the JKS expiry time</p>
- <figure class="highlight bash hljs"><figcaption><span>check_jks.sh</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># to check keystore.jks expiry time</span></span><br><span class="line">keytool -list -v -keystore keystore.jks -storepass <span class="hljs-string">"pass"</span> | grep until</span><br></pre></td></tr></table></figure>
+ <figure class="highlight bash"><figcaption><span>check_jks.sh</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># to check keystore.jks expiry time</span></span><br><span class="line">keytool -list -v -keystore keystore.jks -storepass <span class="string">"pass"</span> | grep until</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>check the PKCS#12 expiry time</p>
- <figure class="highlight bash hljs"><figcaption><span>check_p12.sh</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># to check certicate.p12 expiry time</span></span><br><span class="line">openssl pkcs12 -<span class="hljs-keyword">in</span> certicate.p12 -nokeys | openssl x509 -noout -enddate</span><br></pre></td></tr></table></figure>
+ <figure class="highlight bash"><figcaption><span>check_p12.sh</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># to check certicate.p12 expiry time</span></span><br><span class="line">openssl pkcs12 -<span class="keyword">in</span> certicate.p12 -nokeys | openssl x509 -noout -enddate</span><br></pre></td></tr></table></figure>
 
 </li>
 </ol>
-<h2 id="Customize-telegraf-plugin"><a href="#Customize-telegraf-plugin" class="headerlink" title="Customize telegraf plugin"></a>Customize telegraf plugin</h2><p>In this case, we can use a bash script to collect the metrics and output it as <a href="https://docs.influxdata.com/influxdb/v1.7/write_protocols/line_protocol_tutorial/" target="_blank" rel="noopener">influxDB line protocol</a>, it does not need you to use influxDB, you can use any kind of monitoring backend that can read from telegraf, for example, Prometheus.</p>
-<p><a href="https://www.influxdata.com/time-series-platform/telegraf/" target="_blank" rel="noopener">Telegraf</a> is a daemon that can be running on servers to collect system metrics, it supports multiple input plugins to collect metrics. <a href="https://github.com/influxdata/telegraf/tree/master/plugins/inputs/exec" target="_blank" rel="noopener"><code>intput.exec</code></a> is an input plugin which will run the specified script, the output of the script will be treated as a data point.</p>
+<h2 id="Customize-telegraf-plugin"><a href="#Customize-telegraf-plugin" class="headerlink" title="Customize telegraf plugin"></a>Customize telegraf plugin</h2><p>In this case, we can use a bash script to collect the metrics and output it as <a href="https://docs.influxdata.com/influxdb/v1.7/write_protocols/line_protocol_tutorial/">influxDB line protocol</a>, it does not need you to use influxDB, you can use any kind of monitoring backend that can read from telegraf, for example, Prometheus.</p>
+<p><a href="https://www.influxdata.com/time-series-platform/telegraf/">Telegraf</a> is a daemon that can be running on servers to collect system metrics, it supports multiple input plugins to collect metrics. <a href="https://github.com/influxdata/telegraf/tree/master/plugins/inputs/exec"><code>intput.exec</code></a> is an input plugin which will run the specified script, the output of the script will be treated as a data point.</p>
 <h3 id="Bash-script-to-generate-the-metric"><a href="#Bash-script-to-generate-the-metric" class="headerlink" title="Bash script to generate the metric"></a>Bash script to generate the metric</h3><p>We can write a bash script to generate an influxDB line formatted metric, the script will use <code>openssl</code> to resolve the certificate.</p>
 <ol>
 <li><p>This is a script used to resolve PKCS#12 files.</p>
- <figure class="highlight bash hljs"><figcaption><span>generate_p12_metric.sh</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">FILE_PATH=<span class="hljs-string">"path-to-pkcs#12-cert"</span></span><br><span class="line">P12_UNTIL=$(openssl pkcs12 -<span class="hljs-keyword">in</span> <span class="hljs-variable">$FILE_PATH</span> -nokeys 2&gt;/dev/null | openssl x509 -text -noout 2&gt;/dev/null | grep After | sed <span class="hljs-string">'s/.*After : //'</span> )</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># return 1 year when there's no existing file</span></span><br><span class="line"><span class="hljs-keyword">if</span> [ -z <span class="hljs-string">"<span class="hljs-variable">$P12_UNTIL</span>"</span> ]</span><br><span class="line"><span class="hljs-keyword">then</span></span><br><span class="line">    <span class="hljs-built_in">echo</span> <span class="hljs-string">"<span class="hljs-variable">$((360*24*60*60)</span>)"</span></span><br><span class="line">    <span class="hljs-built_in">exit</span> 0</span><br><span class="line"><span class="hljs-keyword">fi</span></span><br><span class="line"></span><br><span class="line">P12_UNTIL_EPOCH=$(date +%s --date=<span class="hljs-string">"<span class="hljs-variable">$P12_UNTIL</span>"</span>)</span><br><span class="line">NOW_EPOCH=$(date +%s)</span><br><span class="line"></span><br><span class="line"><span class="hljs-built_in">echo</span> <span class="hljs-string">"pkcs12_cert,source=<span class="hljs-variable">$FILE_PATH</span> expiry=<span class="hljs-variable">$(($P12_UNTIL_EPOCH-$NOW_EPOCH)</span>) <span class="hljs-variable">$&#123;NOW_EPOCH&#125;</span>000000000"</span></span><br></pre></td></tr></table></figure>
+ <figure class="highlight bash"><figcaption><span>generate_p12_metric.sh</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">FILE_PATH=<span class="string">"path-to-pkcs#12-cert"</span></span><br><span class="line">P12_UNTIL=$(openssl pkcs12 -<span class="keyword">in</span> <span class="variable">$FILE_PATH</span> -nokeys 2&gt;/dev/null | openssl x509 -text -noout 2&gt;/dev/null | grep After | sed <span class="string">'s/.*After : //'</span> )</span><br><span class="line"></span><br><span class="line"><span class="comment"># return 1 year when there's no existing file</span></span><br><span class="line"><span class="keyword">if</span> [ -z <span class="string">"<span class="variable">$P12_UNTIL</span>"</span> ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"<span class="variable">$((360*24*60*60)</span>)"</span></span><br><span class="line">    <span class="built_in">exit</span> 0</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">P12_UNTIL_EPOCH=$(date +%s --date=<span class="string">"<span class="variable">$P12_UNTIL</span>"</span>)</span><br><span class="line">NOW_EPOCH=$(date +%s)</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"pkcs12_cert,source=<span class="variable">$FILE_PATH</span> expiry=<span class="variable">$(($P12_UNTIL_EPOCH-$NOW_EPOCH)</span>) <span class="variable">$&#123;NOW_EPOCH&#125;</span>000000000"</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>Another script to resolve the JKS file</p>
- <figure class="highlight bash hljs"><figcaption><span>generate_jks_metric.sh</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">FILE_PATH=<span class="hljs-string">"path-to-jks-cert"</span></span><br><span class="line">KEYSTORE_UNTIL=$(<span class="hljs-built_in">echo</span> <span class="hljs-string">'dummydummy'</span> | keytool -list -v -keystore <span class="hljs-variable">$FILE_PATH</span> 2&gt;/dev/null | grep -i Until  | sed <span class="hljs-string">'s/.*until: //'</span>)</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># This may be caused by unexistent file, return 1 year to skip checking.</span></span><br><span class="line"><span class="hljs-keyword">if</span> [ -z <span class="hljs-string">"<span class="hljs-variable">$KEYSTORE_UNTIL</span>"</span> ]</span><br><span class="line"><span class="hljs-keyword">then</span></span><br><span class="line">    <span class="hljs-built_in">echo</span> <span class="hljs-string">"<span class="hljs-variable">$((360*24*60*60)</span>)"</span></span><br><span class="line">    <span class="hljs-built_in">exit</span> 0</span><br><span class="line"><span class="hljs-keyword">fi</span></span><br><span class="line"></span><br><span class="line">KEYSTORE_UNTIL_EPOCH=$(date +%s --date=<span class="hljs-string">"<span class="hljs-variable">$KEYSTORE_UNTIL</span>"</span>)</span><br><span class="line">NOW_EPOCH=$(date +%s)</span><br><span class="line"></span><br><span class="line"><span class="hljs-built_in">echo</span> <span class="hljs-string">"jks_cert,source=<span class="hljs-variable">$FILE_PATH</span> expiry=<span class="hljs-variable">$(($KEYSTORE_UNTIL_EPOCH-$NOW_EPOCH)</span>) <span class="hljs-variable">$&#123;NOW_EPOCH&#125;</span>000000000"</span></span><br></pre></td></tr></table></figure>
+ <figure class="highlight bash"><figcaption><span>generate_jks_metric.sh</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">FILE_PATH=<span class="string">"path-to-jks-cert"</span></span><br><span class="line">KEYSTORE_UNTIL=$(<span class="built_in">echo</span> <span class="string">'dummydummy'</span> | keytool -list -v -keystore <span class="variable">$FILE_PATH</span> 2&gt;/dev/null | grep -i Until  | sed <span class="string">'s/.*until: //'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># This may be caused by unexistent file, return 1 year to skip checking.</span></span><br><span class="line"><span class="keyword">if</span> [ -z <span class="string">"<span class="variable">$KEYSTORE_UNTIL</span>"</span> ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"<span class="variable">$((360*24*60*60)</span>)"</span></span><br><span class="line">    <span class="built_in">exit</span> 0</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">KEYSTORE_UNTIL_EPOCH=$(date +%s --date=<span class="string">"<span class="variable">$KEYSTORE_UNTIL</span>"</span>)</span><br><span class="line">NOW_EPOCH=$(date +%s)</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"jks_cert,source=<span class="variable">$FILE_PATH</span> expiry=<span class="variable">$(($KEYSTORE_UNTIL_EPOCH-$NOW_EPOCH)</span>) <span class="variable">$&#123;NOW_EPOCH&#125;</span>000000000"</span></span><br></pre></td></tr></table></figure>
 </li>
-<li><p>X509 Cert<br>There’s an <a href="https://github.com/influxdata/telegraf/tree/master/plugins/inputs/x509_cert" target="_blank" rel="noopener">X509 Cert Input Plugin</a> already there.</p>
+<li><p>X509 Cert<br>There’s an <a href="https://github.com/influxdata/telegraf/tree/master/plugins/inputs/x509_cert">X509 Cert Input Plugin</a> already there.</p>
 </li>
 </ol>
 <h3 id="Telegraf-configuration"><a href="#Telegraf-configuration" class="headerlink" title="Telegraf configuration"></a>Telegraf configuration</h3><p>Put the <code>jks_cert.conf</code> under the telegraf’s configuration folder, restart telegraf and it will take effect.</p>
-<figure class="highlight hljs"><figcaption><span>jks_cert.conf</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-section">[[inputs.exec]]</span></span><br><span class="line">  commands = [ "/usr/local/bin/jks_certificate_metric.sh" ]</span><br><span class="line"></span><br><span class="line">  data_format = "influx"</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><figcaption><span>jks_cert.conf</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[[inputs.exec]]</span></span><br><span class="line">  commands = [ "/usr/local/bin/jks_certificate_metric.sh" ]</span><br><span class="line"></span><br><span class="line">  data_format = "influx"</span><br></pre></td></tr></table></figure>
 
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
-<li><a href="https://serverfault.com/questions/9708/what-is-a-pem-file-and-how-does-it-differ-from-other-openssl-generated-key-file" target="_blank" rel="noopener">What is a pem file and how does it differ from other OpenSSL generated key files?</a></li>
-<li><a href="https://pingtool.org/openssl-check-p12-expiration-date/" target="_blank" rel="noopener">OpenSSL check p12 expiration date</a></li>
-<li><a href="https://serverfault.com/questions/9708/what-is-a-pem-file-and-how-does-it-differ-from-other-openssl-generated-key-file" target="_blank" rel="noopener">What is a PEM file and how does it differ from other OpenSSL generated key file</a></li>
-<li><a href="https://en.wikipedia.org/wiki/PKCS_12" target="_blank" rel="noopener">pkcs#12</a></li>
-<li><a href="https://www.digitalocean.com/community/tutorials/openssl-essentials-working-with-ssl-certificates-private-keys-and-csrs" target="_blank" rel="noopener">OpenSSL essentials</a></li>
-<li><a href="https://www.digitalocean.com/community/tutorials/java-keytool-essentials-working-with-java-keystores" target="_blank" rel="noopener">Java keytool essentials</a></li>
-<li><a href="https://en.wikipedia.org/wiki/Java_KeyStore" target="_blank" rel="noopener">Java KeyStore</a></li>
+<li><a href="https://serverfault.com/questions/9708/what-is-a-pem-file-and-how-does-it-differ-from-other-openssl-generated-key-file">What is a pem file and how does it differ from other OpenSSL generated key files?</a></li>
+<li><a href="https://pingtool.org/openssl-check-p12-expiration-date/">OpenSSL check p12 expiration date</a></li>
+<li><a href="https://serverfault.com/questions/9708/what-is-a-pem-file-and-how-does-it-differ-from-other-openssl-generated-key-file">What is a PEM file and how does it differ from other OpenSSL generated key file</a></li>
+<li><a href="https://en.wikipedia.org/wiki/PKCS_12">pkcs#12</a></li>
+<li><a href="https://www.digitalocean.com/community/tutorials/openssl-essentials-working-with-ssl-certificates-private-keys-and-csrs">OpenSSL essentials</a></li>
+<li><a href="https://www.digitalocean.com/community/tutorials/java-keytool-essentials-working-with-java-keystores">Java keytool essentials</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Java_KeyStore">Java KeyStore</a></li>
 </ol>
 
         </div>
@@ -334,7 +334,7 @@
             
         </h1>
         <div class="content">
-            <p><a href="https://grafana.com" target="_blank" rel="noopener">Grafana</a> has been adopted as a common monitoring dashboard by more and more companies, in many cases, when operators need to create dashboard repeatedly they either choose to use template variables or create dashboards one by one. I think it’s very useful to leverage the <a href="https://grafana.com/docs/http_api/" target="_blank" rel="noopener">Grafana API</a> to generate the monitoring dashboards automatically from template.</p>
+            <p><a href="https://grafana.com">Grafana</a> has been adopted as a common monitoring dashboard by more and more companies, in many cases, when operators need to create dashboard repeatedly they either choose to use template variables or create dashboards one by one. I think it’s very useful to leverage the <a href="https://grafana.com/docs/http_api/">Grafana API</a> to generate the monitoring dashboards automatically from template.</p>
         </div>
         
         
@@ -396,7 +396,7 @@
             
         </h1>
         <div class="content">
-            <p>As we know, according to the spinnaker’s official documentation, spinnaker provides a tool for installing the spinnaker cluster in Kubernetes cluster or debian/ubuntu bare metal machine, but there’s not an option to install it on CentOS or other common operating systems. Althogh the <a href="https://github.com/spinnaker/spinnaker/tree/master/experimental/docker-compose" target="_blank" rel="noopener">spinnaker</a> provides a way to start Spinnaker with <a href="https://docs.docker.com/compose/" target="_blank" rel="noopener">Docker Compose</a>, but it’s out of date. So I created a new <a href="https://github.com/songrgg/spinnaker-compose" target="_blank" rel="noopener">docker-compose project</a> to quickstart a spinnaker cluster on any kind of os.</p>
+            <p>As we know, according to the spinnaker’s official documentation, spinnaker provides a tool for installing the spinnaker cluster in Kubernetes cluster or debian/ubuntu bare metal machine, but there’s not an option to install it on CentOS or other common operating systems. Althogh the <a href="https://github.com/spinnaker/spinnaker/tree/master/experimental/docker-compose">spinnaker</a> provides a way to start Spinnaker with <a href="https://docs.docker.com/compose/">Docker Compose</a>, but it’s out of date. So I created a new <a href="https://github.com/songrgg/spinnaker-compose">docker-compose project</a> to quickstart a spinnaker cluster on any kind of os.</p>
         </div>
         
         
@@ -458,7 +458,7 @@
             
         </h1>
         <div class="content">
-            <p>You can host the swagger documentation easily with <a href="https://spring.io/projects/spring-boot" target="_blank" rel="noopener">Spring boot</a>. Maintain the swagger documentation by <a href="https://editor.swagger.io" target="_blank" rel="noopener">Swagger Editor</a> and then you can use the yaml files to generate online swagger documentation.</p>
+            <p>You can host the swagger documentation easily with <a href="https://spring.io/projects/spring-boot">Spring boot</a>. Maintain the swagger documentation by <a href="https://editor.swagger.io">Swagger Editor</a> and then you can use the yaml files to generate online swagger documentation.</p>
         </div>
         
         
@@ -520,7 +520,7 @@
             
         </h1>
         <div class="content">
-            <p>I’ve joined my first Hackathon and worked on a project about using <a href="https://www.spinnaker.io" target="_blank" rel="noopener">Spinnaker</a> as CI/CD tool within company. The biggest challenge is to install Spinnaker on CentOS 7 with <a href="https://docs.docker.com/compose/" target="_blank" rel="noopener">docker-compose</a>.</p>
+            <p>I’ve joined my first Hackathon and worked on a project about using <a href="https://www.spinnaker.io">Spinnaker</a> as CI/CD tool within company. The biggest challenge is to install Spinnaker on CentOS 7 with <a href="https://docs.docker.com/compose/">docker-compose</a>.</p>
 <h2 id="Why-Spinnaker"><a href="#Why-Spinnaker" class="headerlink" title="Why Spinnaker?"></a>Why Spinnaker?</h2><ul>
 <li>Spinnaker is dedicated to deploy services across multiple cloud providers and the integration with AWS, GCP, Azure is out of box.</li>
 <li>It’s focused on deploy stably, support full control of workflow, developers can customize the deployment flow to improve the quality of deployment, also it’s automatic.</li>
@@ -587,7 +587,7 @@
             
         </h1>
         <div class="content">
-            <p><a href="https://www.envoyproxy.io" target="_blank" rel="noopener">Envoy</a> has become more and more popular, the basic functionality is quite similar to <a href="https://www.nginx.com/" target="_blank" rel="noopener">Nginx</a>, working as a high performace Web server, proxy. But Enovy imported a lot of features that was related to <a href="https://en.wikipedia.org/wiki/Service-oriented_architecture" target="_blank" rel="noopener">SOA</a> or <a href="https://en.wikipedia.org/wiki/Microservices" target="_blank" rel="noopener">Microservice</a> like Service Discovery, Circuit Breaker, Rate limiting and so on. </p>
+            <p><a href="https://www.envoyproxy.io">Envoy</a> has become more and more popular, the basic functionality is quite similar to <a href="https://www.nginx.com/">Nginx</a>, working as a high performace Web server, proxy. But Enovy imported a lot of features that was related to <a href="https://en.wikipedia.org/wiki/Service-oriented_architecture">SOA</a> or <a href="https://en.wikipedia.org/wiki/Microservices">Microservice</a> like Service Discovery, Circuit Breaker, Rate limiting and so on. </p>
 <p>A lot of developers know the roles envoy plays, and the basic functionality it will implement, but don’t know how it organize the architecture and how we understand its configuration well. For me, it’s not easy to understand envoy’s architecture and its configuration since it has a lot of terminology, but if the developer knew how the user traffic goes, he could understand the design of envoy.</p>
         </div>
         
@@ -644,17 +644,17 @@
             
         </h1>
         <div class="content">
-            <p><a href="https://istio.io" target="_blank" rel="noopener">Istio</a> has been adopted as a common implementation of <a href="https://istio.io/docs/concepts/what-is-istio/" target="_blank" rel="noopener">service mesh</a>, since more and more companies want to bring Istio into production, the version control of Istio seems a significant problem to solve.</p>
+            <p><a href="https://istio.io">Istio</a> has been adopted as a common implementation of <a href="https://istio.io/docs/concepts/what-is-istio/">service mesh</a>, since more and more companies want to bring Istio into production, the version control of Istio seems a significant problem to solve.</p>
 <p>Version control is necessary as Istio components can be treated as the equivalent RPC services like our business services, we need to have an understanding of which version we are using now and what does the next version bring. And some Istio components can cooperate with the others, if we need to upgrade one component we need to upgrade the other components too.</p>
 <p>Although the Istio community provides the Istio upgrade method, we don’t actually want to upgrade such a whole thing in one move, it influences so much that we don’t want to risk.</p>
-<h3 id="Helm"><a href="#Helm" class="headerlink" title="Helm"></a>Helm</h3><p><a href="https://helm.sh" target="_blank" rel="noopener">Helm</a> is package control system for Kubernetes, it’s more like the complicated version of brew on Mac.</p>
+<h3 id="Helm"><a href="#Helm" class="headerlink" title="Helm"></a>Helm</h3><p><a href="https://helm.sh">Helm</a> is package control system for Kubernetes, it’s more like the complicated version of brew on Mac.</p>
 <p>It uses Yaml and Golang templates to formulate a complete application configuration on Kubernetes. A lot of applications are packaged as Helm charts, we can build a complicated application by declaring the dependencies between these charts.</p>
-<h3 id="Istio-Helm"><a href="#Istio-Helm" class="headerlink" title="Istio + Helm"></a>Istio + Helm</h3><p>Istio project contains the <a href="https://github.com/istio/istio/blob/master/install/kubernetes/helm/istio/README.md" target="_blank" rel="noopener">Helm configuration</a> itself, I recommend the users to extract the Helm brought by Istio into a standalone Git repository.</p>
+<h3 id="Istio-Helm"><a href="#Istio-Helm" class="headerlink" title="Istio + Helm"></a>Istio + Helm</h3><p>Istio project contains the <a href="https://github.com/istio/istio/blob/master/install/kubernetes/helm/istio/README.md">Helm configuration</a> itself, I recommend the users to extract the Helm brought by Istio into a standalone Git repository.</p>
 <p><img src="/images/istio-helm-git.png" alt="istio-helm-git"></p>
 <p>Like the other services, we use Git to control each component’s configuration and track every modification.</p>
 <h3 id="CI-CD"><a href="#CI-CD" class="headerlink" title="CI/CD"></a>CI/CD</h3><p>As more and more people advocate <code>infrastructure as code</code>, we not only store the Istio Helm as a Git repository, we bring the CI/CD to the infrastructure.</p>
 <p>If three Kubernetes clusters: <code>test</code>, <code>stage</code>, <code>production</code> exist, we can setup CI/CD to <code>test</code> cluster based on the specified Git <code>test</code> branch, each commit will trigger the generation of the latest Istio K8S Yaml config and apply them to the <code>test</code> cluster, after the tests on <code>test</code> environment, we brought the Istio updates to the <code>stage</code> and <code>production</code> in order.</p>
-<h3 id="Still-worried-about-Production"><a href="#Still-worried-about-Production" class="headerlink" title="Still worried about Production?"></a>Still worried about Production?</h3><p>Although we have tested in the <code>test</code> environment, we still worry if it works in the <code>production</code> and a method to let you know what actually changes is to <strong>diff</strong> the K8S configuration between the latest config and the current K8S config.<br>I recommend the <a href="https://github.com/weaveworks/kubediff" target="_blank" rel="noopener"><code>kubediff</code></a> tool to distinguish the differences.</p>
+<h3 id="Still-worried-about-Production"><a href="#Still-worried-about-Production" class="headerlink" title="Still worried about Production?"></a>Still worried about Production?</h3><p>Although we have tested in the <code>test</code> environment, we still worry if it works in the <code>production</code> and a method to let you know what actually changes is to <strong>diff</strong> the K8S configuration between the latest config and the current K8S config.<br>I recommend the <a href="https://github.com/weaveworks/kubediff"><code>kubediff</code></a> tool to distinguish the differences.</p>
 <h3 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h3><ul>
 <li>Every updates to Istio configuration need to be tracked by Git. </li>
 <li>Like the common services, deploy the change to <code>test</code> environment as soon as possible to fail fast.</li>
@@ -777,7 +777,7 @@
         </nav>
         
         <div class="level">
-            <a class="level-item button is-link is-rounded" href="https://github.com/songrgg" target="_blank">
+            <a class="level-item button is-link is-rounded" href="https://github.com/songrgg" target="_blank" rel="noopener">
                 Follow</a>
         </div>
         
@@ -785,28 +785,28 @@
         
         <div class="level is-mobile">
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Github" href="https://github.com/songrgg">
                 
                 <i class="fab fa-github"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Instagram" href="https://www.instagram.com/jiangsongrong">
                 
                 <i class="fab fa-instagram"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
                 
                 <i class="fab fa-linkedin"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="RSS" href="/atom.xml">
                 
                 <i class="fas fa-rss"></i>
@@ -896,7 +896,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration%20-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -1777,7 +1777,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration%20-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -2654,8 +2654,8 @@
                 </a>
                 <p class="is-size-7">
                 &copy; 2020 songrgg&nbsp;
-                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a
-                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
                 
                 </p>
             </div>
@@ -2664,7 +2664,7 @@
                 <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Creative Commons" href="https://creativecommons.org/">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
                         
                         <i class="fab fa-creative-commons"></i>
                         
@@ -2672,7 +2672,7 @@
                 </p>
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
                         
                         <i class="fab fa-creative-commons-by"></i>
                         
@@ -2680,7 +2680,7 @@
                 </p>
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
                         
                         <i class="fab fa-github"></i>
                         
@@ -2697,8 +2697,13 @@
 <script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
 <script>moment.locale("en");</script>
 
+
 <script>
 var IcarusThemeSettings = {
+    site: {
+        url: 'https://songrgg.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
     article: {
         highlight: {
             clipboard: true,
@@ -2709,23 +2714,23 @@ var IcarusThemeSettings = {
 </script>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
 
 
 
-    
-    
-    
-    
+
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
 <script src="/js/gallery.js" defer></script>
 
-    
-    
+
+
 <div id="outdated">
     <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
             my browser now </a></p>
     <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
 </div>
@@ -2740,8 +2745,8 @@ var IcarusThemeSettings = {
     });
 </script>
 
-    
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     MathJax.Hub.Config({
@@ -2763,24 +2768,24 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
-    
-    
+
+
 <a id="back-to-top" title="Back to Top" href="javascript:;">
     <i class="fas fa-chevron-up"></i>
 </a>
 <script src="/js/back-to-top.js" defer></script>
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
 
 
 <script src="/js/main.js" defer></script>

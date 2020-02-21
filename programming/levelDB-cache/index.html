@@ -164,13 +164,13 @@
 <p>leveldb采用LRU机制, 利用键的哈希值前n位作为索引, 将要插入的键值对分派到指定的缓存区, 当缓存区的使用率大于总容量后, 优先淘汰最近最少使用的缓存, 独立的缓存区总量为2^n .</p>
 </blockquote>
 <h4 id="初始化ShardedLRUCache"><a href="#初始化ShardedLRUCache" class="headerlink" title="初始化ShardedLRUCache"></a>初始化ShardedLRUCache</h4><ul>
-<li>设置初始缓存容量, 并设置16个子分区的容量.<figure class="highlight c++ hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> kNumShardBits = <span class="hljs-number">4</span>;</span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> kNumShards = <span class="hljs-number">1</span> &lt;&lt; kNumShardBits;</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">explicit</span> <span class="hljs-title">ShardedLRUCache</span><span class="hljs-params">(<span class="hljs-keyword">size_t</span> capacity)</span></span></span><br><span class="line">       : last_id_(0) &#123;</span><br><span class="line">  <span class="hljs-keyword">const</span> <span class="hljs-keyword">size_t</span> per_shard = (capacity + (kNumShards - <span class="hljs-number">1</span>)) / kNumShards;</span><br><span class="line">  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> s = <span class="hljs-number">0</span>; s &lt; kNumShards; s++) &#123;</span><br><span class="line">    shard_[s].SetCapacity(per_shard);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li>设置初始缓存容量, 并设置16个子分区的容量.<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> kNumShardBits = <span class="number">4</span>;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> kNumShards = <span class="number">1</span> &lt;&lt; kNumShardBits;</span><br><span class="line"><span class="function"><span class="keyword">explicit</span> <span class="title">ShardedLRUCache</span><span class="params">(<span class="keyword">size_t</span> capacity)</span></span></span><br><span class="line">       : last_id_(0) &#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">size_t</span> per_shard = (capacity + (kNumShards - <span class="number">1</span>)) / kNumShards;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> s = <span class="number">0</span>; s &lt; kNumShards; s++) &#123;</span><br><span class="line">    shard_[s].SetCapacity(per_shard);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
 <h4 id="新建缓存"><a href="#新建缓存" class="headerlink" title="新建缓存"></a>新建缓存</h4><ul>
-<li>由key的hash值的前kNumShardBits位作为子缓存区索引, 默认为前4位的索引位, 索引到指定的区, 子缓存区LRUCache接管新建缓存的任务.<figure class="highlight c++ hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ShardedLRUCache</span> :</span> <span class="hljs-keyword">public</span> Cache &#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="hljs-function"><span class="hljs-keyword">virtual</span> Handle* <span class="hljs-title">Insert</span><span class="hljs-params">(<span class="hljs-keyword">const</span> Slice&amp; key, <span class="hljs-keyword">void</span>* value, <span class="hljs-keyword">size_t</span> charge,</span></span></span><br><span class="line"><span class="hljs-function"><span class="hljs-params">                         <span class="hljs-keyword">void</span> (*deleter)(<span class="hljs-keyword">const</span> Slice&amp; key, <span class="hljs-keyword">void</span>* value))</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">const</span> <span class="hljs-keyword">uint32_t</span> hash = HashSlice(key);</span><br><span class="line">    <span class="hljs-keyword">return</span> shard_[Shard(hash)].Insert(key, hash, value, charge, deleter);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></li>
-<li>LRUCache结构<figure class="highlight c++ hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// A single shard of sharded cache.</span></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LRUCache</span> &#123;</span></span><br><span class="line"> <span class="hljs-keyword">public</span>:</span><br><span class="line">  LRUCache();</span><br><span class="line">  ~LRUCache();</span><br><span class="line"></span><br><span class="line">  <span class="hljs-comment">// Separate from constructor so caller can easily make an array of LRUCache</span></span><br><span class="line">  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">SetCapacity</span><span class="hljs-params">(<span class="hljs-keyword">size_t</span> capacity)</span> </span>&#123; capacity_ = capacity; &#125;</span><br><span class="line"></span><br><span class="line">  <span class="hljs-comment">// Like Cache methods, but with an extra "hash" parameter.</span></span><br><span class="line">  Cache::<span class="hljs-function">Handle* <span class="hljs-title">Insert</span><span class="hljs-params">(<span class="hljs-keyword">const</span> Slice&amp; key, <span class="hljs-keyword">uint32_t</span> hash,</span></span></span><br><span class="line"><span class="hljs-function"><span class="hljs-params">                        <span class="hljs-keyword">void</span>* value, <span class="hljs-keyword">size_t</span> charge,</span></span></span><br><span class="line"><span class="hljs-function"><span class="hljs-params">                        <span class="hljs-keyword">void</span> (*deleter)(<span class="hljs-keyword">const</span> Slice&amp; key, <span class="hljs-keyword">void</span>* value))</span></span>;</span><br><span class="line">  Cache::<span class="hljs-function">Handle* <span class="hljs-title">Lookup</span><span class="hljs-params">(<span class="hljs-keyword">const</span> Slice&amp; key, <span class="hljs-keyword">uint32_t</span> hash)</span></span>;</span><br><span class="line">  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Release</span><span class="hljs-params">(Cache::Handle* handle)</span></span>;</span><br><span class="line">  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Erase</span><span class="hljs-params">(<span class="hljs-keyword">const</span> Slice&amp; key, <span class="hljs-keyword">uint32_t</span> hash)</span></span>;</span><br><span class="line"></span><br><span class="line"> <span class="hljs-keyword">private</span>:</span><br><span class="line">  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">LRU_Remove</span><span class="hljs-params">(LRUHandle* e)</span></span>;</span><br><span class="line">  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">LRU_Append</span><span class="hljs-params">(LRUHandle* e)</span></span>;</span><br><span class="line">  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Unref</span><span class="hljs-params">(LRUHandle* e)</span></span>;</span><br><span class="line"></span><br><span class="line">  <span class="hljs-comment">// Initialized before use.</span></span><br><span class="line">  <span class="hljs-keyword">size_t</span> capacity_;</span><br><span class="line"></span><br><span class="line">  <span class="hljs-comment">// mutex_ protects the following state.</span></span><br><span class="line">  port::Mutex mutex_;</span><br><span class="line">  <span class="hljs-keyword">size_t</span> usage_;</span><br><span class="line"></span><br><span class="line">  <span class="hljs-comment">// Dummy head of LRU list.</span></span><br><span class="line">  <span class="hljs-comment">// lru.prev is newest entry, lru.next is oldest entry.</span></span><br><span class="line">  LRUHandle lru_;</span><br><span class="line"></span><br><span class="line">  HandleTable table_;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<li>由key的hash值的前kNumShardBits位作为子缓存区索引, 默认为前4位的索引位, 索引到指定的区, 子缓存区LRUCache接管新建缓存的任务.<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ShardedLRUCache</span> :</span> <span class="keyword">public</span> Cache &#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> Handle* <span class="title">Insert</span><span class="params">(<span class="keyword">const</span> Slice&amp; key, <span class="keyword">void</span>* value, <span class="keyword">size_t</span> charge,</span></span></span><br><span class="line"><span class="function"><span class="params">                         <span class="keyword">void</span> (*deleter)(<span class="keyword">const</span> Slice&amp; key, <span class="keyword">void</span>* value))</span> </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">uint32_t</span> hash = HashSlice(key);</span><br><span class="line">    <span class="keyword">return</span> shard_[Shard(hash)].Insert(key, hash, value, charge, deleter);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></li>
+<li>LRUCache结构<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// A single shard of sharded cache.</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LRUCache</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  LRUCache();</span><br><span class="line">  ~LRUCache();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Separate from constructor so caller can easily make an array of LRUCache</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">SetCapacity</span><span class="params">(<span class="keyword">size_t</span> capacity)</span> </span>&#123; capacity_ = capacity; &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Like Cache methods, but with an extra "hash" parameter.</span></span><br><span class="line">  Cache::<span class="function">Handle* <span class="title">Insert</span><span class="params">(<span class="keyword">const</span> Slice&amp; key, <span class="keyword">uint32_t</span> hash,</span></span></span><br><span class="line"><span class="function"><span class="params">                        <span class="keyword">void</span>* value, <span class="keyword">size_t</span> charge,</span></span></span><br><span class="line"><span class="function"><span class="params">                        <span class="keyword">void</span> (*deleter)(<span class="keyword">const</span> Slice&amp; key, <span class="keyword">void</span>* value))</span></span>;</span><br><span class="line">  Cache::<span class="function">Handle* <span class="title">Lookup</span><span class="params">(<span class="keyword">const</span> Slice&amp; key, <span class="keyword">uint32_t</span> hash)</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">Release</span><span class="params">(Cache::Handle* handle)</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">Erase</span><span class="params">(<span class="keyword">const</span> Slice&amp; key, <span class="keyword">uint32_t</span> hash)</span></span>;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">LRU_Remove</span><span class="params">(LRUHandle* e)</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">LRU_Append</span><span class="params">(LRUHandle* e)</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">Unref</span><span class="params">(LRUHandle* e)</span></span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Initialized before use.</span></span><br><span class="line">  <span class="keyword">size_t</span> capacity_;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// mutex_ protects the following state.</span></span><br><span class="line">  port::Mutex mutex_;</span><br><span class="line">  <span class="keyword">size_t</span> usage_;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Dummy head of LRU list.</span></span><br><span class="line">  <span class="comment">// lru.prev is newest entry, lru.next is oldest entry.</span></span><br><span class="line">  LRUHandle lru_;</span><br><span class="line"></span><br><span class="line">  HandleTable table_;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
@@ -183,10 +183,10 @@
 <li>这里的HandleTable实现并没特殊之处, 我看是采用键哈希策略进行哈希, 如果键冲突则以链表进行存储.</li>
 <li>利用二级指针对链表进行插入.</li>
 </ol>
-<figure class="highlight c++ hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function">LRUHandle* <span class="hljs-title">Insert</span><span class="hljs-params">(LRUHandle* h)</span> </span>&#123;</span><br><span class="line">  LRUHandle** ptr = FindPointer(h-&gt;key(), h-&gt;hash);</span><br><span class="line">  LRUHandle* old = *ptr;</span><br><span class="line">  h-&gt;next_hash = (old == <span class="hljs-literal">NULL</span> ? <span class="hljs-literal">NULL</span> : old-&gt;next_hash);</span><br><span class="line">  *ptr = h;</span><br><span class="line">  <span class="hljs-keyword">if</span> (old == <span class="hljs-literal">NULL</span>) &#123;</span><br><span class="line">    ++elems_;</span><br><span class="line">    <span class="hljs-keyword">if</span> (elems_ &gt; length_) &#123;</span><br><span class="line">      <span class="hljs-comment">// Since each cache entry is fairly large, we aim for a small</span></span><br><span class="line">      <span class="hljs-comment">// average linked list length (&lt;= 1).</span></span><br><span class="line">      Resize();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="hljs-keyword">return</span> old;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">LRUHandle* <span class="title">Insert</span><span class="params">(LRUHandle* h)</span> </span>&#123;</span><br><span class="line">  LRUHandle** ptr = FindPointer(h-&gt;key(), h-&gt;hash);</span><br><span class="line">  LRUHandle* old = *ptr;</span><br><span class="line">  h-&gt;next_hash = (old == <span class="literal">NULL</span> ? <span class="literal">NULL</span> : old-&gt;next_hash);</span><br><span class="line">  *ptr = h;</span><br><span class="line">  <span class="keyword">if</span> (old == <span class="literal">NULL</span>) &#123;</span><br><span class="line">    ++elems_;</span><br><span class="line">    <span class="keyword">if</span> (elems_ &gt; length_) &#123;</span><br><span class="line">      <span class="comment">// Since each cache entry is fairly large, we aim for a small</span></span><br><span class="line">      <span class="comment">// average linked list length (&lt;= 1).</span></span><br><span class="line">      Resize();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> old;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>二级指针<br>在HandleTable这个哈希表实现里, 有个FindPointer方法用来查找此对象是否已存在, 并返回<code>LRUHandle**</code>, 代码如下:</p>
-  <figure class="highlight c++ hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// Return a pointer to slot that points to a cache entry that</span></span><br><span class="line"><span class="hljs-comment">// matches key/hash.  If there is no such cache entry, return a</span></span><br><span class="line"><span class="hljs-comment">// pointer to the trailing slot in the corresponding linked list.</span></span><br><span class="line"><span class="hljs-function">LRUHandle** <span class="hljs-title">FindPointer</span><span class="hljs-params">(<span class="hljs-keyword">const</span> Slice&amp; key, <span class="hljs-keyword">uint32_t</span> hash)</span> </span>&#123;</span><br><span class="line">  LRUHandle** ptr = &amp;list_[hash &amp; (length_ - <span class="hljs-number">1</span>)];</span><br><span class="line">  <span class="hljs-keyword">while</span> (*ptr != <span class="hljs-literal">NULL</span> &amp;&amp;</span><br><span class="line">         ((*ptr)-&gt;hash != hash || key != (*ptr)-&gt;key())) &#123;</span><br><span class="line">    ptr = &amp;(*ptr)-&gt;next_hash;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="hljs-keyword">return</span> ptr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+  <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Return a pointer to slot that points to a cache entry that</span></span><br><span class="line"><span class="comment">// matches key/hash.  If there is no such cache entry, return a</span></span><br><span class="line"><span class="comment">// pointer to the trailing slot in the corresponding linked list.</span></span><br><span class="line"><span class="function">LRUHandle** <span class="title">FindPointer</span><span class="params">(<span class="keyword">const</span> Slice&amp; key, <span class="keyword">uint32_t</span> hash)</span> </span>&#123;</span><br><span class="line">  LRUHandle** ptr = &amp;list_[hash &amp; (length_ - <span class="number">1</span>)];</span><br><span class="line">  <span class="keyword">while</span> (*ptr != <span class="literal">NULL</span> &amp;&amp;</span><br><span class="line">         ((*ptr)-&gt;hash != hash || key != (*ptr)-&gt;key())) &#123;</span><br><span class="line">    ptr = &amp;(*ptr)-&gt;next_hash;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> ptr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
@@ -224,7 +224,7 @@
 <div class="card">
     <div class="card-content">
         <h3 class="menu-label has-text-centered">Related articles</h3>
-        <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/programming/leveldb-integer-coding/" title="levelDB里integer编码" rel="bookmark">levelDB里integer编码</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/programming/levelDB-skiplist/" title="levelDB里skiplist的实现代码赏析" rel="bookmark">levelDB里skiplist的实现代码赏析</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/programming/leveldb-status/" title="levelDB里自定义的状态" rel="bookmark">levelDB里自定义的状态</a></h3></div></li></ul>
+        <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/programming/levelDB-skiplist/" title="levelDB里skiplist的实现代码赏析" rel="bookmark">levelDB里skiplist的实现代码赏析</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/programming/leveldb-status/" title="levelDB里自定义的状态" rel="bookmark">levelDB里自定义的状态</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/programming/leveldb-integer-coding/" title="levelDB里integer编码" rel="bookmark">levelDB里integer编码</a></h3></div></li></ul>
     </div>
 </div>
 
@@ -272,7 +272,7 @@
 
 <div id="disqus_thread">
     
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
     </div>
 </div>
@@ -353,7 +353,7 @@
         </nav>
         
         <div class="level">
-            <a class="level-item button is-link is-rounded" href="https://github.com/songrgg" target="_blank">
+            <a class="level-item button is-link is-rounded" href="https://github.com/songrgg" target="_blank" rel="noopener">
                 Follow</a>
         </div>
         
@@ -361,28 +361,28 @@
         
         <div class="level is-mobile">
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Github" href="https://github.com/songrgg">
                 
                 <i class="fab fa-github"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Instagram" href="https://www.instagram.com/jiangsongrong">
                 
                 <i class="fab fa-instagram"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
                 
                 <i class="fab fa-linkedin"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="RSS" href="/atom.xml">
                 
                 <i class="fas fa-rss"></i>
@@ -472,7 +472,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration%20-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -1353,7 +1353,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration%20-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -2230,8 +2230,8 @@
                 </a>
                 <p class="is-size-7">
                 &copy; 2020 songrgg&nbsp;
-                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a
-                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
                 
                 </p>
             </div>
@@ -2240,7 +2240,7 @@
                 <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Creative Commons" href="https://creativecommons.org/">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
                         
                         <i class="fab fa-creative-commons"></i>
                         
@@ -2248,7 +2248,7 @@
                 </p>
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
                         
                         <i class="fab fa-creative-commons-by"></i>
                         
@@ -2256,7 +2256,7 @@
                 </p>
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
                         
                         <i class="fab fa-github"></i>
                         
@@ -2273,8 +2273,13 @@
 <script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
 <script>moment.locale("en");</script>
 
+
 <script>
 var IcarusThemeSettings = {
+    site: {
+        url: 'https://songrgg.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
     article: {
         highlight: {
             clipboard: true,
@@ -2285,23 +2290,23 @@ var IcarusThemeSettings = {
 </script>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
 
 
 
-    
-    
-    
-    
+
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
 <script src="/js/gallery.js" defer></script>
 
-    
-    
+
+
 <div id="outdated">
     <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
             my browser now </a></p>
     <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
 </div>
@@ -2316,8 +2321,8 @@ var IcarusThemeSettings = {
     });
 </script>
 
-    
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     MathJax.Hub.Config({
@@ -2339,24 +2344,24 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
-    
-    
+
+
 <a id="back-to-top" title="Back to Top" href="javascript:;">
     <i class="fas fa-chevron-up"></i>
 </a>
 <script src="/js/back-to-top.js" defer></script>
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
 
 
 <script src="/js/main.js" defer></script>

@@ -170,26 +170,26 @@
             <h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>利用Cloudera的CDH套件搭建好Hadoop 2.6，可CDH中的Hive版本不高，于是独立安装Hive 2.3，由于Hive的执行引擎默认是Spark，根据Hive官网上的Hive on Spark教程开始配置。</p>
 <h5 id="Standalone"><a href="#Standalone" class="headerlink" title="Standalone"></a>Standalone</h5><p>配置了Spark Standalone模式之后，配置Hive遇到一些困难。</p>
 <p>由于使用的是pre-build版本的Spark，遇到报错：</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java.lang.NoSuchFieldError: SPARK_RPC_CLIENT_CONNECT_TIMEOUT</span><br><span class="line">    at org.apache.hive.spark.client.rpc.RpcConfiguration.&lt;clinit&gt;(RpcConfiguration.java:46)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java.lang.NoSuchFieldError: SPARK_RPC_CLIENT_CONNECT_TIMEOUT</span><br><span class="line">    at org.apache.hive.spark.client.rpc.RpcConfiguration.&lt;clinit&gt;(RpcConfiguration.java:46)</span><br></pre></td></tr></table></figure>
 
 <p>接下来要自己编译Spark without Hive，可是一直没有解决，报错为：</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[info] &#39;compiler-interface&#39; not yet compiled for Scala 2.11.8. Compiling...</span><br><span class="line">error: scala.reflect.internal.MissingRequirementError: object java.lang.Object in compiler mirror not found.</span><br><span class="line">	at scala.reflect.internal.MissingRequirementError$.signal(MissingRequirementError.scala:17)</span><br><span class="line">	at scala.reflect.internal.MissingRequirementError$.notFound(MissingRequirementError.scala:18)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[info] &#39;compiler-interface&#39; not yet compiled for Scala 2.11.8. Compiling...</span><br><span class="line">error: scala.reflect.internal.MissingRequirementError: object java.lang.Object in compiler mirror not found.</span><br><span class="line">	at scala.reflect.internal.MissingRequirementError$.signal(MissingRequirementError.scala:17)</span><br><span class="line">	at scala.reflect.internal.MissingRequirementError$.notFound(MissingRequirementError.scala:18)</span><br></pre></td></tr></table></figure>
 
 <p>非常曲折，最后选择尝试已经配置好的Yarn模式的Spark。</p>
 <h5 id="Yarn"><a href="#Yarn" class="headerlink" title="Yarn"></a>Yarn</h5><p>Yarn模式的Spark集群已经就绪，在Hive中配置Spark</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">set hive.execution.engine&#x3D;spark;</span><br><span class="line">set spark.master&#x3D;yarn;</span><br><span class="line">set spark.executor.memory&#x3D;512m;</span><br><span class="line">set spark.serializer&#x3D;org.apache.spark.serializer.KryoSerializer;</span><br><span class="line">set spark.eventLog.enabled&#x3D;true;</span><br><span class="line">set spark.eventLog.dir&#x3D;&lt;Spark event log folder (must exist)&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">set hive.execution.engine&#x3D;spark;</span><br><span class="line">set spark.master&#x3D;yarn;</span><br><span class="line">set spark.executor.memory&#x3D;512m;</span><br><span class="line">set spark.serializer&#x3D;org.apache.spark.serializer.KryoSerializer;</span><br><span class="line">set spark.eventLog.enabled&#x3D;true;</span><br><span class="line">set spark.eventLog.dir&#x3D;&lt;Spark event log folder (must exist)&gt;</span><br></pre></td></tr></table></figure>
 
 <p>上传Spark应用所需的Spark依赖jar包到Hdfs中，例如放到Hdfs中的/spark-jars目录，并配置hive-site.xml</p>
-<figure class="highlight xml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span></span><br><span class="line">  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>spark.yarn.jars<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span></span><br><span class="line">  <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>hdfs://xxxx:8020/spark-jars/*<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">name</span>&gt;</span>spark.yarn.jars<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">value</span>&gt;</span>hdfs://xxxx:8020/spark-jars/*<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>注意这里需要保证使用Hive时的用户能够有权限访问Hdfs上指定的目录。</p>
 <h4 id="用户数据导入"><a href="#用户数据导入" class="headerlink" title="用户数据导入"></a>用户数据导入</h4><h5 id="源数据"><a href="#源数据" class="headerlink" title="源数据"></a>源数据</h5><p>当源数据是JSON并位于Hdfs的/tmp目录，如</p>
-<figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="hljs-string">"time"</span>: <span class="hljs-string">"1515682813526"</span>,</span><br><span class="line">    <span class="hljs-string">"uid"</span>: <span class="hljs-number">1</span>,</span><br><span class="line">    <span class="hljs-string">"ip"</span>: <span class="hljs-string">"1.1.1.1"</span>,</span><br><span class="line">    <span class="hljs-string">"path"</span>: <span class="hljs-string">"https://github.com"</span>,</span><br><span class="line">    <span class="hljs-string">"referer"</span>: <span class="hljs-string">"https://google.com"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"time"</span>: <span class="string">"1515682813526"</span>,</span><br><span class="line">    <span class="string">"uid"</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="string">"ip"</span>: <span class="string">"1.1.1.1"</span>,</span><br><span class="line">    <span class="string">"path"</span>: <span class="string">"https://github.com"</span>,</span><br><span class="line">    <span class="string">"referer"</span>: <span class="string">"https://google.com"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h5 id="创建Hive外部表"><a href="#创建Hive外部表" class="headerlink" title="创建Hive外部表"></a>创建Hive外部表</h5><figure class="highlight sql hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">EXTERNAL</span> <span class="hljs-keyword">TABLE</span> <span class="hljs-keyword">IF</span> <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">EXISTS</span> tmp.pageview(</span><br><span class="line">    <span class="hljs-built_in">time</span> <span class="hljs-built_in">BIGINT</span>,</span><br><span class="line">    uid  <span class="hljs-built_in">BIGINT</span>,</span><br><span class="line">    ip   <span class="hljs-keyword">STRING</span>,</span><br><span class="line">    <span class="hljs-keyword">path</span> <span class="hljs-keyword">STRING</span>,</span><br><span class="line">    referer <span class="hljs-keyword">STRING</span></span><br><span class="line">)</span><br><span class="line"><span class="hljs-keyword">ROW</span> <span class="hljs-keyword">FORMAT</span> SERDE <span class="hljs-string">'org.apache.hive.hcatalog.data.JsonSerDe'</span></span><br><span class="line"><span class="hljs-keyword">STORED</span> <span class="hljs-keyword">AS</span> TEXTFILE</span><br><span class="line">LOCATION <span class="hljs-string">'/tmp'</span>;</span><br></pre></td></tr></table></figure>
+<h5 id="创建Hive外部表"><a href="#创建Hive外部表" class="headerlink" title="创建Hive外部表"></a>创建Hive外部表</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">EXTERNAL</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> tmp.pageview(</span><br><span class="line">    <span class="built_in">time</span> <span class="built_in">BIGINT</span>,</span><br><span class="line">    uid  <span class="built_in">BIGINT</span>,</span><br><span class="line">    ip   <span class="keyword">STRING</span>,</span><br><span class="line">    <span class="keyword">path</span> <span class="keyword">STRING</span>,</span><br><span class="line">    referer <span class="keyword">STRING</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">ROW</span> <span class="keyword">FORMAT</span> SERDE <span class="string">'org.apache.hive.hcatalog.data.JsonSerDe'</span></span><br><span class="line"><span class="keyword">STORED</span> <span class="keyword">AS</span> TEXTFILE</span><br><span class="line">LOCATION <span class="string">'/tmp'</span>;</span><br></pre></td></tr></table></figure>
 
 <h5 id="导入ORC表"><a href="#导入ORC表" class="headerlink" title="导入ORC表"></a>导入ORC表</h5><p>ORC表是Hive的一种高效表，在查询上更加快速，可以从外部表将数据导入ORC表。</p>
-<figure class="highlight sql hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> <span class="hljs-keyword">IF</span> <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">EXISTS</span> orc.pageview(</span><br><span class="line">    <span class="hljs-built_in">time</span> <span class="hljs-built_in">BIGINT</span>,</span><br><span class="line">    uid  <span class="hljs-built_in">BIGINT</span>,</span><br><span class="line">    ip   <span class="hljs-keyword">STRING</span>,</span><br><span class="line">    <span class="hljs-keyword">path</span> <span class="hljs-keyword">STRING</span>,</span><br><span class="line">    referer <span class="hljs-keyword">STRING</span></span><br><span class="line">)</span><br><span class="line"><span class="hljs-keyword">STORED</span> <span class="hljs-keyword">AS</span> ORC;</span><br><span class="line"></span><br><span class="line">FROM tmp.pageview pv</span><br><span class="line"><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> <span class="hljs-keyword">TABLE</span> orc.pageview</span><br><span class="line"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">time</span>, uid, ip, <span class="hljs-keyword">path</span>, referer;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> orc.pageview(</span><br><span class="line">    <span class="built_in">time</span> <span class="built_in">BIGINT</span>,</span><br><span class="line">    uid  <span class="built_in">BIGINT</span>,</span><br><span class="line">    ip   <span class="keyword">STRING</span>,</span><br><span class="line">    <span class="keyword">path</span> <span class="keyword">STRING</span>,</span><br><span class="line">    referer <span class="keyword">STRING</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">STORED</span> <span class="keyword">AS</span> ORC;</span><br><span class="line"></span><br><span class="line">FROM tmp.pageview pv</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="keyword">TABLE</span> orc.pageview</span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">time</span>, uid, ip, <span class="keyword">path</span>, referer;</span><br></pre></td></tr></table></figure>
 
         </div>
         
@@ -267,7 +267,7 @@
 
 <div id="disqus_thread">
     
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
     </div>
 </div>
@@ -348,7 +348,7 @@
         </nav>
         
         <div class="level">
-            <a class="level-item button is-link is-rounded" href="https://github.com/songrgg" target="_blank">
+            <a class="level-item button is-link is-rounded" href="https://github.com/songrgg" target="_blank" rel="noopener">
                 Follow</a>
         </div>
         
@@ -356,28 +356,28 @@
         
         <div class="level is-mobile">
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Github" href="https://github.com/songrgg">
                 
                 <i class="fab fa-github"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Instagram" href="https://www.instagram.com/jiangsongrong">
                 
                 <i class="fab fa-instagram"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
                 
                 <i class="fab fa-linkedin"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="RSS" href="/atom.xml">
                 
                 <i class="fas fa-rss"></i>
@@ -467,7 +467,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration%20-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -1348,7 +1348,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration%20-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -2225,8 +2225,8 @@
                 </a>
                 <p class="is-size-7">
                 &copy; 2020 songrgg&nbsp;
-                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a
-                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
                 
                 </p>
             </div>
@@ -2235,7 +2235,7 @@
                 <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Creative Commons" href="https://creativecommons.org/">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
                         
                         <i class="fab fa-creative-commons"></i>
                         
@@ -2243,7 +2243,7 @@
                 </p>
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
                         
                         <i class="fab fa-creative-commons-by"></i>
                         
@@ -2251,7 +2251,7 @@
                 </p>
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
                         
                         <i class="fab fa-github"></i>
                         
@@ -2268,8 +2268,13 @@
 <script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
 <script>moment.locale("en");</script>
 
+
 <script>
 var IcarusThemeSettings = {
+    site: {
+        url: 'https://songrgg.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
     article: {
         highlight: {
             clipboard: true,
@@ -2280,23 +2285,23 @@ var IcarusThemeSettings = {
 </script>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
 
 
 
-    
-    
-    
-    
+
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
 <script src="/js/gallery.js" defer></script>
 
-    
-    
+
+
 <div id="outdated">
     <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
             my browser now </a></p>
     <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
 </div>
@@ -2311,8 +2316,8 @@ var IcarusThemeSettings = {
     });
 </script>
 
-    
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     MathJax.Hub.Config({
@@ -2334,24 +2339,24 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
-    
-    
+
+
 <a id="back-to-top" title="Back to Top" href="javascript:;">
     <i class="fas fa-chevron-up"></i>
 </a>
 <script src="/js/back-to-top.js" defer></script>
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
 
 
 <script src="/js/main.js" defer></script>

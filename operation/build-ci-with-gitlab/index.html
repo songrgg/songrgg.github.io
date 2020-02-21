@@ -165,15 +165,15 @@
         </h1>
         <div class="content">
             <h4 id="自建gitlab"><a href="#自建gitlab" class="headerlink" title="自建gitlab"></a>自建gitlab</h4><p>自建gitlab一大优势是<strong>快</strong>，之前用翻墙走github速度也在1M/s左右，可是自建的gitlab提升了建立连接的速度，可以说体验又上升了一个档次。</p>
-<p>用docker起一个gitlab服务尤其方便 <a href="https://docs.gitlab.com/omnibus/docker/README.html" target="_blank" rel="noopener">GitLab Docker images</a></p>
+<p>用docker起一个gitlab服务尤其方便 <a href="https://docs.gitlab.com/omnibus/docker/README.html">GitLab Docker images</a></p>
 <a id="more"></a>
 
 <h4 id="选择CI"><a href="#选择CI" class="headerlink" title="选择CI"></a>选择CI</h4><p>如果有人像我一样对Jenkins的UI和配置不感兴趣，那么Gitlab CI runner是不错的选择，配置用<code>YAML</code>，清晰明了，UI集成在gitlab中。<strong>对比jenkins，上手容易，颜值更高。</strong></p>
 <h4 id="Gitlab-CI-runner"><a href="#Gitlab-CI-runner" class="headerlink" title="Gitlab CI runner"></a>Gitlab CI runner</h4><ul>
 <li>找一台ubuntu 16.04，机器配置按照项目大小和数量决定</li>
-<li>安装CI runner<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install gitlab-ci-multi-runner</span><br></pre></td></tr></table></figure></li>
-<li>将runner注册到gitlab<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo gitlab-ci-multi-runner register</span><br></pre></td></tr></table></figure></li>
-<li>调整配置<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">concurrent</span> <span class="hljs-string">=</span> <span class="hljs-number">16</span> <span class="hljs-comment"># 更新并发build数量到16</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-string">[[runners]]</span></span><br><span class="line">  <span class="hljs-string">name</span> <span class="hljs-string">=</span> <span class="hljs-string">"10-1-10-10"</span> <span class="hljs-comment"># 这里是runner的名字</span></span><br><span class="line">  <span class="hljs-string">url</span> <span class="hljs-string">=</span> <span class="hljs-string">"https://gitlab.com"</span> <span class="hljs-comment"># 所属gitlab的url</span></span><br><span class="line">  <span class="hljs-string">token</span> <span class="hljs-string">=</span> <span class="hljs-string">"please-input-gitlab-register-token"</span> <span class="hljs-comment"># gitlab注册token</span></span><br><span class="line">  <span class="hljs-string">executor</span> <span class="hljs-string">=</span> <span class="hljs-string">"docker"</span> <span class="hljs-comment"># 以docker形式运行每次CI任务</span></span><br><span class="line">  <span class="hljs-string">[runners.docker]</span></span><br><span class="line">    <span class="hljs-string">tls_verify</span> <span class="hljs-string">=</span> <span class="hljs-literal">false</span></span><br><span class="line">    <span class="hljs-string">image</span> <span class="hljs-string">=</span> <span class="hljs-string">"ruby:2.1"</span> <span class="hljs-comment"># docker运行的默认镜像</span></span><br><span class="line">    <span class="hljs-string">privileged</span> <span class="hljs-string">=</span> <span class="hljs-literal">false</span> <span class="hljs-comment"># 不授权</span></span><br><span class="line">    <span class="hljs-string">volumes</span> <span class="hljs-string">=</span> <span class="hljs-string">["/cache",</span> <span class="hljs-string">"/var/run/docker.sock:/var/run/docker.sock"</span><span class="hljs-string">]</span></span><br><span class="line">    <span class="hljs-string">extra_hosts</span> <span class="hljs-string">=</span> <span class="hljs-string">["gitlab.com:some-internal-ip"]</span></span><br><span class="line">  <span class="hljs-string">[runners.cache]</span></span><br></pre></td></tr></table></figure>
+<li>安装CI runner<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install gitlab-ci-multi-runner</span><br></pre></td></tr></table></figure></li>
+<li>将runner注册到gitlab<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo gitlab-ci-multi-runner register</span><br></pre></td></tr></table></figure></li>
+<li>调整配置<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">concurrent</span> <span class="string">=</span> <span class="number">16</span> <span class="comment"># 更新并发build数量到16</span></span><br><span class="line"></span><br><span class="line"><span class="string">[[runners]]</span></span><br><span class="line">  <span class="string">name</span> <span class="string">=</span> <span class="string">"10-1-10-10"</span> <span class="comment"># 这里是runner的名字</span></span><br><span class="line">  <span class="string">url</span> <span class="string">=</span> <span class="string">"https://gitlab.com"</span> <span class="comment"># 所属gitlab的url</span></span><br><span class="line">  <span class="string">token</span> <span class="string">=</span> <span class="string">"please-input-gitlab-register-token"</span> <span class="comment"># gitlab注册token</span></span><br><span class="line">  <span class="string">executor</span> <span class="string">=</span> <span class="string">"docker"</span> <span class="comment"># 以docker形式运行每次CI任务</span></span><br><span class="line">  <span class="string">[runners.docker]</span></span><br><span class="line">    <span class="string">tls_verify</span> <span class="string">=</span> <span class="literal">false</span></span><br><span class="line">    <span class="string">image</span> <span class="string">=</span> <span class="string">"ruby:2.1"</span> <span class="comment"># docker运行的默认镜像</span></span><br><span class="line">    <span class="string">privileged</span> <span class="string">=</span> <span class="literal">false</span> <span class="comment"># 不授权</span></span><br><span class="line">    <span class="string">volumes</span> <span class="string">=</span> <span class="string">["/cache",</span> <span class="string">"/var/run/docker.sock:/var/run/docker.sock"</span><span class="string">]</span></span><br><span class="line">    <span class="string">extra_hosts</span> <span class="string">=</span> <span class="string">["gitlab.com:some-internal-ip"]</span></span><br><span class="line">  <span class="string">[runners.cache]</span></span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
@@ -182,7 +182,7 @@
 </blockquote>
 <h4 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h4><p>pipeline指CI的流程可以当做管道，只有上一个操作成功之后，下一个操作继续执行，如利用gitlab ci构建build-&gt;test-&gt;release-&gt;deployment的流程，当代码push到<code>master</code>时，CI触发，如下<br><img src="/images/gitlabci.png" alt="gitlabci"></p>
 <h4 id="配置CI"><a href="#配置CI" class="headerlink" title="配置CI"></a>配置CI</h4><p><strong>.gitlab-ci.yml</strong>是gitlab项目的CI配置文件，文件形式是<code>yaml</code>。</p>
-<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">image:</span> <span class="hljs-string">ruby:2.1</span></span><br><span class="line"><span class="hljs-attr">stages:</span></span><br><span class="line"><span class="hljs-bullet">-</span> <span class="hljs-string">test</span></span><br><span class="line"><span class="hljs-bullet">-</span> <span class="hljs-string">build</span></span><br><span class="line"><span class="hljs-bullet">-</span> <span class="hljs-string">release</span></span><br><span class="line"><span class="hljs-bullet">-</span> <span class="hljs-string">deployment</span></span><br><span class="line"><span class="hljs-attr">variables:</span></span><br><span class="line">  <span class="hljs-attr">DOCKER_DRIVER:</span> <span class="hljs-string">overlay</span></span><br><span class="line">  <span class="hljs-attr">SERVICE_NAME:</span> <span class="hljs-string">test</span></span><br><span class="line">  <span class="hljs-attr">CONTAINER_TEST_IMAGE:</span> <span class="hljs-string">$IMAGE_NAME:$CI_BUILD_REF_NAME</span></span><br><span class="line">  <span class="hljs-attr">CONTAINER_RELEASE_IMAGE:</span> <span class="hljs-string">$IMAGE_NAME:latest</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-attr">test:1.8.0:</span></span><br><span class="line">  <span class="hljs-attr">image:</span> <span class="hljs-string">golang:1.8</span></span><br><span class="line">  <span class="hljs-attr">stage:</span> <span class="hljs-string">test</span></span><br><span class="line">  <span class="hljs-attr">before_script:</span></span><br><span class="line">    <span class="hljs-bullet">-</span> <span class="hljs-string">echo</span> <span class="hljs-string">"before test"</span></span><br><span class="line">  <span class="hljs-attr">script:</span></span><br><span class="line">    <span class="hljs-bullet">-</span> <span class="hljs-string">echo</span> <span class="hljs-string">"test"</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-attr">build:test:</span></span><br><span class="line">  <span class="hljs-attr">image:</span> <span class="hljs-string">golang:1.8</span></span><br><span class="line">  <span class="hljs-attr">stage:</span> <span class="hljs-string">build</span></span><br><span class="line">  <span class="hljs-attr">before_script:</span></span><br><span class="line">    <span class="hljs-bullet">-</span> <span class="hljs-string">echo</span> <span class="hljs-string">"before script"</span></span><br><span class="line">  <span class="hljs-attr">script:</span></span><br><span class="line">    <span class="hljs-bullet">-</span> <span class="hljs-string">mkdir</span> <span class="hljs-string">-p</span> <span class="hljs-string">binaries/</span></span><br><span class="line">    <span class="hljs-bullet">-</span> <span class="hljs-string">touch</span> <span class="hljs-string">binaries/test</span></span><br><span class="line">  <span class="hljs-attr">artifacts:</span></span><br><span class="line">    <span class="hljs-attr">paths:</span></span><br><span class="line">      <span class="hljs-bullet">-</span> <span class="hljs-string">binaries/</span></span><br><span class="line">    <span class="hljs-attr">expire_in:</span> <span class="hljs-string">1h</span></span><br><span class="line">  <span class="hljs-attr">only:</span></span><br><span class="line">    <span class="hljs-bullet">-</span> <span class="hljs-string">test</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-attr">build:prod:</span></span><br><span class="line">  <span class="hljs-attr">image:</span> <span class="hljs-string">golang:1.8</span></span><br><span class="line">  <span class="hljs-attr">stage:</span> <span class="hljs-string">build</span></span><br><span class="line">  <span class="hljs-attr">before_script:</span></span><br><span class="line">    <span class="hljs-bullet">-</span> <span class="hljs-string">echo</span> <span class="hljs-string">"before build"</span></span><br><span class="line">  <span class="hljs-attr">script:</span></span><br><span class="line">    <span class="hljs-bullet">-</span> <span class="hljs-string">mkdir</span> <span class="hljs-string">-p</span> <span class="hljs-string">binaries/</span></span><br><span class="line">    <span class="hljs-bullet">-</span> <span class="hljs-string">touch</span> <span class="hljs-string">binaries/prod</span></span><br><span class="line">  <span class="hljs-attr">artifacts:</span></span><br><span class="line">    <span class="hljs-attr">paths:</span></span><br><span class="line">      <span class="hljs-bullet">-</span> <span class="hljs-string">binaries/</span></span><br><span class="line">    <span class="hljs-attr">expire_in:</span> <span class="hljs-string">1h</span></span><br><span class="line">  <span class="hljs-attr">only:</span></span><br><span class="line">    <span class="hljs-bullet">-</span> <span class="hljs-string">master</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-attr">release:test:</span></span><br><span class="line">  <span class="hljs-attr">stage:</span> <span class="hljs-string">release</span></span><br><span class="line">  <span class="hljs-attr">script:</span></span><br><span class="line">    <span class="hljs-bullet">-</span> <span class="hljs-string">echo</span> <span class="hljs-string">"release $CONTAINER_TEST_IMAGE"</span></span><br><span class="line">  <span class="hljs-attr">only:</span></span><br><span class="line">    <span class="hljs-bullet">-</span> <span class="hljs-string">test</span></span><br><span class="line">  <span class="hljs-attr">dependencies:</span></span><br><span class="line">    <span class="hljs-bullet">-</span> <span class="hljs-string">build:test</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-attr">release:prod:</span></span><br><span class="line">  <span class="hljs-attr">stage:</span> <span class="hljs-string">release</span></span><br><span class="line">  <span class="hljs-attr">script:</span></span><br><span class="line">    <span class="hljs-bullet">-</span> <span class="hljs-string">echo</span> <span class="hljs-string">"release $CONTAINER_RELEASE_IMAGE"</span></span><br><span class="line">  <span class="hljs-attr">only:</span></span><br><span class="line">    <span class="hljs-bullet">-</span> <span class="hljs-string">master</span></span><br><span class="line">  <span class="hljs-attr">dependencies:</span></span><br><span class="line">    <span class="hljs-bullet">-</span> <span class="hljs-string">build:prod</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-attr">deployment:test:</span></span><br><span class="line">  <span class="hljs-attr">stage:</span> <span class="hljs-string">deployment</span></span><br><span class="line">  <span class="hljs-attr">image:</span> <span class="hljs-string">kroniak/ssh-client</span></span><br><span class="line">  <span class="hljs-attr">before_script:</span></span><br><span class="line">    <span class="hljs-bullet">-</span> <span class="hljs-string">echo</span> <span class="hljs-string">"before script"</span></span><br><span class="line">  <span class="hljs-attr">script:</span></span><br><span class="line">    <span class="hljs-bullet">-</span> <span class="hljs-string">echo</span> <span class="hljs-string">"deployment test"</span></span><br><span class="line">  <span class="hljs-attr">only:</span></span><br><span class="line">    <span class="hljs-bullet">-</span> <span class="hljs-string">test</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-attr">deployment:stage:</span></span><br><span class="line">  <span class="hljs-attr">stage:</span> <span class="hljs-string">deployment</span></span><br><span class="line">  <span class="hljs-attr">image:</span> <span class="hljs-string">kroniak/ssh-client</span></span><br><span class="line">  <span class="hljs-attr">before_script:</span></span><br><span class="line">    <span class="hljs-bullet">-</span> <span class="hljs-string">echo</span> <span class="hljs-string">"before script"</span></span><br><span class="line">  <span class="hljs-attr">only:</span></span><br><span class="line">    <span class="hljs-bullet">-</span> <span class="hljs-string">master</span></span><br><span class="line">  <span class="hljs-attr">script:</span></span><br><span class="line">    <span class="hljs-bullet">-</span> <span class="hljs-string">echo</span> <span class="hljs-string">"deployment stage"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">image:</span> <span class="string">ruby:2.1</span></span><br><span class="line"><span class="attr">stages:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">test</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">build</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">release</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">deployment</span></span><br><span class="line"><span class="attr">variables:</span></span><br><span class="line">  <span class="attr">DOCKER_DRIVER:</span> <span class="string">overlay</span></span><br><span class="line">  <span class="attr">SERVICE_NAME:</span> <span class="string">test</span></span><br><span class="line">  <span class="attr">CONTAINER_TEST_IMAGE:</span> <span class="string">$IMAGE_NAME:$CI_BUILD_REF_NAME</span></span><br><span class="line">  <span class="attr">CONTAINER_RELEASE_IMAGE:</span> <span class="string">$IMAGE_NAME:latest</span></span><br><span class="line"></span><br><span class="line"><span class="attr">test:1.8.0:</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">golang:1.8</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">test</span></span><br><span class="line">  <span class="attr">before_script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"before test"</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"test"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">build:test:</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">golang:1.8</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">build</span></span><br><span class="line">  <span class="attr">before_script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"before script"</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">mkdir</span> <span class="string">-p</span> <span class="string">binaries/</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">touch</span> <span class="string">binaries/test</span></span><br><span class="line">  <span class="attr">artifacts:</span></span><br><span class="line">    <span class="attr">paths:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">binaries/</span></span><br><span class="line">    <span class="attr">expire_in:</span> <span class="string">1h</span></span><br><span class="line">  <span class="attr">only:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">test</span></span><br><span class="line"></span><br><span class="line"><span class="attr">build:prod:</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">golang:1.8</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">build</span></span><br><span class="line">  <span class="attr">before_script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"before build"</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">mkdir</span> <span class="string">-p</span> <span class="string">binaries/</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">touch</span> <span class="string">binaries/prod</span></span><br><span class="line">  <span class="attr">artifacts:</span></span><br><span class="line">    <span class="attr">paths:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">binaries/</span></span><br><span class="line">    <span class="attr">expire_in:</span> <span class="string">1h</span></span><br><span class="line">  <span class="attr">only:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">master</span></span><br><span class="line"></span><br><span class="line"><span class="attr">release:test:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">release</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"release $CONTAINER_TEST_IMAGE"</span></span><br><span class="line">  <span class="attr">only:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">test</span></span><br><span class="line">  <span class="attr">dependencies:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">build:test</span></span><br><span class="line"></span><br><span class="line"><span class="attr">release:prod:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">release</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"release $CONTAINER_RELEASE_IMAGE"</span></span><br><span class="line">  <span class="attr">only:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">master</span></span><br><span class="line">  <span class="attr">dependencies:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">build:prod</span></span><br><span class="line"></span><br><span class="line"><span class="attr">deployment:test:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">deployment</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">kroniak/ssh-client</span></span><br><span class="line">  <span class="attr">before_script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"before script"</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"deployment test"</span></span><br><span class="line">  <span class="attr">only:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">test</span></span><br><span class="line"></span><br><span class="line"><span class="attr">deployment:stage:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">deployment</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">kroniak/ssh-client</span></span><br><span class="line">  <span class="attr">before_script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"before script"</span></span><br><span class="line">  <span class="attr">only:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">master</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"deployment stage"</span></span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>stage声明管道有几个阶段，stage的顺序代表着前置stage完成后才能进入下一个stage，每个stage有1个或多个可执行点</li>
@@ -260,7 +260,7 @@
 
 <div id="disqus_thread">
     
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
     </div>
 </div>
@@ -341,7 +341,7 @@
         </nav>
         
         <div class="level">
-            <a class="level-item button is-link is-rounded" href="https://github.com/songrgg" target="_blank">
+            <a class="level-item button is-link is-rounded" href="https://github.com/songrgg" target="_blank" rel="noopener">
                 Follow</a>
         </div>
         
@@ -349,28 +349,28 @@
         
         <div class="level is-mobile">
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Github" href="https://github.com/songrgg">
                 
                 <i class="fab fa-github"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Instagram" href="https://www.instagram.com/jiangsongrong">
                 
                 <i class="fab fa-instagram"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
                 
                 <i class="fab fa-linkedin"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="RSS" href="/atom.xml">
                 
                 <i class="fas fa-rss"></i>
@@ -460,7 +460,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration%20-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -1341,7 +1341,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration%20-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -2218,8 +2218,8 @@
                 </a>
                 <p class="is-size-7">
                 &copy; 2020 songrgg&nbsp;
-                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a
-                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
                 
                 </p>
             </div>
@@ -2228,7 +2228,7 @@
                 <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Creative Commons" href="https://creativecommons.org/">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
                         
                         <i class="fab fa-creative-commons"></i>
                         
@@ -2236,7 +2236,7 @@
                 </p>
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
                         
                         <i class="fab fa-creative-commons-by"></i>
                         
@@ -2244,7 +2244,7 @@
                 </p>
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
                         
                         <i class="fab fa-github"></i>
                         
@@ -2261,8 +2261,13 @@
 <script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
 <script>moment.locale("en");</script>
 
+
 <script>
 var IcarusThemeSettings = {
+    site: {
+        url: 'https://songrgg.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
     article: {
         highlight: {
             clipboard: true,
@@ -2273,23 +2278,23 @@ var IcarusThemeSettings = {
 </script>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
 
 
 
-    
-    
-    
-    
+
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
 <script src="/js/gallery.js" defer></script>
 
-    
-    
+
+
 <div id="outdated">
     <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
             my browser now </a></p>
     <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
 </div>
@@ -2304,8 +2309,8 @@ var IcarusThemeSettings = {
     });
 </script>
 
-    
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     MathJax.Hub.Config({
@@ -2327,24 +2332,24 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
-    
-    
+
+
 <a id="back-to-top" title="Back to Top" href="javascript:;">
     <i class="fas fa-chevron-up"></i>
 </a>
 <script src="/js/back-to-top.js" defer></script>
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
 
 
 <script src="/js/main.js" defer></script>

@@ -181,27 +181,27 @@
         </h1>
         <div class="content">
             <h3 id="生产环境搭建etcd"><a href="#生产环境搭建etcd" class="headerlink" title="生产环境搭建etcd"></a>生产环境搭建etcd</h3><p>以搭建3节点高可用ETCD集群为例，分别在三台主机上初始化<code>ETCD1</code>,<code>ETCD2</code>,<code>ETCD3</code>作为机器IP地址。</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">$ ETCD1=http://10.0.0.1</span><br><span class="line">$ ETCD2=http://10.0.0.2</span><br><span class="line">$ ETCD2=http://10.0.0.3</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 节点1为4核4GB的机器</span></span><br><span class="line">$ etcd --name etcd1 \</span><br><span class="line">--initial-advertise-peer-urls <span class="hljs-variable">$ETCD1</span>:2380  \</span><br><span class="line">--listen-peer-urls <span class="hljs-variable">$ETCD1</span>:2380  \</span><br><span class="line">--listen-client-urls <span class="hljs-variable">$ETCD1</span>:2379,http://127.0.0.1:2379 \</span><br><span class="line">--advertise-client-urls <span class="hljs-variable">$ETCD1</span>:2379  \</span><br><span class="line">--initial-cluster-token etcd-cluster \</span><br><span class="line">--initial-cluster etcd1=<span class="hljs-variable">$ETCD1</span>:2380,etcd2=<span class="hljs-variable">$ETCD2</span>:2380,etcd3=<span class="hljs-variable">$ETCD3</span>:2380 \</span><br><span class="line">--auto-compaction-retention=1 \</span><br><span class="line">--quota-backend-bytes=$((4*1024*1024*1024)) \</span><br><span class="line">--initial-cluster-state new</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 节点2为4核4GB的机器</span></span><br><span class="line">$ etcd  --name etcd2 \</span><br><span class="line">--initial-advertise-peer-urls <span class="hljs-variable">$ETCD2</span>:2380 \</span><br><span class="line">--listen-peer-urls <span class="hljs-variable">$ETCD2</span>:2380 \</span><br><span class="line">--listen-client-urls <span class="hljs-variable">$ETCD2</span>:2379,http://127.0.0.1:2379 \</span><br><span class="line">--advertise-client-urls <span class="hljs-variable">$ETCD2</span>:2379 \</span><br><span class="line">--initial-cluster-token etcd-cluster \</span><br><span class="line">--initial-cluster etcd1=<span class="hljs-variable">$ETCD1</span>:2380,etcd2=<span class="hljs-variable">$ETCD2</span>:2380,etcd3=<span class="hljs-variable">$ETCD3</span>:2380 \</span><br><span class="line">--auto-compaction-retention=1 \</span><br><span class="line">--quota-backend-bytes=$((4*1024*1024*1024)) \</span><br><span class="line">--initial-cluster-state new</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 节点3为4核4GB的机器</span></span><br><span class="line">$ etcd  --name etcd3 \</span><br><span class="line">--initial-advertise-peer-urls <span class="hljs-variable">$ETCD3</span>:2380 \</span><br><span class="line">--listen-peer-urls <span class="hljs-variable">$ETCD3</span>:2380 \</span><br><span class="line">--listen-client-urls <span class="hljs-variable">$ETCD3</span>:2379,http://127.0.0.1:2379 \</span><br><span class="line">--advertise-client-urls <span class="hljs-variable">$ETCD3</span>:2379 \</span><br><span class="line">--initial-cluster-token etcd-cluster \</span><br><span class="line">--initial-cluster etcd1=<span class="hljs-variable">$ETCD1</span>:2380,etcd2=<span class="hljs-variable">$ETCD2</span>:2380,etcd3=<span class="hljs-variable">$ETCD3</span>:2380 \</span><br><span class="line">--auto-compaction-retention=1 \</span><br><span class="line">--quota-backend-bytes=$((4*1024*1024*1024)) \</span><br><span class="line">--initial-cluster-state new</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 检查集群是否正确启动</span></span><br><span class="line">$ etcdctl --endpoints=<span class="hljs-variable">$ETCD1</span>:2379 member list</span><br><span class="line">400938f1eaf1d0ed: name=etcd3 peerURLs=http://10.0.0.1:2380 clientURLs=http://10.0.0.1:2379 isLeader=<span class="hljs-literal">false</span></span><br><span class="line">bd0ff97b33ac1165: name=etcd2 peerURLs=http://10.0.0.2:2380 clientURLs=http://10.0.0.2:2379 isLeader=<span class="hljs-literal">false</span></span><br><span class="line">be62429afec4445f: name=etcd1 peerURLs=http://10.0.0.3:2380 clientURLs=http://10.0.0.3:2379 isLeader=<span class="hljs-literal">true</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">$ ETCD1=http://10.0.0.1</span><br><span class="line">$ ETCD2=http://10.0.0.2</span><br><span class="line">$ ETCD2=http://10.0.0.3</span><br><span class="line"></span><br><span class="line"><span class="comment"># 节点1为4核4GB的机器</span></span><br><span class="line">$ etcd --name etcd1 \</span><br><span class="line">--initial-advertise-peer-urls <span class="variable">$ETCD1</span>:2380  \</span><br><span class="line">--listen-peer-urls <span class="variable">$ETCD1</span>:2380  \</span><br><span class="line">--listen-client-urls <span class="variable">$ETCD1</span>:2379,http://127.0.0.1:2379 \</span><br><span class="line">--advertise-client-urls <span class="variable">$ETCD1</span>:2379  \</span><br><span class="line">--initial-cluster-token etcd-cluster \</span><br><span class="line">--initial-cluster etcd1=<span class="variable">$ETCD1</span>:2380,etcd2=<span class="variable">$ETCD2</span>:2380,etcd3=<span class="variable">$ETCD3</span>:2380 \</span><br><span class="line">--auto-compaction-retention=1 \</span><br><span class="line">--quota-backend-bytes=$((4*1024*1024*1024)) \</span><br><span class="line">--initial-cluster-state new</span><br><span class="line"></span><br><span class="line"><span class="comment"># 节点2为4核4GB的机器</span></span><br><span class="line">$ etcd  --name etcd2 \</span><br><span class="line">--initial-advertise-peer-urls <span class="variable">$ETCD2</span>:2380 \</span><br><span class="line">--listen-peer-urls <span class="variable">$ETCD2</span>:2380 \</span><br><span class="line">--listen-client-urls <span class="variable">$ETCD2</span>:2379,http://127.0.0.1:2379 \</span><br><span class="line">--advertise-client-urls <span class="variable">$ETCD2</span>:2379 \</span><br><span class="line">--initial-cluster-token etcd-cluster \</span><br><span class="line">--initial-cluster etcd1=<span class="variable">$ETCD1</span>:2380,etcd2=<span class="variable">$ETCD2</span>:2380,etcd3=<span class="variable">$ETCD3</span>:2380 \</span><br><span class="line">--auto-compaction-retention=1 \</span><br><span class="line">--quota-backend-bytes=$((4*1024*1024*1024)) \</span><br><span class="line">--initial-cluster-state new</span><br><span class="line"></span><br><span class="line"><span class="comment"># 节点3为4核4GB的机器</span></span><br><span class="line">$ etcd  --name etcd3 \</span><br><span class="line">--initial-advertise-peer-urls <span class="variable">$ETCD3</span>:2380 \</span><br><span class="line">--listen-peer-urls <span class="variable">$ETCD3</span>:2380 \</span><br><span class="line">--listen-client-urls <span class="variable">$ETCD3</span>:2379,http://127.0.0.1:2379 \</span><br><span class="line">--advertise-client-urls <span class="variable">$ETCD3</span>:2379 \</span><br><span class="line">--initial-cluster-token etcd-cluster \</span><br><span class="line">--initial-cluster etcd1=<span class="variable">$ETCD1</span>:2380,etcd2=<span class="variable">$ETCD2</span>:2380,etcd3=<span class="variable">$ETCD3</span>:2380 \</span><br><span class="line">--auto-compaction-retention=1 \</span><br><span class="line">--quota-backend-bytes=$((4*1024*1024*1024)) \</span><br><span class="line">--initial-cluster-state new</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查集群是否正确启动</span></span><br><span class="line">$ etcdctl --endpoints=<span class="variable">$ETCD1</span>:2379 member list</span><br><span class="line">400938f1eaf1d0ed: name=etcd3 peerURLs=http://10.0.0.1:2380 clientURLs=http://10.0.0.1:2379 isLeader=<span class="literal">false</span></span><br><span class="line">bd0ff97b33ac1165: name=etcd2 peerURLs=http://10.0.0.2:2380 clientURLs=http://10.0.0.2:2379 isLeader=<span class="literal">false</span></span><br><span class="line">be62429afec4445f: name=etcd1 peerURLs=http://10.0.0.3:2380 clientURLs=http://10.0.0.3:2379 isLeader=<span class="literal">true</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="历史记录压缩"><a href="#历史记录压缩" class="headerlink" title="历史记录压缩"></a>历史记录压缩</h3><p>如果将etcd用作服务发现，每次服务注册和更新都可以看做一条新数据，日积月累，这些数据的量会导致etcd占用内存越来越大，直到etcd到达空间配额限制的时候，etcd的写入将会被静止，影响线上服务，定期删除历史记录就是避免这种情况。</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 只保留一个小时的历史数据</span></span><br><span class="line">$ etcd --auto-compaction-retention=1</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 只保留一个小时的历史数据</span></span><br><span class="line">$ etcd --auto-compaction-retention=1</span><br></pre></td></tr></table></figure>
 
-<h3 id="磁盘去碎片化"><a href="#磁盘去碎片化" class="headerlink" title="磁盘去碎片化"></a>磁盘去碎片化</h3><p><a href="https://coreos.com/etcd/docs/latest/op-guide/maintenance.html#defragmentation" target="_blank" rel="noopener">etcd官方</a>是说在进行compaction操作之后，旧的revision被压缩，会产生内部的碎片，内部碎片是指空闲状态的，能被后端使用但是仍然消耗存储空间的磁盘空间。去碎片化实际上是将存储空间还给文件系统。</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ etcdctl defrag</span><br></pre></td></tr></table></figure>
+<h3 id="磁盘去碎片化"><a href="#磁盘去碎片化" class="headerlink" title="磁盘去碎片化"></a>磁盘去碎片化</h3><p><a href="https://coreos.com/etcd/docs/latest/op-guide/maintenance.html#defragmentation">etcd官方</a>是说在进行compaction操作之后，旧的revision被压缩，会产生内部的碎片，内部碎片是指空闲状态的，能被后端使用但是仍然消耗存储空间的磁盘空间。去碎片化实际上是将存储空间还给文件系统。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ etcdctl defrag</span><br></pre></td></tr></table></figure>
 
 <h3 id="空间配额"><a href="#空间配额" class="headerlink" title="空间配额"></a>空间配额</h3><p>空间配额用来保障集群可靠地进行操作。如果没有限制配额，当键空间变大之后，直到用光了磁盘空间，它就会影响etcd集群的表现。当任意节点超出空间配额， 那么它将进入维护状态，只接受读/删操作。只有释放了足够空间、去碎片化了后端数据库并且清理了空间配额之后，集群才能继续正常操作。</p>
 <p>默认限制是<strong>2GB</strong>，可以通过<code>--quota-backend-bytes</code>配置，最高上限为<strong>8GB</strong>。</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 显式配置配额为16MB</span></span><br><span class="line">$ etcd --quota-backend-bytes=$((16*1024*1024))</span><br><span class="line">$ ETCDCTL_API=3 etcdctl --write-out=table endpoint status</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 显式配置配额为16MB</span></span><br><span class="line">$ etcd --quota-backend-bytes=$((16*1024*1024))</span><br><span class="line">$ ETCDCTL_API=3 etcdctl --write-out=table endpoint status</span><br></pre></td></tr></table></figure>
 
 <p>如果遇到空间配额不足的情况，那么需要对etcd进行操作。</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 获取当前版本号</span></span><br><span class="line">$ rev=$(ETCDCTL_API=3 etcdctl --endpoints=:2379 endpoint status --write-out=<span class="hljs-string">"json"</span> | egrep -o <span class="hljs-string">'"revision":[0-9]*'</span> | egrep -o <span class="hljs-string">'[0-9]*'</span>）</span><br><span class="line"><span class="hljs-comment"># 压缩所有旧版本</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl compact <span class="hljs-variable">$rev</span></span><br><span class="line"><span class="hljs-comment"># 去碎片化</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl defrag</span><br><span class="line"><span class="hljs-comment"># 取消警报</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl alarm disarm</span><br><span class="line"><span class="hljs-comment"># 测试通过</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl put newkey 123</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取当前版本号</span></span><br><span class="line">$ rev=$(ETCDCTL_API=3 etcdctl --endpoints=:2379 endpoint status --write-out=<span class="string">"json"</span> | egrep -o <span class="string">'"revision":[0-9]*'</span> | egrep -o <span class="string">'[0-9]*'</span>）</span><br><span class="line"><span class="comment"># 压缩所有旧版本</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl compact <span class="variable">$rev</span></span><br><span class="line"><span class="comment"># 去碎片化</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl defrag</span><br><span class="line"><span class="comment"># 取消警报</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl alarm disarm</span><br><span class="line"><span class="comment"># 测试通过</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl put newkey 123</span><br></pre></td></tr></table></figure>
 
-<h3 id="快照备份"><a href="#快照备份" class="headerlink" title="快照备份"></a>快照备份</h3><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ etcdctl snapshot save backup.db</span><br><span class="line">$ etcdctl --write-out=table snapshot status backup.db</span><br><span class="line">+----------+----------+------------+------------+</span><br><span class="line">|   HASH   | REVISION | TOTAL KEYS | TOTAL SIZE |</span><br><span class="line">+----------+----------+------------+------------+</span><br><span class="line">| fe01cf57 |       10 |          7 | 2.1 MB     |</span><br><span class="line">+----------+----------+------------+------------+</span><br></pre></td></tr></table></figure>
+<h3 id="快照备份"><a href="#快照备份" class="headerlink" title="快照备份"></a>快照备份</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ etcdctl snapshot save backup.db</span><br><span class="line">$ etcdctl --write-out=table snapshot status backup.db</span><br><span class="line">+----------+----------+------------+------------+</span><br><span class="line">|   HASH   | REVISION | TOTAL KEYS | TOTAL SIZE |</span><br><span class="line">+----------+----------+------------+------------+</span><br><span class="line">| fe01cf57 |       10 |          7 | 2.1 MB     |</span><br><span class="line">+----------+----------+------------+------------+</span><br></pre></td></tr></table></figure>
 
 <h3 id="调优"><a href="#调优" class="headerlink" title="调优"></a>调优</h3><p>跨数据中心时，需要调整心跳间隔和选举超时时间<br>默认的心跳时间是100ms，建议为round trip时间<br>默认选举超时是1000ms</p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
-<li><a href="https://coreos.com/etcd/docs/latest/op-guide/configuration.html" target="_blank" rel="noopener">详细配置</a></li>
-<li><a href="https://github.com/coreos/etcd/blob/master/Documentation/op-guide/maintenance.md" target="_blank" rel="noopener">etcd运维</a></li>
+<li><a href="https://coreos.com/etcd/docs/latest/op-guide/configuration.html">详细配置</a></li>
+<li><a href="https://github.com/coreos/etcd/blob/master/Documentation/op-guide/maintenance.md">etcd运维</a></li>
 </ol>
 
         </div>
@@ -252,7 +252,7 @@
         </h1>
         <div class="content">
             <h4 id="自建gitlab"><a href="#自建gitlab" class="headerlink" title="自建gitlab"></a>自建gitlab</h4><p>自建gitlab一大优势是<strong>快</strong>，之前用翻墙走github速度也在1M/s左右，可是自建的gitlab提升了建立连接的速度，可以说体验又上升了一个档次。</p>
-<p>用docker起一个gitlab服务尤其方便 <a href="https://docs.gitlab.com/omnibus/docker/README.html" target="_blank" rel="noopener">GitLab Docker images</a></p>
+<p>用docker起一个gitlab服务尤其方便 <a href="https://docs.gitlab.com/omnibus/docker/README.html">GitLab Docker images</a></p>
         </div>
         
         
@@ -311,11 +311,11 @@
             <h3 id="方案1-应用层支持"><a href="#方案1-应用层支持" class="headerlink" title="方案1: 应用层支持"></a>方案1: 应用层支持</h3><p>MySQL默认的数据库编码是utf8，对于emoji文字是不能直接存储的，要想存储emoji，有许多库支持对emoji的转换，例如将😊转存为<code>:smile:</code>，放在数据库里，在从数据库里取出来的时候，再转换为😊，这是应用层的方案。</p>
 <h3 id="方案2-存储层支持"><a href="#方案2-存储层支持" class="headerlink" title="方案2: 存储层支持"></a>方案2: 存储层支持</h3><p>MySQL编码设置为utf8mb4，直接支持emoji，不需要应用层的改动。  </p>
 <p>注意事项:<br><strong>MySQL索引的长度不能大于767字节, utf8 1个字存3byte, utf8mb4存4byte，相对应VARCHAR的字节数分别是255和191，所以要把索引字段的长度限制到191。</strong></p>
-<figure class="highlight sql hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> &lt;table1&gt; <span class="hljs-keyword">MODIFY</span> <span class="hljs-keyword">COLUMN</span> &lt;col1_indexed&gt; <span class="hljs-built_in">VARCHAR</span>(<span class="hljs-number">191</span>);</span><br><span class="line"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> &lt;table1&gt; <span class="hljs-keyword">CONVERT</span> <span class="hljs-keyword">TO</span> <span class="hljs-built_in">CHARACTER</span> <span class="hljs-keyword">SET</span> utf8mb4 <span class="hljs-keyword">COLLATE</span> utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> &lt;table1&gt; <span class="keyword">MODIFY</span> <span class="keyword">COLUMN</span> &lt;col1_indexed&gt; <span class="built_in">VARCHAR</span>(<span class="number">191</span>);</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> &lt;table1&gt; <span class="keyword">CONVERT</span> <span class="keyword">TO</span> <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8mb4 <span class="keyword">COLLATE</span> utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure>
 
 
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
-<li><a href="https://mathiasbynens.be/notes/mysql-utf8mb4" target="_blank" rel="noopener">How to support full Unicode in MySQL databases</a></li>
+<li><a href="https://mathiasbynens.be/notes/mysql-utf8mb4">How to support full Unicode in MySQL databases</a></li>
 </ol>
 
         </div>
@@ -374,7 +374,7 @@
 <li>必须在<strong>根目录</strong>下，例如官网地址为<code>www.site.com</code>，那么必须通过<code>https://www.site.com/apple-app-site-association</code>访问到该文件</li>
 <li><code>details</code>为列表，列表元素中的<code>paths</code>是数组，且下标越小匹配优先级越高</li>
 <li><code>paths</code>可以使用<code>*</code>匹配任何字符串，<code>?</code>来匹配单个字符</li>
-<li><code>appID</code>格式为<code>{teamId}.{bundleId}</code><figure class="highlight json hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="hljs-attr">"applinks"</span>:&#123;</span><br><span class="line">        <span class="hljs-attr">"apps"</span>:[],</span><br><span class="line">        <span class="hljs-attr">"details"</span>:[</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="hljs-attr">"appID"</span>:<span class="hljs-string">"U9JEY66N6A.com.ss.iphone.article.News"</span>,</span><br><span class="line">                <span class="hljs-attr">"paths"</span>:[<span class="hljs-string">"/m/detail/*"</span>,<span class="hljs-string">"/"</span>]</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="hljs-attr">"appID"</span>:<span class="hljs-string">"U9JEY66N6A.com.ss.iphone.article.Explore"</span>,</span><br><span class="line">                <span class="hljs-attr">"paths"</span>:[<span class="hljs-string">"/m/detail/*"</span>,<span class="hljs-string">"/"</span>]</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="hljs-attr">"appID"</span>:<span class="hljs-string">"U9JEY66N6A.com.ss.iphone.article.NewsSocial"</span>,</span><br><span class="line">                <span class="hljs-attr">"paths"</span>:[<span class="hljs-string">"/m/detail/*"</span>,<span class="hljs-string">"/"</span>]</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><code>appID</code>格式为<code>{teamId}.{bundleId}</code><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"applinks"</span>:&#123;</span><br><span class="line">        <span class="attr">"apps"</span>:[],</span><br><span class="line">        <span class="attr">"details"</span>:[</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">"appID"</span>:<span class="string">"U9JEY66N6A.com.ss.iphone.article.News"</span>,</span><br><span class="line">                <span class="attr">"paths"</span>:[<span class="string">"/m/detail/*"</span>,<span class="string">"/"</span>]</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">"appID"</span>:<span class="string">"U9JEY66N6A.com.ss.iphone.article.Explore"</span>,</span><br><span class="line">                <span class="attr">"paths"</span>:[<span class="string">"/m/detail/*"</span>,<span class="string">"/"</span>]</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">"appID"</span>:<span class="string">"U9JEY66N6A.com.ss.iphone.article.NewsSocial"</span>,</span><br><span class="line">                <span class="attr">"paths"</span>:[<span class="string">"/m/detail/*"</span>,<span class="string">"/"</span>]</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
 </li>
 <li><p>应用增加applinks支持</p>
@@ -389,8 +389,8 @@
 </li>
 <li><p>引用</p>
 <ul>
-<li><a href="https://developer.apple.com/library/ios/documentation/General/Conceptual/AppSearch/UniversalLinks.html" target="_blank" rel="noopener">Support Universal Links</a></li>
-<li><a href="http://www.cocoachina.com/ios/20150902/13321.html" target="_blank" rel="noopener">iOS 9学习系列：打通 iOS 9 的通用链接（Universal Links）</a></li>
+<li><a href="https://developer.apple.com/library/ios/documentation/General/Conceptual/AppSearch/UniversalLinks.html">Support Universal Links</a></li>
+<li><a href="http://www.cocoachina.com/ios/20150902/13321.html">iOS 9学习系列：打通 iOS 9 的通用链接（Universal Links）</a></li>
 </ul>
 </li>
 </ul>
@@ -507,7 +507,7 @@
         </nav>
         
         <div class="level">
-            <a class="level-item button is-link is-rounded" href="https://github.com/songrgg" target="_blank">
+            <a class="level-item button is-link is-rounded" href="https://github.com/songrgg" target="_blank" rel="noopener">
                 Follow</a>
         </div>
         
@@ -515,28 +515,28 @@
         
         <div class="level is-mobile">
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Github" href="https://github.com/songrgg">
                 
                 <i class="fab fa-github"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Instagram" href="https://www.instagram.com/jiangsongrong">
                 
                 <i class="fab fa-instagram"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
                 
                 <i class="fab fa-linkedin"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="RSS" href="/atom.xml">
                 
                 <i class="fas fa-rss"></i>
@@ -626,7 +626,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration%20-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -1507,7 +1507,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration%20-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -2384,8 +2384,8 @@
                 </a>
                 <p class="is-size-7">
                 &copy; 2020 songrgg&nbsp;
-                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a
-                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
                 
                 </p>
             </div>
@@ -2394,7 +2394,7 @@
                 <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Creative Commons" href="https://creativecommons.org/">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
                         
                         <i class="fab fa-creative-commons"></i>
                         
@@ -2402,7 +2402,7 @@
                 </p>
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
                         
                         <i class="fab fa-creative-commons-by"></i>
                         
@@ -2410,7 +2410,7 @@
                 </p>
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
                         
                         <i class="fab fa-github"></i>
                         
@@ -2427,8 +2427,13 @@
 <script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
 <script>moment.locale("en");</script>
 
+
 <script>
 var IcarusThemeSettings = {
+    site: {
+        url: 'https://songrgg.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
     article: {
         highlight: {
             clipboard: true,
@@ -2439,23 +2444,23 @@ var IcarusThemeSettings = {
 </script>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
 
 
 
-    
-    
-    
-    
+
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
 <script src="/js/gallery.js" defer></script>
 
-    
-    
+
+
 <div id="outdated">
     <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
             my browser now </a></p>
     <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
 </div>
@@ -2470,8 +2475,8 @@ var IcarusThemeSettings = {
     });
 </script>
 
-    
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     MathJax.Hub.Config({
@@ -2493,24 +2498,24 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
-    
-    
+
+
 <a id="back-to-top" title="Back to Top" href="javascript:;">
     <i class="fas fa-chevron-up"></i>
 </a>
 <script src="/js/back-to-top.js" defer></script>
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
 
 
 <script src="/js/main.js" defer></script>

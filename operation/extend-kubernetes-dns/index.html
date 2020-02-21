@@ -174,7 +174,7 @@
 <p>Kubernetes DNS在内部服务与外部服务交互，内部服务与内部服务，内部服务与云托管服务交互的工具，拓展DNS可以在内部服务访问集群外服务时像访问集群内服务一样，通过DNS映射将统一风格的域名映射到可访问的IP，而不需要影响内部服务的运行。</p>
 </blockquote>
 <h3 id="自定义域名解析"><a href="#自定义域名解析" class="headerlink" title="自定义域名解析"></a>自定义域名解析</h3><p>拓展DNS的方法就是为特定规则的域名指定DNS服务器，在ConfigMap中设置指定域名相对的dns server，如<code>consul.local</code>结尾的域名使用<code>10.150.0.1</code>来解析。</p>
-<figure class="highlight yaml hljs"><figcaption><span>ConfigMap</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span></span><br><span class="line"><span class="hljs-attr">kind:</span> <span class="hljs-string">ConfigMap</span></span><br><span class="line"><span class="hljs-attr">metadata:</span></span><br><span class="line">  <span class="hljs-attr">name:</span> <span class="hljs-string">kube-dns</span></span><br><span class="line">  <span class="hljs-attr">namespace:</span> <span class="hljs-string">kube-system</span></span><br><span class="line"><span class="hljs-attr">data:</span></span><br><span class="line">  <span class="hljs-attr">stubDomains:</span> <span class="hljs-string">|</span></span><br><span class="line">    <span class="hljs-string">&#123;"consul.local":</span> <span class="hljs-string">["10.150.0.1"]&#125;</span></span><br><span class="line">  <span class="hljs-attr">upstreamNameservers:</span> <span class="hljs-string">|</span></span><br><span class="line">    <span class="hljs-string">["172.16.0.1"]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><figcaption><span>ConfigMap</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ConfigMap</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">kube-dns</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">kube-system</span></span><br><span class="line"><span class="attr">data:</span></span><br><span class="line">  <span class="attr">stubDomains:</span> <span class="string">|</span></span><br><span class="line">    <span class="string">&#123;"consul.local":</span> <span class="string">["10.150.0.1"]&#125;</span></span><br><span class="line">  <span class="attr">upstreamNameservers:</span> <span class="string">|</span></span><br><span class="line">    <span class="string">["172.16.0.1"]</span></span><br></pre></td></tr></table></figure>
 
 <p>自定义规则不对<strong>dnsPolicy</strong>为<code>Default</code>或<code>None</code>的Pod起作用，只有当<code>ClusterFirst</code>时，域名解析会按照stubDomains和upstreamNameservers来解析。<br><strong>无自定义配置</strong>: 任何不匹配集群域名后缀的请求，被转发给节点的dns.<br><strong>自定义</strong>: 如果stub和upstream配置，按照如下顺序</p>
 <ol>
@@ -182,24 +182,24 @@
 <li>stub后缀的，转发给指定的dns</li>
 <li>其它的转发给upstream dns</li>
 </ol>
-<h3 id="Consul-as-a-DNS"><a href="#Consul-as-a-DNS" class="headerlink" title="Consul as a DNS"></a>Consul as a DNS</h3><p><a href="https://consul.io/" target="_blank" rel="noopener">Consul</a>是Golang实现的服务发现工具，同时支持DNS解析，通过HTTP API动态添加服务发现节点实现动态DNS解析。</p>
+<h3 id="Consul-as-a-DNS"><a href="#Consul-as-a-DNS" class="headerlink" title="Consul as a DNS"></a>Consul as a DNS</h3><p><a href="https://consul.io/">Consul</a>是Golang实现的服务发现工具，同时支持DNS解析，通过HTTP API动态添加服务发现节点实现动态DNS解析。</p>
 <ul>
 <li><p>注册Redis1到redis</p>
-<figure class="highlight json hljs"><figcaption><span>dns.json</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="hljs-attr">"ID"</span>: <span class="hljs-string">"redis1"</span>,</span><br><span class="line">  <span class="hljs-attr">"Name"</span>: <span class="hljs-string">"redis"</span>,</span><br><span class="line">  <span class="hljs-attr">"Tags"</span>: [</span><br><span class="line">    <span class="hljs-string">"primary"</span>,</span><br><span class="line">    <span class="hljs-string">"v1"</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="hljs-attr">"Address"</span>: <span class="hljs-string">"127.0.0.1"</span>,</span><br><span class="line">  <span class="hljs-attr">"Port"</span>: <span class="hljs-number">8000</span>,</span><br><span class="line">  <span class="hljs-attr">"Meta"</span>: &#123;</span><br><span class="line">    <span class="hljs-attr">"redis_version"</span>: <span class="hljs-string">"4.0"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="hljs-attr">"EnableTagOverride"</span>: <span class="hljs-literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -XPUT http://localhost:8500/v1/agent/service/register -d @dns.json</span><br></pre></td></tr></table></figure>
+<figure class="highlight json"><figcaption><span>dns.json</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"ID"</span>: <span class="string">"redis1"</span>,</span><br><span class="line">  <span class="attr">"Name"</span>: <span class="string">"redis"</span>,</span><br><span class="line">  <span class="attr">"Tags"</span>: [</span><br><span class="line">    <span class="string">"primary"</span>,</span><br><span class="line">    <span class="string">"v1"</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">"Address"</span>: <span class="string">"127.0.0.1"</span>,</span><br><span class="line">  <span class="attr">"Port"</span>: <span class="number">8000</span>,</span><br><span class="line">  <span class="attr">"Meta"</span>: &#123;</span><br><span class="line">    <span class="attr">"redis_version"</span>: <span class="string">"4.0"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"EnableTagOverride"</span>: <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -XPUT http://localhost:8500/v1/agent/service/register -d @dns.json</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>使用DNS查询</p>
-<figure class="highlight bash hljs"><figcaption><span>dig redis service</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$ dig @127.0.0.1 -p 8600 redis.service.consul SRV</span><br><span class="line">; &lt;&lt;&gt;&gt; DiG 9.10.6 &lt;&lt;&gt;&gt; @127.0.0.1 -p 8600 redis.service.consul SRV</span><br><span class="line">; (1 server found)</span><br><span class="line">;; global options: +cmd</span><br><span class="line">;; Got answer:</span><br><span class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 6823</span><br><span class="line">;; flags: qr aa rd; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 3</span><br><span class="line">;; WARNING: recursion requested but not available</span><br><span class="line"></span><br><span class="line">;; OPT PSEUDOSECTION:</span><br><span class="line">; EDNS: version: 0, flags:; udp: 4096</span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;redis.service.consul.		IN	SRV</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">redis.service.consul.	0	IN	SRV	1 1 8000 srjiangs-MacBook-Pro.local.node.dc1.consul.</span><br><span class="line"></span><br><span class="line">;; ADDITIONAL SECTION:</span><br><span class="line">srjiangs-MacBook-Pro.local.node.dc1.consul. 0 IN A 127.0.0.1</span><br><span class="line">srjiangs-MacBook-Pro.local.node.dc1.consul. 0 IN TXT <span class="hljs-string">"consul-network-segment="</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><figcaption><span>dig redis service</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$ dig @127.0.0.1 -p 8600 redis.service.consul SRV</span><br><span class="line">; &lt;&lt;&gt;&gt; DiG 9.10.6 &lt;&lt;&gt;&gt; @127.0.0.1 -p 8600 redis.service.consul SRV</span><br><span class="line">; (1 server found)</span><br><span class="line">;; global options: +cmd</span><br><span class="line">;; Got answer:</span><br><span class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 6823</span><br><span class="line">;; flags: qr aa rd; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 3</span><br><span class="line">;; WARNING: recursion requested but not available</span><br><span class="line"></span><br><span class="line">;; OPT PSEUDOSECTION:</span><br><span class="line">; EDNS: version: 0, flags:; udp: 4096</span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;redis.service.consul.		IN	SRV</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">redis.service.consul.	0	IN	SRV	1 1 8000 srjiangs-MacBook-Pro.local.node.dc1.consul.</span><br><span class="line"></span><br><span class="line">;; ADDITIONAL SECTION:</span><br><span class="line">srjiangs-MacBook-Pro.local.node.dc1.consul. 0 IN A 127.0.0.1</span><br><span class="line">srjiangs-MacBook-Pro.local.node.dc1.consul. 0 IN TXT <span class="string">"consul-network-segment="</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>注册多个Redis</p>
-<figure class="highlight json hljs"><figcaption><span>dns.json</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="hljs-attr">"ID"</span>: <span class="hljs-string">"redis2"</span>,</span><br><span class="line">  <span class="hljs-attr">"Name"</span>: <span class="hljs-string">"redis"</span>,</span><br><span class="line">  <span class="hljs-attr">"Tags"</span>: [</span><br><span class="line">    <span class="hljs-string">"primary"</span>,</span><br><span class="line">    <span class="hljs-string">"v1"</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="hljs-attr">"Address"</span>: <span class="hljs-string">"127.0.0.1"</span>,</span><br><span class="line">  <span class="hljs-attr">"Port"</span>: <span class="hljs-number">8000</span>,</span><br><span class="line">  <span class="hljs-attr">"Meta"</span>: &#123;</span><br><span class="line">    <span class="hljs-attr">"redis_version"</span>: <span class="hljs-string">"4.0"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="hljs-attr">"EnableTagOverride"</span>: <span class="hljs-literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash hljs"><figcaption><span>register</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -XPUT http://localhost:8500/v1/agent/service/register -d @dns.json</span><br></pre></td></tr></table></figure>
+<figure class="highlight json"><figcaption><span>dns.json</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"ID"</span>: <span class="string">"redis2"</span>,</span><br><span class="line">  <span class="attr">"Name"</span>: <span class="string">"redis"</span>,</span><br><span class="line">  <span class="attr">"Tags"</span>: [</span><br><span class="line">    <span class="string">"primary"</span>,</span><br><span class="line">    <span class="string">"v1"</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">"Address"</span>: <span class="string">"127.0.0.1"</span>,</span><br><span class="line">  <span class="attr">"Port"</span>: <span class="number">8000</span>,</span><br><span class="line">  <span class="attr">"Meta"</span>: &#123;</span><br><span class="line">    <span class="attr">"redis_version"</span>: <span class="string">"4.0"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"EnableTagOverride"</span>: <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><figcaption><span>register</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -XPUT http://localhost:8500/v1/agent/service/register -d @dns.json</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>DNS查询</p>
-<figure class="highlight bash hljs"><figcaption><span>dig</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">$ dig @127.0.0.1 -p 8600 redis.service.consul SRV</span><br><span class="line"></span><br><span class="line">; &lt;&lt;&gt;&gt; DiG 9.10.6 &lt;&lt;&gt;&gt; @127.0.0.1 -p 8600 redis.service.consul SRV</span><br><span class="line">; (1 server found)</span><br><span class="line">;; global options: +cmd</span><br><span class="line">;; Got answer:</span><br><span class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 11920</span><br><span class="line">;; flags: qr aa rd; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 5</span><br><span class="line">;; WARNING: recursion requested but not available</span><br><span class="line"></span><br><span class="line">;; OPT PSEUDOSECTION:</span><br><span class="line">; EDNS: version: 0, flags:; udp: 4096</span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;redis.service.consul.		IN	SRV</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">redis.service.consul.	0	IN	SRV	1 1 9000 srjiangs-MacBook-Pro.local.node.dc1.consul.</span><br><span class="line">redis.service.consul.	0	IN	SRV	1 1 8000 srjiangs-MacBook-Pro.local.node.dc1.consul.</span><br><span class="line"></span><br><span class="line">;; ADDITIONAL SECTION:</span><br><span class="line">srjiangs-MacBook-Pro.local.node.dc1.consul. 0 IN A 127.0.0.1</span><br><span class="line">srjiangs-MacBook-Pro.local.node.dc1.consul. 0 IN TXT <span class="hljs-string">"consul-network-segment="</span></span><br><span class="line">srjiangs-MacBook-Pro.local.node.dc1.consul. 0 IN A 127.0.0.1</span><br><span class="line">srjiangs-MacBook-Pro.local.node.dc1.consul. 0 IN TXT <span class="hljs-string">"consul-network-segment="</span></span><br><span class="line"></span><br><span class="line">;; Query time: 0 msec</span><br><span class="line">;; SERVER: 127.0.0.1<span class="hljs-comment">#8600(127.0.0.1)</span></span><br><span class="line">;; WHEN: Thu Aug 16 16:47:43 CST 2018</span><br><span class="line">;; MSG SIZE  rcvd: 277</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><figcaption><span>dig</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">$ dig @127.0.0.1 -p 8600 redis.service.consul SRV</span><br><span class="line"></span><br><span class="line">; &lt;&lt;&gt;&gt; DiG 9.10.6 &lt;&lt;&gt;&gt; @127.0.0.1 -p 8600 redis.service.consul SRV</span><br><span class="line">; (1 server found)</span><br><span class="line">;; global options: +cmd</span><br><span class="line">;; Got answer:</span><br><span class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 11920</span><br><span class="line">;; flags: qr aa rd; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 5</span><br><span class="line">;; WARNING: recursion requested but not available</span><br><span class="line"></span><br><span class="line">;; OPT PSEUDOSECTION:</span><br><span class="line">; EDNS: version: 0, flags:; udp: 4096</span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;redis.service.consul.		IN	SRV</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">redis.service.consul.	0	IN	SRV	1 1 9000 srjiangs-MacBook-Pro.local.node.dc1.consul.</span><br><span class="line">redis.service.consul.	0	IN	SRV	1 1 8000 srjiangs-MacBook-Pro.local.node.dc1.consul.</span><br><span class="line"></span><br><span class="line">;; ADDITIONAL SECTION:</span><br><span class="line">srjiangs-MacBook-Pro.local.node.dc1.consul. 0 IN A 127.0.0.1</span><br><span class="line">srjiangs-MacBook-Pro.local.node.dc1.consul. 0 IN TXT <span class="string">"consul-network-segment="</span></span><br><span class="line">srjiangs-MacBook-Pro.local.node.dc1.consul. 0 IN A 127.0.0.1</span><br><span class="line">srjiangs-MacBook-Pro.local.node.dc1.consul. 0 IN TXT <span class="string">"consul-network-segment="</span></span><br><span class="line"></span><br><span class="line">;; Query time: 0 msec</span><br><span class="line">;; SERVER: 127.0.0.1<span class="comment">#8600(127.0.0.1)</span></span><br><span class="line">;; WHEN: Thu Aug 16 16:47:43 CST 2018</span><br><span class="line">;; MSG SIZE  rcvd: 277</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>Consul Service</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">$ curl http://localhost:8500/v1/agent/services</span><br><span class="line">&#123;</span><br><span class="line">    <span class="hljs-string">"redis1"</span>: &#123;</span><br><span class="line">        <span class="hljs-string">"ID"</span>: <span class="hljs-string">"redis1"</span>,</span><br><span class="line">        <span class="hljs-string">"Service"</span>: <span class="hljs-string">"redis"</span>,</span><br><span class="line">        <span class="hljs-string">"Tags"</span>: [</span><br><span class="line">            <span class="hljs-string">"primary"</span>,</span><br><span class="line">            <span class="hljs-string">"v1"</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="hljs-string">"Address"</span>: <span class="hljs-string">"127.0.0.1"</span>,</span><br><span class="line">        <span class="hljs-string">"Port"</span>: 8000,</span><br><span class="line">        <span class="hljs-string">"EnableTagOverride"</span>: <span class="hljs-literal">false</span>,</span><br><span class="line">        <span class="hljs-string">"CreateIndex"</span>: 0,</span><br><span class="line">        <span class="hljs-string">"ModifyIndex"</span>: 0</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="hljs-string">"redis2"</span>: &#123;</span><br><span class="line">        <span class="hljs-string">"ID"</span>: <span class="hljs-string">"redis2"</span>,</span><br><span class="line">        <span class="hljs-string">"Service"</span>: <span class="hljs-string">"redis"</span>,</span><br><span class="line">        <span class="hljs-string">"Tags"</span>: [</span><br><span class="line">            <span class="hljs-string">"primary"</span>,</span><br><span class="line">            <span class="hljs-string">"v1"</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="hljs-string">"Address"</span>: <span class="hljs-string">"127.0.0.1"</span>,</span><br><span class="line">        <span class="hljs-string">"Port"</span>: 9000,</span><br><span class="line">        <span class="hljs-string">"EnableTagOverride"</span>: <span class="hljs-literal">false</span>,</span><br><span class="line">        <span class="hljs-string">"CreateIndex"</span>: 0,</span><br><span class="line">        <span class="hljs-string">"ModifyIndex"</span>: 0</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">$ curl http://localhost:8500/v1/agent/services</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"redis1"</span>: &#123;</span><br><span class="line">        <span class="string">"ID"</span>: <span class="string">"redis1"</span>,</span><br><span class="line">        <span class="string">"Service"</span>: <span class="string">"redis"</span>,</span><br><span class="line">        <span class="string">"Tags"</span>: [</span><br><span class="line">            <span class="string">"primary"</span>,</span><br><span class="line">            <span class="string">"v1"</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="string">"Address"</span>: <span class="string">"127.0.0.1"</span>,</span><br><span class="line">        <span class="string">"Port"</span>: 8000,</span><br><span class="line">        <span class="string">"EnableTagOverride"</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="string">"CreateIndex"</span>: 0,</span><br><span class="line">        <span class="string">"ModifyIndex"</span>: 0</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">"redis2"</span>: &#123;</span><br><span class="line">        <span class="string">"ID"</span>: <span class="string">"redis2"</span>,</span><br><span class="line">        <span class="string">"Service"</span>: <span class="string">"redis"</span>,</span><br><span class="line">        <span class="string">"Tags"</span>: [</span><br><span class="line">            <span class="string">"primary"</span>,</span><br><span class="line">            <span class="string">"v1"</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="string">"Address"</span>: <span class="string">"127.0.0.1"</span>,</span><br><span class="line">        <span class="string">"Port"</span>: 9000,</span><br><span class="line">        <span class="string">"EnableTagOverride"</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="string">"CreateIndex"</span>: 0,</span><br><span class="line">        <span class="string">"ModifyIndex"</span>: 0</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 </li>
@@ -209,11 +209,11 @@
 <li>动态添加域名和IP映射</li>
 </ul>
 <h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><ol>
-<li><p><a href="https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/" target="_blank" rel="noopener">Customizing DNS Service - Kubernetes</a></p>
+<li><p><a href="https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/">Customizing DNS Service - Kubernetes</a></p>
 </li>
-<li><p><a href="https://github.com/skynetservices/skydns" target="_blank" rel="noopener">GitHub - skynetservices/skydns: DNS service discovery for etcd</a></p>
+<li><p><a href="https://github.com/skynetservices/skydns">GitHub - skynetservices/skydns: DNS service discovery for etcd</a></p>
 </li>
-<li><p><a href="https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/" target="_blank" rel="noopener">Adding entries to Pod /etc/hosts with HostAliases - Kubernetes</a></p>
+<li><p><a href="https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/">Adding entries to Pod /etc/hosts with HostAliases - Kubernetes</a></p>
 </li>
 </ol>
 
@@ -277,7 +277,7 @@
 
 <div id="disqus_thread">
     
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
     </div>
 </div>
@@ -358,7 +358,7 @@
         </nav>
         
         <div class="level">
-            <a class="level-item button is-link is-rounded" href="https://github.com/songrgg" target="_blank">
+            <a class="level-item button is-link is-rounded" href="https://github.com/songrgg" target="_blank" rel="noopener">
                 Follow</a>
         </div>
         
@@ -366,28 +366,28 @@
         
         <div class="level is-mobile">
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Github" href="https://github.com/songrgg">
                 
                 <i class="fab fa-github"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Instagram" href="https://www.instagram.com/jiangsongrong">
                 
                 <i class="fab fa-instagram"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
                 
                 <i class="fab fa-linkedin"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="RSS" href="/atom.xml">
                 
                 <i class="fas fa-rss"></i>
@@ -477,7 +477,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration%20-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -1358,7 +1358,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration%20-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -2235,8 +2235,8 @@
                 </a>
                 <p class="is-size-7">
                 &copy; 2020 songrgg&nbsp;
-                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a
-                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
                 
                 </p>
             </div>
@@ -2245,7 +2245,7 @@
                 <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Creative Commons" href="https://creativecommons.org/">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
                         
                         <i class="fab fa-creative-commons"></i>
                         
@@ -2253,7 +2253,7 @@
                 </p>
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
                         
                         <i class="fab fa-creative-commons-by"></i>
                         
@@ -2261,7 +2261,7 @@
                 </p>
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
                         
                         <i class="fab fa-github"></i>
                         
@@ -2278,8 +2278,13 @@
 <script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
 <script>moment.locale("en");</script>
 
+
 <script>
 var IcarusThemeSettings = {
+    site: {
+        url: 'https://songrgg.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
     article: {
         highlight: {
             clipboard: true,
@@ -2290,23 +2295,23 @@ var IcarusThemeSettings = {
 </script>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
 
 
 
-    
-    
-    
-    
+
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
 <script src="/js/gallery.js" defer></script>
 
-    
-    
+
+
 <div id="outdated">
     <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
             my browser now </a></p>
     <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
 </div>
@@ -2321,8 +2326,8 @@ var IcarusThemeSettings = {
     });
 </script>
 
-    
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     MathJax.Hub.Config({
@@ -2344,24 +2349,24 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
-    
-    
+
+
 <a id="back-to-top" title="Back to Top" href="javascript:;">
     <i class="fas fa-chevron-up"></i>
 </a>
 <script src="/js/back-to-top.js" defer></script>
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
 
 
 <script src="/js/main.js" defer></script>

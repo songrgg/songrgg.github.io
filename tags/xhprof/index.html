@@ -176,13 +176,13 @@
             <blockquote>
 <p>选择一个工具分析PHP函数调用的资源耗用明细，以图表化的形式展现，方便优化代码。</p>
 </blockquote>
-<h2 id="安装xhprof"><a href="#安装xhprof" class="headerlink" title="安装xhprof"></a>安装xhprof</h2><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pecl install xhprof-beta</span><br></pre></td></tr></table></figure>
+<h2 id="安装xhprof"><a href="#安装xhprof" class="headerlink" title="安装xhprof"></a>安装xhprof</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pecl install xhprof-beta</span><br></pre></td></tr></table></figure>
 
 <p>在php.ini引用的extension中添加<code>extension=xhprof.so</code></p>
 <h2 id="GUI"><a href="#GUI" class="headerlink" title="GUI"></a>GUI</h2><p>这里选择了xhgui，它的原理是在需要测试性能的脚本前加上PHP的一段代码，将收集到的性能数据存储到文件或者mongodb等存储介质中去。</p>
-<h4 id="MongoDB"><a href="#MongoDB" class="headerlink" title="MongoDB"></a>MongoDB</h4><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install mongodb</span><br></pre></td></tr></table></figure>
+<h4 id="MongoDB"><a href="#MongoDB" class="headerlink" title="MongoDB"></a>MongoDB</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install mongodb</span><br></pre></td></tr></table></figure>
 
-<h4 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h4><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-built_in">cd</span> /var/www</span><br><span class="line">git <span class="hljs-built_in">clone</span> https://github.com/perftools/xhgui.git</span><br><span class="line"><span class="hljs-built_in">cd</span> xhgui</span><br><span class="line">php install.php</span><br></pre></td></tr></table></figure>
+<h4 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /var/www</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/perftools/xhgui.git</span><br><span class="line"><span class="built_in">cd</span> xhgui</span><br><span class="line">php install.php</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li><p>如果不能以root身份运行，那么sudo -u www-data php install.php</p>
@@ -193,10 +193,10 @@
 </li>
 </ul>
 <h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><p>如前面说的原理是在头部添加一段PHP代码，这里通过在Nginx里配置，或者PHP ini auto_prepend_file在php.ini中添加auto_prepend_file。</p>
-<figure class="highlight nginx hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-attribute">location</span> <span class="hljs-regexp">~ \.php</span> &#123;</span><br><span class="line">    <span class="hljs-attribute">include</span> fastcgi_params;</span><br><span class="line">    <span class="hljs-attribute">fastcgi_buffers</span> <span class="hljs-number">128</span> <span class="hljs-number">4k</span>;</span><br><span class="line">    <span class="hljs-attribute">fastcgi_pass</span>   <span class="hljs-number">127.0.0.1:9000</span>;</span><br><span class="line">    <span class="hljs-attribute">fastcgi_index</span>  index.php;</span><br><span class="line">    <span class="hljs-attribute">fastcgi_param</span>  SCRIPT_FILENAME  <span class="hljs-variable">$document_root</span><span class="hljs-variable">$fastcgi_script_name</span>;</span><br><span class="line">    <span class="hljs-attribute">fastcgi_param</span>  PHP_VALUE <span class="hljs-string">"auto_prepend_file=\"/opt/htdocs/xhgui/external/header.php\""</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~ \.php</span> &#123;</span><br><span class="line">    <span class="attribute">include</span> fastcgi_params;</span><br><span class="line">    <span class="attribute">fastcgi_buffers</span> <span class="number">128</span> <span class="number">4k</span>;</span><br><span class="line">    <span class="attribute">fastcgi_pass</span>   <span class="number">127.0.0.1:9000</span>;</span><br><span class="line">    <span class="attribute">fastcgi_index</span>  index.php;</span><br><span class="line">    <span class="attribute">fastcgi_param</span>  SCRIPT_FILENAME  <span class="variable">$document_root</span><span class="variable">$fastcgi_script_name</span>;</span><br><span class="line">    <span class="attribute">fastcgi_param</span>  PHP_VALUE <span class="string">"auto_prepend_file=\"/opt/htdocs/xhgui/external/header.php\""</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>在config目录下添加config.php配置</p>
-<figure class="highlight php hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">&lt;?php</span></span><br><span class="line"><span class="hljs-keyword">return</span> <span class="hljs-keyword">array</span>(</span><br><span class="line">    <span class="hljs-string">'debug'</span> =&gt; <span class="hljs-keyword">false</span>,</span><br><span class="line">    <span class="hljs-string">'mode'</span> =&gt; <span class="hljs-string">'development'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// Can be either mongodb or file.</span></span><br><span class="line">    <span class="hljs-comment">/*</span></span><br><span class="line"><span class="hljs-comment">    'save.handler' =&gt; 'file',</span></span><br><span class="line"><span class="hljs-comment">    'save.handler.filename' =&gt; dirname(__DIR__) . '/cache/' . 'xhgui.data.' . microtime(true) . '_' . substr(md5($url), 0, 6),</span></span><br><span class="line"><span class="hljs-comment">    */</span></span><br><span class="line">    <span class="hljs-string">'save.handler'</span> =&gt; <span class="hljs-string">'mongodb'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// Needed for file save handler. Beware of file locking. You can adujst this file path</span></span><br><span class="line">    <span class="hljs-comment">// to reduce locking problems (eg uniqid, time ...)</span></span><br><span class="line">    <span class="hljs-comment">//'save.handler.filename' =&gt; __DIR__.'/../data/xhgui_'.date('Ymd').'.dat',</span></span><br><span class="line">    <span class="hljs-string">'db.host'</span> =&gt; <span class="hljs-string">'127.0.0.1:27017'</span>,</span><br><span class="line">    <span class="hljs-string">'db.db'</span> =&gt; <span class="hljs-string">'xhprof'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// Allows you to pass additional options like replicaSet to MongoClient.</span></span><br><span class="line">    <span class="hljs-comment">// 'username', 'password' and 'db' (where the user is added)</span></span><br><span class="line">    <span class="hljs-string">'db.options'</span> =&gt; <span class="hljs-keyword">array</span>(),</span><br><span class="line">    <span class="hljs-string">'templates.path'</span> =&gt; dirname(<span class="hljs-keyword">__DIR__</span>) . <span class="hljs-string">'/src/templates'</span>,</span><br><span class="line">    <span class="hljs-string">'date.format'</span> =&gt; <span class="hljs-string">'M jS H:i:s'</span>,</span><br><span class="line">    <span class="hljs-string">'detail.count'</span> =&gt; <span class="hljs-number">6</span>,</span><br><span class="line">    <span class="hljs-string">'page.limit'</span> =&gt; <span class="hljs-number">25</span>,</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// Profile 1 in 100 requests.</span></span><br><span class="line">    <span class="hljs-comment">// You can return true to profile every request.</span></span><br><span class="line">    <span class="hljs-string">'profiler.enable'</span> =&gt; <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">        <span class="hljs-keyword">return</span> rand(<span class="hljs-number">1</span>, <span class="hljs-number">100</span>) === <span class="hljs-number">3</span>;</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="hljs-string">'profiler.simple_url'</span> =&gt; <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">($url)</span> </span>&#123;</span><br><span class="line">        <span class="hljs-keyword">return</span> preg_replace(<span class="hljs-string">'/\=\d+/'</span>, <span class="hljs-string">''</span>, $url);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">return</span> <span class="keyword">array</span>(</span><br><span class="line">    <span class="string">'debug'</span> =&gt; <span class="keyword">false</span>,</span><br><span class="line">    <span class="string">'mode'</span> =&gt; <span class="string">'development'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Can be either mongodb or file.</span></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    'save.handler' =&gt; 'file',</span></span><br><span class="line"><span class="comment">    'save.handler.filename' =&gt; dirname(__DIR__) . '/cache/' . 'xhgui.data.' . microtime(true) . '_' . substr(md5($url), 0, 6),</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="string">'save.handler'</span> =&gt; <span class="string">'mongodb'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Needed for file save handler. Beware of file locking. You can adujst this file path</span></span><br><span class="line">    <span class="comment">// to reduce locking problems (eg uniqid, time ...)</span></span><br><span class="line">    <span class="comment">//'save.handler.filename' =&gt; __DIR__.'/../data/xhgui_'.date('Ymd').'.dat',</span></span><br><span class="line">    <span class="string">'db.host'</span> =&gt; <span class="string">'127.0.0.1:27017'</span>,</span><br><span class="line">    <span class="string">'db.db'</span> =&gt; <span class="string">'xhprof'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Allows you to pass additional options like replicaSet to MongoClient.</span></span><br><span class="line">    <span class="comment">// 'username', 'password' and 'db' (where the user is added)</span></span><br><span class="line">    <span class="string">'db.options'</span> =&gt; <span class="keyword">array</span>(),</span><br><span class="line">    <span class="string">'templates.path'</span> =&gt; dirname(<span class="keyword">__DIR__</span>) . <span class="string">'/src/templates'</span>,</span><br><span class="line">    <span class="string">'date.format'</span> =&gt; <span class="string">'M jS H:i:s'</span>,</span><br><span class="line">    <span class="string">'detail.count'</span> =&gt; <span class="number">6</span>,</span><br><span class="line">    <span class="string">'page.limit'</span> =&gt; <span class="number">25</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Profile 1 in 100 requests.</span></span><br><span class="line">    <span class="comment">// You can return true to profile every request.</span></span><br><span class="line">    <span class="string">'profiler.enable'</span> =&gt; <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> rand(<span class="number">1</span>, <span class="number">100</span>) === <span class="number">3</span>;</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="string">'profiler.simple_url'</span> =&gt; <span class="function"><span class="keyword">function</span><span class="params">($url)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> preg_replace(<span class="string">'/\=\d+/'</span>, <span class="string">''</span>, $url);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 
 
         </div>
@@ -292,7 +292,7 @@
         </nav>
         
         <div class="level">
-            <a class="level-item button is-link is-rounded" href="https://github.com/songrgg" target="_blank">
+            <a class="level-item button is-link is-rounded" href="https://github.com/songrgg" target="_blank" rel="noopener">
                 Follow</a>
         </div>
         
@@ -300,28 +300,28 @@
         
         <div class="level is-mobile">
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Github" href="https://github.com/songrgg">
                 
                 <i class="fab fa-github"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Instagram" href="https://www.instagram.com/jiangsongrong">
                 
                 <i class="fab fa-instagram"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
                 
                 <i class="fab fa-linkedin"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="RSS" href="/atom.xml">
                 
                 <i class="fas fa-rss"></i>
@@ -411,7 +411,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration%20-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -1292,7 +1292,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration%20-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -2169,8 +2169,8 @@
                 </a>
                 <p class="is-size-7">
                 &copy; 2020 songrgg&nbsp;
-                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a
-                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
                 
                 </p>
             </div>
@@ -2179,7 +2179,7 @@
                 <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Creative Commons" href="https://creativecommons.org/">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
                         
                         <i class="fab fa-creative-commons"></i>
                         
@@ -2187,7 +2187,7 @@
                 </p>
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
                         
                         <i class="fab fa-creative-commons-by"></i>
                         
@@ -2195,7 +2195,7 @@
                 </p>
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
                         
                         <i class="fab fa-github"></i>
                         
@@ -2212,8 +2212,13 @@
 <script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
 <script>moment.locale("en");</script>
 
+
 <script>
 var IcarusThemeSettings = {
+    site: {
+        url: 'https://songrgg.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
     article: {
         highlight: {
             clipboard: true,
@@ -2224,23 +2229,23 @@ var IcarusThemeSettings = {
 </script>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
 
 
 
-    
-    
-    
-    
+
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
 <script src="/js/gallery.js" defer></script>
 
-    
-    
+
+
 <div id="outdated">
     <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
             my browser now </a></p>
     <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
 </div>
@@ -2255,8 +2260,8 @@ var IcarusThemeSettings = {
     });
 </script>
 
-    
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     MathJax.Hub.Config({
@@ -2278,24 +2283,24 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
-    
-    
+
+
 <a id="back-to-top" title="Back to Top" href="javascript:;">
     <i class="fas fa-chevron-up"></i>
 </a>
 <script src="/js/back-to-top.js" defer></script>
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
 
 
 <script src="/js/main.js" defer></script>

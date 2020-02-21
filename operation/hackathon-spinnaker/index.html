@@ -170,7 +170,7 @@
             
         </h1>
         <div class="content">
-            <p>I’ve joined my first Hackathon and worked on a project about using <a href="https://www.spinnaker.io" target="_blank" rel="noopener">Spinnaker</a> as CI/CD tool within company. The biggest challenge is to install Spinnaker on CentOS 7 with <a href="https://docs.docker.com/compose/" target="_blank" rel="noopener">docker-compose</a>.</p>
+            <p>I’ve joined my first Hackathon and worked on a project about using <a href="https://www.spinnaker.io">Spinnaker</a> as CI/CD tool within company. The biggest challenge is to install Spinnaker on CentOS 7 with <a href="https://docs.docker.com/compose/">docker-compose</a>.</p>
 <h2 id="Why-Spinnaker"><a href="#Why-Spinnaker" class="headerlink" title="Why Spinnaker?"></a>Why Spinnaker?</h2><ul>
 <li>Spinnaker is dedicated to deploy services across multiple cloud providers and the integration with AWS, GCP, Azure is out of box.</li>
 <li>It’s focused on deploy stably, support full control of workflow, developers can customize the deployment flow to improve the quality of deployment, also it’s automatic.</li>
@@ -187,14 +187,14 @@
 <h2 id="Details-of-this-hackathon"><a href="#Details-of-this-hackathon" class="headerlink" title="Details of this hackathon"></a>Details of this hackathon</h2><p>Our goal is to start a Spinnaker cluster and create a pipeline that can deploy the Git project to AWS and our own Kubernetes cluster.<br>There’re some contraints for this hackathon, I’m still new to the company so maybe it’s because of my limited information.</p>
 <ol>
 <li>I don’t have a Kuberntes cluster with API server’s access right, that means I can’t deploy Spinnaker cluster to Kubernetes.</li>
-<li>I don’t have a Debian/Ubuntu machine, that means I can’t start Spinnaker on a bare metal with <a href="https://www.spinnaker.io/setup/install/halyard/" target="_blank" rel="noopener">Halyard</a>.</li>
+<li>I don’t have a Debian/Ubuntu machine, that means I can’t start Spinnaker on a bare metal with <a href="https://www.spinnaker.io/setup/install/halyard/">Halyard</a>.</li>
 <li>The Spinnaker need to be deployed within company’s infrastructure which is not any cloud provider, otherwise it can’t communicate with other infrastructure.</li>
 </ol>
 <p>And what does Spinnaker need? It needs Halyard to configure the Spinnaker cluster, it will control where Spinnaker cluster is deployed, as we know Spinnaker itself is composed of microservices, hard to deploy on bare metal. Especially for its cloud provider settings, so Spinnaker relies on Halyard heavily, and every time the Spinnaker cluster update and upgrade can be managed safely.</p>
 <p>Sadly, Halyard is only used for deploying Spinnaker itself to Kubernetes or  some cloud providers and Debian/Ubuntu single machine. Then according to our constraints above, we lose every chance to use that tool. Maybe it’s time to give up :(</p>
 <p>We didn’t give up, choose to install Spinnaker cluster the hardest way. Install Spinnaker cluster on Bare metal machine which is CentOS 7, for running the cluster easier, we use Docker to start each components.</p>
 <p><img src="/images/spin-dependencies.jpeg" alt="Spinnaker microservice dependencies"></p>
-<p>My colleague found <code>docker-compose.yml</code> in <a href="https://github.com/spinnaker/spinnaker/tree/master/experimental/docker-compose" target="_blank" rel="noopener">Spinnaker</a>, but the latest modification time was 4 years ago. After trying so many times we still couldn’t make it, I tried to give up actually, and also it was far away from quickstart and wasted so much time.</p>
+<p>My colleague found <code>docker-compose.yml</code> in <a href="https://github.com/spinnaker/spinnaker/tree/master/experimental/docker-compose">Spinnaker</a>, but the latest modification time was 4 years ago. After trying so many times we still couldn’t make it, I tried to give up actually, and also it was far away from quickstart and wasted so much time.</p>
 <p>Actually I didn’t give up, I returned home and thought if the Spinnaker cluster can be deployed in Kubernetes, it can be deployed with Docker compose, since they didn’t have any difference.</p>
 <p>So I chose the most stupid method, I created a Spinnaker cluster on GCP with far less time and rewrote the <code>docker-compose.yml</code> according to:</p>
 <ol>
@@ -292,7 +292,7 @@
 
 <div id="disqus_thread">
     
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
     </div>
 </div>
@@ -373,7 +373,7 @@
         </nav>
         
         <div class="level">
-            <a class="level-item button is-link is-rounded" href="https://github.com/songrgg" target="_blank">
+            <a class="level-item button is-link is-rounded" href="https://github.com/songrgg" target="_blank" rel="noopener">
                 Follow</a>
         </div>
         
@@ -381,28 +381,28 @@
         
         <div class="level is-mobile">
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Github" href="https://github.com/songrgg">
                 
                 <i class="fab fa-github"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Instagram" href="https://www.instagram.com/jiangsongrong">
                 
                 <i class="fab fa-instagram"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
                 
                 <i class="fab fa-linkedin"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="RSS" href="/atom.xml">
                 
                 <i class="fas fa-rss"></i>
@@ -492,7 +492,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration%20-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -1373,7 +1373,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration%20-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -2250,8 +2250,8 @@
                 </a>
                 <p class="is-size-7">
                 &copy; 2020 songrgg&nbsp;
-                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a
-                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
                 
                 </p>
             </div>
@@ -2260,7 +2260,7 @@
                 <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Creative Commons" href="https://creativecommons.org/">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
                         
                         <i class="fab fa-creative-commons"></i>
                         
@@ -2268,7 +2268,7 @@
                 </p>
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
                         
                         <i class="fab fa-creative-commons-by"></i>
                         
@@ -2276,7 +2276,7 @@
                 </p>
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
                         
                         <i class="fab fa-github"></i>
                         
@@ -2293,8 +2293,13 @@
 <script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
 <script>moment.locale("en");</script>
 
+
 <script>
 var IcarusThemeSettings = {
+    site: {
+        url: 'https://songrgg.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
     article: {
         highlight: {
             clipboard: true,
@@ -2305,23 +2310,23 @@ var IcarusThemeSettings = {
 </script>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
 
 
 
-    
-    
-    
-    
+
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
 <script src="/js/gallery.js" defer></script>
 
-    
-    
+
+
 <div id="outdated">
     <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
             my browser now </a></p>
     <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
 </div>
@@ -2336,8 +2341,8 @@ var IcarusThemeSettings = {
     });
 </script>
 
-    
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     MathJax.Hub.Config({
@@ -2359,24 +2364,24 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
-    
-    
+
+
 <a id="back-to-top" title="Back to Top" href="javascript:;">
     <i class="fas fa-chevron-up"></i>
 </a>
 <script src="/js/back-to-top.js" defer></script>
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
 
 
 <script src="/js/main.js" defer></script>

@@ -192,9 +192,9 @@
 <h3 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h3><p>APP激活时上报给服务端数据，Flume处理数据并将数据发送到Kafka。</p>
 <h4 id="数据格式"><a href="#数据格式" class="headerlink" title="数据格式"></a>数据格式</h4><p>客户端上报对JSON格式更加友好，所以这里选择使用JSON格式，格式定义一方面需要考虑客户端的开发成本，一方面需要考虑日后的拓展性，所以最直接的方法是统一固定的字段，将根据事件所变化的内容放到拓展字段里去，拓展字段是Map类型，可以支持各种拓展的形式。</p>
 <h4 id="数据内容"><a href="#数据内容" class="headerlink" title="数据内容"></a>数据内容</h4><p>以此次渠道分析为例，客户端需要上传客户端的渠道、APP版本、设备标志符、设备型号等信息，更详细的如Geo信息，如果想获得更好的数据展示效果，可以上传，但在此场景可以不需要，这些是主动上报的部分。还有一部分内容是需要在服务端获取的，例如设备IP，为了之后的地理展示，可以使用MaxMind公司的IP与城市对应的数据库进行地理解析。</p>
-<h4 id="数据处理"><a href="#数据处理" class="headerlink" title="数据处理"></a>数据处理</h4><p><a href="https://flume.apache.org" target="_blank" rel="noopener">flume</a>接受到客户端的数据之后，需要对数据进行解析JSON，并且获得用户IP、分析Geo Location做一些轻量级的处理，因为这个部分是在前端flume做的，这个部分的flume重点是逻辑要轻，重要的是吞吐量高和延迟低。</p>
-<p>接下来前端flume把处理完的数据按照事件名发送到<a href="https://kafka.apache.org" target="_blank" rel="noopener">Kafka</a>同名的topic中，后端flume消费Kafka并将消息转存到Hdfs中。</p>
-<h4 id="数据持久化"><a href="#数据持久化" class="headerlink" title="数据持久化"></a>数据持久化</h4><p>将数据从Hdfs持久化到Hive，一方面是更节省空间，一方面是更有利于<a href="https://spark.apache.org" target="_blank" rel="noopener">Spark</a>进行查询。</p>
+<h4 id="数据处理"><a href="#数据处理" class="headerlink" title="数据处理"></a>数据处理</h4><p><a href="https://flume.apache.org">flume</a>接受到客户端的数据之后，需要对数据进行解析JSON，并且获得用户IP、分析Geo Location做一些轻量级的处理，因为这个部分是在前端flume做的，这个部分的flume重点是逻辑要轻，重要的是吞吐量高和延迟低。</p>
+<p>接下来前端flume把处理完的数据按照事件名发送到<a href="https://kafka.apache.org">Kafka</a>同名的topic中，后端flume消费Kafka并将消息转存到Hdfs中。</p>
+<h4 id="数据持久化"><a href="#数据持久化" class="headerlink" title="数据持久化"></a>数据持久化</h4><p>将数据从Hdfs持久化到Hive，一方面是更节省空间，一方面是更有利于<a href="https://spark.apache.org">Spark</a>进行查询。</p>
 <p>这里持久化到Hive的方法，可以有几种：</p>
 <ul>
 <li>Flume直接读取Kafka的数据并存储到Hive，这是由Flume的Hive Sink实现的，数据持久化到Hive Transaction表，是Hive 0.13引入的，支持ACID。</li>
@@ -202,28 +202,28 @@
 </ul>
 <p>第一种方法，相对来说配置简单，省去了中间一步转储的过程。第二种方法，相对繁琐，但是之后会有一个好处。</p>
 <p>下面是设备注册表<code>device_registration</code>的schema</p>
-<figure class="highlight sql hljs"><figcaption><span>device_registration</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> <span class="hljs-string">`bi.device_registration`</span>(</span><br><span class="line">  <span class="hljs-string">`app_id`</span> <span class="hljs-keyword">string</span>,</span><br><span class="line">  <span class="hljs-string">`uid`</span> <span class="hljs-built_in">bigint</span>,</span><br><span class="line">  <span class="hljs-string">`time`</span> <span class="hljs-built_in">bigint</span>,</span><br><span class="line">  <span class="hljs-string">`ip`</span> <span class="hljs-keyword">string</span>,</span><br><span class="line">  <span class="hljs-string">`device_id`</span> <span class="hljs-keyword">string</span>,</span><br><span class="line">  <span class="hljs-string">`app_version`</span> <span class="hljs-keyword">string</span>,</span><br><span class="line">  <span class="hljs-string">`os_name`</span> <span class="hljs-keyword">string</span>,</span><br><span class="line">  <span class="hljs-string">`os_version`</span> <span class="hljs-keyword">string</span>,</span><br><span class="line">  <span class="hljs-string">`device_brand`</span> <span class="hljs-keyword">string</span>,</span><br><span class="line">  <span class="hljs-string">`device_model`</span> <span class="hljs-keyword">string</span>,</span><br><span class="line">  <span class="hljs-string">`ua_name`</span> <span class="hljs-keyword">string</span>,</span><br><span class="line">  <span class="hljs-string">`ua_version`</span> <span class="hljs-keyword">string</span>,</span><br><span class="line">  <span class="hljs-string">`channel`</span> <span class="hljs-keyword">string</span>,</span><br><span class="line">  <span class="hljs-string">`ts`</span> <span class="hljs-built_in">timestamp</span>,</span><br><span class="line">  <span class="hljs-string">`lon`</span> <span class="hljs-keyword">double</span>,</span><br><span class="line">  <span class="hljs-string">`lat`</span> <span class="hljs-keyword">double</span>,</span><br><span class="line">  <span class="hljs-string">`country`</span> <span class="hljs-keyword">string</span>,</span><br><span class="line">  <span class="hljs-string">`city`</span> <span class="hljs-keyword">string</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><figcaption><span>device_registration</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`bi.device_registration`</span>(</span><br><span class="line">  <span class="string">`app_id`</span> <span class="keyword">string</span>,</span><br><span class="line">  <span class="string">`uid`</span> <span class="built_in">bigint</span>,</span><br><span class="line">  <span class="string">`time`</span> <span class="built_in">bigint</span>,</span><br><span class="line">  <span class="string">`ip`</span> <span class="keyword">string</span>,</span><br><span class="line">  <span class="string">`device_id`</span> <span class="keyword">string</span>,</span><br><span class="line">  <span class="string">`app_version`</span> <span class="keyword">string</span>,</span><br><span class="line">  <span class="string">`os_name`</span> <span class="keyword">string</span>,</span><br><span class="line">  <span class="string">`os_version`</span> <span class="keyword">string</span>,</span><br><span class="line">  <span class="string">`device_brand`</span> <span class="keyword">string</span>,</span><br><span class="line">  <span class="string">`device_model`</span> <span class="keyword">string</span>,</span><br><span class="line">  <span class="string">`ua_name`</span> <span class="keyword">string</span>,</span><br><span class="line">  <span class="string">`ua_version`</span> <span class="keyword">string</span>,</span><br><span class="line">  <span class="string">`channel`</span> <span class="keyword">string</span>,</span><br><span class="line">  <span class="string">`ts`</span> <span class="built_in">timestamp</span>,</span><br><span class="line">  <span class="string">`lon`</span> <span class="keyword">double</span>,</span><br><span class="line">  <span class="string">`lat`</span> <span class="keyword">double</span>,</span><br><span class="line">  <span class="string">`country`</span> <span class="keyword">string</span>,</span><br><span class="line">  <span class="string">`city`</span> <span class="keyword">string</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 
 <p>这里要提一下，为什么有了<code>time</code>这个unix时间戳，还需要<code>ts</code>这个<code>timestamp</code>类型的时间，实际上是为了之后的查询工具<code>Superset</code>需要使用来实现按时间查询。</p>
 <h3 id="计算"><a href="#计算" class="headerlink" title="计算"></a>计算</h3><p>这里的计算每小时运行一次，从Hive中读取过去一个小时的设备激活原数据，与<code>device_registration</code>进行比对，将未出现在<code>device_registration</code>中的设备信息加入。</p>
 <p>这里可以使用<code>JOIN</code>来实现，Spark数据表之间的Join方式有多种，<code>inner</code>, <code>cross</code>, <code>outer</code>, <code>full</code>, <code>full_outer</code>, <code>left</code>, <code>left_outer</code>, <code>right</code>, <code>right_outer</code>, <code>left_semi</code>, <code>left_anti</code></p>
 <p>这里场景适合使用<code>left_anti</code>，因为是取不在这个集合的设备信息。</p>
 <p>这里还要注意，因为时间区间内的数据有可能会有重复，所以需要取时间较早的那条，这里用到了<code>groupByKey</code>和<code>reduceGroups</code>，具体是</p>
-<figure class="highlight scala hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">deviceInfos.as[<span class="hljs-type">Device</span>]</span><br><span class="line">    .groupByKey(_.device_id)</span><br><span class="line">    .reduceGroups((x, y) =&gt; <span class="hljs-keyword">if</span> (x.time &lt; y.time) x <span class="hljs-keyword">else</span> y)</span><br><span class="line">    .map[<span class="hljs-type">Device</span>]((x: (<span class="hljs-type">String</span>, <span class="hljs-type">Device</span>)) =&gt; x._2)</span><br><span class="line">    .write.mode(<span class="hljs-type">SaveMode</span>.<span class="hljs-type">Append</span>)</span><br><span class="line">    .format(<span class="hljs-string">"hive"</span>)</span><br><span class="line">    .saveAsTable(<span class="hljs-string">"bi.device_registration"</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">deviceInfos.as[<span class="type">Device</span>]</span><br><span class="line">    .groupByKey(_.device_id)</span><br><span class="line">    .reduceGroups((x, y) =&gt; <span class="keyword">if</span> (x.time &lt; y.time) x <span class="keyword">else</span> y)</span><br><span class="line">    .map[<span class="type">Device</span>]((x: (<span class="type">String</span>, <span class="type">Device</span>)) =&gt; x._2)</span><br><span class="line">    .write.mode(<span class="type">SaveMode</span>.<span class="type">Append</span>)</span><br><span class="line">    .format(<span class="string">"hive"</span>)</span><br><span class="line">    .saveAsTable(<span class="string">"bi.device_registration"</span>)</span><br></pre></td></tr></table></figure>
 
-<h3 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h3><p>查询引擎使用<a href="https://prestodb.io" target="_blank" rel="noopener">Presto</a>，配置Hive Connector，实时搜索数据。刚才上面提到数据持久化Hive中的两种方法，其中支持事务的表不可用于Presto的查询，因为Hive Transaction表的数据格式未被Presto支持(详见<a href="https://github.com/prestodb/presto/issues/1970" target="_blank" rel="noopener">Implement Hive ACID table support</a>)。</p>
+<h3 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h3><p>查询引擎使用<a href="https://prestodb.io">Presto</a>，配置Hive Connector，实时搜索数据。刚才上面提到数据持久化Hive中的两种方法，其中支持事务的表不可用于Presto的查询，因为Hive Transaction表的数据格式未被Presto支持(详见<a href="https://github.com/prestodb/presto/issues/1970">Implement Hive ACID table support</a>)。</p>
 <h5 id="直接查询"><a href="#直接查询" class="headerlink" title="直接查询"></a>直接查询</h5><p>通过上一步的<code>device_registration</code>表，我们可以通过时间维度进行查询。</p>
 <p>直接查询就是查询raw data，数据更加丰富。这里以“按渠道划分的新增数量”为例，</p>
-<figure class="highlight sql hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">SELECT</span> <span class="hljs-string">"channel"</span> <span class="hljs-keyword">AS</span> <span class="hljs-string">"channel"</span>,</span><br><span class="line">       date_trunc(<span class="hljs-string">'hour'</span>, <span class="hljs-keyword">CAST</span>(ts <span class="hljs-keyword">AS</span> <span class="hljs-built_in">TIMESTAMP</span>)) <span class="hljs-keyword">AS</span> <span class="hljs-string">"__timestamp"</span>,</span><br><span class="line">       <span class="hljs-keyword">COUNT</span>(*) <span class="hljs-keyword">AS</span> <span class="hljs-string">"count"</span></span><br><span class="line"><span class="hljs-keyword">FROM</span> <span class="hljs-string">"bi"</span>.<span class="hljs-string">"device_registration"</span></span><br><span class="line"><span class="hljs-keyword">WHERE</span> <span class="hljs-string">"ts"</span> &gt;= from_iso8601_timestamp(<span class="hljs-string">'2018-02-03T16:29:29'</span>)</span><br><span class="line">  <span class="hljs-keyword">AND</span> <span class="hljs-string">"ts"</span> &lt;= from_iso8601_timestamp(<span class="hljs-string">'2018-02-05T08:29:29'</span>)</span><br><span class="line"><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> <span class="hljs-string">"channel"</span>,</span><br><span class="line">         date_trunc(<span class="hljs-string">'hour'</span>, <span class="hljs-keyword">CAST</span>(ts <span class="hljs-keyword">AS</span> <span class="hljs-built_in">TIMESTAMP</span>))</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="string">"channel"</span> <span class="keyword">AS</span> <span class="string">"channel"</span>,</span><br><span class="line">       date_trunc(<span class="string">'hour'</span>, <span class="keyword">CAST</span>(ts <span class="keyword">AS</span> <span class="built_in">TIMESTAMP</span>)) <span class="keyword">AS</span> <span class="string">"__timestamp"</span>,</span><br><span class="line">       <span class="keyword">COUNT</span>(*) <span class="keyword">AS</span> <span class="string">"count"</span></span><br><span class="line"><span class="keyword">FROM</span> <span class="string">"bi"</span>.<span class="string">"device_registration"</span></span><br><span class="line"><span class="keyword">WHERE</span> <span class="string">"ts"</span> &gt;= from_iso8601_timestamp(<span class="string">'2018-02-03T16:29:29'</span>)</span><br><span class="line">  <span class="keyword">AND</span> <span class="string">"ts"</span> &lt;= from_iso8601_timestamp(<span class="string">'2018-02-05T08:29:29'</span>)</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> <span class="string">"channel"</span>,</span><br><span class="line">         date_trunc(<span class="string">'hour'</span>, <span class="keyword">CAST</span>(ts <span class="keyword">AS</span> <span class="built_in">TIMESTAMP</span>))</span><br></pre></td></tr></table></figure>
 
 <h5 id="预先计算"><a href="#预先计算" class="headerlink" title="预先计算"></a>预先计算</h5><p>预先计算就是将图表展示需要的数据结果提前计算存储到数据库，查询的时候直接就可以从结果表中查询。</p>
 <p>预先计算是用空间换时间，损失一些灵活性，不如查询raw data时可以自由定制查询。每次新增查询对于预先计算来说都需要新增加计算逻辑。随着数据量的增大，预先计算不可避免。</p>
 <h5 id="优化查询速度"><a href="#优化查询速度" class="headerlink" title="优化查询速度"></a>优化查询速度</h5><p>运行一段时间后，查询速度明显变慢，查看Hdfs上的hive目录发现数据表内的小文件多达几百上千，这是由于Spark处理完数据并写入Hive会产生非常多的bucket，与数据条数成正比，写入成本低却增加了读数据的成本，这样当数据查询时，由于Hdfs上的小文件非常之多，I/O花费很大，导致整体查询速度下降迅速，这里想办法将文件进行合并，减少文件数量。</p>
 <p>通过使用Hive执行compaction，方法比较取巧，就是在每次计算完数据之后，运行Hive脚本，通过复制数据库，Hive会自动将文件数量压缩：</p>
-<figure class="highlight sql hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> bi.device_registration_compact <span class="hljs-keyword">AS</span> <span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">from</span> bi.device_registration;</span><br><span class="line"><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> bi.device_registration;</span><br><span class="line"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> bi.device_registration_compact <span class="hljs-keyword">RENAME</span> <span class="hljs-keyword">TO</span> bi.device_registration;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> bi.device_registration_compact <span class="keyword">AS</span> <span class="keyword">SELECT</span> * <span class="keyword">from</span> bi.device_registration;</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> bi.device_registration;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> bi.device_registration_compact <span class="keyword">RENAME</span> <span class="keyword">TO</span> bi.device_registration;</span><br></pre></td></tr></table></figure>
 
 <p>将Hdfs上的文件数量降低到个位数，查询也在秒级完成，这种方法只适用于数据量不大的情况，目前记录条数在1M以内的查询速度在秒级，之后依然会考虑使用其它方案改良。</p>
-<h3 id="展示"><a href="#展示" class="headerlink" title="展示"></a>展示</h3><p><a href="https://superset.apache.org/" target="_blank" rel="noopener">Superset</a>是Airbnb开源的图表展示工具，不仅支持很多后端查询引擎，并且有许多成熟的图表展示，更可贵的是拥有用户权限管理。</p>
+<h3 id="展示"><a href="#展示" class="headerlink" title="展示"></a>展示</h3><p><a href="https://superset.apache.org/">Superset</a>是Airbnb开源的图表展示工具，不仅支持很多后端查询引擎，并且有许多成熟的图表展示，更可贵的是拥有用户权限管理。</p>
 
         </div>
         
@@ -281,26 +281,26 @@
             <h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>利用Cloudera的CDH套件搭建好Hadoop 2.6，可CDH中的Hive版本不高，于是独立安装Hive 2.3，由于Hive的执行引擎默认是Spark，根据Hive官网上的Hive on Spark教程开始配置。</p>
 <h5 id="Standalone"><a href="#Standalone" class="headerlink" title="Standalone"></a>Standalone</h5><p>配置了Spark Standalone模式之后，配置Hive遇到一些困难。</p>
 <p>由于使用的是pre-build版本的Spark，遇到报错：</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java.lang.NoSuchFieldError: SPARK_RPC_CLIENT_CONNECT_TIMEOUT</span><br><span class="line">    at org.apache.hive.spark.client.rpc.RpcConfiguration.&lt;clinit&gt;(RpcConfiguration.java:46)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java.lang.NoSuchFieldError: SPARK_RPC_CLIENT_CONNECT_TIMEOUT</span><br><span class="line">    at org.apache.hive.spark.client.rpc.RpcConfiguration.&lt;clinit&gt;(RpcConfiguration.java:46)</span><br></pre></td></tr></table></figure>
 
 <p>接下来要自己编译Spark without Hive，可是一直没有解决，报错为：</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[info] &#39;compiler-interface&#39; not yet compiled for Scala 2.11.8. Compiling...</span><br><span class="line">error: scala.reflect.internal.MissingRequirementError: object java.lang.Object in compiler mirror not found.</span><br><span class="line">	at scala.reflect.internal.MissingRequirementError$.signal(MissingRequirementError.scala:17)</span><br><span class="line">	at scala.reflect.internal.MissingRequirementError$.notFound(MissingRequirementError.scala:18)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[info] &#39;compiler-interface&#39; not yet compiled for Scala 2.11.8. Compiling...</span><br><span class="line">error: scala.reflect.internal.MissingRequirementError: object java.lang.Object in compiler mirror not found.</span><br><span class="line">	at scala.reflect.internal.MissingRequirementError$.signal(MissingRequirementError.scala:17)</span><br><span class="line">	at scala.reflect.internal.MissingRequirementError$.notFound(MissingRequirementError.scala:18)</span><br></pre></td></tr></table></figure>
 
 <p>非常曲折，最后选择尝试已经配置好的Yarn模式的Spark。</p>
 <h5 id="Yarn"><a href="#Yarn" class="headerlink" title="Yarn"></a>Yarn</h5><p>Yarn模式的Spark集群已经就绪，在Hive中配置Spark</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">set hive.execution.engine&#x3D;spark;</span><br><span class="line">set spark.master&#x3D;yarn;</span><br><span class="line">set spark.executor.memory&#x3D;512m;</span><br><span class="line">set spark.serializer&#x3D;org.apache.spark.serializer.KryoSerializer;</span><br><span class="line">set spark.eventLog.enabled&#x3D;true;</span><br><span class="line">set spark.eventLog.dir&#x3D;&lt;Spark event log folder (must exist)&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">set hive.execution.engine&#x3D;spark;</span><br><span class="line">set spark.master&#x3D;yarn;</span><br><span class="line">set spark.executor.memory&#x3D;512m;</span><br><span class="line">set spark.serializer&#x3D;org.apache.spark.serializer.KryoSerializer;</span><br><span class="line">set spark.eventLog.enabled&#x3D;true;</span><br><span class="line">set spark.eventLog.dir&#x3D;&lt;Spark event log folder (must exist)&gt;</span><br></pre></td></tr></table></figure>
 
 <p>上传Spark应用所需的Spark依赖jar包到Hdfs中，例如放到Hdfs中的/spark-jars目录，并配置hive-site.xml</p>
-<figure class="highlight xml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span></span><br><span class="line">  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>spark.yarn.jars<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span></span><br><span class="line">  <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>hdfs://xxxx:8020/spark-jars/*<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">name</span>&gt;</span>spark.yarn.jars<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">value</span>&gt;</span>hdfs://xxxx:8020/spark-jars/*<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>注意这里需要保证使用Hive时的用户能够有权限访问Hdfs上指定的目录。</p>
 <h4 id="用户数据导入"><a href="#用户数据导入" class="headerlink" title="用户数据导入"></a>用户数据导入</h4><h5 id="源数据"><a href="#源数据" class="headerlink" title="源数据"></a>源数据</h5><p>当源数据是JSON并位于Hdfs的/tmp目录，如</p>
-<figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="hljs-string">"time"</span>: <span class="hljs-string">"1515682813526"</span>,</span><br><span class="line">    <span class="hljs-string">"uid"</span>: <span class="hljs-number">1</span>,</span><br><span class="line">    <span class="hljs-string">"ip"</span>: <span class="hljs-string">"1.1.1.1"</span>,</span><br><span class="line">    <span class="hljs-string">"path"</span>: <span class="hljs-string">"https://github.com"</span>,</span><br><span class="line">    <span class="hljs-string">"referer"</span>: <span class="hljs-string">"https://google.com"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"time"</span>: <span class="string">"1515682813526"</span>,</span><br><span class="line">    <span class="string">"uid"</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="string">"ip"</span>: <span class="string">"1.1.1.1"</span>,</span><br><span class="line">    <span class="string">"path"</span>: <span class="string">"https://github.com"</span>,</span><br><span class="line">    <span class="string">"referer"</span>: <span class="string">"https://google.com"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h5 id="创建Hive外部表"><a href="#创建Hive外部表" class="headerlink" title="创建Hive外部表"></a>创建Hive外部表</h5><figure class="highlight sql hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">EXTERNAL</span> <span class="hljs-keyword">TABLE</span> <span class="hljs-keyword">IF</span> <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">EXISTS</span> tmp.pageview(</span><br><span class="line">    <span class="hljs-built_in">time</span> <span class="hljs-built_in">BIGINT</span>,</span><br><span class="line">    uid  <span class="hljs-built_in">BIGINT</span>,</span><br><span class="line">    ip   <span class="hljs-keyword">STRING</span>,</span><br><span class="line">    <span class="hljs-keyword">path</span> <span class="hljs-keyword">STRING</span>,</span><br><span class="line">    referer <span class="hljs-keyword">STRING</span></span><br><span class="line">)</span><br><span class="line"><span class="hljs-keyword">ROW</span> <span class="hljs-keyword">FORMAT</span> SERDE <span class="hljs-string">'org.apache.hive.hcatalog.data.JsonSerDe'</span></span><br><span class="line"><span class="hljs-keyword">STORED</span> <span class="hljs-keyword">AS</span> TEXTFILE</span><br><span class="line">LOCATION <span class="hljs-string">'/tmp'</span>;</span><br></pre></td></tr></table></figure>
+<h5 id="创建Hive外部表"><a href="#创建Hive外部表" class="headerlink" title="创建Hive外部表"></a>创建Hive外部表</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">EXTERNAL</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> tmp.pageview(</span><br><span class="line">    <span class="built_in">time</span> <span class="built_in">BIGINT</span>,</span><br><span class="line">    uid  <span class="built_in">BIGINT</span>,</span><br><span class="line">    ip   <span class="keyword">STRING</span>,</span><br><span class="line">    <span class="keyword">path</span> <span class="keyword">STRING</span>,</span><br><span class="line">    referer <span class="keyword">STRING</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">ROW</span> <span class="keyword">FORMAT</span> SERDE <span class="string">'org.apache.hive.hcatalog.data.JsonSerDe'</span></span><br><span class="line"><span class="keyword">STORED</span> <span class="keyword">AS</span> TEXTFILE</span><br><span class="line">LOCATION <span class="string">'/tmp'</span>;</span><br></pre></td></tr></table></figure>
 
 <h5 id="导入ORC表"><a href="#导入ORC表" class="headerlink" title="导入ORC表"></a>导入ORC表</h5><p>ORC表是Hive的一种高效表，在查询上更加快速，可以从外部表将数据导入ORC表。</p>
-<figure class="highlight sql hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> <span class="hljs-keyword">IF</span> <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">EXISTS</span> orc.pageview(</span><br><span class="line">    <span class="hljs-built_in">time</span> <span class="hljs-built_in">BIGINT</span>,</span><br><span class="line">    uid  <span class="hljs-built_in">BIGINT</span>,</span><br><span class="line">    ip   <span class="hljs-keyword">STRING</span>,</span><br><span class="line">    <span class="hljs-keyword">path</span> <span class="hljs-keyword">STRING</span>,</span><br><span class="line">    referer <span class="hljs-keyword">STRING</span></span><br><span class="line">)</span><br><span class="line"><span class="hljs-keyword">STORED</span> <span class="hljs-keyword">AS</span> ORC;</span><br><span class="line"></span><br><span class="line">FROM tmp.pageview pv</span><br><span class="line"><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> <span class="hljs-keyword">TABLE</span> orc.pageview</span><br><span class="line"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">time</span>, uid, ip, <span class="hljs-keyword">path</span>, referer;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> orc.pageview(</span><br><span class="line">    <span class="built_in">time</span> <span class="built_in">BIGINT</span>,</span><br><span class="line">    uid  <span class="built_in">BIGINT</span>,</span><br><span class="line">    ip   <span class="keyword">STRING</span>,</span><br><span class="line">    <span class="keyword">path</span> <span class="keyword">STRING</span>,</span><br><span class="line">    referer <span class="keyword">STRING</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">STORED</span> <span class="keyword">AS</span> ORC;</span><br><span class="line"></span><br><span class="line">FROM tmp.pageview pv</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="keyword">TABLE</span> orc.pageview</span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">time</span>, uid, ip, <span class="keyword">path</span>, referer;</span><br></pre></td></tr></table></figure>
 
         </div>
         
@@ -351,7 +351,7 @@
         <div class="content">
             <h3 id="Hive是什么？"><a href="#Hive是什么？" class="headerlink" title="Hive是什么？"></a>Hive是什么？</h3><p>基于Hadoop的数据查询工具，可以使用类SQL进行数据查询。</p>
 <h3 id="Hadoop安装"><a href="#Hadoop安装" class="headerlink" title="Hadoop安装"></a>Hadoop安装</h3><ul>
-<li>参考了<a href="http://www.powerxing.com/install-hadoop/" target="_blank" rel="noopener">Hadoop安装</a></li>
+<li>参考了<a href="http://www.powerxing.com/install-hadoop/">Hadoop安装</a></li>
 <li>注意到etc/hadoop/hadoop-env.sh里设置JAVA_HOME，不然运行./start_dfs.sh会报没设置JAVA_HOME</li>
 <li>运行程序时，输出目录不能存在</li>
 <li>配置文件<ul>
@@ -360,13 +360,13 @@
 </li>
 </ul>
 <h3 id="Hive安装"><a href="#Hive安装" class="headerlink" title="Hive安装"></a>Hive安装</h3><ul>
-<li>参考了<a href="http://www.cloudera.com/documentation/archive/cdh/4-x/4-2-0/CDH4-Installation-Guide/cdh4ig_topic_18_4.html" target="_blank" rel="noopener">安装hive</a></li>
+<li>参考了<a href="http://www.cloudera.com/documentation/archive/cdh/4-x/4-2-0/CDH4-Installation-Guide/cdh4ig_topic_18_4.html">安装hive</a></li>
 <li>MetaStore用了MySQL，结果安装的驱动版本不正确，遇到MetaStoreClient lost connection. Attempting to reconnect。</li>
 </ul>
 <h3 id="实践后感"><a href="#实践后感" class="headerlink" title="实践后感"></a>实践后感</h3><p>真正装环境的坑还是很多的，开始分配的虚拟机磁盘空间太小了，基本运行不了，jdbc驱动版本不正确都会导致Hive客户端开启后时常崩溃，配置文件的一些常用选项需要了解，如果出现问题可以有一个解决思路，当然Google还是常用些，实在解决不了如很难想到是jdbc驱动的原因，我就下了一份源码，定位到报错，通过代码推测了发生问题的地方。</p>
 <h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><ul>
-<li><a href="http://www.powerxing.com/install-hadoop/" target="_blank" rel="noopener">安装Hadoop</a></li>
-<li><a href="http://www.cloudera.com/documentation/archive/cdh/4-x/4-2-0/CDH4-Installation-Guide/cdh4ig_topic_18_4.html" target="_blank" rel="noopener">安装hive</a></li>
+<li><a href="http://www.powerxing.com/install-hadoop/">安装Hadoop</a></li>
+<li><a href="http://www.cloudera.com/documentation/archive/cdh/4-x/4-2-0/CDH4-Installation-Guide/cdh4ig_topic_18_4.html">安装hive</a></li>
 </ul>
 
         </div>
@@ -462,7 +462,7 @@
         </nav>
         
         <div class="level">
-            <a class="level-item button is-link is-rounded" href="https://github.com/songrgg" target="_blank">
+            <a class="level-item button is-link is-rounded" href="https://github.com/songrgg" target="_blank" rel="noopener">
                 Follow</a>
         </div>
         
@@ -470,28 +470,28 @@
         
         <div class="level is-mobile">
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Github" href="https://github.com/songrgg">
                 
                 <i class="fab fa-github"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Instagram" href="https://www.instagram.com/jiangsongrong">
                 
                 <i class="fab fa-instagram"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
                 
                 <i class="fab fa-linkedin"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="RSS" href="/atom.xml">
                 
                 <i class="fas fa-rss"></i>
@@ -581,7 +581,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration%20-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -1462,7 +1462,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration%20-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -2339,8 +2339,8 @@
                 </a>
                 <p class="is-size-7">
                 &copy; 2020 songrgg&nbsp;
-                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a
-                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
                 
                 </p>
             </div>
@@ -2349,7 +2349,7 @@
                 <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Creative Commons" href="https://creativecommons.org/">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
                         
                         <i class="fab fa-creative-commons"></i>
                         
@@ -2357,7 +2357,7 @@
                 </p>
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
                         
                         <i class="fab fa-creative-commons-by"></i>
                         
@@ -2365,7 +2365,7 @@
                 </p>
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
                         
                         <i class="fab fa-github"></i>
                         
@@ -2382,8 +2382,13 @@
 <script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
 <script>moment.locale("en");</script>
 
+
 <script>
 var IcarusThemeSettings = {
+    site: {
+        url: 'https://songrgg.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
     article: {
         highlight: {
             clipboard: true,
@@ -2394,23 +2399,23 @@ var IcarusThemeSettings = {
 </script>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
 
 
 
-    
-    
-    
-    
+
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
 <script src="/js/gallery.js" defer></script>
 
-    
-    
+
+
 <div id="outdated">
     <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
             my browser now </a></p>
     <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
 </div>
@@ -2425,8 +2430,8 @@ var IcarusThemeSettings = {
     });
 </script>
 
-    
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     MathJax.Hub.Config({
@@ -2448,24 +2453,24 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
-    
-    
+
+
 <a id="back-to-top" title="Back to Top" href="javascript:;">
     <i class="fas fa-chevron-up"></i>
 </a>
 <script src="/js/back-to-top.js" defer></script>
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
 
 
 <script src="/js/main.js" defer></script>

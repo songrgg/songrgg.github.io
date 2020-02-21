@@ -175,7 +175,7 @@
 <li>设置服务频次限制，如针对某个消耗资源很高的API设置1QPS的访问限制，并为单一用户生成访问该API的唯一<code>key</code>，如<code>userA_APIX</code>就是表示userA访问APIX的情况</li>
 <li>根据指定<code>key</code>，服务向<code>ratelimiter</code>询问是否允许此次访问</li>
 </ol>
-<h4 id="基于令牌桶算法的伪代码"><a href="#基于令牌桶算法的伪代码" class="headerlink" title="基于令牌桶算法的伪代码"></a>基于令牌桶算法的伪代码</h4><figure class="highlight golang hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// 初始换状态</span></span><br><span class="line">rate := <span class="hljs-number">1</span> <span class="hljs-comment">// 设置频率为1ops</span></span><br><span class="line">needed := <span class="hljs-number">1</span> <span class="hljs-comment">// 设置访问1次API需要的令牌数量为1</span></span><br><span class="line">key := <span class="hljs-string">"userA_APIX"</span> <span class="hljs-comment">// userA访问APIX的场景</span></span><br><span class="line">tokens := <span class="hljs-number">0</span> <span class="hljs-comment">// 当前可用令牌数</span></span><br><span class="line">lastTime := time.Now() <span class="hljs-comment">// 上次令牌更新时间</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 时间过去1s</span></span><br><span class="line">time.Sleep(time.Second)</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// userA请求访问APIX</span></span><br><span class="line">nowTime := time.Now()</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 计算这段时间新生成的令牌数量</span></span><br><span class="line">newTokens := (nowTime-lastTime)*rate</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 判断是否允许访问</span></span><br><span class="line">allow := (newTokens+tokens)&gt;needed</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 更新数据</span></span><br><span class="line"><span class="hljs-keyword">if</span> allow &#123;</span><br><span class="line">    tokens = newTokens+tokens-needed</span><br><span class="line">    lastTime = nowTime</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// 响应用户操作</span></span><br><span class="line">&#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">    tokens = tokens+newTokens</span><br><span class="line">    lastTime = nowTime</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// 提示用户操作超过限制</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="基于令牌桶算法的伪代码"><a href="#基于令牌桶算法的伪代码" class="headerlink" title="基于令牌桶算法的伪代码"></a>基于令牌桶算法的伪代码</h4><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 初始换状态</span></span><br><span class="line">rate := <span class="number">1</span> <span class="comment">// 设置频率为1ops</span></span><br><span class="line">needed := <span class="number">1</span> <span class="comment">// 设置访问1次API需要的令牌数量为1</span></span><br><span class="line">key := <span class="string">"userA_APIX"</span> <span class="comment">// userA访问APIX的场景</span></span><br><span class="line">tokens := <span class="number">0</span> <span class="comment">// 当前可用令牌数</span></span><br><span class="line">lastTime := time.Now() <span class="comment">// 上次令牌更新时间</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 时间过去1s</span></span><br><span class="line">time.Sleep(time.Second)</span><br><span class="line"></span><br><span class="line"><span class="comment">// userA请求访问APIX</span></span><br><span class="line">nowTime := time.Now()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 计算这段时间新生成的令牌数量</span></span><br><span class="line">newTokens := (nowTime-lastTime)*rate</span><br><span class="line"></span><br><span class="line"><span class="comment">// 判断是否允许访问</span></span><br><span class="line">allow := (newTokens+tokens)&gt;needed</span><br><span class="line"></span><br><span class="line"><span class="comment">// 更新数据</span></span><br><span class="line"><span class="keyword">if</span> allow &#123;</span><br><span class="line">    tokens = newTokens+tokens-needed</span><br><span class="line">    lastTime = nowTime</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 响应用户操作</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    tokens = tokens+newTokens</span><br><span class="line">    lastTime = nowTime</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 提示用户操作超过限制</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h3><ol>
 <li><p>频次限制应该统一存储<br>webserver是任意可拓展个数的服务，一开始，我将<code>ratelimiter</code>的存储放在了各自服务中，导致明明我限制的是整个集群这个<code>API</code>的访问单人不可超过<code>1</code>QPS，如果N个服务，实际上是<code>N</code>QPS。所以这个频次限制需要集中存储，统一整个系统的访问频次。</p>
@@ -187,11 +187,11 @@
 </ol>
 <h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>最终选择了<code>redis</code>的<code>lua</code>脚本实现了频限功能，既统一了存储，又可以利用<code>redis cluster</code>实现了可拓展的频限服务，以最小的成本实现功能。<br>我司技术栈是<code>Golang</code>，所以实现了<code>Golang</code>的简单库，逻辑是初始化<code>redis client</code>并将<code>lua</code>脚本上传，在判断是否超过频率限制的时候，使用<code>EVALSHA</code>命令执行。由于逻辑都在<code>redis</code>端，所以客户端实际上代码极少，只要注意<code>redis</code>挂了不影响服务的响应，并且<code>redis</code>重启后保证<code>lua</code>脚本上传等。</p>
 <p><code>lua</code>脚本是来自<code>Stripe</code>公司的一位工程师：</p>
-<figure class="highlight lua hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">local</span> tokens_key = KEYS[<span class="hljs-number">1</span>]</span><br><span class="line"><span class="hljs-keyword">local</span> timestamp_key = KEYS[<span class="hljs-number">2</span>]</span><br><span class="line"><span class="hljs-keyword">local</span> rate = <span class="hljs-built_in">tonumber</span>(ARGV[<span class="hljs-number">1</span>])</span><br><span class="line"><span class="hljs-keyword">local</span> capacity = <span class="hljs-built_in">tonumber</span>(ARGV[<span class="hljs-number">2</span>])</span><br><span class="line"><span class="hljs-keyword">local</span> now = <span class="hljs-built_in">tonumber</span>(ARGV[<span class="hljs-number">3</span>])</span><br><span class="line"><span class="hljs-keyword">local</span> requested = <span class="hljs-built_in">tonumber</span>(ARGV[<span class="hljs-number">4</span>])</span><br><span class="line"><span class="hljs-keyword">local</span> fill_time = capacity/rate</span><br><span class="line"><span class="hljs-keyword">local</span> ttl = <span class="hljs-built_in">math</span>.<span class="hljs-built_in">floor</span>(fill_time*<span class="hljs-number">2</span>)</span><br><span class="line"><span class="hljs-keyword">local</span> last_tokens = <span class="hljs-built_in">tonumber</span>(redis.call(<span class="hljs-string">"get"</span>, tokens_key))</span><br><span class="line"><span class="hljs-keyword">if</span> last_tokens == <span class="hljs-literal">nil</span> <span class="hljs-keyword">then</span></span><br><span class="line">    last_tokens = capacity</span><br><span class="line"><span class="hljs-keyword">end</span></span><br><span class="line"><span class="hljs-keyword">local</span> last_refreshed = <span class="hljs-built_in">tonumber</span>(redis.call(<span class="hljs-string">"get"</span>, timestamp_key))</span><br><span class="line"><span class="hljs-keyword">if</span> last_refreshed == <span class="hljs-literal">nil</span> <span class="hljs-keyword">then</span></span><br><span class="line">    last_refreshed = <span class="hljs-number">0</span></span><br><span class="line"><span class="hljs-keyword">end</span></span><br><span class="line"><span class="hljs-keyword">local</span> delta = <span class="hljs-built_in">math</span>.<span class="hljs-built_in">max</span>(<span class="hljs-number">0</span>, now-last_refreshed)</span><br><span class="line"><span class="hljs-keyword">local</span> filled_tokens = <span class="hljs-built_in">math</span>.<span class="hljs-built_in">min</span>(capacity, last_tokens+(delta*rate))</span><br><span class="line"><span class="hljs-keyword">local</span> allowed = filled_tokens &gt;= requested</span><br><span class="line"><span class="hljs-keyword">local</span> new_tokens = filled_tokens</span><br><span class="line"><span class="hljs-keyword">if</span> allowed <span class="hljs-keyword">then</span></span><br><span class="line">    new_tokens = filled_tokens - requested</span><br><span class="line"><span class="hljs-keyword">end</span></span><br><span class="line">redis.call(<span class="hljs-string">"setex"</span>, tokens_key, ttl, new_tokens)</span><br><span class="line">redis.call(<span class="hljs-string">"setex"</span>, timestamp_key, ttl, now)</span><br><span class="line"><span class="hljs-keyword">return</span> &#123; allowed, new_tokens &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> tokens_key = KEYS[<span class="number">1</span>]</span><br><span class="line"><span class="keyword">local</span> timestamp_key = KEYS[<span class="number">2</span>]</span><br><span class="line"><span class="keyword">local</span> rate = <span class="built_in">tonumber</span>(ARGV[<span class="number">1</span>])</span><br><span class="line"><span class="keyword">local</span> capacity = <span class="built_in">tonumber</span>(ARGV[<span class="number">2</span>])</span><br><span class="line"><span class="keyword">local</span> now = <span class="built_in">tonumber</span>(ARGV[<span class="number">3</span>])</span><br><span class="line"><span class="keyword">local</span> requested = <span class="built_in">tonumber</span>(ARGV[<span class="number">4</span>])</span><br><span class="line"><span class="keyword">local</span> fill_time = capacity/rate</span><br><span class="line"><span class="keyword">local</span> ttl = <span class="built_in">math</span>.<span class="built_in">floor</span>(fill_time*<span class="number">2</span>)</span><br><span class="line"><span class="keyword">local</span> last_tokens = <span class="built_in">tonumber</span>(redis.call(<span class="string">"get"</span>, tokens_key))</span><br><span class="line"><span class="keyword">if</span> last_tokens == <span class="literal">nil</span> <span class="keyword">then</span></span><br><span class="line">    last_tokens = capacity</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">local</span> last_refreshed = <span class="built_in">tonumber</span>(redis.call(<span class="string">"get"</span>, timestamp_key))</span><br><span class="line"><span class="keyword">if</span> last_refreshed == <span class="literal">nil</span> <span class="keyword">then</span></span><br><span class="line">    last_refreshed = <span class="number">0</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">local</span> delta = <span class="built_in">math</span>.<span class="built_in">max</span>(<span class="number">0</span>, now-last_refreshed)</span><br><span class="line"><span class="keyword">local</span> filled_tokens = <span class="built_in">math</span>.<span class="built_in">min</span>(capacity, last_tokens+(delta*rate))</span><br><span class="line"><span class="keyword">local</span> allowed = filled_tokens &gt;= requested</span><br><span class="line"><span class="keyword">local</span> new_tokens = filled_tokens</span><br><span class="line"><span class="keyword">if</span> allowed <span class="keyword">then</span></span><br><span class="line">    new_tokens = filled_tokens - requested</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">redis.call(<span class="string">"setex"</span>, tokens_key, ttl, new_tokens)</span><br><span class="line">redis.call(<span class="string">"setex"</span>, timestamp_key, ttl, now)</span><br><span class="line"><span class="keyword">return</span> &#123; allowed, new_tokens &#125;</span><br></pre></td></tr></table></figure>
 
 <p>通过<code>SCRIPT LOAD</code>上传该脚本获得<code>hash</code>，使用<code>EVALSHA &lt;hash&gt; 2 userA_APIX_token userA_APIX_ts 1 1 &lt;now_time&gt; 1</code>调用该脚本，根据返回的<code>allowed</code>决定此次操作是否进行。</p>
 <h3 id="benchmark"><a href="#benchmark" class="headerlink" title="benchmark"></a>benchmark</h3><p>经过测试，MacBook Pro (Retina, 13-inch, Late 2013), CPU 2.4 GHz Intel Core i5, Memory 8 GB 1600 MHz DDR3上能达到<strong>1w+</strong>QPS。</p>
-<h3 id="项目地址"><a href="#项目地址" class="headerlink" title="项目地址"></a>项目地址</h3><p><a href="https://github.com/wallstreetcn/rate" target="_blank" rel="noopener">ratelimiter的golang实现</a>，目前该版本暂时支持<code>redis client</code>，为了拓展性，可以将其升级为<code>redis cluster</code>，满足大并发系统的需求。</p>
+<h3 id="项目地址"><a href="#项目地址" class="headerlink" title="项目地址"></a>项目地址</h3><p><a href="https://github.com/wallstreetcn/rate">ratelimiter的golang实现</a>，目前该版本暂时支持<code>redis client</code>，为了拓展性，可以将其升级为<code>redis cluster</code>，满足大并发系统的需求。</p>
 
         </div>
         
@@ -241,7 +241,7 @@
         </h1>
         <div class="content">
             <h4 id="自建gitlab"><a href="#自建gitlab" class="headerlink" title="自建gitlab"></a>自建gitlab</h4><p>自建gitlab一大优势是<strong>快</strong>，之前用翻墙走github速度也在1M/s左右，可是自建的gitlab提升了建立连接的速度，可以说体验又上升了一个档次。</p>
-<p>用docker起一个gitlab服务尤其方便 <a href="https://docs.gitlab.com/omnibus/docker/README.html" target="_blank" rel="noopener">GitLab Docker images</a></p>
+<p>用docker起一个gitlab服务尤其方便 <a href="https://docs.gitlab.com/omnibus/docker/README.html">GitLab Docker images</a></p>
         </div>
         
         
@@ -488,8 +488,8 @@
 <li><p>电路熔断<br>这里的电路熔断是对于后端服务的保护，当错误、超时、负载上升到一定的高度，那么负载再高下去，对后端来说肯定是无法承受，好像和电路熔断一样，这三个因素超过了阈值，客户端就可以停止对后端服务的调用，这个保护的措施，帮助了运维人员能迅速通过增加机器和优化系统，帮助系统度过难关。</p>
 </li>
 </ol>
-<h4 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h4><p><a href="https://github.com/Netflix/Hystrix" target="_blank" rel="noopener">Hystrix</a>能保护客户端，服务降级，它的dashboard上有一句标语，<strong>defend your app</strong>，确实，当后端程序能对异常，超时，错误等进行处理，那么客户端能获得的数据能更加稳定统一，同时它也是对后端服务的保护，hystrix有上述的电路熔断机制和用户可以自定义fallback，对服务限时等功能。</p>
-<p>hystrix运行流程可见<a href="https://github.com/Netflix/Hystrix/wiki/How-it-Works" target="_blank" rel="noopener">How it works</a><br><img src="https://raw.githubusercontent.com/wiki/Netflix/Hystrix/images/hystrix-command-flow-chart.png" alt="How-it-works"></p>
+<h4 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h4><p><a href="https://github.com/Netflix/Hystrix">Hystrix</a>能保护客户端，服务降级，它的dashboard上有一句标语，<strong>defend your app</strong>，确实，当后端程序能对异常，超时，错误等进行处理，那么客户端能获得的数据能更加稳定统一，同时它也是对后端服务的保护，hystrix有上述的电路熔断机制和用户可以自定义fallback，对服务限时等功能。</p>
+<p>hystrix运行流程可见<a href="https://github.com/Netflix/Hystrix/wiki/How-it-Works">How it works</a><br><img src="https://raw.githubusercontent.com/wiki/Netflix/Hystrix/images/hystrix-command-flow-chart.png" alt="How-it-works"></p>
 <p>以构建一个对内部RPC调用的HystrixCommand为例:  </p>
 <ol>
 <li>构建一个HystrixCommand用于RPC调用，设置超时时间为1s，fallback为返回空数据  </li>
@@ -648,24 +648,24 @@
             
         </h1>
         <div class="content">
-            <h3 id="SD卡制作"><a href="#SD卡制作" class="headerlink" title="SD卡制作"></a>SD卡制作</h3><p>准备一张4GB或者以上的micro sd卡，下载<a href="https://www.raspberrypi.org/downloads/raspbian/" target="_blank" rel="noopener">系统镜像</a>，例如raspbian-jessie-lite.img，并使用刷机工具，如<code>Pi filler</code>将其写入sd卡，当然也可以使用命令行的dd，或者其它工具，要注意的是sd卡必须是fat32格式的文件系统，不然树莓派是无法识别的。</p>
+            <h3 id="SD卡制作"><a href="#SD卡制作" class="headerlink" title="SD卡制作"></a>SD卡制作</h3><p>准备一张4GB或者以上的micro sd卡，下载<a href="https://www.raspberrypi.org/downloads/raspbian/">系统镜像</a>，例如raspbian-jessie-lite.img，并使用刷机工具，如<code>Pi filler</code>将其写入sd卡，当然也可以使用命令行的dd，或者其它工具，要注意的是sd卡必须是fat32格式的文件系统，不然树莓派是无法识别的。</p>
 <h3 id="开机启动"><a href="#开机启动" class="headerlink" title="开机启动"></a>开机启动</h3><p>先把所有的线材都连上之后，最后再通电，应该很顺利能看到启动的系统。</p>
-<h3 id="设置WIFI"><a href="#设置WIFI" class="headerlink" title="设置WIFI"></a>设置WIFI</h3><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-built_in">echo</span> <span class="hljs-string">'network=&#123;</span></span><br><span class="line"><span class="hljs-string">  ssid="your-ssid"</span></span><br><span class="line"><span class="hljs-string">  psk="your-psk"</span></span><br><span class="line"><span class="hljs-string">&#125;'</span> | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf</span><br></pre></td></tr></table></figure>
+<h3 id="设置WIFI"><a href="#设置WIFI" class="headerlink" title="设置WIFI"></a>设置WIFI</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'network=&#123;</span></span><br><span class="line"><span class="string">  ssid="your-ssid"</span></span><br><span class="line"><span class="string">  psk="your-psk"</span></span><br><span class="line"><span class="string">&#125;'</span> | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf</span><br></pre></td></tr></table></figure>
 
 <p>如果你的WIFI设置没有启动</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ifconfig wlan0 up</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ifconfig wlan0 up</span><br></pre></td></tr></table></figure>
 
 <h3 id="设置apt国内镜像"><a href="#设置apt国内镜像" class="headerlink" title="设置apt国内镜像"></a>设置apt国内镜像</h3><p>阿里云的镜像还是很快的。</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-built_in">echo</span> <span class="hljs-string">'deb http://mirrors.aliyun.com/raspbian/raspbian/ wheezy main non-free contrib\ndeb-src http://mirrors.aliyun.com/raspbian/raspbian/ wheezy main non-free contrib'</span> | sudo tee /etc/apt/sources.list.d/hypriot.list</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'deb http://mirrors.aliyun.com/raspbian/raspbian/ wheezy main non-free contrib\ndeb-src http://mirrors.aliyun.com/raspbian/raspbian/ wheezy main non-free contrib'</span> | sudo tee /etc/apt/sources.list.d/hypriot.list</span><br></pre></td></tr></table></figure>
 
 
-<h3 id="docker安装"><a href="#docker安装" class="headerlink" title="docker安装"></a>docker安装</h3><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ssh pi@raspberrypi.local</span><br><span class="line">sudo apt-get install -y apt-transport-https</span><br><span class="line">wget -q https://packagecloud.io/gpg.key -O - | sudo apt-key add -</span><br><span class="line"><span class="hljs-built_in">echo</span> <span class="hljs-string">'deb https://packagecloud.io/Hypriot/Schatzkiste/debian/ wheezy main'</span> | sudo tee /etc/apt/sources.list.d/hypriot.list</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install -y docker-hypriot</span><br><span class="line">sudo systemctl <span class="hljs-built_in">enable</span> docker</span><br></pre></td></tr></table></figure>
+<h3 id="docker安装"><a href="#docker安装" class="headerlink" title="docker安装"></a>docker安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ssh pi@raspberrypi.local</span><br><span class="line">sudo apt-get install -y apt-transport-https</span><br><span class="line">wget -q https://packagecloud.io/gpg.key -O - | sudo apt-key add -</span><br><span class="line"><span class="built_in">echo</span> <span class="string">'deb https://packagecloud.io/Hypriot/Schatzkiste/debian/ wheezy main'</span> | sudo tee /etc/apt/sources.list.d/hypriot.list</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install -y docker-hypriot</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> docker</span><br></pre></td></tr></table></figure>
 
 <p>以非root权限运行docker</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo usermod -aG docker `whoami`</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo usermod -aG docker `whoami`</span><br></pre></td></tr></table></figure>
 
 <p>如果没有起作用，需要重新登录</p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://blog.hypriot.com/post/run-docker-rpi3-with-wifi/" target="_blank" rel="noopener">Run Docker on a Raspberry Pi 3 with onboard WiFi</a></p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://blog.hypriot.com/post/run-docker-rpi3-with-wifi/">Run Docker on a Raspberry Pi 3 with onboard WiFi</a></p>
 
         </div>
         
@@ -717,13 +717,13 @@
             <blockquote>
 <p>选择一个工具分析PHP函数调用的资源耗用明细，以图表化的形式展现，方便优化代码。</p>
 </blockquote>
-<h2 id="安装xhprof"><a href="#安装xhprof" class="headerlink" title="安装xhprof"></a>安装xhprof</h2><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pecl install xhprof-beta</span><br></pre></td></tr></table></figure>
+<h2 id="安装xhprof"><a href="#安装xhprof" class="headerlink" title="安装xhprof"></a>安装xhprof</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pecl install xhprof-beta</span><br></pre></td></tr></table></figure>
 
 <p>在php.ini引用的extension中添加<code>extension=xhprof.so</code></p>
 <h2 id="GUI"><a href="#GUI" class="headerlink" title="GUI"></a>GUI</h2><p>这里选择了xhgui，它的原理是在需要测试性能的脚本前加上PHP的一段代码，将收集到的性能数据存储到文件或者mongodb等存储介质中去。</p>
-<h4 id="MongoDB"><a href="#MongoDB" class="headerlink" title="MongoDB"></a>MongoDB</h4><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install mongodb</span><br></pre></td></tr></table></figure>
+<h4 id="MongoDB"><a href="#MongoDB" class="headerlink" title="MongoDB"></a>MongoDB</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install mongodb</span><br></pre></td></tr></table></figure>
 
-<h4 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h4><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-built_in">cd</span> /var/www</span><br><span class="line">git <span class="hljs-built_in">clone</span> https://github.com/perftools/xhgui.git</span><br><span class="line"><span class="hljs-built_in">cd</span> xhgui</span><br><span class="line">php install.php</span><br></pre></td></tr></table></figure>
+<h4 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /var/www</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/perftools/xhgui.git</span><br><span class="line"><span class="built_in">cd</span> xhgui</span><br><span class="line">php install.php</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li><p>如果不能以root身份运行，那么sudo -u www-data php install.php</p>
@@ -734,10 +734,10 @@
 </li>
 </ul>
 <h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><p>如前面说的原理是在头部添加一段PHP代码，这里通过在Nginx里配置，或者PHP ini auto_prepend_file在php.ini中添加auto_prepend_file。</p>
-<figure class="highlight nginx hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-attribute">location</span> <span class="hljs-regexp">~ \.php</span> &#123;</span><br><span class="line">    <span class="hljs-attribute">include</span> fastcgi_params;</span><br><span class="line">    <span class="hljs-attribute">fastcgi_buffers</span> <span class="hljs-number">128</span> <span class="hljs-number">4k</span>;</span><br><span class="line">    <span class="hljs-attribute">fastcgi_pass</span>   <span class="hljs-number">127.0.0.1:9000</span>;</span><br><span class="line">    <span class="hljs-attribute">fastcgi_index</span>  index.php;</span><br><span class="line">    <span class="hljs-attribute">fastcgi_param</span>  SCRIPT_FILENAME  <span class="hljs-variable">$document_root</span><span class="hljs-variable">$fastcgi_script_name</span>;</span><br><span class="line">    <span class="hljs-attribute">fastcgi_param</span>  PHP_VALUE <span class="hljs-string">"auto_prepend_file=\"/opt/htdocs/xhgui/external/header.php\""</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~ \.php</span> &#123;</span><br><span class="line">    <span class="attribute">include</span> fastcgi_params;</span><br><span class="line">    <span class="attribute">fastcgi_buffers</span> <span class="number">128</span> <span class="number">4k</span>;</span><br><span class="line">    <span class="attribute">fastcgi_pass</span>   <span class="number">127.0.0.1:9000</span>;</span><br><span class="line">    <span class="attribute">fastcgi_index</span>  index.php;</span><br><span class="line">    <span class="attribute">fastcgi_param</span>  SCRIPT_FILENAME  <span class="variable">$document_root</span><span class="variable">$fastcgi_script_name</span>;</span><br><span class="line">    <span class="attribute">fastcgi_param</span>  PHP_VALUE <span class="string">"auto_prepend_file=\"/opt/htdocs/xhgui/external/header.php\""</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>在config目录下添加config.php配置</p>
-<figure class="highlight php hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">&lt;?php</span></span><br><span class="line"><span class="hljs-keyword">return</span> <span class="hljs-keyword">array</span>(</span><br><span class="line">    <span class="hljs-string">'debug'</span> =&gt; <span class="hljs-keyword">false</span>,</span><br><span class="line">    <span class="hljs-string">'mode'</span> =&gt; <span class="hljs-string">'development'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// Can be either mongodb or file.</span></span><br><span class="line">    <span class="hljs-comment">/*</span></span><br><span class="line"><span class="hljs-comment">    'save.handler' =&gt; 'file',</span></span><br><span class="line"><span class="hljs-comment">    'save.handler.filename' =&gt; dirname(__DIR__) . '/cache/' . 'xhgui.data.' . microtime(true) . '_' . substr(md5($url), 0, 6),</span></span><br><span class="line"><span class="hljs-comment">    */</span></span><br><span class="line">    <span class="hljs-string">'save.handler'</span> =&gt; <span class="hljs-string">'mongodb'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// Needed for file save handler. Beware of file locking. You can adujst this file path</span></span><br><span class="line">    <span class="hljs-comment">// to reduce locking problems (eg uniqid, time ...)</span></span><br><span class="line">    <span class="hljs-comment">//'save.handler.filename' =&gt; __DIR__.'/../data/xhgui_'.date('Ymd').'.dat',</span></span><br><span class="line">    <span class="hljs-string">'db.host'</span> =&gt; <span class="hljs-string">'127.0.0.1:27017'</span>,</span><br><span class="line">    <span class="hljs-string">'db.db'</span> =&gt; <span class="hljs-string">'xhprof'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// Allows you to pass additional options like replicaSet to MongoClient.</span></span><br><span class="line">    <span class="hljs-comment">// 'username', 'password' and 'db' (where the user is added)</span></span><br><span class="line">    <span class="hljs-string">'db.options'</span> =&gt; <span class="hljs-keyword">array</span>(),</span><br><span class="line">    <span class="hljs-string">'templates.path'</span> =&gt; dirname(<span class="hljs-keyword">__DIR__</span>) . <span class="hljs-string">'/src/templates'</span>,</span><br><span class="line">    <span class="hljs-string">'date.format'</span> =&gt; <span class="hljs-string">'M jS H:i:s'</span>,</span><br><span class="line">    <span class="hljs-string">'detail.count'</span> =&gt; <span class="hljs-number">6</span>,</span><br><span class="line">    <span class="hljs-string">'page.limit'</span> =&gt; <span class="hljs-number">25</span>,</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// Profile 1 in 100 requests.</span></span><br><span class="line">    <span class="hljs-comment">// You can return true to profile every request.</span></span><br><span class="line">    <span class="hljs-string">'profiler.enable'</span> =&gt; <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">        <span class="hljs-keyword">return</span> rand(<span class="hljs-number">1</span>, <span class="hljs-number">100</span>) === <span class="hljs-number">3</span>;</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="hljs-string">'profiler.simple_url'</span> =&gt; <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">($url)</span> </span>&#123;</span><br><span class="line">        <span class="hljs-keyword">return</span> preg_replace(<span class="hljs-string">'/\=\d+/'</span>, <span class="hljs-string">''</span>, $url);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">return</span> <span class="keyword">array</span>(</span><br><span class="line">    <span class="string">'debug'</span> =&gt; <span class="keyword">false</span>,</span><br><span class="line">    <span class="string">'mode'</span> =&gt; <span class="string">'development'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Can be either mongodb or file.</span></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    'save.handler' =&gt; 'file',</span></span><br><span class="line"><span class="comment">    'save.handler.filename' =&gt; dirname(__DIR__) . '/cache/' . 'xhgui.data.' . microtime(true) . '_' . substr(md5($url), 0, 6),</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="string">'save.handler'</span> =&gt; <span class="string">'mongodb'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Needed for file save handler. Beware of file locking. You can adujst this file path</span></span><br><span class="line">    <span class="comment">// to reduce locking problems (eg uniqid, time ...)</span></span><br><span class="line">    <span class="comment">//'save.handler.filename' =&gt; __DIR__.'/../data/xhgui_'.date('Ymd').'.dat',</span></span><br><span class="line">    <span class="string">'db.host'</span> =&gt; <span class="string">'127.0.0.1:27017'</span>,</span><br><span class="line">    <span class="string">'db.db'</span> =&gt; <span class="string">'xhprof'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Allows you to pass additional options like replicaSet to MongoClient.</span></span><br><span class="line">    <span class="comment">// 'username', 'password' and 'db' (where the user is added)</span></span><br><span class="line">    <span class="string">'db.options'</span> =&gt; <span class="keyword">array</span>(),</span><br><span class="line">    <span class="string">'templates.path'</span> =&gt; dirname(<span class="keyword">__DIR__</span>) . <span class="string">'/src/templates'</span>,</span><br><span class="line">    <span class="string">'date.format'</span> =&gt; <span class="string">'M jS H:i:s'</span>,</span><br><span class="line">    <span class="string">'detail.count'</span> =&gt; <span class="number">6</span>,</span><br><span class="line">    <span class="string">'page.limit'</span> =&gt; <span class="number">25</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Profile 1 in 100 requests.</span></span><br><span class="line">    <span class="comment">// You can return true to profile every request.</span></span><br><span class="line">    <span class="string">'profiler.enable'</span> =&gt; <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> rand(<span class="number">1</span>, <span class="number">100</span>) === <span class="number">3</span>;</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="string">'profiler.simple_url'</span> =&gt; <span class="function"><span class="keyword">function</span><span class="params">($url)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> preg_replace(<span class="string">'/\=\d+/'</span>, <span class="string">''</span>, $url);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 
 
         </div>
@@ -860,7 +860,7 @@
         </nav>
         
         <div class="level">
-            <a class="level-item button is-link is-rounded" href="https://github.com/songrgg" target="_blank">
+            <a class="level-item button is-link is-rounded" href="https://github.com/songrgg" target="_blank" rel="noopener">
                 Follow</a>
         </div>
         
@@ -868,28 +868,28 @@
         
         <div class="level is-mobile">
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Github" href="https://github.com/songrgg">
                 
                 <i class="fab fa-github"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Instagram" href="https://www.instagram.com/jiangsongrong">
                 
                 <i class="fab fa-instagram"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
                 
                 <i class="fab fa-linkedin"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank"
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
                 title="RSS" href="/atom.xml">
                 
                 <i class="fas fa-rss"></i>
@@ -979,7 +979,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration%20-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -1860,7 +1860,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration%20-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor TLS,JKS,PKCS12 certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -2737,8 +2737,8 @@
                 </a>
                 <p class="is-size-7">
                 &copy; 2020 songrgg&nbsp;
-                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a
-                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
                 
                 </p>
             </div>
@@ -2747,7 +2747,7 @@
                 <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Creative Commons" href="https://creativecommons.org/">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
                         
                         <i class="fab fa-creative-commons"></i>
                         
@@ -2755,7 +2755,7 @@
                 </p>
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
                         
                         <i class="fab fa-creative-commons-by"></i>
                         
@@ -2763,7 +2763,7 @@
                 </p>
                 
                 <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
                         
                         <i class="fab fa-github"></i>
                         
@@ -2780,8 +2780,13 @@
 <script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
 <script>moment.locale("en");</script>
 
+
 <script>
 var IcarusThemeSettings = {
+    site: {
+        url: 'https://songrgg.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
     article: {
         highlight: {
             clipboard: true,
@@ -2792,23 +2797,23 @@ var IcarusThemeSettings = {
 </script>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
 
 
 
-    
-    
-    
-    
+
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
 <script src="/js/gallery.js" defer></script>
 
-    
-    
+
+
 <div id="outdated">
     <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
             my browser now </a></p>
     <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
 </div>
@@ -2823,8 +2828,8 @@ var IcarusThemeSettings = {
     });
 </script>
 
-    
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     MathJax.Hub.Config({
@@ -2846,24 +2851,24 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
-    
-    
+
+
 <a id="back-to-top" title="Back to Top" href="javascript:;">
     <i class="fas fa-chevron-up"></i>
 </a>
 <script src="/js/back-to-top.js" defer></script>
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
 
 
 <script src="/js/main.js" defer></script>
