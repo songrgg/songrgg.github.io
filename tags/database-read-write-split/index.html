@@ -214,6 +214,33 @@
 
 
 
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "Spring boot实现数据库读写分离",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "spring boot database read write split",
+        "genre": "programming",
+        "datePublished": "2016-06-04",
+        "dateCreated": "2016-06-04",
+        "dateModified": "2019-12-14",
+        "url": "https://songrgg.github.io/programming/spring-boot-database-read-write-split/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/spring-boot-database-read-write-split/",
+        "description": "背景数据库配置主从之后，如何在代码层面实现读写分离？  用户自定义设置数据库路由Spring boot提供了AbstractRoutingDataSource根据用户定义的规则选择当前的数据库，这样我们可以在执行查询之前，设置读取从库，在执行完成后，恢复到主库。  实现可动态路由的数据源，在每次数据库查询操作前执行  ReadWriteSplitRoutingDataSource.java1",
+        "wordCount": 1011
+    }
+</script>
+
+
+
 </div>
                 
 
@@ -2303,6 +2330,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 <script src="/js/main.js" defer></script>
+
 
     
     <div class="searchbox ins-search">

@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://songrgg.github.io/microservice/goodbye-micro/</loc>
+    
+    <lastmod>2020-02-22T15:53:40.936Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://songrgg.github.io/programming/spring-data-redis-issuse/</loc>
     
     <lastmod>2020-02-22T15:22:31.169Z</lastmod>
@@ -54,13 +61,6 @@
     <loc>https://songrgg.github.io/programming/grpc-go-client-performance-test/</loc>
     
     <lastmod>2020-02-22T14:31:05.614Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/microservice/goodbye-micro/</loc>
-    
-    <lastmod>2020-02-22T14:27:22.227Z</lastmod>
     
   </url>
   

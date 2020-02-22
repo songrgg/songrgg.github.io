@@ -166,7 +166,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    11 minutes read (About 1636 words)
+                    11 minutes read (About 1641 words)
                 </span>
                 
                 
@@ -202,6 +202,33 @@
 
 
 
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "再见，micro: 迁移go-micro到纯gRPC框架",
+        "image": [
+            "https://songrgg.github.io/images/micro.png"
+        ],
+        "keywords": "microservice go-micro gRPC migration",
+        "genre": "microservice",
+        "datePublished": "2018-10-28",
+        "dateCreated": "2018-10-28",
+        "dateModified": "2020-02-22",
+        "url": "https://songrgg.github.io/microservice/goodbye-micro/",
+        "mainEntityOfPage": "https://songrgg.github.io/microservice/goodbye-micro/",
+        "description": "micro是基于golang的微服务框架，之前华尔街见闻架构升级中谈到了我们是基于go-micro的后端架构，随着我们对服务网格的调研、测试和实施，为了打通不同语言之间的服务调用，我们选择了gRPC作为服务内部的通用协议。go-micro框架的架构非常具有拓展性，它拥有自己的RPC框架，通过抽象codec,transport,selector等微服务组件，你既可以使用官方实现的各种插件go-plugins进行组装，又可以根据实际的情况实现自己的组件。然而，我们打算利用服务网格的优势，将微服务的基础组件下沉到基础设施中去，将组件代码从代码库中剥离开来。这样一来，我们相当于只需要最简的RPC框",
+        "wordCount": 300
+    }
+</script>
 
 
 
@@ -2294,6 +2321,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 <script src="/js/main.js" defer></script>
+
 
     
     <div class="searchbox ins-search">

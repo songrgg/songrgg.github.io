@@ -218,6 +218,33 @@
 
 
 
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "etcd生产环境实践",
+        "image": [
+            "https://songrgg.github.io/images/etcd-offset-color.png"
+        ],
+        "keywords": "etcd operation configuration management",
+        "genre": "operation",
+        "datePublished": "2017-06-12",
+        "dateCreated": "2017-06-12",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/operation/etcd-for-production/",
+        "mainEntityOfPage": "https://songrgg.github.io/operation/etcd-for-production/",
+        "description": "生产环境搭建etcd以搭建3节点高可用ETCD集群为例，分别在三台主机上初始化ETCD1,ETCD2,ETCD3作为机器IP地址。123456789101112131415161718192021222324252627282930313233343536373839404142434445$ ETCD1=http://10.0.0.1$ ETCD2=http://10.0.0.2$ ETCD2",
+        "wordCount": 418
+    }
+</script>
+
+
+
     
 
 <div class="card">
@@ -273,6 +300,33 @@
 
 
 
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "基于gitlab搭建CI",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "",
+        "genre": "operation",
+        "datePublished": "2017-04-18",
+        "dateCreated": "2017-04-18",
+        "dateModified": "2019-12-14",
+        "url": "https://songrgg.github.io/operation/build-ci-with-gitlab/",
+        "mainEntityOfPage": "https://songrgg.github.io/operation/build-ci-with-gitlab/",
+        "description": "自建gitlab自建gitlab一大优势是快，之前用翻墙走github速度也在1M/s左右，可是自建的gitlab提升了建立连接的速度，可以说体验又上升了一个档次。用docker起一个gitlab服务尤其方便 GitLab Docker images",
+        "wordCount": 790
+    }
+</script>
+
+
+
     
 
 <div class="card">
@@ -325,6 +379,33 @@
 
 
 
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "MySQL支持emoji",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "mysql",
+        "genre": "operation",
+        "datePublished": "2016-07-31",
+        "dateCreated": "2016-07-31",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/operation/mysql-utf8mb4-encode/",
+        "mainEntityOfPage": "https://songrgg.github.io/operation/mysql-utf8mb4-encode/",
+        "description": "方案1: 应用层支持MySQL默认的数据库编码是utf8，对于emoji文字是不能直接存储的，要想存储emoji，有许多库支持对emoji的转换，例如将😊转存为:smile:，放在数据库里，在从数据库里取出来的时候，再转换为😊，这是应用层的方案。方案2: 存储层支持MySQL编码设置为utf8mb4，直接支持emoji，不需要应用层的改动。  注意事项:MySQL索引的长度不能大于767字",
+        "wordCount": 66
+    }
+</script>
 
 
 
@@ -400,6 +481,33 @@
 
 
 
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "支持iOS9 Universal links遇到的问题",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "universal link",
+        "genre": "operation",
+        "datePublished": "2016-03-01",
+        "dateCreated": "2016-03-01",
+        "dateModified": "2019-12-14",
+        "url": "https://songrgg.github.io/operation/iOS9-universal-links/",
+        "mainEntityOfPage": "https://songrgg.github.io/operation/iOS9-universal-links/",
+        "description": "记录为iOS9上的APP支持Universal links遇到的一些问题。在Web服务器上传apple-app-site-association文件必须支持HTTPS获取配置文件文件名后不加.json后缀必须在根目录下，例如官网地址为www.site.com，那么必须通过https://www.site.com/apple-app-site-association访问到该文件deta",
+        "wordCount": 274
+    }
+</script>
 
 
 
@@ -2511,6 +2619,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 <script src="/js/main.js" defer></script>
+
 
     
     <div class="searchbox ins-search">

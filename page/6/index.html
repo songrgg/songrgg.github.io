@@ -227,6 +227,33 @@
 
 
 
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "Mit分布式系统课程-Lab2-PartB",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "distributed system",
+        "genre": "programming",
+        "datePublished": "2015-03-19",
+        "dateCreated": "2015-03-19",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/programming/mit-distributed-system-01/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/mit-distributed-system-01/",
+        "description": "前两天删了在github上的6.824, 因为课程里说了不要把源码放在公共的地方, 之前没删一直心有歉意, 还好进度没这么快, 应该对别人也不会造成影响.言归正传, 这星期空余时间一直在看Lab2的Part B, 今天因为身体不适, 请假一天在家, 开始实现思路, 并记录一下自己遇到的一些大小问题.目标实现基于viewservice(Lab1实现的视图服务器, 用来记录主副服务器的地址)的键值",
+        "wordCount": 526
+    }
+</script>
+
+
+
     
 
 <div class="card">
@@ -279,6 +306,33 @@
 
 
 
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "微信本地测试",
+        "image": [
+            "https://songrgg.github.io/images/wechat.png"
+        ],
+        "keywords": "wechat",
+        "genre": "programming",
+        "datePublished": "2015-03-11",
+        "dateCreated": "2015-03-11",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/programming/wechat-local-debug/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/wechat-local-debug/",
+        "description": "项目里要测试微信公众号, 但又不愿意忍受每次改下代码就提交到版本库, 再发布到生产这个琐碎的流程, 所以必须有一个本地能测试的方法, 到知乎上找了一个方法(引用知乎操晓峰的回答).原理是HTTP请求重定向, 将微信中要访问的url转发到你设置的代理服务器, 代理服务器转发到你的开发服务器.有趣的是, 在公司一直没有完全成功, 总有一个页面是刷不出来, 查看Charles发现传输速度极慢, 真想",
+        "wordCount": 14
+    }
+</script>
 
 
 
@@ -363,6 +417,33 @@
 
 
 
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "levelDB里缓存实现",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "leveldb",
+        "genre": "programming",
+        "datePublished": "2015-02-21",
+        "dateCreated": "2015-02-21",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/programming/levelDB-cache/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/levelDB-cache/",
+        "description": "leveldb的缓存机制leveldb采用LRU机制, 利用键的哈希值前n位作为索引, 将要插入的键值对分派到指定的缓存区, 当缓存区的使用率大于总容量后, 优先淘汰最近最少使用的缓存, 独立的缓存区总量为2^n .初始化ShardedLRUCache设置初始缓存容量, 并设置16个子分区的容量.123456789static const int kNumShardBits = 4;sta",
+        "wordCount": 854
+    }
+</script>
+
+
+
     
 
 <div class="card">
@@ -427,6 +508,33 @@
 
 
 
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "levelDB里integer编码",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "leveldb",
+        "genre": "programming",
+        "datePublished": "2015-02-12",
+        "dateCreated": "2015-02-12",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/programming/leveldb-integer-coding/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/leveldb-integer-coding/",
+        "description": "leveldb的数字编码方法EncodeFixed32按照机器的字节存储顺序(大端, 小端), 原样存储到一块32位内存EncodeFixed64按照机器的字节存储顺序(大端, 小端),  原样存储到一块64位内存PutFixed32将EncodeFixed32处理过的内存块追加到目的地址PutFixed64同PutFixed32EncodeVarint32将32位的无符号整数以",
+        "wordCount": 560
+    }
+</script>
+
+
+
     
 
 <div class="card">
@@ -478,6 +586,33 @@
 
 
 
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "levelDB里自定义的状态",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "leveldb",
+        "genre": "programming",
+        "datePublished": "2015-02-08",
+        "dateCreated": "2015-02-08",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/programming/leveldb-status/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/leveldb-status/",
+        "description": "LevelDB状态码LevelDB里专门定义了Status类，自定义了常见的状态码，用于函数的返回。状态码类型在Status类中以枚举类型定义Code：0 =&gt; 处理成功1 =&gt; 未找到2 =&gt; 崩溃3 =&gt; 不支持4 =&gt; 无效的参数5 =&gt; IO错误并且有6个静态方法用来生成对应状态码的Status对象, 和4个判断方法来方便确认状态。  存储方式状",
+        "wordCount": 43
+    }
+</script>
 
 
 
@@ -544,6 +679,33 @@
 
 
 
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "MIT 6.824 Lab2, part1小结",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "",
+        "genre": "programming",
+        "datePublished": "2014-12-16",
+        "dateCreated": "2014-12-16",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/programming/6.824, Lab2, part 1/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/6.824, Lab2, part 1/",
+        "description": "关于MIT 6.824课程的Lab 2, part 1从昨晚在宾馆到今天飞机上，都在过这几个test case，终于最后有点讨巧的过了。View service是MIT介绍paxos之前用来入门的，它的原理是以时间先后的顺序确定主备服务器，由定期的心跳更新此关系。之所以放在单独的service里获取主备关系，是为了将主备关系从K-V系统中解耦，从而K-V系统不用关心键值操作之外的事情，让更加上",
+        "wordCount": 17
+    }
+</script>
+
+
+
     
 
 <div class="card">
@@ -605,6 +767,33 @@
 
 
 
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "levelDB里skiplist的实现代码赏析",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "leveldb",
+        "genre": "programming",
+        "datePublished": "2014-12-08",
+        "dateCreated": "2014-12-08",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/programming/levelDB-skiplist/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/levelDB-skiplist/",
+        "description": "跳表的原理就是利用随机性建立索引，加速搜索，并且简化代码实现难度。具体的跳表原理不再赘述，主要是看了levelDB有一些实现细节的东西，凸显自己写的实现不足之处。去除冗余的key1234567891011121314151617181920212223242526272829303132333435template&lt;typename Key, class Comparator&gt;st",
+        "wordCount": 920
+    }
+</script>
 
 
 
@@ -677,6 +866,33 @@
 
 
 
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "初次使用golang channel",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "golang",
+        "genre": "programming",
+        "datePublished": "2014-11-12",
+        "dateCreated": "2014-11-12",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/programming/golang-channel/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/golang-channel/",
+        "description": "goroutine之间的同步goroutine是golang中在语言级别实现的轻量级线程，仅仅利用go就能立刻起一个新线程。多线程会引入线程之间的同步问题，经典的同步问题如生产者-消费者问题，在c，java级别需要使用锁、信号量进行共享资源的互斥使用和多线程之间的时序控制，而在golang中有channel作为同步的工具。1. channel实现两个goroutine之间的通信123456789",
+        "wordCount": 568
+    }
+</script>
 
 
 
@@ -2794,6 +3010,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 <script src="/js/main.js" defer></script>
+
 
     
     <div class="searchbox ins-search">

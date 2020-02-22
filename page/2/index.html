@@ -156,7 +156,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    11 minutes read (About 1636 words)
+                    11 minutes read (About 1641 words)
                 </span>
                 
                 
@@ -192,6 +192,33 @@
 
 
 
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "再见，micro: 迁移go-micro到纯gRPC框架",
+        "image": [
+            "https://songrgg.github.io/images/micro.png"
+        ],
+        "keywords": "microservice go-micro gRPC migration",
+        "genre": "microservice",
+        "datePublished": "2018-10-28",
+        "dateCreated": "2018-10-28",
+        "dateModified": "2020-02-22",
+        "url": "https://songrgg.github.io/microservice/goodbye-micro/",
+        "mainEntityOfPage": "https://songrgg.github.io/microservice/goodbye-micro/",
+        "description": "micro是基于golang的微服务框架，之前华尔街见闻架构升级中谈到了我们是基于go-micro的后端架构，随着我们对服务网格的调研、测试和实施，为了打通不同语言之间的服务调用，我们选择了gRPC作为服务内部的通用协议。go-micro框架的架构非常具有拓展性，它拥有自己的RPC框架，通过抽象codec,transport,selector等微服务组件，你既可以使用官方实现的各种插件go-plugins进行组装，又可以根据实际的情况实现自己的组件。然而，我们打算利用服务网格的优势，将微服务的基础组件下沉到基础设施中去，将组件代码从代码库中剥离开来。这样一来，我们相当于只需要最简的RPC框",
+        "wordCount": 300
+    }
+</script>
 
 
 
@@ -255,6 +282,33 @@
 
 
 
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "gRPC Golang Client Connection Test",
+        "image": [
+            "https://songrgg.github.io/images/grpc.png"
+        ],
+        "keywords": "gRPC client performance",
+        "genre": "programming",
+        "datePublished": "2018-09-25",
+        "dateCreated": "2018-09-25",
+        "dateModified": "2020-02-22",
+        "url": "https://songrgg.github.io/programming/grpc-go-client-performance-test/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/grpc-go-client-performance-test/",
+        "description": "gRPC is a well-known RPC protocol and a lot of companies adopted it as an internal communication protocol because of its robustness and stability. To use it more efficiently, I’ve done some experiments about how to maximize the gRPC client concurrency.",
+        "wordCount": 795
+    }
+</script>
+
+
+
     
 
 <div class="card">
@@ -312,6 +366,33 @@
 
 
 
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "Kubernetes DNS拓展",
+        "image": [
+            "https://songrgg.github.io/images/kubernetes.png"
+        ],
+        "keywords": "",
+        "genre": "operation",
+        "datePublished": "2018-08-19",
+        "dateCreated": "2018-08-19",
+        "dateModified": "2020-02-22",
+        "url": "https://songrgg.github.io/operation/extend-kubernetes-dns/",
+        "mainEntityOfPage": "https://songrgg.github.io/operation/extend-kubernetes-dns/",
+        "description": "Kubernetes DNS在内部服务与外部服务交互，内部服务与内部服务，内部服务与云托管服务交互的工具，拓展DNS可以在内部服务访问集群外服务时像访问集群内服务一样，通过DNS映射将统一风格的域名映射到可访问的IP，而不需要影响内部服务的运行，这里介绍如何使用Consul来拓展DNS。",
+        "wordCount": 919
+    }
+</script>
 
 
 
@@ -386,6 +467,33 @@
 
 
 
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "以Kubernetes sidecar方式部署Nginx: 提供更好的Web性能",
+        "image": [
+            "https://songrgg.github.io/images/kubernetes.png"
+        ],
+        "keywords": "kubernetes sidecar nginx",
+        "genre": "operation",
+        "datePublished": "2018-04-22",
+        "dateCreated": "2018-04-22",
+        "dateModified": "2019-12-14",
+        "url": "https://songrgg.github.io/operation/nginx-kubernetes-sidecar-for-better-performance/",
+        "mainEntityOfPage": "https://songrgg.github.io/operation/nginx-kubernetes-sidecar-for-better-performance/",
+        "description": "Web server’s gzipWeb服务开启数据压缩，有利于节省带宽。服务器根据客户端请求头所带的Accept-Encoding判断是否需要对返回数据进行压缩，通常支持的压缩格式是gzip。应用gzip or Nginx gzip开发人员可以选择在Web framework中开发一些middleware来实现Gzip，也可以选择使用Nginx gzip，将所有gzip放在nginx中完成。",
+        "wordCount": 240
+    }
+</script>
 
 
 
@@ -498,6 +606,33 @@
 
 
 
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "Ansible常用命令",
+        "image": [
+            "https://songrgg.github.io/images/ansible.png"
+        ],
+        "keywords": "",
+        "genre": "operation",
+        "datePublished": "2018-03-05",
+        "dateCreated": "2018-03-05",
+        "dateModified": "2019-12-14",
+        "url": "https://songrgg.github.io/operation/ansible-frequently-used-commands/",
+        "mainEntityOfPage": "https://songrgg.github.io/operation/ansible-frequently-used-commands/",
+        "description": "动机记录一下常用的Ansible指令、模块，方便检索。Ansible主机/etc/ansible/hosts中，server是目标服务器列表名，包含两个服务器123[spark]10.0.0.110.0.0.2Ansible Shell模块12# 在spark集群上执行ls指令$ ansible spark -m shell -a 'ls'Ansible-playbook执行较大的复杂",
+        "wordCount": 1549
+    }
+</script>
+
+
+
     
 
 <div class="card">
@@ -595,6 +730,33 @@
 
 
 
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "Spark on Hive实现APP渠道分析",
+        "image": [
+            "https://songrgg.github.io/images/androidgeo.png"
+        ],
+        "keywords": "hive spark app channel analytics",
+        "genre": "programming",
+        "datePublished": "2018-02-04",
+        "dateCreated": "2018-02-04",
+        "dateModified": "2019-12-14",
+        "url": "https://songrgg.github.io/programming/spark-on-hive-app-channel-analytics/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/spark-on-hive-app-channel-analytics/",
+        "description": "背景最近在做APP投放渠道分析，就是Android应用投放到应用市场，所谓渠道就是huawei,xiaomi,yingyongbao之类，运营人员根据数据分析渠道的下载安装情况、各个渠道的投放效果。需求完成一个Android渠道分析的展示面板，包含以下指标：APP总新增激活数量按渠道划分的新增数量各渠道的新增变化走势图（以小时为单位）品牌占比操作系统占比架构数据APP激活时上报",
+        "wordCount": 424
+    }
+</script>
+
+
+
     
 
 <div class="card">
@@ -670,6 +832,33 @@
 
 
 
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "Hive on spark实践",
+        "image": [
+            "https://songrgg.github.io/images/hive.png"
+        ],
+        "keywords": "hive spark",
+        "genre": "programming",
+        "datePublished": "2018-01-15",
+        "dateCreated": "2018-01-15",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/programming/hive-on-spark-practice/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/hive-on-spark-practice/",
+        "description": "配置利用Cloudera的CDH套件搭建好Hadoop 2.6，可CDH中的Hive版本不高，于是独立安装Hive 2.3，由于Hive的执行引擎默认是Spark，根据Hive官网上的Hive on Spark教程开始配置。Standalone配置了Spark Standalone模式之后，配置Hive遇到一些困难。由于使用的是pre-build版本的Spark，遇到报错：12java.la",
+        "wordCount": 364
+    }
+</script>
+
+
+
     
 
 <div class="card">
@@ -742,6 +931,33 @@
 
 
 
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "etcd生产环境实践",
+        "image": [
+            "https://songrgg.github.io/images/etcd-offset-color.png"
+        ],
+        "keywords": "etcd operation configuration management",
+        "genre": "operation",
+        "datePublished": "2017-06-12",
+        "dateCreated": "2017-06-12",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/operation/etcd-for-production/",
+        "mainEntityOfPage": "https://songrgg.github.io/operation/etcd-for-production/",
+        "description": "生产环境搭建etcd以搭建3节点高可用ETCD集群为例，分别在三台主机上初始化ETCD1,ETCD2,ETCD3作为机器IP地址。123456789101112131415161718192021222324252627282930313233343536373839404142434445$ ETCD1=http://10.0.0.1$ ETCD2=http://10.0.0.2$ ETCD2",
+        "wordCount": 418
+    }
+</script>
 
 
 
@@ -2859,6 +3075,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 <script src="/js/main.js" defer></script>
+
 
     
     <div class="searchbox ins-search">

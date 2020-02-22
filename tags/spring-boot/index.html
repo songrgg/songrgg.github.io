@@ -202,6 +202,33 @@
 
 
 
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "How to host Swagger documentation using yaml/json configuration files?",
+        "image": [
+            "https://songrgg.github.io/images/swagger_editor.png"
+        ],
+        "keywords": "swagger spring boot",
+        "genre": "operation",
+        "datePublished": "2019-09-12",
+        "dateCreated": "2019-09-12",
+        "dateModified": "2020-02-22",
+        "url": "https://songrgg.github.io/operation/host-swagger-documentation-with-yaml-json-files/",
+        "mainEntityOfPage": "https://songrgg.github.io/operation/host-swagger-documentation-with-yaml-json-files/",
+        "description": "Maintain the swagger documentation by Swagger Editor and then you can use the yaml files to generate online swagger documentation easily with Spring boot.",
+        "wordCount": 795
+    }
+</script>
+
+
+
     
 
 <div class="card">
@@ -253,6 +280,33 @@
 
 
 
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "Spring data redis的一个bug",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "spring boot redis",
+        "genre": "programming",
+        "datePublished": "2016-09-29",
+        "dateCreated": "2016-09-29",
+        "dateModified": "2020-02-22",
+        "url": "https://songrgg.github.io/programming/spring-data-redis-issuse/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/spring-data-redis-issuse/",
+        "description": "前两天上线了一个新功能，导致线上业务的缓存总是无法更新，报错也是非常奇怪，redis.clients.jedis.exceptions.JedisConnectionException: Unknown reply: 5，google到的原因是Spring data redis中的scan操作，它获取了redis的连接之后，在操作没有完全结束之前就把redis连接放回连接池，其它线程从连接池里复用",
+        "wordCount": 25
+    }
+</script>
 
 
 
@@ -328,6 +382,33 @@
 
 
 
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "Spring boot实现数据库读写分离",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "spring boot database read write split",
+        "genre": "programming",
+        "datePublished": "2016-06-04",
+        "dateCreated": "2016-06-04",
+        "dateModified": "2019-12-14",
+        "url": "https://songrgg.github.io/programming/spring-boot-database-read-write-split/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/spring-boot-database-read-write-split/",
+        "description": "背景数据库配置主从之后，如何在代码层面实现读写分离？  用户自定义设置数据库路由Spring boot提供了AbstractRoutingDataSource根据用户定义的规则选择当前的数据库，这样我们可以在执行查询之前，设置读取从库，在执行完成后，恢复到主库。  实现可动态路由的数据源，在每次数据库查询操作前执行  ReadWriteSplitRoutingDataSource.java1",
+        "wordCount": 1011
+    }
+</script>
+
+
+
     
 
 <div class="card">
@@ -375,6 +456,33 @@
 
 
 
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "解决Jedis数据读取乱码问题",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "spring boot redis",
+        "genre": "programming",
+        "datePublished": "2016-05-07",
+        "dateCreated": "2016-05-07",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/programming/jedis-utf8/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/jedis-utf8/",
+        "description": "现象同一套代码，同一个数据源，不同的操作系统，在OSX上数据提取编码正常，而Ubuntu上拉取数据乱码，数据拉取代码如下。123456789101112131415161718192021222324252627@Overridepublic List&lt;String&gt; mget(String... fields) &#123;    List&lt;byte[]&gt; arrFie",
+        "wordCount": 314
+    }
+</script>
 
 
 
@@ -2467,6 +2575,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 <script src="/js/main.js" defer></script>
+
 
     
     <div class="searchbox ins-search">

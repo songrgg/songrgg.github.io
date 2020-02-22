@@ -241,6 +241,34 @@
 </div>
     </div>
 </div>
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "Spring data redis的一个bug",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "spring boot redis",
+        "genre": "programming",
+        "datePublished": "2016-09-29",
+        "dateCreated": "2016-09-29",
+        "dateModified": "2020-02-22",
+        "url": "https://songrgg.github.io/programming/spring-data-redis-issuse/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/spring-data-redis-issuse/",
+        "description": "前两天上线了一个新功能，导致线上业务的缓存总是无法更新，报错也是非常奇怪，redis.clients.jedis.exceptions.JedisConnectionException: Unknown reply: 5，google到的原因是Spring data redis中的scan操作，它获取了redis的连接之后，在操作没有完全结束之前就把redis连接放回连接池，其它线程从连接池里复用",
+        "wordCount": 25
+    }
+</script>
+
 </div>
                 
 
@@ -2330,6 +2358,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 <script src="/js/main.js" defer></script>
+
 
     
     <div class="searchbox ins-search">

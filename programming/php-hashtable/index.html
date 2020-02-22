@@ -253,6 +253,34 @@
 </div>
     </div>
 </div>
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "PHP数组的内存布局",
+        "image": [
+            "https://songrgg.github.io/images/php.jpeg"
+        ],
+        "keywords": "php",
+        "genre": "programming",
+        "datePublished": "2015-06-13",
+        "dateCreated": "2015-06-13",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/programming/php-hashtable/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/php-hashtable/",
+        "description": "内存布局它的内存结构，目前的实现方案是分配一块连续的内存区间，用来存储hash元数据和具体数据。连续的内存，上面部分是存储hash值到值地址的映射，而下面部分就是值的存储区域，如下图（摘自php-src/Zend/zend_types.h）：1234567891011121314/* * HashTable Data Layout * ===================== * *     ",
+        "wordCount": 1662
+    }
+</script>
+
 </div>
                 
 
@@ -2342,6 +2370,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 <script src="/js/main.js" defer></script>
+
 
     
     <div class="searchbox ins-search">

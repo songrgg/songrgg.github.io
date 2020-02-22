@@ -267,6 +267,34 @@
 </div>
     </div>
 </div>
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "levelDB里缓存实现",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "leveldb",
+        "genre": "programming",
+        "datePublished": "2015-02-21",
+        "dateCreated": "2015-02-21",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/programming/levelDB-cache/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/levelDB-cache/",
+        "description": "leveldb的缓存机制leveldb采用LRU机制, 利用键的哈希值前n位作为索引, 将要插入的键值对分派到指定的缓存区, 当缓存区的使用率大于总容量后, 优先淘汰最近最少使用的缓存, 独立的缓存区总量为2^n .初始化ShardedLRUCache设置初始缓存容量, 并设置16个子分区的容量.123456789static const int kNumShardBits = 4;sta",
+        "wordCount": 854
+    }
+</script>
+
 </div>
                 
 
@@ -2356,6 +2384,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 <script src="/js/main.js" defer></script>
+
 
     
     <div class="searchbox ins-search">

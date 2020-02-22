@@ -186,6 +186,33 @@
 
 
 
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "Spring data redis的一个bug",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "spring boot redis",
+        "genre": "programming",
+        "datePublished": "2016-09-29",
+        "dateCreated": "2016-09-29",
+        "dateModified": "2020-02-22",
+        "url": "https://songrgg.github.io/programming/spring-data-redis-issuse/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/spring-data-redis-issuse/",
+        "description": "前两天上线了一个新功能，导致线上业务的缓存总是无法更新，报错也是非常奇怪，redis.clients.jedis.exceptions.JedisConnectionException: Unknown reply: 5，google到的原因是Spring data redis中的scan操作，它获取了redis的连接之后，在操作没有完全结束之前就把redis连接放回连接池，其它线程从连接池里复用",
+        "wordCount": 25
+    }
+</script>
+
+
+
     
 
 <div class="card">
@@ -245,6 +272,33 @@
 
 
 
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "微信分享常见问题",
+        "image": [
+            "https://songrgg.github.io/images/wechat.png"
+        ],
+        "keywords": "wechat",
+        "genre": "programming",
+        "datePublished": "2016-07-31",
+        "dateCreated": "2016-07-31",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/programming/wechat-share-problem/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/wechat-share-problem/",
+        "description": "调试前端打开debug模式，浏览器打开时在console里会打印微信分享初始化信息，在微信里会以alert形式出现。常见问题签名的时候注意大小写签名时候用的url需要和当前位置的url保持一致微信二次分享失败 微信在第二次分享的链接里增加了后缀，如?from=singlemessage&amp;isappinstalled=1，这里需要转义12345678910111213$.ajax",
+        "wordCount": 140
+    }
+</script>
+
+
+
     
 
 <div class="card">
@@ -297,6 +351,33 @@
 
 
 
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "MySQL支持emoji",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "mysql",
+        "genre": "operation",
+        "datePublished": "2016-07-31",
+        "dateCreated": "2016-07-31",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/operation/mysql-utf8mb4-encode/",
+        "mainEntityOfPage": "https://songrgg.github.io/operation/mysql-utf8mb4-encode/",
+        "description": "方案1: 应用层支持MySQL默认的数据库编码是utf8，对于emoji文字是不能直接存储的，要想存储emoji，有许多库支持对emoji的转换，例如将😊转存为:smile:，放在数据库里，在从数据库里取出来的时候，再转换为😊，这是应用层的方案。方案2: 存储层支持MySQL编码设置为utf8mb4，直接支持emoji，不需要应用层的改动。  注意事项:MySQL索引的长度不能大于767字",
+        "wordCount": 66
+    }
+</script>
 
 
 
@@ -372,6 +453,33 @@
 
 
 
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "Spring boot实现数据库读写分离",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "spring boot database read write split",
+        "genre": "programming",
+        "datePublished": "2016-06-04",
+        "dateCreated": "2016-06-04",
+        "dateModified": "2019-12-14",
+        "url": "https://songrgg.github.io/programming/spring-boot-database-read-write-split/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/spring-boot-database-read-write-split/",
+        "description": "背景数据库配置主从之后，如何在代码层面实现读写分离？  用户自定义设置数据库路由Spring boot提供了AbstractRoutingDataSource根据用户定义的规则选择当前的数据库，这样我们可以在执行查询之前，设置读取从库，在执行完成后，恢复到主库。  实现可动态路由的数据源，在每次数据库查询操作前执行  ReadWriteSplitRoutingDataSource.java1",
+        "wordCount": 1011
+    }
+</script>
+
+
+
     
 
 <div class="card">
@@ -419,6 +527,33 @@
 
 
 
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "解决Jedis数据读取乱码问题",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "spring boot redis",
+        "genre": "programming",
+        "datePublished": "2016-05-07",
+        "dateCreated": "2016-05-07",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/programming/jedis-utf8/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/jedis-utf8/",
+        "description": "现象同一套代码，同一个数据源，不同的操作系统，在OSX上数据提取编码正常，而Ubuntu上拉取数据乱码，数据拉取代码如下。123456789101112131415161718192021222324252627@Overridepublic List&lt;String&gt; mget(String... fields) &#123;    List&lt;byte[]&gt; arrFie",
+        "wordCount": 314
+    }
+</script>
 
 
 
@@ -488,6 +623,33 @@
 
 
 
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "使用Groovy进行Spring依赖注入",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "spring groovy dependency injection",
+        "genre": "programming",
+        "datePublished": "2016-03-28",
+        "dateCreated": "2016-03-28",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/programming/spring-ioc-groovy/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/spring-ioc-groovy/",
+        "description": "为什么选择Groovy?传统的依赖注入是XML，对我而言，可读性太差，太不美观，强烈地想换一个方式进行依赖注入，Groovy作为XML的替代方案，在Spring4之后被引入，是基于JVM的一门方言，具有较强的可读性，写更少的更易懂的脚本，完成同样的功能。基于Spring boot框架我选择了Spring boot框架作为MVC，看重了它的惯例大于配置，不用繁琐地配置。以下代码是伪代码，只是大",
+        "wordCount": 372
+    }
+</script>
 
 
 
@@ -566,6 +728,33 @@
 
 
 
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "支持iOS9 Universal links遇到的问题",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "universal link",
+        "genre": "operation",
+        "datePublished": "2016-03-01",
+        "dateCreated": "2016-03-01",
+        "dateModified": "2019-12-14",
+        "url": "https://songrgg.github.io/operation/iOS9-universal-links/",
+        "mainEntityOfPage": "https://songrgg.github.io/operation/iOS9-universal-links/",
+        "description": "记录为iOS9上的APP支持Universal links遇到的一些问题。在Web服务器上传apple-app-site-association文件必须支持HTTPS获取配置文件文件名后不加.json后缀必须在根目录下，例如官网地址为www.site.com，那么必须通过https://www.site.com/apple-app-site-association访问到该文件deta",
+        "wordCount": 274
+    }
+</script>
+
+
+
     
 
 <div class="card">
@@ -617,6 +806,33 @@
 
 
 
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "Mahout入门-1",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "mahout machine learning",
+        "genre": "programming",
+        "datePublished": "2016-02-28",
+        "dateCreated": "2016-02-28",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/programming/mahout-tutorial/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/mahout-tutorial/",
+        "description": "Mahout是什么？Mahout是用来进行机器学习和推荐算法的一个Java框架。一个简单的基于用户的协同过滤的示例读取用户对电影评分的数据集，为ID为2的用户推荐3部电影。12345678910111213141516171819202122232425262728293031323334353637383940package com.mahout;import org.apache.maho",
+        "wordCount": 364
+    }
+</script>
 
 
 
@@ -2738,6 +2954,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 <script src="/js/main.js" defer></script>
+
 
     
     <div class="searchbox ins-search">

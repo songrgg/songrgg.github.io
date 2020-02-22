@@ -207,6 +207,33 @@
 
 
 
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "levelDB里integer编码",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "leveldb",
+        "genre": "programming",
+        "datePublished": "2015-02-12",
+        "dateCreated": "2015-02-12",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/programming/leveldb-integer-coding/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/leveldb-integer-coding/",
+        "description": "leveldb的数字编码方法EncodeFixed32按照机器的字节存储顺序(大端, 小端), 原样存储到一块32位内存EncodeFixed64按照机器的字节存储顺序(大端, 小端),  原样存储到一块64位内存PutFixed32将EncodeFixed32处理过的内存块追加到目的地址PutFixed64同PutFixed32EncodeVarint32将32位的无符号整数以",
+        "wordCount": 560
+    }
+</script>
+
+
+
     
 
 <div class="card">
@@ -258,6 +285,33 @@
 
 
 
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "levelDB里自定义的状态",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "leveldb",
+        "genre": "programming",
+        "datePublished": "2015-02-08",
+        "dateCreated": "2015-02-08",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/programming/leveldb-status/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/leveldb-status/",
+        "description": "LevelDB状态码LevelDB里专门定义了Status类，自定义了常见的状态码，用于函数的返回。状态码类型在Status类中以枚举类型定义Code：0 =&gt; 处理成功1 =&gt; 未找到2 =&gt; 崩溃3 =&gt; 不支持4 =&gt; 无效的参数5 =&gt; IO错误并且有6个静态方法用来生成对应状态码的Status对象, 和4个判断方法来方便确认状态。  存储方式状",
+        "wordCount": 43
+    }
+</script>
 
 
 
@@ -324,6 +378,33 @@
 
 
 
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "MIT 6.824 Lab2, part1小结",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "",
+        "genre": "programming",
+        "datePublished": "2014-12-16",
+        "dateCreated": "2014-12-16",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/programming/6.824, Lab2, part 1/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/6.824, Lab2, part 1/",
+        "description": "关于MIT 6.824课程的Lab 2, part 1从昨晚在宾馆到今天飞机上，都在过这几个test case，终于最后有点讨巧的过了。View service是MIT介绍paxos之前用来入门的，它的原理是以时间先后的顺序确定主备服务器，由定期的心跳更新此关系。之所以放在单独的service里获取主备关系，是为了将主备关系从K-V系统中解耦，从而K-V系统不用关心键值操作之外的事情，让更加上",
+        "wordCount": 17
+    }
+</script>
+
+
+
     
 
 <div class="card">
@@ -385,6 +466,33 @@
 
 
 
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "levelDB里skiplist的实现代码赏析",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "leveldb",
+        "genre": "programming",
+        "datePublished": "2014-12-08",
+        "dateCreated": "2014-12-08",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/programming/levelDB-skiplist/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/levelDB-skiplist/",
+        "description": "跳表的原理就是利用随机性建立索引，加速搜索，并且简化代码实现难度。具体的跳表原理不再赘述，主要是看了levelDB有一些实现细节的东西，凸显自己写的实现不足之处。去除冗余的key1234567891011121314151617181920212223242526272829303132333435template&lt;typename Key, class Comparator&gt;st",
+        "wordCount": 920
+    }
+</script>
 
 
 
@@ -457,6 +565,33 @@
 
 
 
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "初次使用golang channel",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "golang",
+        "genre": "programming",
+        "datePublished": "2014-11-12",
+        "dateCreated": "2014-11-12",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/programming/golang-channel/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/golang-channel/",
+        "description": "goroutine之间的同步goroutine是golang中在语言级别实现的轻量级线程，仅仅利用go就能立刻起一个新线程。多线程会引入线程之间的同步问题，经典的同步问题如生产者-消费者问题，在c，java级别需要使用锁、信号量进行共享资源的互斥使用和多线程之间的时序控制，而在golang中有channel作为同步的工具。1. channel实现两个goroutine之间的通信123456789",
+        "wordCount": 568
+    }
+</script>
 
 
 
@@ -2570,6 +2705,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 <script src="/js/main.js" defer></script>
+
 
     
     <div class="searchbox ins-search">

@@ -167,7 +167,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    11 minutes read (About 1636 words)
+                    11 minutes read (About 1641 words)
                 </span>
                 
                 
@@ -203,6 +203,33 @@
 
 
 
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "再见，micro: 迁移go-micro到纯gRPC框架",
+        "image": [
+            "https://songrgg.github.io/images/micro.png"
+        ],
+        "keywords": "microservice go-micro gRPC migration",
+        "genre": "microservice",
+        "datePublished": "2018-10-28",
+        "dateCreated": "2018-10-28",
+        "dateModified": "2020-02-22",
+        "url": "https://songrgg.github.io/microservice/goodbye-micro/",
+        "mainEntityOfPage": "https://songrgg.github.io/microservice/goodbye-micro/",
+        "description": "micro是基于golang的微服务框架，之前华尔街见闻架构升级中谈到了我们是基于go-micro的后端架构，随着我们对服务网格的调研、测试和实施，为了打通不同语言之间的服务调用，我们选择了gRPC作为服务内部的通用协议。go-micro框架的架构非常具有拓展性，它拥有自己的RPC框架，通过抽象codec,transport,selector等微服务组件，你既可以使用官方实现的各种插件go-plugins进行组装，又可以根据实际的情况实现自己的组件。然而，我们打算利用服务网格的优势，将微服务的基础组件下沉到基础设施中去，将组件代码从代码库中剥离开来。这样一来，我们相当于只需要最简的RPC框",
+        "wordCount": 300
+    }
+</script>
 
 
 
@@ -270,6 +297,33 @@
 
 
 
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "微服务实践四: 配置管理",
+        "image": [
+            "https://songrgg.github.io/images/config-in-docker.png"
+        ],
+        "keywords": "microservice configuration management",
+        "genre": "microservice",
+        "datePublished": "2017-04-15",
+        "dateCreated": "2017-04-15",
+        "dateModified": "2019-12-14",
+        "url": "https://songrgg.github.io/microservice/microservice-in-action-4/",
+        "mainEntityOfPage": "https://songrgg.github.io/microservice/microservice-in-action-4/",
+        "description": "配置涵盖程序运行的环境，程序依赖的基础资源地址，程序的行为等。需求根据环境读取配置方便更新配置基础数据格式为list，map等，常见的配置格式是JSON，YAML，XML",
+        "wordCount": 44
+    }
+</script>
 
 
 
@@ -374,6 +428,33 @@
 
 
 
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "微服务实践三: 服务编排",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "microservice service orchestration",
+        "genre": "microservice",
+        "datePublished": "2017-04-14",
+        "dateCreated": "2017-04-14",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/microservice/microservice-in-action-3/",
+        "mainEntityOfPage": "https://songrgg.github.io/microservice/microservice-in-action-3/",
+        "description": "物理机部署传统发布流程（以Java spring boot为例）编译jar包分发到服务器A,B,C服务启动，监听到指定端口配置负载均衡到已启动服务端口服务发布成功关于服务更新，为了实现滚动更新，可以让LB绑定的服务逐渐更新传统更新流程编译jar包分发到服务器A,B,C将服务器A从LB上解绑，更新服务器A上的服务启动服务，通过健康检查和QA之后，将服务器A绑定到LB上继续更",
+        "wordCount": 62
+    }
+</script>
+
+
+
     
 
 <div class="card">
@@ -448,6 +529,33 @@
 
 
 
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "微服务实践二: 服务容错与降级",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "microservice fault tolerance service degrade",
+        "genre": "microservice",
+        "datePublished": "2017-04-02",
+        "dateCreated": "2017-04-02",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/microservice/microservice-in-action-2/",
+        "mainEntityOfPage": "https://songrgg.github.io/microservice/microservice-in-action-2/",
+        "description": "保证系统能稳定地运行在生产环境是第一要务，就算是服务质量下降，只要仍在工作，那就是万幸。常见服务问题服务超时依赖的第三方服务因为某种不可抗力超时了？数据库慢查询拖垮了整个数据库？服务错误某个服务挂了？服务负载高突然陡增的访问量？解决方法限时针对服务超时，可以通过超时控制保证接口的返回，可以通过设置超时时间为1s，尽快返回结果，因为大多数情况下，接口超时一方面影响用户体验，一",
+        "wordCount": 36
+    }
+</script>
 
 
 
@@ -546,6 +654,33 @@
 
 
 
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "微服务实践一: 架构图谱",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "architecture microservice",
+        "genre": "microservice",
+        "datePublished": "2017-03-26",
+        "dateCreated": "2017-03-26",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/microservice/microservice-in-action-1/",
+        "mainEntityOfPage": "https://songrgg.github.io/microservice/microservice-in-action-1/",
+        "description": "目录服务拆分与服务发现微服务框架选择服务间通信服务编排配置管理服务容错与降级监控API监控服务调用链服务负载基础依赖监控日志分析Monolithic vs MicroserviceMonolithicMicroservice开发测试Java类语言项目越大，运行调试需要越多的编译时间，本地调试有较多依赖，况且业务复杂后不易新人上手只有部分功能的代",
+        "wordCount": 47
+    }
+</script>
 
 
 
@@ -2638,6 +2773,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 <script src="/js/main.js" defer></script>
+
 
     
     <div class="searchbox ins-search">
