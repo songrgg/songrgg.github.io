@@ -10,16 +10,16 @@
 <title>Spring data redis的一个bug - Blog | Songrgg</title>
 
 
-    <meta name="description" content="起因前两天上线了一个新功能，导致线上业务的缓存总是无法更新，报错也是非常奇怪，redis.clients.jedis.exceptions.JedisConnectionException: Unknown reply: 5，google到的原因是Spring data redis中的scan操作，它获取了redis的连接之后，在操作没有完全结束之前就把redis连接放回连接池，其它线程从连接池里">
+    <meta name="description" content="前两天上线了一个新功能，导致线上业务的缓存总是无法更新，报错也是非常奇怪，redis.clients.jedis.exceptions.JedisConnectionException: Unknown reply: 5，google到的原因是Spring data redis中的scan操作，它获取了redis的连接之后，在操作没有完全结束之前就把redis连接放回连接池，其它线程从连接池里复用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring data redis的一个bug">
 <meta property="og:url" content="https://songrgg.github.io/programming/spring-data-redis-issuse/index.html">
 <meta property="og:site_name" content="Blog | Songrgg">
-<meta property="og:description" content="起因前两天上线了一个新功能，导致线上业务的缓存总是无法更新，报错也是非常奇怪，redis.clients.jedis.exceptions.JedisConnectionException: Unknown reply: 5，google到的原因是Spring data redis中的scan操作，它获取了redis的连接之后，在操作没有完全结束之前就把redis连接放回连接池，其它线程从连接池里">
+<meta property="og:description" content="前两天上线了一个新功能，导致线上业务的缓存总是无法更新，报错也是非常奇怪，redis.clients.jedis.exceptions.JedisConnectionException: Unknown reply: 5，google到的原因是Spring data redis中的scan操作，它获取了redis的连接之后，在操作没有完全结束之前就把redis连接放回连接池，其它线程从连接池里复用">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://songrgg.github.io/images/og_image.png">
 <meta property="article:published_time" content="2016-09-28T22:00:00.000Z">
-<meta property="article:modified_time" content="2019-09-12T20:01:44.982Z">
+<meta property="article:modified_time" content="2020-02-22T15:22:31.169Z">
 <meta property="article:author" content="songrgg">
 <meta property="article:tag" content="spring boot">
 <meta property="article:tag" content="redis">
@@ -148,7 +148,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    2 minutes read (About 273 words)
+                    2 minutes read (About 263 words)
                 </span>
                 
                 
@@ -161,8 +161,8 @@
             
         </h1>
         <div class="content">
-            <h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>前两天上线了一个新功能，导致线上业务的缓存总是无法更新，报错也是非常奇怪，<code>redis.clients.jedis.exceptions.JedisConnectionException: Unknown reply: 5</code>，google到的原因是Spring data redis中的scan操作，它获取了redis的连接之后，在操作没有完全结束之前就把redis连接放回连接池，其它线程从连接池里复用该连接时，会导致数据读取的错误。</p>
-<h3 id="bug修复"><a href="#bug修复" class="headerlink" title="bug修复"></a>bug修复</h3><p>官方维护人员在<code>src/main/java/org/springframework/data/redis/core/DefaultHashOperations.java</code>里使用新建redis连接，并等cursor关闭的时候才关闭connection的方式解决该bug。</p>
+            <p>前两天上线了一个新功能，导致线上业务的缓存总是无法更新，报错也是非常奇怪，<code>redis.clients.jedis.exceptions.JedisConnectionException: Unknown reply: 5</code>，google到的原因是Spring data redis中的scan操作，它获取了redis的连接之后，在操作没有完全结束之前就把redis连接放回连接池，其它线程从连接池里复用该连接时，会导致数据读取的错误。</p>
+<h3 id="bug修复"><a href="#bug修复" class="headerlink" title="bug修复"></a>bug修复</h3><p>官方维护人员在 <code>DefaultHashOperations.java</code> 里使用新建redis连接，并等cursor关闭的时候才关闭connection的方式解决该bug。</p>
 <h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><ol>
 <li>提升spring data redis版本到1.8，尚未release，可以拉取最新代码，编译成jar包，并配置在local repository</li>
 <li>换个实现方案，尝试用其它数据结构，如hset等</li>
