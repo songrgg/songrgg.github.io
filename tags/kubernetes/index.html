@@ -3,21 +3,21 @@
 <head>
     <meta charset="utf-8" />
 
-<meta name="generator" content="Hexo 4.1.1" />
+<meta name="generator" content="Hexo 4.2.0" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>Tag: kubernetes - Songrgg&#39;s Blog</title>
+<title>Tag: kubernetes - Blog | Songrgg</title>
 
 
     <meta name="description" content="A place to share programming experience and understanding of architecture.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Songrgg&#39;s Blog">
-<meta property="og:url" content="https:&#x2F;&#x2F;songrgg.github.io&#x2F;tags&#x2F;kubernetes&#x2F;index.html">
-<meta property="og:site_name" content="Songrgg&#39;s Blog">
+<meta property="og:title" content="Blog | Songrgg">
+<meta property="og:url" content="https://songrgg.github.io/tags/kubernetes/index.html">
+<meta property="og:site_name" content="Blog | Songrgg">
 <meta property="og:description" content="A place to share programming experience and understanding of architecture.">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https:&#x2F;&#x2F;songrgg.github.io&#x2F;images&#x2F;og_image.png">
+<meta property="og:image" content="https://songrgg.github.io/images/og_image.png">
 <meta property="article:author" content="songrgg">
 <meta property="article:tag" content="programming">
 <meta property="article:tag" content="sre">
@@ -25,7 +25,7 @@
 <meta property="article:tag" content="service mesh">
 <meta property="article:tag" content="devops">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;songrgg.github.io&#x2F;images&#x2F;og_image.png">
+<meta name="twitter:image" content="https://songrgg.github.io/images/og_image.png">
 
 
 
@@ -82,7 +82,7 @@
 
 
 <link rel="stylesheet" href="/css/style.css">
-<link rel="alternate" href="/atom.xml" title="Songrgg's Blog" type="application/atom+xml">
+<link rel="alternate" href="/atom.xml" title="Blog | Songrgg" type="application/atom+xml">
 </head>
 <body class="is-3-column">
     <nav class="navbar navbar-main">
@@ -207,8 +207,6 @@
 
 
 
-
-
     
 
 <div class="card">
@@ -270,8 +268,6 @@
 
 
 
-
-
     
 
 <div class="card">
@@ -290,7 +286,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    3 minutes read (About 451 words)
+                    3 minutes read (About 452 words)
                 </span>
                 
                 
@@ -306,28 +302,20 @@
             <p><a href="https://istio.io">Istio</a> has been adopted as a common implementation of <a href="https://istio.io/docs/concepts/what-is-istio/">service mesh</a>, since more and more companies want to bring Istio into production, the version control of Istio seems a significant problem to solve.</p>
 <p>Version control is necessary as Istio components can be treated as the equivalent RPC services like our business services, we need to have an understanding of which version we are using now and what does the next version bring. And some Istio components can cooperate with the others, if we need to upgrade one component we need to upgrade the other components too.</p>
 <p>Although the Istio community provides the Istio upgrade method, we don’t actually want to upgrade such a whole thing in one move, it influences so much that we don’t want to risk.</p>
-<h3 id="Helm"><a href="#Helm" class="headerlink" title="Helm"></a>Helm</h3><p><a href="https://helm.sh">Helm</a> is package control system for Kubernetes, it’s more like the complicated version of brew on Mac.</p>
-<p>It uses Yaml and Golang templates to formulate a complete application configuration on Kubernetes. A lot of applications are packaged as Helm charts, we can build a complicated application by declaring the dependencies between these charts.</p>
-<h3 id="Istio-Helm"><a href="#Istio-Helm" class="headerlink" title="Istio + Helm"></a>Istio + Helm</h3><p>Istio project contains the <a href="https://github.com/istio/istio/blob/master/install/kubernetes/helm/istio/README.md">Helm configuration</a> itself, I recommend the users to extract the Helm brought by Istio into a standalone Git repository.</p>
-<p><img src="/images/istio-helm-git.png" alt="istio-helm-git"></p>
-<p>Like the other services, we use Git to control each component’s configuration and track every modification.</p>
-<h3 id="CI-CD"><a href="#CI-CD" class="headerlink" title="CI/CD"></a>CI/CD</h3><p>As more and more people advocate <code>infrastructure as code</code>, we not only store the Istio Helm as a Git repository, we bring the CI/CD to the infrastructure.</p>
-<p>If three Kubernetes clusters: <code>test</code>, <code>stage</code>, <code>production</code> exist, we can setup CI/CD to <code>test</code> cluster based on the specified Git <code>test</code> branch, each commit will trigger the generation of the latest Istio K8S Yaml config and apply them to the <code>test</code> cluster, after the tests on <code>test</code> environment, we brought the Istio updates to the <code>stage</code> and <code>production</code> in order.</p>
-<h3 id="Still-worried-about-Production"><a href="#Still-worried-about-Production" class="headerlink" title="Still worried about Production?"></a>Still worried about Production?</h3><p>Although we have tested in the <code>test</code> environment, we still worry if it works in the <code>production</code> and a method to let you know what actually changes is to <strong>diff</strong> the K8S configuration between the latest config and the current K8S config.<br>I recommend the <a href="https://github.com/weaveworks/kubediff"><code>kubediff</code></a> tool to distinguish the differences.</p>
-<h3 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h3><ul>
-<li>Every updates to Istio configuration need to be tracked by Git. </li>
-<li>Like the common services, deploy the change to <code>test</code> environment as soon as possible to fail fast.</li>
-<li>Use <code>kubediff</code> to show the changes.</li>
-</ul>
-
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/operation/istio-version-control-on-k8s/#more">Read More</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
 </div>
-
-
 
 
 
@@ -402,8 +390,6 @@
         
     </div>
 </div>
-
-
 
 
 
@@ -665,14 +651,14 @@
             
             <a href="/operation/install-spinnaker-on-centos/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="Install Spinnaker on CentOS 7">
+                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="How to install Spinnaker on CentOS 7">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-18T22:00:00.000Z">2019-09-19</time></div>
-                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Install Spinnaker on CentOS 7</a>
+                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to install Spinnaker on CentOS 7</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -1546,14 +1532,14 @@
             
             <a href="/operation/install-spinnaker-on-centos/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="Install Spinnaker on CentOS 7">
+                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="How to install Spinnaker on CentOS 7">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-18T22:00:00.000Z">2019-09-19</time></div>
-                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Install Spinnaker on CentOS 7</a>
+                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to install Spinnaker on CentOS 7</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>

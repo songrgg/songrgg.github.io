@@ -3,21 +3,21 @@
 <head>
     <meta charset="utf-8" />
 
-<meta name="generator" content="Hexo 4.1.1" />
+<meta name="generator" content="Hexo 4.2.0" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>Tag: ratelimiter - Songrgg&#39;s Blog</title>
+<title>Tag: ratelimiter - Blog | Songrgg</title>
 
 
     <meta name="description" content="A place to share programming experience and understanding of architecture.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Songrgg&#39;s Blog">
-<meta property="og:url" content="https:&#x2F;&#x2F;songrgg.github.io&#x2F;tags&#x2F;ratelimiter&#x2F;index.html">
-<meta property="og:site_name" content="Songrgg&#39;s Blog">
+<meta property="og:title" content="Blog | Songrgg">
+<meta property="og:url" content="https://songrgg.github.io/tags/ratelimiter/index.html">
+<meta property="og:site_name" content="Blog | Songrgg">
 <meta property="og:description" content="A place to share programming experience and understanding of architecture.">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https:&#x2F;&#x2F;songrgg.github.io&#x2F;images&#x2F;og_image.png">
+<meta property="og:image" content="https://songrgg.github.io/images/og_image.png">
 <meta property="article:author" content="songrgg">
 <meta property="article:tag" content="programming">
 <meta property="article:tag" content="sre">
@@ -25,7 +25,7 @@
 <meta property="article:tag" content="service mesh">
 <meta property="article:tag" content="devops">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;songrgg.github.io&#x2F;images&#x2F;og_image.png">
+<meta name="twitter:image" content="https://songrgg.github.io/images/og_image.png">
 
 
 
@@ -82,7 +82,7 @@
 
 
 <link rel="stylesheet" href="/css/style.css">
-<link rel="alternate" href="/atom.xml" title="Songrgg's Blog" type="application/atom+xml">
+<link rel="alternate" href="/atom.xml" title="Blog | Songrgg" type="application/atom+xml">
 </head>
 <body class="is-3-column">
     <nav class="navbar navbar-main">
@@ -160,7 +160,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    7 minutes read (About 1078 words)
+                    7 minutes read (About 1116 words)
                 </span>
                 
                 
@@ -173,44 +173,21 @@
             
         </h1>
         <div class="content">
-            <h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>频次限制（rate limiting）是Web系统比较常见的功能，防止用户频繁访问接口，导致系统负载增加而影响服务的质量。</p>
-<h3 id="系统要求"><a href="#系统要求" class="headerlink" title="系统要求"></a>系统要求</h3><ul>
-<li>针对线上的功能，实现对指定对象有访问频次的限制</li>
-<li>支持多个客户端访问</li>
-<li>低延迟</li>
-<li>承受较大的访问量</li>
-<li>易于拓展</li>
-</ul>
-<h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3><ol>
-<li>设置服务频次限制，如针对某个消耗资源很高的API设置1QPS的访问限制，并为单一用户生成访问该API的唯一<code>key</code>，如<code>userA_APIX</code>就是表示userA访问APIX的情况</li>
-<li>根据指定<code>key</code>，服务向<code>ratelimiter</code>询问是否允许此次访问</li>
-</ol>
-<h4 id="基于令牌桶算法的伪代码"><a href="#基于令牌桶算法的伪代码" class="headerlink" title="基于令牌桶算法的伪代码"></a>基于令牌桶算法的伪代码</h4><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 初始换状态</span></span><br><span class="line">rate := <span class="number">1</span> <span class="comment">// 设置频率为1ops</span></span><br><span class="line">needed := <span class="number">1</span> <span class="comment">// 设置访问1次API需要的令牌数量为1</span></span><br><span class="line">key := <span class="string">"userA_APIX"</span> <span class="comment">// userA访问APIX的场景</span></span><br><span class="line">tokens := <span class="number">0</span> <span class="comment">// 当前可用令牌数</span></span><br><span class="line">lastTime := time.Now() <span class="comment">// 上次令牌更新时间</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 时间过去1s</span></span><br><span class="line">time.Sleep(time.Second)</span><br><span class="line"></span><br><span class="line"><span class="comment">// userA请求访问APIX</span></span><br><span class="line">nowTime := time.Now()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 计算这段时间新生成的令牌数量</span></span><br><span class="line">newTokens := (nowTime-lastTime)*rate</span><br><span class="line"></span><br><span class="line"><span class="comment">// 判断是否允许访问</span></span><br><span class="line">allow := (newTokens+tokens)&gt;needed</span><br><span class="line"></span><br><span class="line"><span class="comment">// 更新数据</span></span><br><span class="line"><span class="keyword">if</span> allow &#123;</span><br><span class="line">    tokens = newTokens+tokens-needed</span><br><span class="line">    lastTime = nowTime</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 响应用户操作</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    tokens = tokens+newTokens</span><br><span class="line">    lastTime = nowTime</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 提示用户操作超过限制</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h3><ol>
-<li><p>频次限制应该统一存储<br>webserver是任意可拓展个数的服务，一开始，我将<code>ratelimiter</code>的存储放在了各自服务中，导致明明我限制的是整个集群这个<code>API</code>的访问单人不可超过<code>1</code>QPS，如果N个服务，实际上是<code>N</code>QPS。所以这个频次限制需要集中存储，统一整个系统的访问频次。</p>
-</li>
-<li><p>频次限制本质是一个服务<br>我试着把存储挪到了<code>redis</code>，并且使用了一些<code>redis</code>的<code>WATCH</code>命令实现了<strong>CAS</strong>(Compare And Set)，<code>redis</code>里存了<code>key</code>，<code>tokens</code>，<code>lastTime</code>，算法逻辑仍然放在<code>client</code>端（也就是那些web server）。<br>经过压测，QPS比较低，主要是因为CAS的重试率随着并发量上升不断升高，况且重试过程不断访问<code>redis</code>增加了网络开销，于是考虑如何将逻辑和数据放到一起。</p>
-</li>
-<li><p>控制成本<br>重新开发一个频限服务，需要考虑多节点数据同步，请求转发，failover等功能，我希望以最小的开支实现这个系统。</p>
-</li>
-</ol>
-<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>最终选择了<code>redis</code>的<code>lua</code>脚本实现了频限功能，既统一了存储，又可以利用<code>redis cluster</code>实现了可拓展的频限服务，以最小的成本实现功能。<br>我司技术栈是<code>Golang</code>，所以实现了<code>Golang</code>的简单库，逻辑是初始化<code>redis client</code>并将<code>lua</code>脚本上传，在判断是否超过频率限制的时候，使用<code>EVALSHA</code>命令执行。由于逻辑都在<code>redis</code>端，所以客户端实际上代码极少，只要注意<code>redis</code>挂了不影响服务的响应，并且<code>redis</code>重启后保证<code>lua</code>脚本上传等。</p>
-<p><code>lua</code>脚本是来自<code>Stripe</code>公司的一位工程师：</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> tokens_key = KEYS[<span class="number">1</span>]</span><br><span class="line"><span class="keyword">local</span> timestamp_key = KEYS[<span class="number">2</span>]</span><br><span class="line"><span class="keyword">local</span> rate = <span class="built_in">tonumber</span>(ARGV[<span class="number">1</span>])</span><br><span class="line"><span class="keyword">local</span> capacity = <span class="built_in">tonumber</span>(ARGV[<span class="number">2</span>])</span><br><span class="line"><span class="keyword">local</span> now = <span class="built_in">tonumber</span>(ARGV[<span class="number">3</span>])</span><br><span class="line"><span class="keyword">local</span> requested = <span class="built_in">tonumber</span>(ARGV[<span class="number">4</span>])</span><br><span class="line"><span class="keyword">local</span> fill_time = capacity/rate</span><br><span class="line"><span class="keyword">local</span> ttl = <span class="built_in">math</span>.<span class="built_in">floor</span>(fill_time*<span class="number">2</span>)</span><br><span class="line"><span class="keyword">local</span> last_tokens = <span class="built_in">tonumber</span>(redis.call(<span class="string">"get"</span>, tokens_key))</span><br><span class="line"><span class="keyword">if</span> last_tokens == <span class="literal">nil</span> <span class="keyword">then</span></span><br><span class="line">    last_tokens = capacity</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">local</span> last_refreshed = <span class="built_in">tonumber</span>(redis.call(<span class="string">"get"</span>, timestamp_key))</span><br><span class="line"><span class="keyword">if</span> last_refreshed == <span class="literal">nil</span> <span class="keyword">then</span></span><br><span class="line">    last_refreshed = <span class="number">0</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">local</span> delta = <span class="built_in">math</span>.<span class="built_in">max</span>(<span class="number">0</span>, now-last_refreshed)</span><br><span class="line"><span class="keyword">local</span> filled_tokens = <span class="built_in">math</span>.<span class="built_in">min</span>(capacity, last_tokens+(delta*rate))</span><br><span class="line"><span class="keyword">local</span> allowed = filled_tokens &gt;= requested</span><br><span class="line"><span class="keyword">local</span> new_tokens = filled_tokens</span><br><span class="line"><span class="keyword">if</span> allowed <span class="keyword">then</span></span><br><span class="line">    new_tokens = filled_tokens - requested</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">redis.call(<span class="string">"setex"</span>, tokens_key, ttl, new_tokens)</span><br><span class="line">redis.call(<span class="string">"setex"</span>, timestamp_key, ttl, now)</span><br><span class="line"><span class="keyword">return</span> &#123; allowed, new_tokens &#125;</span><br></pre></td></tr></table></figure>
-
-<p>通过<code>SCRIPT LOAD</code>上传该脚本获得<code>hash</code>，使用<code>EVALSHA &lt;hash&gt; 2 userA_APIX_token userA_APIX_ts 1 1 &lt;now_time&gt; 1</code>调用该脚本，根据返回的<code>allowed</code>决定此次操作是否进行。</p>
-<h3 id="benchmark"><a href="#benchmark" class="headerlink" title="benchmark"></a>benchmark</h3><p>经过测试，MacBook Pro (Retina, 13-inch, Late 2013), CPU 2.4 GHz Intel Core i5, Memory 8 GB 1600 MHz DDR3上能达到<strong>1w+</strong>QPS。</p>
-<h3 id="项目地址"><a href="#项目地址" class="headerlink" title="项目地址"></a>项目地址</h3><p><a href="https://github.com/wallstreetcn/rate">ratelimiter的golang实现</a>，目前该版本暂时支持<code>redis client</code>，为了拓展性，可以将其升级为<code>redis cluster</code>，满足大并发系统的需求。</p>
-
+            <p>频次限制（rate limiting）是Web系统比较常见的功能，防止用户频繁访问接口，导致系统负载增加而影响服务的质量。这里来介绍在分布式系统中实现一个共享的频次限制服务，且保证接口低时延高访问量。</p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/programming/rate-limiter-for-distributed-system/#more">Read More</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
 </div>
-
-
 
 
 
@@ -472,14 +449,14 @@
             
             <a href="/operation/install-spinnaker-on-centos/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="Install Spinnaker on CentOS 7">
+                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="How to install Spinnaker on CentOS 7">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-18T22:00:00.000Z">2019-09-19</time></div>
-                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Install Spinnaker on CentOS 7</a>
+                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to install Spinnaker on CentOS 7</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -1353,14 +1330,14 @@
             
             <a href="/operation/install-spinnaker-on-centos/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="Install Spinnaker on CentOS 7">
+                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="How to install Spinnaker on CentOS 7">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-18T22:00:00.000Z">2019-09-19</time></div>
-                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Install Spinnaker on CentOS 7</a>
+                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to install Spinnaker on CentOS 7</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>

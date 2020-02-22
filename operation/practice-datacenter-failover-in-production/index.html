@@ -3,30 +3,30 @@
 <head>
     <meta charset="utf-8" />
 
-<meta name="generator" content="Hexo 4.1.1" />
+<meta name="generator" content="Hexo 4.2.0" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>Practice datacenter failover in production - Songrgg&#39;s Blog</title>
+<title>Practice datacenter failover in production - Blog | Songrgg</title>
 
 
-    <meta name="description" content="ContextMultiple data centersCompanies use data center redundancy to implement service’s high availability, there will be multiple data centers existing with 3 main deployments:  Disaster RecoveryYou w">
+    <meta name="description" content="Distributed system is like human body, it will have issues and break. There’s a theory that we feed it with issues deliberately and constantly, the body will be more and more stable and robust. It’s t">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Practice datacenter failover in production">
-<meta property="og:url" content="https:&#x2F;&#x2F;songrgg.github.io&#x2F;operation&#x2F;practice-datacenter-failover-in-production&#x2F;index.html">
-<meta property="og:site_name" content="Songrgg&#39;s Blog">
-<meta property="og:description" content="ContextMultiple data centersCompanies use data center redundancy to implement service’s high availability, there will be multiple data centers existing with 3 main deployments:  Disaster RecoveryYou w">
+<meta property="og:url" content="https://songrgg.github.io/operation/practice-datacenter-failover-in-production/index.html">
+<meta property="og:site_name" content="Blog | Songrgg">
+<meta property="og:description" content="Distributed system is like human body, it will have issues and break. There’s a theory that we feed it with issues deliberately and constantly, the body will be more and more stable and robust. It’s t">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https:&#x2F;&#x2F;songrgg.github.io&#x2F;images&#x2F;datacenter.jpg">
+<meta property="og:image" content="https://songrgg.github.io/images/datacenter.jpg">
 <meta property="article:published_time" content="2019-12-12T23:00:00.000Z">
-<meta property="article:modified_time" content="2019-12-14T09:26:05.976Z">
+<meta property="article:modified_time" content="2020-02-22T14:45:43.853Z">
 <meta property="article:author" content="songrgg">
 <meta property="article:tag" content="distributed system">
 <meta property="article:tag" content="data center failover">
 <meta property="article:tag" content="resilience">
 <meta property="article:tag" content="chaos engineering">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;songrgg.github.io&#x2F;images&#x2F;datacenter.jpg">
+<meta name="twitter:image" content="https://songrgg.github.io/images/datacenter.jpg">
 
 
 
@@ -83,7 +83,7 @@
 
 
 <link rel="stylesheet" href="/css/style.css">
-<link rel="alternate" href="/atom.xml" title="Songrgg's Blog" type="application/atom+xml">
+<link rel="alternate" href="/atom.xml" title="Blog | Songrgg" type="application/atom+xml">
 </head>
 <body class="is-3-column">
     <nav class="navbar navbar-main">
@@ -156,7 +156,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    5 minutes read (About 754 words)
+                    5 minutes read (About 805 words)
                 </span>
                 
                 
@@ -169,14 +169,17 @@
             
         </h1>
         <div class="content">
-            <h2 id="Context"><a href="#Context" class="headerlink" title="Context"></a>Context</h2><h3 id="Multiple-data-centers"><a href="#Multiple-data-centers" class="headerlink" title="Multiple data centers"></a>Multiple data centers</h3><p>Companies use data center redundancy to implement service’s high availability, there will be multiple data centers existing with 3 main deployments:</p>
+            <p>Distributed system is like human body, it will have issues and break. There’s a theory that we feed it with issues deliberately and constantly, the body will be more and more stable and robust. It’s the same to system, put some issues to datacenters and let them failover automatically.</p>
+<a id="more"></a>
+
+<h3 id="Multiple-data-centers"><a href="#Multiple-data-centers" class="headerlink" title="Multiple data centers"></a>Multiple data centers</h3><p>Companies use data center redundancy to implement service’s high availability, there will be multiple data centers existing with 3 main deployments:</p>
 <ol>
 <li>Disaster Recovery<br>You will have your live traffic served in the primary data center, meanwhile disaster recovery data center is a backup to recover when the primary is down. Usually, it doesn’t allow you to run normal operations in the disaster recovery one.</li>
 <li>Hot Standby<br>The primary data center is taking traffic, the hot standby data center is almost equivalent to primary but doesn’t take traffic. You can switch to hot standby anytime the primary data center is down.</li>
 <li>Live traffic handling<br>There are multiple data centers and they’re taking traffic simultaneously.</li>
 </ol>
 <h3 id="What-is-DC-failover"><a href="#What-is-DC-failover" class="headerlink" title="What is DC failover?"></a>What is DC failover?</h3><p>When dc ( data center ) failure happens, the most emergent thing is to use the backup dc to replace the primary one and ensures the business keeps running, so the technical team will failover the data center to backup one.</p>
-<a id="more"></a>
+<!-- more -->
 
 <h3 id="Why-do-we-need-to-do-failover-often"><a href="#Why-do-we-need-to-do-failover-often" class="headerlink" title="Why do we need to do failover often?"></a>Why do we need to do failover often?</h3><p>In the deployments mentioned before, there will be one or more data centers serving user, once the primary one is down the backup one needs to take over as soon as possible, but it’s not often that the primary data center is down, as the time flies, likely, backup datacenter cannot replace the primary or is hard to replace.<br>To keep the backup dc up-to-date, we should do dc failover often regardless manually or automatically.</p>
 <h2 id="Preparation"><a href="#Preparation" class="headerlink" title="Preparation"></a>Preparation</h2><h3 id="Define-the-impact"><a href="#Define-the-impact" class="headerlink" title="Define the impact"></a>Define the impact</h3><p>Service is always for customers, although failover is a long-term project that will improve the service’s availability, it’s better not to interrupt the customer’s experience all of a sudden, so according to different company’s considerations, they need to define the impact they can undertake.</p>
@@ -221,15 +224,6 @@
 </div>
 
 
-
-
-
-<div class="card">
-    <div class="card-content">
-        <h3 class="menu-label has-text-centered">Related articles</h3>
-        <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/programming/mit-distributed-system-01/" title="Mit分布式系统课程-Lab2-PartB" rel="bookmark">Mit分布式系统课程-Lab2-PartB</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/programming/rate-limiter-for-distributed-system/" title="分布式系统频次限制实现" rel="bookmark">分布式系统频次限制实现</a></h3></div></li></ul>
-    </div>
-</div>
 
 
 
@@ -532,14 +526,14 @@
             
             <a href="/operation/install-spinnaker-on-centos/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="Install Spinnaker on CentOS 7">
+                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="How to install Spinnaker on CentOS 7">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-18T22:00:00.000Z">2019-09-19</time></div>
-                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Install Spinnaker on CentOS 7</a>
+                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to install Spinnaker on CentOS 7</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -1413,14 +1407,14 @@
             
             <a href="/operation/install-spinnaker-on-centos/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="Install Spinnaker on CentOS 7">
+                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="How to install Spinnaker on CentOS 7">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-18T22:00:00.000Z">2019-09-19</time></div>
-                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Install Spinnaker on CentOS 7</a>
+                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to install Spinnaker on CentOS 7</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>

@@ -3,28 +3,28 @@
 <head>
     <meta charset="utf-8" />
 
-<meta name="generator" content="Hexo 4.1.1" />
+<meta name="generator" content="Hexo 4.2.0" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>How to check and monitor SSL certificates expiration with Telegraf - Songrgg&#39;s Blog</title>
+<title>How to check and monitor SSL certificates expiration with Telegraf - Blog | Songrgg</title>
 
 
-    <meta name="description" content="BackgroundCertificates are broadly used for security reasons, they can be used within internal service or public service communication. The most common certificate is TLS used for verifying the identi">
+    <meta name="description" content="As a developer or operator of a Website, the certificate expiration could happen and make the services not work. I’ll introduce how to monitor certificates like SSL,JKS,P12 using Telegraf. Certificate">
 <meta property="og:type" content="article">
 <meta property="og:title" content="How to check and monitor SSL certificates expiration with Telegraf">
-<meta property="og:url" content="https:&#x2F;&#x2F;songrgg.github.io&#x2F;operation&#x2F;how-to-check-and-monitor-tls-jks-certificates-with-telegraf&#x2F;index.html">
-<meta property="og:site_name" content="Songrgg&#39;s Blog">
-<meta property="og:description" content="BackgroundCertificates are broadly used for security reasons, they can be used within internal service or public service communication. The most common certificate is TLS used for verifying the identi">
+<meta property="og:url" content="https://songrgg.github.io/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/index.html">
+<meta property="og:site_name" content="Blog | Songrgg">
+<meta property="og:description" content="As a developer or operator of a Website, the certificate expiration could happen and make the services not work. I’ll introduce how to monitor certificates like SSL,JKS,P12 using Telegraf. Certificate">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https:&#x2F;&#x2F;songrgg.github.io&#x2F;images&#x2F;certificate-expiration-days.jpeg">
+<meta property="og:image" content="https://songrgg.github.io/images/certificate-expiration-days.jpeg">
 <meta property="article:published_time" content="2020-02-11T21:11:50.000Z">
-<meta property="article:modified_time" content="2020-02-22T08:09:08.588Z">
+<meta property="article:modified_time" content="2020-02-22T14:58:11.233Z">
 <meta property="article:author" content="songrgg">
 <meta property="article:tag" content="certificate">
 <meta property="article:tag" content="monitoring">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;songrgg.github.io&#x2F;images&#x2F;certificate-expiration-days.jpeg">
+<meta name="twitter:image" content="https://songrgg.github.io/images/certificate-expiration-days.jpeg">
 
 
 
@@ -81,7 +81,7 @@
 
 
 <link rel="stylesheet" href="/css/style.css">
-<link rel="alternate" href="/atom.xml" title="Songrgg's Blog" type="application/atom+xml">
+<link rel="alternate" href="/atom.xml" title="Blog | Songrgg" type="application/atom+xml">
 </head>
 <body class="is-3-column">
     <nav class="navbar navbar-main">
@@ -154,7 +154,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    6 minutes read (About 846 words)
+                    6 minutes read (About 899 words)
                 </span>
                 
                 
@@ -167,7 +167,10 @@
             
         </h1>
         <div class="content">
-            <h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>Certificates are broadly used for security reasons, they can be used within internal service or public service communication. The most common certificate is TLS used for verifying the identity of the HTTPS service. To increase security, the certificate will not be always valid because of expiration. To prevent the certificate expiry, we should rotate them periodically and meanwhile monitor them and alert if expired. Telegraf is a popular metric collecting tool to implement this.</p>
+            <p>As a developer or operator of a Website, the certificate expiration could happen and make the services not work. I’ll introduce how to monitor certificates like SSL,JKS,P12 using Telegraf.</p>
+<p>Certificates are broadly used for security reasons, they can be used within internal service or public service communication. The most common certificate is TLS used for verifying the identity of the HTTPS service. To increase security, the certificate will not be always valid because of expiration. To prevent the certificate expiry, we should rotate them periodically and meanwhile monitor them and alert if expired. Telegraf is a popular metric collecting tool to implement this.</p>
+<a id="more"></a>
+
 <h2 id="Overview-for-certificate-types"><a href="#Overview-for-certificate-types" class="headerlink" title="Overview for certificate types"></a>Overview for certificate types</h2><ol>
 <li>.csr<br>Certificate Signing Request used to request a certificate from the certificate authority.</li>
 <li>.pem<br>This is a container format that may include just the public certificate or may include an entire certificate chain including public key, private key, and root certificates. Confusingly, it may also encode a CSR (e.g. as used here) as the PKCS10 format can be translated into PEM.</li>
@@ -201,6 +204,7 @@
 <h3 id="Telegraf-configuration"><a href="#Telegraf-configuration" class="headerlink" title="Telegraf configuration"></a>Telegraf configuration</h3><p>Put the <code>jks_cert.conf</code> under the telegraf’s configuration folder, restart telegraf and it will take effect.</p>
 <figure class="highlight"><figcaption><span>jks_cert.conf</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[[inputs.exec]]</span></span><br><span class="line">  commands = [ "/usr/local/bin/jks_certificate_metric.sh" ]</span><br><span class="line"></span><br><span class="line">  data_format = "influx"</span><br></pre></td></tr></table></figure>
 
+<h3 id="What’s-next"><a href="#What’s-next" class="headerlink" title="What’s next"></a>What’s next</h3><p>Connect the data Telegraf collected to Time series database like Prometheus, InfluxDB, Graphite, and show them with Grafana.</p>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
 <li><a href="https://serverfault.com/questions/9708/what-is-a-pem-file-and-how-does-it-differ-from-other-openssl-generated-key-file">What is a pem file and how does it differ from other OpenSSL generated key files?</a></li>
 <li><a href="https://pingtool.org/openssl-check-p12-expiration-date/">OpenSSL check p12 expiration date</a></li>
@@ -233,15 +237,6 @@
 </div>
 
 
-
-
-
-<div class="card">
-    <div class="card-content">
-        <h3 class="menu-label has-text-centered">Related articles</h3>
-        <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/operation/use-grafana-api-generate-dashboards/" title="Generate monitoring dashboards & alertings using Grafana API" rel="bookmark">Generate monitoring dashboards & alertings using Grafana API</a></h3></div></li></ul>
-    </div>
-</div>
 
 
 
@@ -537,14 +532,14 @@
             
             <a href="/operation/install-spinnaker-on-centos/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="Install Spinnaker on CentOS 7">
+                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="How to install Spinnaker on CentOS 7">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-18T22:00:00.000Z">2019-09-19</time></div>
-                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Install Spinnaker on CentOS 7</a>
+                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to install Spinnaker on CentOS 7</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -1418,14 +1413,14 @@
             
             <a href="/operation/install-spinnaker-on-centos/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="Install Spinnaker on CentOS 7">
+                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="How to install Spinnaker on CentOS 7">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-18T22:00:00.000Z">2019-09-19</time></div>
-                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Install Spinnaker on CentOS 7</a>
+                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to install Spinnaker on CentOS 7</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>

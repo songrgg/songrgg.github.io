@@ -3,21 +3,21 @@
 <head>
     <meta charset="utf-8" />
 
-<meta name="generator" content="Hexo 4.1.1" />
+<meta name="generator" content="Hexo 4.2.0" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>Tag: client performance - Songrgg&#39;s Blog</title>
+<title>Tag: client performance - Blog | Songrgg</title>
 
 
     <meta name="description" content="A place to share programming experience and understanding of architecture.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Songrgg&#39;s Blog">
-<meta property="og:url" content="https:&#x2F;&#x2F;songrgg.github.io&#x2F;tags&#x2F;client-performance&#x2F;index.html">
-<meta property="og:site_name" content="Songrgg&#39;s Blog">
+<meta property="og:title" content="Blog | Songrgg">
+<meta property="og:url" content="https://songrgg.github.io/tags/client-performance/index.html">
+<meta property="og:site_name" content="Blog | Songrgg">
 <meta property="og:description" content="A place to share programming experience and understanding of architecture.">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https:&#x2F;&#x2F;songrgg.github.io&#x2F;images&#x2F;og_image.png">
+<meta property="og:image" content="https://songrgg.github.io/images/og_image.png">
 <meta property="article:author" content="songrgg">
 <meta property="article:tag" content="programming">
 <meta property="article:tag" content="sre">
@@ -25,7 +25,7 @@
 <meta property="article:tag" content="service mesh">
 <meta property="article:tag" content="devops">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;songrgg.github.io&#x2F;images&#x2F;og_image.png">
+<meta name="twitter:image" content="https://songrgg.github.io/images/og_image.png">
 
 
 
@@ -82,7 +82,7 @@
 
 
 <link rel="stylesheet" href="/css/style.css">
-<link rel="alternate" href="/atom.xml" title="Songrgg's Blog" type="application/atom+xml">
+<link rel="alternate" href="/atom.xml" title="Blog | Songrgg" type="application/atom+xml">
 </head>
 <body class="is-3-column">
     <nav class="navbar navbar-main">
@@ -166,7 +166,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    3 minutes read (About 406 words)
+                    3 minutes read (About 440 words)
                 </span>
                 
                 
@@ -179,43 +179,21 @@
             
         </h1>
         <div class="content">
-            <h1 id="gRPC-client-connection-test"><a href="#gRPC-client-connection-test" class="headerlink" title="gRPC client connection test"></a>gRPC client connection test</h1><p>How to maximize the client concurrency.</p>
-<h2 id="3-Tests"><a href="#3-Tests" class="headerlink" title="3 Tests"></a>3 Tests</h2><ol>
-<li>One connection per request<br>Create a connection when request is made.</li>
-<li>Only one client, one connection<br>Use a common client by all requests.</li>
-<li>Fixed-size Connection pool<br>If connection pool has enough connections, take it from pool, otherwise create a new connection.<br>The connection pool has fixed max capacity, release unused connection to pool when it’s not full.</li>
-</ol>
-<h2 id="Performance-Comparison"><a href="#Performance-Comparison" class="headerlink" title="Performance Comparison"></a>Performance Comparison</h2><p><strong>Hardware</strong><br>MacBook Pro (15-inch, 2016)<br>Processor 2.7 GHz Intel Core i7<br>Memory 16GB 2133 MHz LPDDR3</p>
-<p><strong>Press tool, client and server run on the same machine</strong></p>
-<h3 id="When-server-just-says-hello-to-client"><a href="#When-server-just-says-hello-to-client" class="headerlink" title="When server just says hello to client"></a>When server just says hello to client</h3><ol>
-<li>Only one client, one connection <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ wrk -t2 -c100 -d10s http://localhost:10099/performance</span><br><span class="line">Running 10s <span class="built_in">test</span> @ http://localhost:10099/performance</span><br><span class="line">  2 threads and 100 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency     2.85ms    1.24ms  22.24ms   80.47%</span><br><span class="line">    Req/Sec    15.86k     2.86k   21.58k    76.50%</span><br><span class="line">  316674 requests <span class="keyword">in</span> 10.04s, 38.66MB <span class="built_in">read</span></span><br><span class="line">Requests/sec:  31532.58</span><br><span class="line">Transfer/sec:      3.85MB</span><br></pre></td></tr></table></figure></li>
-<li>Fixed-size Connection pool<br>Take connection from pool first, otherwise create a new connection. <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ wrk -t2 -c100 -d10s http://localhost:10099/performance</span><br><span class="line">Running 10s <span class="built_in">test</span> @ http://localhost:10099/performance</span><br><span class="line">  2 threads and 100 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency    36.86ms   34.35ms 334.72ms   83.30%</span><br><span class="line">    Req/Sec     1.58k   660.95     3.89k    67.86%</span><br><span class="line">  31127 requests <span class="keyword">in</span> 10.04s, 3.80MB <span class="built_in">read</span></span><br><span class="line">Requests/sec:   3100.89</span><br><span class="line">Transfer/sec:    387.61KB</span><br></pre></td></tr></table></figure></li>
-<li>One connection per request<br>Close to the second result, about 3000 Requests/sec</li>
-</ol>
-<h3 id="When-server-sleeps-0-5s-and-says-hello-to-client"><a href="#When-server-sleeps-0-5s-and-says-hello-to-client" class="headerlink" title="When server sleeps 0.5s and says hello to client"></a>When server sleeps 0.5s and says hello to client</h3><ol>
-<li><p>Only one client, one connection</p>
- <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ wrk -t2 -c100 -d10s http://localhost:10099/performance</span><br><span class="line">Running 10s <span class="built_in">test</span> @ http://localhost:10099/performance</span><br><span class="line">  2 threads and 100 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency   503.43ms    1.95ms 511.62ms   64.35%</span><br><span class="line">    Req/Sec   130.60    119.12   485.00     80.85%</span><br><span class="line">  2000 requests <span class="keyword">in</span> 10.10s, 250.00KB <span class="built_in">read</span></span><br><span class="line">Requests/sec:    198.04</span><br><span class="line">Transfer/sec:     24.75KB</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Fixed-size Connection pool  </p>
- <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ wrk -t2 -c100 -d10s http://localhost:10099/performance</span><br><span class="line">Running 10s <span class="built_in">test</span> @ http://localhost:10099/performance</span><br><span class="line">  2 threads and 100 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency   504.44ms    5.14ms 529.46ms   92.58%</span><br><span class="line">    Req/Sec   119.40     95.83   470.00     85.11%</span><br><span class="line">  1901 requests <span class="keyword">in</span> 10.07s, 237.62KB <span class="built_in">read</span></span><br><span class="line">Requests/sec:    188.80</span><br><span class="line">Transfer/sec:     23.60KB</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>one connection per request</p>
- <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ wrk -t2 -c100 -d10s http://localhost:10099/performance</span><br><span class="line">Running 10s <span class="built_in">test</span> @ http://localhost:10099/performance</span><br><span class="line">  2 threads and 100 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency   509.30ms    4.85ms 529.65ms   73.74%</span><br><span class="line">    Req/Sec   188.81    188.12   494.00     71.23%</span><br><span class="line">  1900 requests <span class="keyword">in</span> 10.06s, 237.50KB <span class="built_in">read</span></span><br><span class="line">Requests/sec:    188.89</span><br><span class="line">Transfer/sec:     23.61KB</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<h2 id="Sample-Code"><a href="#Sample-Code" class="headerlink" title="Sample Code"></a>Sample Code</h2><p>Find <a href="https://github.com/songrgg/go-experiments/tree/master/grpc/clientconn_test">sample code</a></p>
-<h2 id="Some-Results"><a href="#Some-Results" class="headerlink" title="Some Results"></a>Some Results</h2><p>In gereral, use shared grpc client rather than use a customized connection pool. </p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://grpc.io">grpc</a><br><a href="https://mycodesmells.com/post/pooling-grpc-connections">pooling-grpc-connections</a></p>
-
+            <p>gRPC is a well-known RPC protocol and a lot of companies adopted it as an internal communication protocol because of its robustness and stability. To use it more efficiently, I’ve done some experiments about how to maximize the gRPC client concurrency.</p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/programming/grpc-go-client-performance-test/#more">Read More</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
 </div>
-
-
 
 
 
@@ -477,14 +455,14 @@
             
             <a href="/operation/install-spinnaker-on-centos/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="Install Spinnaker on CentOS 7">
+                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="How to install Spinnaker on CentOS 7">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-18T22:00:00.000Z">2019-09-19</time></div>
-                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Install Spinnaker on CentOS 7</a>
+                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to install Spinnaker on CentOS 7</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -1358,14 +1336,14 @@
             
             <a href="/operation/install-spinnaker-on-centos/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="Install Spinnaker on CentOS 7">
+                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="How to install Spinnaker on CentOS 7">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-18T22:00:00.000Z">2019-09-19</time></div>
-                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Install Spinnaker on CentOS 7</a>
+                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to install Spinnaker on CentOS 7</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>

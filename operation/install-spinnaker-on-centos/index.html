@@ -3,29 +3,29 @@
 <head>
     <meta charset="utf-8" />
 
-<meta name="generator" content="Hexo 4.1.1" />
+<meta name="generator" content="Hexo 4.2.0" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>Install Spinnaker on CentOS 7 - Songrgg&#39;s Blog</title>
+<title>How to install Spinnaker on CentOS 7 - Blog | Songrgg</title>
 
 
-    <meta name="description" content="As we know, according to the spinnaker’s official documentation, spinnaker provides a tool for installing the spinnaker cluster in Kubernetes cluster or debian&#x2F;ubuntu bare metal machine, but there’s n">
+    <meta name="description" content="Spinnaker doesn’t support installation on CentOS machine, this article introduces how to use Docker to install Spinnaker components on CentOS directly. As we know, according to the spinnaker’s officia">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Install Spinnaker on CentOS 7">
-<meta property="og:url" content="https:&#x2F;&#x2F;songrgg.github.io&#x2F;operation&#x2F;install-spinnaker-on-centos&#x2F;index.html">
-<meta property="og:site_name" content="Songrgg&#39;s Blog">
-<meta property="og:description" content="As we know, according to the spinnaker’s official documentation, spinnaker provides a tool for installing the spinnaker cluster in Kubernetes cluster or debian&#x2F;ubuntu bare metal machine, but there’s n">
+<meta property="og:title" content="How to install Spinnaker on CentOS 7">
+<meta property="og:url" content="https://songrgg.github.io/operation/install-spinnaker-on-centos/index.html">
+<meta property="og:site_name" content="Blog | Songrgg">
+<meta property="og:description" content="Spinnaker doesn’t support installation on CentOS machine, this article introduces how to use Docker to install Spinnaker components on CentOS directly. As we know, according to the spinnaker’s officia">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https:&#x2F;&#x2F;songrgg.github.io&#x2F;images&#x2F;spin-dependencies.jpeg">
+<meta property="og:image" content="https://songrgg.github.io/images/spin-dependencies.jpeg">
 <meta property="article:published_time" content="2019-09-18T22:00:00.000Z">
-<meta property="article:modified_time" content="2019-12-14T09:27:16.780Z">
+<meta property="article:modified_time" content="2020-02-22T14:52:20.485Z">
 <meta property="article:author" content="songrgg">
 <meta property="article:tag" content="spinnaker">
 <meta property="article:tag" content="centos">
 <meta property="article:tag" content="docker">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;songrgg.github.io&#x2F;images&#x2F;spin-dependencies.jpeg">
+<meta name="twitter:image" content="https://songrgg.github.io/images/spin-dependencies.jpeg">
 
 
 
@@ -82,7 +82,7 @@
 
 
 <link rel="stylesheet" href="/css/style.css">
-<link rel="alternate" href="/atom.xml" title="Songrgg's Blog" type="application/atom+xml">
+<link rel="alternate" href="/atom.xml" title="Blog | Songrgg" type="application/atom+xml">
 </head>
 <body class="is-3-column">
     <nav class="navbar navbar-main">
@@ -137,7 +137,7 @@
     
     <div class="card-image">
         <span  class="image is-7by1">
-            <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="Install Spinnaker on CentOS 7">
+            <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="How to install Spinnaker on CentOS 7">
         </span>
     </div>
     
@@ -155,7 +155,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    2 minutes read (About 287 words)
+                    2 minutes read (About 309 words)
                 </span>
                 
                 
@@ -164,11 +164,12 @@
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                Install Spinnaker on CentOS 7
+                How to install Spinnaker on CentOS 7
             
         </h1>
         <div class="content">
-            <p>As we know, according to the spinnaker’s official documentation, spinnaker provides a tool for installing the spinnaker cluster in Kubernetes cluster or debian/ubuntu bare metal machine, but there’s not an option to install it on CentOS or other common operating systems. Althogh the <a href="https://github.com/spinnaker/spinnaker/tree/master/experimental/docker-compose">spinnaker</a> provides a way to start Spinnaker with <a href="https://docs.docker.com/compose/">Docker Compose</a>, but it’s out of date. So I created a new <a href="https://github.com/songrgg/spinnaker-compose">docker-compose project</a> to quickstart a spinnaker cluster on any kind of os.</p>
+            <p>Spinnaker doesn’t support installation on CentOS machine, this article introduces how to use Docker to install Spinnaker components on CentOS directly.</p>
+<p>As we know, according to the spinnaker’s official documentation, spinnaker provides a tool for installing the spinnaker cluster in Kubernetes cluster or debian/ubuntu bare metal machine, but there’s not an option to install it on CentOS or other common operating systems. Althogh the <a href="https://github.com/spinnaker/spinnaker/tree/master/experimental/docker-compose">spinnaker</a> provides a way to start Spinnaker with <a href="https://docs.docker.com/compose/">Docker Compose</a>, but it’s out of date. So I created a new <a href="https://github.com/songrgg/spinnaker-compose">docker-compose project</a> to quickstart a spinnaker cluster on any kind of os.</p>
 <a id="more"></a>
 
 <h2 id="Quickstart"><a href="#Quickstart" class="headerlink" title="Quickstart"></a>Quickstart</h2><p>Provision a machine with at least 16GB memory and 4 cores, it may need more than this since my macbook pro(4cores, 16GB) was stuck when I started spinnaker.</p>
@@ -203,15 +204,6 @@
 </div>
 
 
-
-
-
-<div class="card">
-    <div class="card-content">
-        <h3 class="menu-label has-text-centered">Related articles</h3>
-        <ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/operation/hackathon-spinnaker/" title="My first Hackathon: bring Spinnaker to my company" rel="bookmark">My first Hackathon: bring Spinnaker to my company</a></h3></div></li><li class="popular-posts-item"><div class="popular-posts-title"><h3><a href="/life/raspberry3-docker/" title="Raspberry 3安装docker" rel="bookmark">Raspberry 3安装docker</a></h3></div></li></ul>
-    </div>
-</div>
 
 
 
@@ -514,14 +506,14 @@
             
             <a href="/operation/install-spinnaker-on-centos/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="Install Spinnaker on CentOS 7">
+                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="How to install Spinnaker on CentOS 7">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-18T22:00:00.000Z">2019-09-19</time></div>
-                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Install Spinnaker on CentOS 7</a>
+                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to install Spinnaker on CentOS 7</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -1395,14 +1387,14 @@
             
             <a href="/operation/install-spinnaker-on-centos/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="Install Spinnaker on CentOS 7">
+                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="How to install Spinnaker on CentOS 7">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-18T22:00:00.000Z">2019-09-19</time></div>
-                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Install Spinnaker on CentOS 7</a>
+                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to install Spinnaker on CentOS 7</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>

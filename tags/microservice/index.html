@@ -3,21 +3,21 @@
 <head>
     <meta charset="utf-8" />
 
-<meta name="generator" content="Hexo 4.1.1" />
+<meta name="generator" content="Hexo 4.2.0" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>Tag: microservice - Songrgg&#39;s Blog</title>
+<title>Tag: microservice - Blog | Songrgg</title>
 
 
     <meta name="description" content="A place to share programming experience and understanding of architecture.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Songrgg&#39;s Blog">
-<meta property="og:url" content="https:&#x2F;&#x2F;songrgg.github.io&#x2F;tags&#x2F;microservice&#x2F;index.html">
-<meta property="og:site_name" content="Songrgg&#39;s Blog">
+<meta property="og:title" content="Blog | Songrgg">
+<meta property="og:url" content="https://songrgg.github.io/tags/microservice/index.html">
+<meta property="og:site_name" content="Blog | Songrgg">
 <meta property="og:description" content="A place to share programming experience and understanding of architecture.">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https:&#x2F;&#x2F;songrgg.github.io&#x2F;images&#x2F;og_image.png">
+<meta property="og:image" content="https://songrgg.github.io/images/og_image.png">
 <meta property="article:author" content="songrgg">
 <meta property="article:tag" content="programming">
 <meta property="article:tag" content="sre">
@@ -25,7 +25,7 @@
 <meta property="article:tag" content="service mesh">
 <meta property="article:tag" content="devops">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;songrgg.github.io&#x2F;images&#x2F;og_image.png">
+<meta name="twitter:image" content="https://songrgg.github.io/images/og_image.png">
 
 
 
@@ -82,7 +82,7 @@
 
 
 <link rel="stylesheet" href="/css/style.css">
-<link rel="alternate" href="/atom.xml" title="Songrgg's Blog" type="application/atom+xml">
+<link rel="alternate" href="/atom.xml" title="Blog | Songrgg" type="application/atom+xml">
 </head>
 <body class="is-3-column">
     <nav class="navbar navbar-main">
@@ -203,8 +203,6 @@
 
 
 
-
-
     
 
 <div class="card">
@@ -223,7 +221,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    3 minutes read (About 451 words)
+                    3 minutes read (About 452 words)
                 </span>
                 
                 
@@ -239,28 +237,20 @@
             <p><a href="https://istio.io">Istio</a> has been adopted as a common implementation of <a href="https://istio.io/docs/concepts/what-is-istio/">service mesh</a>, since more and more companies want to bring Istio into production, the version control of Istio seems a significant problem to solve.</p>
 <p>Version control is necessary as Istio components can be treated as the equivalent RPC services like our business services, we need to have an understanding of which version we are using now and what does the next version bring. And some Istio components can cooperate with the others, if we need to upgrade one component we need to upgrade the other components too.</p>
 <p>Although the Istio community provides the Istio upgrade method, we don’t actually want to upgrade such a whole thing in one move, it influences so much that we don’t want to risk.</p>
-<h3 id="Helm"><a href="#Helm" class="headerlink" title="Helm"></a>Helm</h3><p><a href="https://helm.sh">Helm</a> is package control system for Kubernetes, it’s more like the complicated version of brew on Mac.</p>
-<p>It uses Yaml and Golang templates to formulate a complete application configuration on Kubernetes. A lot of applications are packaged as Helm charts, we can build a complicated application by declaring the dependencies between these charts.</p>
-<h3 id="Istio-Helm"><a href="#Istio-Helm" class="headerlink" title="Istio + Helm"></a>Istio + Helm</h3><p>Istio project contains the <a href="https://github.com/istio/istio/blob/master/install/kubernetes/helm/istio/README.md">Helm configuration</a> itself, I recommend the users to extract the Helm brought by Istio into a standalone Git repository.</p>
-<p><img src="/images/istio-helm-git.png" alt="istio-helm-git"></p>
-<p>Like the other services, we use Git to control each component’s configuration and track every modification.</p>
-<h3 id="CI-CD"><a href="#CI-CD" class="headerlink" title="CI/CD"></a>CI/CD</h3><p>As more and more people advocate <code>infrastructure as code</code>, we not only store the Istio Helm as a Git repository, we bring the CI/CD to the infrastructure.</p>
-<p>If three Kubernetes clusters: <code>test</code>, <code>stage</code>, <code>production</code> exist, we can setup CI/CD to <code>test</code> cluster based on the specified Git <code>test</code> branch, each commit will trigger the generation of the latest Istio K8S Yaml config and apply them to the <code>test</code> cluster, after the tests on <code>test</code> environment, we brought the Istio updates to the <code>stage</code> and <code>production</code> in order.</p>
-<h3 id="Still-worried-about-Production"><a href="#Still-worried-about-Production" class="headerlink" title="Still worried about Production?"></a>Still worried about Production?</h3><p>Although we have tested in the <code>test</code> environment, we still worry if it works in the <code>production</code> and a method to let you know what actually changes is to <strong>diff</strong> the K8S configuration between the latest config and the current K8S config.<br>I recommend the <a href="https://github.com/weaveworks/kubediff"><code>kubediff</code></a> tool to distinguish the differences.</p>
-<h3 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h3><ul>
-<li>Every updates to Istio configuration need to be tracked by Git. </li>
-<li>Like the common services, deploy the change to <code>test</code> environment as soon as possible to fail fast.</li>
-<li>Use <code>kubediff</code> to show the changes.</li>
-</ul>
-
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/operation/istio-version-control-on-k8s/#more">Read More</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
 </div>
-
-
 
 
 
@@ -293,7 +283,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    11 minutes read (About 1641 words)
+                    11 minutes read (About 1636 words)
                 </span>
                 
                 
@@ -306,50 +296,24 @@
             
         </h1>
         <div class="content">
-            <h1 id="go-micro迁移到gRPC"><a href="#go-micro迁移到gRPC" class="headerlink" title="go-micro迁移到gRPC"></a>go-micro迁移到gRPC</h1><p><a href="https://github.com/micro/micro">micro</a>是基于golang的微服务框架，之前华尔街见闻架构升级中谈到了我们是基于go-micro的后端架构，随着我们对服务网格的调研、测试和实施，为了打通不同语言之间的服务调用，我们选择了gRPC作为服务内部的通用协议。</p>
+            <p><a href="https://github.com/micro/micro">micro</a>是基于golang的微服务框架，之前华尔街见闻架构升级中谈到了我们是基于go-micro的后端架构，随着我们对服务网格的调研、测试和实施，为了打通不同语言之间的服务调用，我们选择了gRPC作为服务内部的通用协议。</p>
 <p>go-micro框架的架构非常具有拓展性，它拥有自己的RPC框架，通过抽象codec,transport,selector等微服务组件，你既可以使用官方实现的各种插件<a href="https://github.com/micro/go-plugins">go-plugins</a>进行组装，又可以根据实际的情况实现自己的组件。然而，我们打算利用服务网格的优势，将微服务的基础组件下沉到基础设施中去，将组件代码从代码库中剥离开来。</p>
 <p>这样一来，我们相当于只需要最简的RPC框架，只需要服务之间有统一、稳定、高效的通信协议，由于micro在我们新架构中略显臃肿，于是我们选择逐渐剥除micro。还有一个重要原因，我们选择的服务网格方案是istio，它的代理原生支持gRPC，而micro只是将gRPC当做transport层，相当于复写了gRPC的服务路由逻辑，这样有损于istio的一些特性，譬如流量监控等功能。</p>
 <p>出于这些考虑，第一步需要将micro改成纯gRPC模式，这里的改造部分我们考虑只应该去更改基础库的代码，而尽量不要使业务代码更改，减少对已有逻辑的影响，和一些软性的譬如开发人员的工作量。</p>
-<h2 id="服务发现模块"><a href="#服务发现模块" class="headerlink" title="服务发现模块"></a>服务发现模块</h2><p>istio的服务发现支持etcd、consul等，我们需要将其改成使用kubernetes的服务名进行访问。通过实现<a href="https://gist.github.com/songrgg/22999fb7ab76a30dcac17cb28ed412d4">istio selector</a>的方式，我们将RPC调用的服务名与k8s的服务名端口做映射。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> istio</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line">	<span class="string">"github.com/micro/go-micro/registry"</span></span><br><span class="line">	<span class="string">"github.com/micro/go-micro/selector"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	svcPort = <span class="number">10088</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	serviceHostMapping = <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>&#123;</span><br><span class="line">		<span class="string">"payment"</span>: <span class="string">"payment.common"</span>,</span><br><span class="line">		<span class="string">"content"</span>: <span class="string">"content.ns1"</span>,</span><br><span class="line">		<span class="string">"user"</span>:    <span class="string">"user.ns1"</span>,</span><br><span class="line">	&#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> istio <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(r *istio)</span> <span class="title">Select</span><span class="params">(service <span class="keyword">string</span>, opts ...selector.SelectOption)</span> <span class="params">(selector.Next, error)</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> host, exist := serviceHostMapping[service]; exist &#123;</span><br><span class="line">		node := &amp;registry.Node&#123;</span><br><span class="line">			Id:      service,</span><br><span class="line">			Address: host,</span><br><span class="line">			Port:    svcPort,</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="params">(*registry.Node, error)</span></span> &#123;</span><br><span class="line">			<span class="keyword">return</span> node, <span class="literal">nil</span></span><br><span class="line">		&#125;, <span class="literal">nil</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span>, fmt.Errorf(<span class="string">"service %s(%s) not found"</span>, service, svc)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
-<p>这里注意的是由于服务之间调用需要指定service name和端口，所以在这里我们把端口设置了一个magic number。</p>
-<h2 id="传输模块"><a href="#传输模块" class="headerlink" title="传输模块"></a>传输模块</h2><p>go-micro采用各种协议作为传输报文的工具，可以从<a href="https://github.com/micro/go-plugins/tree/master/transport">transport</a>中了解到，有http/grpc/tcp/utp等，我们曾先后使用过tcp、utp、gRPC，经过测试gRPC是其中最为稳定的。之前提到过gRPC只是作为传输信道，micro定义了自己的RPC接口，实现了RPC的路由、传输、重试等功能，通过自定义了protobuf的插件生成符合micro标准的proto文件。</p>
-<p>为了向后兼容，在使用grpc替换原RPC时，我也需要根据protobuf文件生成新的golang代码，其中包括client端、server端代码的变更，实际上我的更新是针对<a href="https://github.com/golang/protobuf/tree/master/protoc-gen-go">protoc-gen-go</a>，fork之后修改<a href="https://github.com/golang/protobuf/blob/master/protoc-gen-go/grpc/grpc.go">grpc/grpc.go</a>部分，在<code>func generateService()</code>中对Client端代码进行micro的适配。</p>
-<h3 id="Client"><a href="#Client" class="headerlink" title="Client"></a>Client</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *someClient)</span> <span class="title">DoSomething</span><span class="params">(ctx context.Context, in *SomeRequest, opts ...grpc.CallOption)</span> <span class="params">(*SomeResponse, error)</span></span></span><br></pre></td></tr></table></figure>
-
-<h3 id="Server"><a href="#Server" class="headerlink" title="Server"></a>Server</h3><p>Server端代码的更新除了接口的适配，有一个关注点是micro的接口设计是</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DoSomething(context.Context, *SomeRequest, *SomeResponse) error</span><br></pre></td></tr></table></figure>
-<p>而gRPC是</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DoSomething(context.Context, *SomeRequest) (*SomeResponse, error)</span><br></pre></td></tr></table></figure>
-
-<p>micro接口设计的好处是支持服务端缓存的应用，当服务端handler触发时，cache interceptor可以将response缓存，当缓存命中时可以将其返回。而由于gRPC的版本将response放在了返回值中，运行时无法将譬如redis中字符串格式的response解码成<code>SomeResponse</code>，而micro版本由于将其放在了参数位置，所以可以通过</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">json.Unmarshall([]<span class="keyword">byte</span>(<span class="string">""</span>), &amp;SomeResponse&#123;&#125;)</span><br></pre></td></tr></table></figure>
-<p>从字符串恢复response。</p>
-<p>我们的做法是不改变接口的设计，而是在自动生成的golang代码中，在interceptor运行之前将response object塞入context。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Server</span></span><br><span class="line">ctx = ctx.WithValue(<span class="string">"IstioResponseBody"</span>, &amp;SomeResponse&#123;&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Interceptor</span></span><br><span class="line">obj := ctx.Value(<span class="string">"IstioResponseBody"</span>)</span><br><span class="line">json.Unmarshall([]<span class="keyword">byte</span>(<span class="string">""</span>), obj)</span><br></pre></td></tr></table></figure>
-
-<h2 id="Interceptor模块"><a href="#Interceptor模块" class="headerlink" title="Interceptor模块"></a>Interceptor模块</h2><p>一些interceptor的迁移工作，例如logger、cache、recover等。</p>
-<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
-<li><p>向后兼容<br>更新的过程开发人员实际上并不是特别感兴趣，我们SRE能做的是对他们基本上无改动，第一个版本不要让开发感知。虽然实际上测试时由于我们的变动，测试环境不断受到稳定性质疑。</p>
-</li>
-<li><p>micro和gRPC的context传递不同<br>gRPC是基于http2，metadata是基于HTTP header传递，Client利用<code>metadata.NewOutgoingContext(ctx, MD)</code>携带metadata，而Server端利用<code>metadata.FromIncomingContext(ctx)</code>提取metadata。而micro则用<code>context.WithValue(metaKey{}, MD)</code>传递。</p>
-</li>
-<li><p>使用环境变量做一些特殊处理<br>我们通过环境变量在基础库里做了一些判断，在新老架构并存下进行一些特殊处理，譬如刚才说到的metadata获取逻辑。</p>
-</li>
-<li><p>关于proto自动生成<br>我们通过在CI中配置istio版本镜像的编译打包逻辑和原有逻辑共存，在编译前我们运行proto编译工具，生成gRPC的golang文件，从而打出新的镜像。</p>
-</li>
-</ol>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>micro陪伴了我们一年多的时间，期间它的架构设计给了我们很大的弹性可以去适配一些我们的架构，可以选择很多好的开源工具，譬如zipkin、prometheus、etcd等，适合于刚上微服务不久的项目进行技术摸索和选择，而这一年的时间，我们的架构也逐渐明晰和稳定，我们更倾向于一个精简的基础库，并且由于在线项目的不断增加，运维成本可以通过下沉基础组件进行降低。</p>
-
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/microservice/goodbye-micro/#more">Read More</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
 </div>
-
-
 
 
 
@@ -417,8 +381,6 @@
         
     </div>
 </div>
-
-
 
 
 
@@ -528,8 +490,6 @@
 
 
 
-
-
     
 
 <div class="card">
@@ -599,8 +559,6 @@
         
     </div>
 </div>
-
-
 
 
 
@@ -699,8 +657,6 @@
         
     </div>
 </div>
-
-
 
 
 
@@ -962,14 +918,14 @@
             
             <a href="/operation/install-spinnaker-on-centos/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="Install Spinnaker on CentOS 7">
+                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="How to install Spinnaker on CentOS 7">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-18T22:00:00.000Z">2019-09-19</time></div>
-                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Install Spinnaker on CentOS 7</a>
+                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to install Spinnaker on CentOS 7</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -1843,14 +1799,14 @@
             
             <a href="/operation/install-spinnaker-on-centos/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="Install Spinnaker on CentOS 7">
+                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="How to install Spinnaker on CentOS 7">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-18T22:00:00.000Z">2019-09-19</time></div>
-                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Install Spinnaker on CentOS 7</a>
+                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to install Spinnaker on CentOS 7</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>

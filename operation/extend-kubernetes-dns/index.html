@@ -3,23 +3,23 @@
 <head>
     <meta charset="utf-8" />
 
-<meta name="generator" content="Hexo 4.1.1" />
+<meta name="generator" content="Hexo 4.2.0" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>Kubernetes DNS拓展 - Songrgg&#39;s Blog</title>
+<title>Kubernetes DNS拓展 - Blog | Songrgg</title>
 
 
-    <meta name="description" content="Kubernetes DNS在内部服务与外部服务交互，内部服务与内部服务，内部服务与云托管服务交互的工具，拓展DNS可以在内部服务访问集群外服务时像访问集群内服务一样，通过DNS映射将统一风格的域名映射到可访问的IP，而不需要影响内部服务的运行。  自定义域名解析拓展DNS的方法就是为特定规则的域名指定DNS服务器，在ConfigMap中设置指定域名相对的dns server，如consul.l">
+    <meta name="description" content="Kubernetes DNS在内部服务与外部服务交互，内部服务与内部服务，内部服务与云托管服务交互的工具，拓展DNS可以在内部服务访问集群外服务时像访问集群内服务一样，通过DNS映射将统一风格的域名映射到可访问的IP，而不需要影响内部服务的运行，这里介绍如何使用Consul来拓展DNS。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Kubernetes DNS拓展">
-<meta property="og:url" content="https:&#x2F;&#x2F;songrgg.github.io&#x2F;operation&#x2F;extend-kubernetes-dns&#x2F;index.html">
-<meta property="og:site_name" content="Songrgg&#39;s Blog">
-<meta property="og:description" content="Kubernetes DNS在内部服务与外部服务交互，内部服务与内部服务，内部服务与云托管服务交互的工具，拓展DNS可以在内部服务访问集群外服务时像访问集群内服务一样，通过DNS映射将统一风格的域名映射到可访问的IP，而不需要影响内部服务的运行。  自定义域名解析拓展DNS的方法就是为特定规则的域名指定DNS服务器，在ConfigMap中设置指定域名相对的dns server，如consul.l">
+<meta property="og:url" content="https://songrgg.github.io/operation/extend-kubernetes-dns/index.html">
+<meta property="og:site_name" content="Blog | Songrgg">
+<meta property="og:description" content="Kubernetes DNS在内部服务与外部服务交互，内部服务与内部服务，内部服务与云托管服务交互的工具，拓展DNS可以在内部服务访问集群外服务时像访问集群内服务一样，通过DNS映射将统一风格的域名映射到可访问的IP，而不需要影响内部服务的运行，这里介绍如何使用Consul来拓展DNS。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https:&#x2F;&#x2F;songrgg.github.io&#x2F;images&#x2F;kubernetes.png">
+<meta property="og:image" content="https://songrgg.github.io/images/kubernetes.png">
 <meta property="article:published_time" content="2018-08-18T22:00:00.000Z">
-<meta property="article:modified_time" content="2019-12-14T19:45:40.542Z">
+<meta property="article:modified_time" content="2020-02-22T14:32:32.677Z">
 <meta property="article:author" content="songrgg">
 <meta property="article:tag" content="programming">
 <meta property="article:tag" content="sre">
@@ -27,7 +27,7 @@
 <meta property="article:tag" content="service mesh">
 <meta property="article:tag" content="devops">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;songrgg.github.io&#x2F;images&#x2F;kubernetes.png">
+<meta name="twitter:image" content="https://songrgg.github.io/images/kubernetes.png">
 
 
 
@@ -84,7 +84,7 @@
 
 
 <link rel="stylesheet" href="/css/style.css">
-<link rel="alternate" href="/atom.xml" title="Songrgg's Blog" type="application/atom+xml">
+<link rel="alternate" href="/atom.xml" title="Blog | Songrgg" type="application/atom+xml">
 </head>
 <body class="is-3-column">
     <nav class="navbar navbar-main">
@@ -157,7 +157,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    5 minutes read (About 803 words)
+                    5 minutes read (About 818 words)
                 </span>
                 
                 
@@ -170,9 +170,9 @@
             
         </h1>
         <div class="content">
-            <blockquote>
-<p>Kubernetes DNS在内部服务与外部服务交互，内部服务与内部服务，内部服务与云托管服务交互的工具，拓展DNS可以在内部服务访问集群外服务时像访问集群内服务一样，通过DNS映射将统一风格的域名映射到可访问的IP，而不需要影响内部服务的运行。</p>
-</blockquote>
+            <p>Kubernetes DNS在内部服务与外部服务交互，内部服务与内部服务，内部服务与云托管服务交互的工具，拓展DNS可以在内部服务访问集群外服务时像访问集群内服务一样，通过DNS映射将统一风格的域名映射到可访问的IP，而不需要影响内部服务的运行，这里介绍如何使用Consul来拓展DNS。</p>
+<a id="more"></a>
+
 <h3 id="自定义域名解析"><a href="#自定义域名解析" class="headerlink" title="自定义域名解析"></a>自定义域名解析</h3><p>拓展DNS的方法就是为特定规则的域名指定DNS服务器，在ConfigMap中设置指定域名相对的dns server，如<code>consul.local</code>结尾的域名使用<code>10.150.0.1</code>来解析。</p>
 <figure class="highlight yaml"><figcaption><span>ConfigMap</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ConfigMap</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">kube-dns</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">kube-system</span></span><br><span class="line"><span class="attr">data:</span></span><br><span class="line">  <span class="attr">stubDomains:</span> <span class="string">|</span></span><br><span class="line">    <span class="string">&#123;"consul.local":</span> <span class="string">["10.150.0.1"]&#125;</span></span><br><span class="line">  <span class="attr">upstreamNameservers:</span> <span class="string">|</span></span><br><span class="line">    <span class="string">["172.16.0.1"]</span></span><br></pre></td></tr></table></figure>
 
@@ -228,8 +228,6 @@
         
     </div>
 </div>
-
-
 
 
 
@@ -534,14 +532,14 @@
             
             <a href="/operation/install-spinnaker-on-centos/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="Install Spinnaker on CentOS 7">
+                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="How to install Spinnaker on CentOS 7">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-18T22:00:00.000Z">2019-09-19</time></div>
-                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Install Spinnaker on CentOS 7</a>
+                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to install Spinnaker on CentOS 7</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -1415,14 +1413,14 @@
             
             <a href="/operation/install-spinnaker-on-centos/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="Install Spinnaker on CentOS 7">
+                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="How to install Spinnaker on CentOS 7">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-18T22:00:00.000Z">2019-09-19</time></div>
-                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Install Spinnaker on CentOS 7</a>
+                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to install Spinnaker on CentOS 7</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>

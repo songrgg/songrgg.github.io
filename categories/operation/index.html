@@ -3,21 +3,21 @@
 <head>
     <meta charset="utf-8" />
 
-<meta name="generator" content="Hexo 4.1.1" />
+<meta name="generator" content="Hexo 4.2.0" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>Category: operation - Songrgg&#39;s Blog</title>
+<title>Category: operation - Blog | Songrgg</title>
 
 
     <meta name="description" content="A place to share programming experience and understanding of architecture.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Songrgg&#39;s Blog">
-<meta property="og:url" content="https:&#x2F;&#x2F;songrgg.github.io&#x2F;categories&#x2F;operation&#x2F;index.html">
-<meta property="og:site_name" content="Songrgg&#39;s Blog">
+<meta property="og:title" content="Blog | Songrgg">
+<meta property="og:url" content="https://songrgg.github.io/categories/operation/index.html">
+<meta property="og:site_name" content="Blog | Songrgg">
 <meta property="og:description" content="A place to share programming experience and understanding of architecture.">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https:&#x2F;&#x2F;songrgg.github.io&#x2F;images&#x2F;og_image.png">
+<meta property="og:image" content="https://songrgg.github.io/images/og_image.png">
 <meta property="article:author" content="songrgg">
 <meta property="article:tag" content="programming">
 <meta property="article:tag" content="sre">
@@ -25,7 +25,7 @@
 <meta property="article:tag" content="service mesh">
 <meta property="article:tag" content="devops">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;songrgg.github.io&#x2F;images&#x2F;og_image.png">
+<meta name="twitter:image" content="https://songrgg.github.io/images/og_image.png">
 
 
 
@@ -82,7 +82,7 @@
 
 
 <link rel="stylesheet" href="/css/style.css">
-<link rel="alternate" href="/atom.xml" title="Songrgg's Blog" type="application/atom+xml">
+<link rel="alternate" href="/atom.xml" title="Blog | Songrgg" type="application/atom+xml">
 </head>
 <body class="is-3-column">
     <nav class="navbar navbar-main">
@@ -167,7 +167,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    6 minutes read (About 846 words)
+                    6 minutes read (About 899 words)
                 </span>
                 
                 
@@ -180,58 +180,22 @@
             
         </h1>
         <div class="content">
-            <h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>Certificates are broadly used for security reasons, they can be used within internal service or public service communication. The most common certificate is TLS used for verifying the identity of the HTTPS service. To increase security, the certificate will not be always valid because of expiration. To prevent the certificate expiry, we should rotate them periodically and meanwhile monitor them and alert if expired. Telegraf is a popular metric collecting tool to implement this.</p>
-<h2 id="Overview-for-certificate-types"><a href="#Overview-for-certificate-types" class="headerlink" title="Overview for certificate types"></a>Overview for certificate types</h2><ol>
-<li>.csr<br>Certificate Signing Request used to request a certificate from the certificate authority.</li>
-<li>.pem<br>This is a container format that may include just the public certificate or may include an entire certificate chain including public key, private key, and root certificates. Confusingly, it may also encode a CSR (e.g. as used here) as the PKCS10 format can be translated into PEM.</li>
-<li>.key<br>This is a PEM formatted file containing just the private-key of a specific certificate and is merely a conventional name and not a standardized one.</li>
-<li>.pkcs12 .pfx .p12<br>This is a passworded container format that contains both public and private certificate pairs. Unlike .pem files, this container is fully encrypted. Openssl can turn this into a .pem file with both public and private keys.</li>
-<li>.cert .cer .crt<br>A .pem (or rarely .der) formatted file with a different extension, one that is recognized by Windows Explorer as a certificate, which .pem is not.</li>
-<li>.jks<br>A Java KeyStore (JKS) is a repository of security certificates – either authorization certificates or public key certificates – plus corresponding private keys, used for instance in SSL encryption.</li>
-</ol>
-<h2 id="Check-certificate-expiry-time"><a href="#Check-certificate-expiry-time" class="headerlink" title="Check certificate expiry time"></a>Check certificate expiry time</h2><ol>
-<li><p>check the JKS expiry time</p>
- <figure class="highlight bash"><figcaption><span>check_jks.sh</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># to check keystore.jks expiry time</span></span><br><span class="line">keytool -list -v -keystore keystore.jks -storepass <span class="string">"pass"</span> | grep until</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>check the PKCS#12 expiry time</p>
- <figure class="highlight bash"><figcaption><span>check_p12.sh</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># to check certicate.p12 expiry time</span></span><br><span class="line">openssl pkcs12 -<span class="keyword">in</span> certicate.p12 -nokeys | openssl x509 -noout -enddate</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<h2 id="Customize-telegraf-plugin"><a href="#Customize-telegraf-plugin" class="headerlink" title="Customize telegraf plugin"></a>Customize telegraf plugin</h2><p>In this case, we can use a bash script to collect the metrics and output it as <a href="https://docs.influxdata.com/influxdb/v1.7/write_protocols/line_protocol_tutorial/">influxDB line protocol</a>, it does not need you to use influxDB, you can use any kind of monitoring backend that can read from telegraf, for example, Prometheus.</p>
-<p><a href="https://www.influxdata.com/time-series-platform/telegraf/">Telegraf</a> is a daemon that can be running on servers to collect system metrics, it supports multiple input plugins to collect metrics. <a href="https://github.com/influxdata/telegraf/tree/master/plugins/inputs/exec"><code>intput.exec</code></a> is an input plugin which will run the specified script, the output of the script will be treated as a data point.</p>
-<h3 id="Bash-script-to-generate-the-metric"><a href="#Bash-script-to-generate-the-metric" class="headerlink" title="Bash script to generate the metric"></a>Bash script to generate the metric</h3><p>We can write a bash script to generate an influxDB line formatted metric, the script will use <code>openssl</code> to resolve the certificate.</p>
-<ol>
-<li><p>This is a script used to resolve PKCS#12 files.</p>
- <figure class="highlight bash"><figcaption><span>generate_p12_metric.sh</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">FILE_PATH=<span class="string">"path-to-pkcs#12-cert"</span></span><br><span class="line">P12_UNTIL=$(openssl pkcs12 -<span class="keyword">in</span> <span class="variable">$FILE_PATH</span> -nokeys 2&gt;/dev/null | openssl x509 -text -noout 2&gt;/dev/null | grep After | sed <span class="string">'s/.*After : //'</span> )</span><br><span class="line"></span><br><span class="line"><span class="comment"># return 1 year when there's no existing file</span></span><br><span class="line"><span class="keyword">if</span> [ -z <span class="string">"<span class="variable">$P12_UNTIL</span>"</span> ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"<span class="variable">$((360*24*60*60)</span>)"</span></span><br><span class="line">    <span class="built_in">exit</span> 0</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">P12_UNTIL_EPOCH=$(date +%s --date=<span class="string">"<span class="variable">$P12_UNTIL</span>"</span>)</span><br><span class="line">NOW_EPOCH=$(date +%s)</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"pkcs12_cert,source=<span class="variable">$FILE_PATH</span> expiry=<span class="variable">$(($P12_UNTIL_EPOCH-$NOW_EPOCH)</span>) <span class="variable">$&#123;NOW_EPOCH&#125;</span>000000000"</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Another script to resolve the JKS file</p>
- <figure class="highlight bash"><figcaption><span>generate_jks_metric.sh</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">FILE_PATH=<span class="string">"path-to-jks-cert"</span></span><br><span class="line">KEYSTORE_UNTIL=$(<span class="built_in">echo</span> <span class="string">'dummydummy'</span> | keytool -list -v -keystore <span class="variable">$FILE_PATH</span> 2&gt;/dev/null | grep -i Until  | sed <span class="string">'s/.*until: //'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># This may be caused by unexistent file, return 1 year to skip checking.</span></span><br><span class="line"><span class="keyword">if</span> [ -z <span class="string">"<span class="variable">$KEYSTORE_UNTIL</span>"</span> ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"<span class="variable">$((360*24*60*60)</span>)"</span></span><br><span class="line">    <span class="built_in">exit</span> 0</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">KEYSTORE_UNTIL_EPOCH=$(date +%s --date=<span class="string">"<span class="variable">$KEYSTORE_UNTIL</span>"</span>)</span><br><span class="line">NOW_EPOCH=$(date +%s)</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"jks_cert,source=<span class="variable">$FILE_PATH</span> expiry=<span class="variable">$(($KEYSTORE_UNTIL_EPOCH-$NOW_EPOCH)</span>) <span class="variable">$&#123;NOW_EPOCH&#125;</span>000000000"</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>X509 Cert<br>There’s an <a href="https://github.com/influxdata/telegraf/tree/master/plugins/inputs/x509_cert">X509 Cert Input Plugin</a> already there.</p>
-</li>
-</ol>
-<h3 id="Telegraf-configuration"><a href="#Telegraf-configuration" class="headerlink" title="Telegraf configuration"></a>Telegraf configuration</h3><p>Put the <code>jks_cert.conf</code> under the telegraf’s configuration folder, restart telegraf and it will take effect.</p>
-<figure class="highlight"><figcaption><span>jks_cert.conf</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[[inputs.exec]]</span></span><br><span class="line">  commands = [ "/usr/local/bin/jks_certificate_metric.sh" ]</span><br><span class="line"></span><br><span class="line">  data_format = "influx"</span><br></pre></td></tr></table></figure>
-
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
-<li><a href="https://serverfault.com/questions/9708/what-is-a-pem-file-and-how-does-it-differ-from-other-openssl-generated-key-file">What is a pem file and how does it differ from other OpenSSL generated key files?</a></li>
-<li><a href="https://pingtool.org/openssl-check-p12-expiration-date/">OpenSSL check p12 expiration date</a></li>
-<li><a href="https://serverfault.com/questions/9708/what-is-a-pem-file-and-how-does-it-differ-from-other-openssl-generated-key-file">What is a PEM file and how does it differ from other OpenSSL generated key file</a></li>
-<li><a href="https://en.wikipedia.org/wiki/PKCS_12">pkcs#12</a></li>
-<li><a href="https://www.digitalocean.com/community/tutorials/openssl-essentials-working-with-ssl-certificates-private-keys-and-csrs">OpenSSL essentials</a></li>
-<li><a href="https://www.digitalocean.com/community/tutorials/java-keytool-essentials-working-with-java-keystores">Java keytool essentials</a></li>
-<li><a href="https://en.wikipedia.org/wiki/Java_KeyStore">Java KeyStore</a></li>
-</ol>
-
+            <p>As a developer or operator of a Website, the certificate expiration could happen and make the services not work. I’ll introduce how to monitor certificates like SSL,JKS,P12 using Telegraf.</p>
+<p>Certificates are broadly used for security reasons, they can be used within internal service or public service communication. The most common certificate is TLS used for verifying the identity of the HTTPS service. To increase security, the certificate will not be always valid because of expiration. To prevent the certificate expiry, we should rotate them periodically and meanwhile monitor them and alert if expired. Telegraf is a popular metric collecting tool to implement this.</p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/#more">Read More</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
 </div>
-
-
 
 
 
@@ -264,7 +228,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    5 minutes read (About 754 words)
+                    5 minutes read (About 805 words)
                 </span>
                 
                 
@@ -277,13 +241,7 @@
             
         </h1>
         <div class="content">
-            <h2 id="Context"><a href="#Context" class="headerlink" title="Context"></a>Context</h2><h3 id="Multiple-data-centers"><a href="#Multiple-data-centers" class="headerlink" title="Multiple data centers"></a>Multiple data centers</h3><p>Companies use data center redundancy to implement service’s high availability, there will be multiple data centers existing with 3 main deployments:</p>
-<ol>
-<li>Disaster Recovery<br>You will have your live traffic served in the primary data center, meanwhile disaster recovery data center is a backup to recover when the primary is down. Usually, it doesn’t allow you to run normal operations in the disaster recovery one.</li>
-<li>Hot Standby<br>The primary data center is taking traffic, the hot standby data center is almost equivalent to primary but doesn’t take traffic. You can switch to hot standby anytime the primary data center is down.</li>
-<li>Live traffic handling<br>There are multiple data centers and they’re taking traffic simultaneously.</li>
-</ol>
-<h3 id="What-is-DC-failover"><a href="#What-is-DC-failover" class="headerlink" title="What is DC failover?"></a>What is DC failover?</h3><p>When dc ( data center ) failure happens, the most emergent thing is to use the backup dc to replace the primary one and ensures the business keeps running, so the technical team will failover the data center to backup one.</p>
+            <p>Distributed system is like human body, it will have issues and break. There’s a theory that we feed it with issues deliberately and constantly, the body will be more and more stable and robust. It’s the same to system, put some issues to datacenters and let them failover automatically.</p>
         </div>
         
         
@@ -298,8 +256,6 @@
         
     </div>
 </div>
-
-
 
 
 
@@ -368,15 +324,13 @@
 
 
 
-
-
     
 
 <div class="card">
     
     <div class="card-image">
         <a href="/operation/install-spinnaker-on-centos/" class="image is-7by1">
-            <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="Install Spinnaker on CentOS 7">
+            <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="How to install Spinnaker on CentOS 7">
         </a>
     </div>
     
@@ -394,7 +348,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    2 minutes read (About 287 words)
+                    2 minutes read (About 309 words)
                 </span>
                 
                 
@@ -403,11 +357,12 @@
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/operation/install-spinnaker-on-centos/">Install Spinnaker on CentOS 7</a>
+                <a class="has-link-black-ter" href="/operation/install-spinnaker-on-centos/">How to install Spinnaker on CentOS 7</a>
             
         </h1>
         <div class="content">
-            <p>As we know, according to the spinnaker’s official documentation, spinnaker provides a tool for installing the spinnaker cluster in Kubernetes cluster or debian/ubuntu bare metal machine, but there’s not an option to install it on CentOS or other common operating systems. Althogh the <a href="https://github.com/spinnaker/spinnaker/tree/master/experimental/docker-compose">spinnaker</a> provides a way to start Spinnaker with <a href="https://docs.docker.com/compose/">Docker Compose</a>, but it’s out of date. So I created a new <a href="https://github.com/songrgg/spinnaker-compose">docker-compose project</a> to quickstart a spinnaker cluster on any kind of os.</p>
+            <p>Spinnaker doesn’t support installation on CentOS machine, this article introduces how to use Docker to install Spinnaker components on CentOS directly.</p>
+<p>As we know, according to the spinnaker’s official documentation, spinnaker provides a tool for installing the spinnaker cluster in Kubernetes cluster or debian/ubuntu bare metal machine, but there’s not an option to install it on CentOS or other common operating systems. Althogh the <a href="https://github.com/spinnaker/spinnaker/tree/master/experimental/docker-compose">spinnaker</a> provides a way to start Spinnaker with <a href="https://docs.docker.com/compose/">Docker Compose</a>, but it’s out of date. So I created a new <a href="https://github.com/songrgg/spinnaker-compose">docker-compose project</a> to quickstart a spinnaker cluster on any kind of os.</p>
         </div>
         
         
@@ -422,8 +377,6 @@
         
     </div>
 </div>
-
-
 
 
 
@@ -456,7 +409,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    2 minutes read (About 351 words)
+                    2 minutes read (About 345 words)
                 </span>
                 
                 
@@ -469,7 +422,7 @@
             
         </h1>
         <div class="content">
-            <p>You can host the swagger documentation easily with <a href="https://spring.io/projects/spring-boot">Spring boot</a>. Maintain the swagger documentation by <a href="https://editor.swagger.io">Swagger Editor</a> and then you can use the yaml files to generate online swagger documentation.</p>
+            <p>Maintain the swagger documentation by <a href="https://editor.swagger.io">Swagger Editor</a> and then you can use the yaml files to generate online swagger documentation easily with <a href="https://spring.io/projects/spring-boot">Spring boot</a>.</p>
         </div>
         
         
@@ -484,8 +437,6 @@
         
     </div>
 </div>
-
-
 
 
 
@@ -559,8 +510,6 @@
 
 
 
-
-
     
 
 <div class="card">
@@ -579,7 +528,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    3 minutes read (About 451 words)
+                    3 minutes read (About 452 words)
                 </span>
                 
                 
@@ -595,28 +544,20 @@
             <p><a href="https://istio.io">Istio</a> has been adopted as a common implementation of <a href="https://istio.io/docs/concepts/what-is-istio/">service mesh</a>, since more and more companies want to bring Istio into production, the version control of Istio seems a significant problem to solve.</p>
 <p>Version control is necessary as Istio components can be treated as the equivalent RPC services like our business services, we need to have an understanding of which version we are using now and what does the next version bring. And some Istio components can cooperate with the others, if we need to upgrade one component we need to upgrade the other components too.</p>
 <p>Although the Istio community provides the Istio upgrade method, we don’t actually want to upgrade such a whole thing in one move, it influences so much that we don’t want to risk.</p>
-<h3 id="Helm"><a href="#Helm" class="headerlink" title="Helm"></a>Helm</h3><p><a href="https://helm.sh">Helm</a> is package control system for Kubernetes, it’s more like the complicated version of brew on Mac.</p>
-<p>It uses Yaml and Golang templates to formulate a complete application configuration on Kubernetes. A lot of applications are packaged as Helm charts, we can build a complicated application by declaring the dependencies between these charts.</p>
-<h3 id="Istio-Helm"><a href="#Istio-Helm" class="headerlink" title="Istio + Helm"></a>Istio + Helm</h3><p>Istio project contains the <a href="https://github.com/istio/istio/blob/master/install/kubernetes/helm/istio/README.md">Helm configuration</a> itself, I recommend the users to extract the Helm brought by Istio into a standalone Git repository.</p>
-<p><img src="/images/istio-helm-git.png" alt="istio-helm-git"></p>
-<p>Like the other services, we use Git to control each component’s configuration and track every modification.</p>
-<h3 id="CI-CD"><a href="#CI-CD" class="headerlink" title="CI/CD"></a>CI/CD</h3><p>As more and more people advocate <code>infrastructure as code</code>, we not only store the Istio Helm as a Git repository, we bring the CI/CD to the infrastructure.</p>
-<p>If three Kubernetes clusters: <code>test</code>, <code>stage</code>, <code>production</code> exist, we can setup CI/CD to <code>test</code> cluster based on the specified Git <code>test</code> branch, each commit will trigger the generation of the latest Istio K8S Yaml config and apply them to the <code>test</code> cluster, after the tests on <code>test</code> environment, we brought the Istio updates to the <code>stage</code> and <code>production</code> in order.</p>
-<h3 id="Still-worried-about-Production"><a href="#Still-worried-about-Production" class="headerlink" title="Still worried about Production?"></a>Still worried about Production?</h3><p>Although we have tested in the <code>test</code> environment, we still worry if it works in the <code>production</code> and a method to let you know what actually changes is to <strong>diff</strong> the K8S configuration between the latest config and the current K8S config.<br>I recommend the <a href="https://github.com/weaveworks/kubediff"><code>kubediff</code></a> tool to distinguish the differences.</p>
-<h3 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h3><ul>
-<li>Every updates to Istio configuration need to be tracked by Git. </li>
-<li>Like the common services, deploy the change to <code>test</code> environment as soon as possible to fail fast.</li>
-<li>Use <code>kubediff</code> to show the changes.</li>
-</ul>
-
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/operation/istio-version-control-on-k8s/#more">Read More</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
 </div>
-
-
 
 
 
@@ -649,7 +590,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    5 minutes read (About 803 words)
+                    5 minutes read (About 818 words)
                 </span>
                 
                 
@@ -662,61 +603,21 @@
             
         </h1>
         <div class="content">
-            <blockquote>
-<p>Kubernetes DNS在内部服务与外部服务交互，内部服务与内部服务，内部服务与云托管服务交互的工具，拓展DNS可以在内部服务访问集群外服务时像访问集群内服务一样，通过DNS映射将统一风格的域名映射到可访问的IP，而不需要影响内部服务的运行。</p>
-</blockquote>
-<h3 id="自定义域名解析"><a href="#自定义域名解析" class="headerlink" title="自定义域名解析"></a>自定义域名解析</h3><p>拓展DNS的方法就是为特定规则的域名指定DNS服务器，在ConfigMap中设置指定域名相对的dns server，如<code>consul.local</code>结尾的域名使用<code>10.150.0.1</code>来解析。</p>
-<figure class="highlight yaml"><figcaption><span>ConfigMap</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ConfigMap</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">kube-dns</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">kube-system</span></span><br><span class="line"><span class="attr">data:</span></span><br><span class="line">  <span class="attr">stubDomains:</span> <span class="string">|</span></span><br><span class="line">    <span class="string">&#123;"consul.local":</span> <span class="string">["10.150.0.1"]&#125;</span></span><br><span class="line">  <span class="attr">upstreamNameservers:</span> <span class="string">|</span></span><br><span class="line">    <span class="string">["172.16.0.1"]</span></span><br></pre></td></tr></table></figure>
-
-<p>自定义规则不对<strong>dnsPolicy</strong>为<code>Default</code>或<code>None</code>的Pod起作用，只有当<code>ClusterFirst</code>时，域名解析会按照stubDomains和upstreamNameservers来解析。<br><strong>无自定义配置</strong>: 任何不匹配集群域名后缀的请求，被转发给节点的dns.<br><strong>自定义</strong>: 如果stub和upstream配置，按照如下顺序</p>
-<ol>
-<li>带集群后缀的，请求转发给kube-dns</li>
-<li>stub后缀的，转发给指定的dns</li>
-<li>其它的转发给upstream dns</li>
-</ol>
-<h3 id="Consul-as-a-DNS"><a href="#Consul-as-a-DNS" class="headerlink" title="Consul as a DNS"></a>Consul as a DNS</h3><p><a href="https://consul.io/">Consul</a>是Golang实现的服务发现工具，同时支持DNS解析，通过HTTP API动态添加服务发现节点实现动态DNS解析。</p>
-<ul>
-<li><p>注册Redis1到redis</p>
-<figure class="highlight json"><figcaption><span>dns.json</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"ID"</span>: <span class="string">"redis1"</span>,</span><br><span class="line">  <span class="attr">"Name"</span>: <span class="string">"redis"</span>,</span><br><span class="line">  <span class="attr">"Tags"</span>: [</span><br><span class="line">    <span class="string">"primary"</span>,</span><br><span class="line">    <span class="string">"v1"</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">"Address"</span>: <span class="string">"127.0.0.1"</span>,</span><br><span class="line">  <span class="attr">"Port"</span>: <span class="number">8000</span>,</span><br><span class="line">  <span class="attr">"Meta"</span>: &#123;</span><br><span class="line">    <span class="attr">"redis_version"</span>: <span class="string">"4.0"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"EnableTagOverride"</span>: <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -XPUT http://localhost:8500/v1/agent/service/register -d @dns.json</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>使用DNS查询</p>
-<figure class="highlight bash"><figcaption><span>dig redis service</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$ dig @127.0.0.1 -p 8600 redis.service.consul SRV</span><br><span class="line">; &lt;&lt;&gt;&gt; DiG 9.10.6 &lt;&lt;&gt;&gt; @127.0.0.1 -p 8600 redis.service.consul SRV</span><br><span class="line">; (1 server found)</span><br><span class="line">;; global options: +cmd</span><br><span class="line">;; Got answer:</span><br><span class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 6823</span><br><span class="line">;; flags: qr aa rd; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 3</span><br><span class="line">;; WARNING: recursion requested but not available</span><br><span class="line"></span><br><span class="line">;; OPT PSEUDOSECTION:</span><br><span class="line">; EDNS: version: 0, flags:; udp: 4096</span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;redis.service.consul.		IN	SRV</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">redis.service.consul.	0	IN	SRV	1 1 8000 srjiangs-MacBook-Pro.local.node.dc1.consul.</span><br><span class="line"></span><br><span class="line">;; ADDITIONAL SECTION:</span><br><span class="line">srjiangs-MacBook-Pro.local.node.dc1.consul. 0 IN A 127.0.0.1</span><br><span class="line">srjiangs-MacBook-Pro.local.node.dc1.consul. 0 IN TXT <span class="string">"consul-network-segment="</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>注册多个Redis</p>
-<figure class="highlight json"><figcaption><span>dns.json</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"ID"</span>: <span class="string">"redis2"</span>,</span><br><span class="line">  <span class="attr">"Name"</span>: <span class="string">"redis"</span>,</span><br><span class="line">  <span class="attr">"Tags"</span>: [</span><br><span class="line">    <span class="string">"primary"</span>,</span><br><span class="line">    <span class="string">"v1"</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">"Address"</span>: <span class="string">"127.0.0.1"</span>,</span><br><span class="line">  <span class="attr">"Port"</span>: <span class="number">8000</span>,</span><br><span class="line">  <span class="attr">"Meta"</span>: &#123;</span><br><span class="line">    <span class="attr">"redis_version"</span>: <span class="string">"4.0"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"EnableTagOverride"</span>: <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><figcaption><span>register</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -XPUT http://localhost:8500/v1/agent/service/register -d @dns.json</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>DNS查询</p>
-<figure class="highlight bash"><figcaption><span>dig</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">$ dig @127.0.0.1 -p 8600 redis.service.consul SRV</span><br><span class="line"></span><br><span class="line">; &lt;&lt;&gt;&gt; DiG 9.10.6 &lt;&lt;&gt;&gt; @127.0.0.1 -p 8600 redis.service.consul SRV</span><br><span class="line">; (1 server found)</span><br><span class="line">;; global options: +cmd</span><br><span class="line">;; Got answer:</span><br><span class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 11920</span><br><span class="line">;; flags: qr aa rd; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 5</span><br><span class="line">;; WARNING: recursion requested but not available</span><br><span class="line"></span><br><span class="line">;; OPT PSEUDOSECTION:</span><br><span class="line">; EDNS: version: 0, flags:; udp: 4096</span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;redis.service.consul.		IN	SRV</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">redis.service.consul.	0	IN	SRV	1 1 9000 srjiangs-MacBook-Pro.local.node.dc1.consul.</span><br><span class="line">redis.service.consul.	0	IN	SRV	1 1 8000 srjiangs-MacBook-Pro.local.node.dc1.consul.</span><br><span class="line"></span><br><span class="line">;; ADDITIONAL SECTION:</span><br><span class="line">srjiangs-MacBook-Pro.local.node.dc1.consul. 0 IN A 127.0.0.1</span><br><span class="line">srjiangs-MacBook-Pro.local.node.dc1.consul. 0 IN TXT <span class="string">"consul-network-segment="</span></span><br><span class="line">srjiangs-MacBook-Pro.local.node.dc1.consul. 0 IN A 127.0.0.1</span><br><span class="line">srjiangs-MacBook-Pro.local.node.dc1.consul. 0 IN TXT <span class="string">"consul-network-segment="</span></span><br><span class="line"></span><br><span class="line">;; Query time: 0 msec</span><br><span class="line">;; SERVER: 127.0.0.1<span class="comment">#8600(127.0.0.1)</span></span><br><span class="line">;; WHEN: Thu Aug 16 16:47:43 CST 2018</span><br><span class="line">;; MSG SIZE  rcvd: 277</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Consul Service</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">$ curl http://localhost:8500/v1/agent/services</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"redis1"</span>: &#123;</span><br><span class="line">        <span class="string">"ID"</span>: <span class="string">"redis1"</span>,</span><br><span class="line">        <span class="string">"Service"</span>: <span class="string">"redis"</span>,</span><br><span class="line">        <span class="string">"Tags"</span>: [</span><br><span class="line">            <span class="string">"primary"</span>,</span><br><span class="line">            <span class="string">"v1"</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="string">"Address"</span>: <span class="string">"127.0.0.1"</span>,</span><br><span class="line">        <span class="string">"Port"</span>: 8000,</span><br><span class="line">        <span class="string">"EnableTagOverride"</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="string">"CreateIndex"</span>: 0,</span><br><span class="line">        <span class="string">"ModifyIndex"</span>: 0</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">"redis2"</span>: &#123;</span><br><span class="line">        <span class="string">"ID"</span>: <span class="string">"redis2"</span>,</span><br><span class="line">        <span class="string">"Service"</span>: <span class="string">"redis"</span>,</span><br><span class="line">        <span class="string">"Tags"</span>: [</span><br><span class="line">            <span class="string">"primary"</span>,</span><br><span class="line">            <span class="string">"v1"</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="string">"Address"</span>: <span class="string">"127.0.0.1"</span>,</span><br><span class="line">        <span class="string">"Port"</span>: 9000,</span><br><span class="line">        <span class="string">"EnableTagOverride"</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="string">"CreateIndex"</span>: 0,</span><br><span class="line">        <span class="string">"ModifyIndex"</span>: 0</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-</li>
-</ul>
-<h3 id="更多细节"><a href="#更多细节" class="headerlink" title="更多细节"></a>更多细节</h3><ul>
-<li>根据集群DC返回该数据中心能访问到的DNS</li>
-<li>动态添加域名和IP映射</li>
-</ul>
-<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><ol>
-<li><p><a href="https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/">Customizing DNS Service - Kubernetes</a></p>
-</li>
-<li><p><a href="https://github.com/skynetservices/skydns">GitHub - skynetservices/skydns: DNS service discovery for etcd</a></p>
-</li>
-<li><p><a href="https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/">Adding entries to Pod /etc/hosts with HostAliases - Kubernetes</a></p>
-</li>
-</ol>
-
+            <p>Kubernetes DNS在内部服务与外部服务交互，内部服务与内部服务，内部服务与云托管服务交互的工具，拓展DNS可以在内部服务访问集群外服务时像访问集群内服务一样，通过DNS映射将统一风格的域名映射到可访问的IP，而不需要影响内部服务的运行，这里介绍如何使用Consul来拓展DNS。</p>
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/operation/extend-kubernetes-dns/#more">Read More</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
 </div>
-
-
 
 
 
@@ -791,8 +692,6 @@
         
     </div>
 </div>
-
-
 
 
 
@@ -902,8 +801,6 @@
         
     </div>
 </div>
-
-
 
 
 
@@ -1184,14 +1081,14 @@
             
             <a href="/operation/install-spinnaker-on-centos/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="Install Spinnaker on CentOS 7">
+                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="How to install Spinnaker on CentOS 7">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-18T22:00:00.000Z">2019-09-19</time></div>
-                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Install Spinnaker on CentOS 7</a>
+                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to install Spinnaker on CentOS 7</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -2065,14 +1962,14 @@
             
             <a href="/operation/install-spinnaker-on-centos/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="Install Spinnaker on CentOS 7">
+                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="How to install Spinnaker on CentOS 7">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-18T22:00:00.000Z">2019-09-19</time></div>
-                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Install Spinnaker on CentOS 7</a>
+                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to install Spinnaker on CentOS 7</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
