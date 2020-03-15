@@ -60,15 +60,7 @@
 <link rel="stylesheet" href="/css/back-to-top.css">
 
     
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-74431120-1"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'UA-74431120-1');
-</script>
-
+    
     
     
     
@@ -132,6 +124,81 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main">
+    
+
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2015-04-01T19:27:50.000Z">2015-04-01</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/life/">life</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    2 minutes read (About 251 words)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/life/first-hand-doc/">拒绝二手资料</a>
+            
+        </h1>
+        <div class="content">
+            <p>不扯远了, 缘起是我玩了这么久计算机, 做了这么久的web开发, 竟然tm的没有真正看过http的文档, 不仅是http, 其它的一些, 像写sheme的时候竟然也没有看过scheme的规格文档, 真是服了自己, 这些关于http,scheme,java,php等都是通过间接从别人消化了之后的陈述获得, 这样速度固然快, 但是难免不能完整的经历一个技术的发展思想, 缘何来, 向何处去, 这样子的不完整性是非常不利于深入领域, 钻研核心的. 所以我给自己定下规矩, 凡事准备严肃对待的事物都要去学习它的第一手资料, 了解它们来龙去脉, 不然绝不说自己是真正会这些东西.</p>
+<p>今天是张国荣先生离开第12年, 感谢他和他的作品给我带来的那么多的<a href="http://music.163.com/#/song?id=26079015">正能量</a>.</p>
+
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "拒绝二手资料",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "",
+        "genre": "life",
+        "datePublished": "2015-04-01",
+        "dateCreated": "2015-04-01",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/life/first-hand-doc/",
+        "mainEntityOfPage": "https://songrgg.github.io/life/first-hand-doc/",
+        "description": "不扯远了, 缘起是我玩了这么久计算机, 做了这么久的web开发, 竟然tm的没有真正看过http的文档, 不仅是http, 其它的一些, 像写sheme的时候竟然也没有看过scheme的规格文档, 真是服了自己, 这些关于http,scheme,java,php等都是通过间接从别人消化了之后的陈述获得, 这样速度固然快, 但是难免不能完整的经历一个技术的发展思想, 缘何来, 向何处去, 这样子的不",
+        "wordCount": 21
+    }
+</script>
+
+
+
     
 
 <div class="card">
@@ -797,105 +864,6 @@
 
 
 
-    
-
-<div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2014-11-12T00:27:50.000Z">2014-11-12</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/programming/">programming</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    9 minutes read (About 1285 words)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/programming/golang-channel/">初次使用golang channel</a>
-            
-        </h1>
-        <div class="content">
-            <h3 id="goroutine之间的同步"><a href="#goroutine之间的同步" class="headerlink" title="goroutine之间的同步"></a>goroutine之间的同步</h3><p>goroutine是golang中在语言级别实现的轻量级线程，仅仅利用<strong>go</strong>就能立刻起一个新线程。多线程会引入线程之间的同步问题，经典的同步问题如生产者-消费者问题，在c，java级别需要使用锁、信号量进行共享资源的互斥使用和多线程之间的时序控制，而在golang中有channel作为同步的工具。</p>
-<h4 id="1-channel实现两个goroutine之间的通信"><a href="#1-channel实现两个goroutine之间的通信" class="headerlink" title="1. channel实现两个goroutine之间的通信"></a>1. channel实现两个goroutine之间的通信</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line">	</span><br><span class="line"><span class="keyword">import</span> <span class="string">"strconv"</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	taskChan := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>, <span class="number">3</span>)</span><br><span class="line">	doneChan := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">3</span>; i++ &#123;</span><br><span class="line">		taskChan &lt;- strconv.Itoa(i)</span><br><span class="line">		fmt.Println(<span class="string">"send: "</span>, i)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">3</span>; i++ &#123;</span><br><span class="line">			task := &lt;-taskChan</span><br><span class="line">			fmt.Println(<span class="string">"received: "</span>, task)</span><br><span class="line">		&#125;</span><br><span class="line">		doneChan &lt;- <span class="number">1</span></span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	&lt;-doneChan</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>创建一个channel，<code>make(chan TYPE {, NUM})</code>, TYPE指的是channel中传输的数据类型，第二个参数是可选的，指的是channel的容量大小。</li>
-<li>向channel传入数据，<code>CHAN &lt;- DATA</code>, <strong>CHAN</strong>指的是目的channel即收集数据的一方，<strong>DATA</strong>则是要传的数据。</li>
-<li>启动一个goroutine接收main routine向channel发送的数据，<code>go func(){ BODY }()</code>新建一个线程运行一个匿名函数。</li>
-<li>从channel读取数据，<code>DATA := &lt;-CHAN</code>，和向channel传入数据相反，在数据输送箭头的右侧的是channel，形象地展现了数据从‘隧道’流出到变量里。</li>
-<li>通知主线程任务执行结束，doneChan的作用是为了让main routine等待这个刚起的goroutine结束，这里显示了channel的另一个特性，如果从empty channel中读取数据，则会阻塞当前routine，直到有数据可以读取。</li>
-</ul>
-<p>上面这个程序就是main routine向另一个routine发送了3条int类型的数据，当3条数据被接收到后，主线程也从阻塞状态恢复运行，随后结束。  </p>
-<h4 id="2-不要陷入“死锁”"><a href="#2-不要陷入“死锁”" class="headerlink" title="2. 不要陷入“死锁”"></a>2. 不要陷入“死锁”</h4><p>我一开始用channel的时候有报过*”fatal error: all goroutines are asleep - deadlock! “*的错误，真实的代码是下面这样的:  </p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line">	ch &lt;- <span class="number">1</span>   <span class="comment">// I'm blocked because there is no channel read yet. </span></span><br><span class="line">	fmt.Println(<span class="string">"send"</span>)</span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		&lt;-ch  <span class="comment">// I will never be called for the main routine is blocked!</span></span><br><span class="line">		fmt.Println(<span class="string">"received"</span>)</span><br><span class="line">	&#125;()</span><br><span class="line">	fmt.Println(<span class="string">"over"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我的本意是从main routine发送给另一个routine一个int型的数据，但是运行出了上述的错误，原因有2个:  </p>
-<ul>
-<li>当前routine向channel发送/接收数据时，如果另一端没有相应地接收/发送，那么当前routine则会进行休眠。</li>
-<li>这个程序的main routine先行在<code>ch &lt;- 1</code>进入休眠状态，程序的余下部分根本来不及运行，那么channel里的数据永远不会被读出，也就不能唤醒main routine，进入“死锁”。  </li>
-</ul>
-<p>解决这个“死锁”的方法可是是设置channel的容量大小大于1，那么channel就不会因为数据输入而阻塞主程; 或者将数据输入channel的语句置于启动新的goroutine之后。  </p>
-<h4 id="3-channel作为状态转移的信号源"><a href="#3-channel作为状态转移的信号源" class="headerlink" title="3. channel作为状态转移的信号源"></a>3. channel作为状态转移的信号源</h4><p>我跟着MIT的分布式计算课程做了原型为Map-Reduce的课后练习，目的是实现一个Master向Worker分派任务的功能：Master服务器去等待Worker服务器连接注册，Master先将Map任务和Reduce任务分派给这些注册Worker，等待Map任务全部完成，然后将Reduce任务再分配出去，等待全部完成。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Initialize a channel which records the process of the map jobs.</span></span><br><span class="line">mapJobChannel := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)</span><br><span class="line">	</span><br><span class="line"><span class="comment">// Start a goroutine to send the nMap(the number of the Map jobs) tasks to the main routine.</span></span><br><span class="line"><span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> m := <span class="number">0</span>; m &lt; nMap; m++ &#123;</span><br><span class="line">		<span class="comment">// Send the "start a Map job &lt;m&gt;" to the receiver.</span></span><br><span class="line">		mapJobChannel &lt;- <span class="string">"start, "</span> + strconv.Itoa(m)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;()</span><br><span class="line"></span><br><span class="line"><span class="comment">// Main routine listens on this mapJobChannel for the Map job task information.</span></span><br><span class="line">nMapJobs := nMap</span><br><span class="line"></span><br><span class="line"><span class="comment">// Process the nMap Map tasks util they're all done.</span></span><br><span class="line"><span class="keyword">for</span> nMapJobs &gt; <span class="number">0</span> &#123;</span><br><span class="line">	<span class="comment">// Receive the Map tasks from the channel.</span></span><br><span class="line">	taskInfo := strings.Split(&lt;-mapJobChannel, <span class="string">","</span>)</span><br><span class="line">	state, mapNo := taskInfo[<span class="number">0</span>], taskInfo[<span class="number">1</span>]</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span> state == <span class="string">"start"</span> &#123;</span><br><span class="line">		<span class="comment">// Assign a Map task with number mapNo to a worker.</span></span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">			<span class="comment">// Wait for a worker to finish the Map task.</span></span><br><span class="line">			ok, workNo := assignJobToWorker(<span class="string">"Map"</span>, mapNo)</span><br><span class="line">			<span class="keyword">if</span> ok &#123;</span><br><span class="line">				<span class="comment">// Send a task finish signal and set the worker's state to idle.</span></span><br><span class="line">				mapJobChannel &lt;- <span class="string">"end, "</span> + mapNo</span><br><span class="line">				setWorkerState(workNo, <span class="string">"idle"</span>)</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="comment">// Restart this task and set the worker's state to finished.</span></span><br><span class="line">				mapJobChannel &lt;- <span class="string">"start, "</span> + mapNo</span><br><span class="line">				setWorkerState(workNo, <span class="string">"finished"</span>)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;()</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		nMapJobs--</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>以上是我截取自己写的代码，关于用channel来传递当前Map任务的进度信息，用类似信号的方式标注当前的任务执行状态。  </p>
-<ul>
-<li>当从channel中读取到”start, {NUM}”时找一个空闲的Worker去执行Map任务，并且等待它的完成，完成成功则向channel中发送”end, {NUM}”信号，表明任务完成，如果失败，就重发”start, {NUM}”信号。</li>
-<li>从channel中读取到”end, {NUM}”时，把剩余任务数减1。<br>这种信号触发的方式，触发Master的状态转移，并且可以通过增加信号以及信号处理的方式，拓展业务处理的情况，暂时还能处理这个需求情景。</li>
-</ul>
-<p><a href="https://github.com/songrgg/6.824/blob/master/src/mapreduce/master.go">代码文件github地址</a><br><a href="http://css.csail.mit.edu/6.824/2014/labs/lab-1.html">MIT分布式系统课程</a></p>
-
-        </div>
-        
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "author": {
-            "@type": "Person",
-            "name": "songrgg"
-        },
-        "publisher": {},
-        "headline": "初次使用golang channel",
-        "image": [
-            "https://songrgg.github.io/images/thumbnail.svg"
-        ],
-        "keywords": "golang",
-        "genre": "programming",
-        "datePublished": "2014-11-12",
-        "dateCreated": "2014-11-12",
-        "dateModified": "2019-09-12",
-        "url": "https://songrgg.github.io/programming/golang-channel/",
-        "mainEntityOfPage": "https://songrgg.github.io/programming/golang-channel/",
-        "description": "goroutine之间的同步goroutine是golang中在语言级别实现的轻量级线程，仅仅利用go就能立刻起一个新线程。多线程会引入线程之间的同步问题，经典的同步问题如生产者-消费者问题，在c，java级别需要使用锁、信号量进行共享资源的互斥使用和多线程之间的时序控制，而在golang中有channel作为同步的工具。1. channel实现两个goroutine之间的通信123456789",
-        "wordCount": 568
-    }
-</script>
-
-
-
 
     
 <div class="card card-transparent">
@@ -966,7 +934,7 @@
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            49
+                            50
                         </p>
                     </a>
                 </div>
@@ -1079,7 +1047,7 @@
                 <span class="level-item">operation</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">14</span>
+                <span class="level-item tag">15</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/programming/">
@@ -1100,7 +1068,7 @@
         <h3 class="menu-label">
             Tag Cloud
         </h3>
-        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 12.5px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
+        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 12.5px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
     </div>
 </div>
     
@@ -1112,6 +1080,25 @@
         <h3 class="menu-label">
             Recent
         </h3>
+        
+        <article class="media">
+            
+            <a href="/operation/how-to-build-a-smallest-docker-image/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/docker-build.png" alt="how to build the smallest docker image as fast as you can">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-15T19:11:50.000Z">2020-03-15</time></div>
+                    <a href="/operation/how-to-build-a-smallest-docker-image/" class="title has-link-black-ter is-size-6 has-text-weight-normal">how to build the smallest docker image as fast as you can</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
+                    </p>
+                </div>
+            </div>
+        </article>
         
         <article class="media">
             
@@ -1189,25 +1176,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/host-swagger-documentation-with-yaml-json-files/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/swagger_editor.png" alt="How to host Swagger documentation using yaml/json configuration files?">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-12T19:11:50.000Z">2019-09-12</time></div>
-                    <a href="/operation/host-swagger-documentation-with-yaml-json-files/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to host Swagger documentation using yaml/json configuration files?</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
         
@@ -1218,6 +1186,17 @@
             Archives
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/03/">
+                <span class="level-start">
+                    <span class="level-item">March 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2020/02/">
@@ -1681,7 +1660,7 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/docker/">
                         <span class="tag">docker</span>
-                        <span class="tag is-grey">2</span>
+                        <span class="tag is-grey">3</span>
                     </a>
                 </div>
                 
@@ -1996,6 +1975,25 @@
         
         <article class="media">
             
+            <a href="/operation/how-to-build-a-smallest-docker-image/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/docker-build.png" alt="how to build the smallest docker image as fast as you can">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-15T19:11:50.000Z">2020-03-15</time></div>
+                    <a href="/operation/how-to-build-a-smallest-docker-image/" class="title has-link-black-ter is-size-6 has-text-weight-normal">how to build the smallest docker image as fast as you can</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor SSL certificates expiration with Telegraf">
@@ -2070,25 +2068,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/host-swagger-documentation-with-yaml-json-files/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/swagger_editor.png" alt="How to host Swagger documentation using yaml/json configuration files?">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-12T19:11:50.000Z">2019-09-12</time></div>
-                    <a href="/operation/host-swagger-documentation-with-yaml-json-files/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to host Swagger documentation using yaml/json configuration files?</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
     
@@ -2099,6 +2078,17 @@
             Archives
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/03/">
+                <span class="level-start">
+                    <span class="level-item">March 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2020/02/">
@@ -2562,7 +2552,7 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/docker/">
                         <span class="tag">docker</span>
-                        <span class="tag is-grey">2</span>
+                        <span class="tag is-grey">3</span>
                     </a>
                 </div>
                 

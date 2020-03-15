@@ -7,23 +7,23 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>微信本地测试 - Blog | Songrgg</title>
+<title>how to build the smallest docker image as fast as you can - Blog | Songrgg</title>
 
 
-    <meta name="description" content="项目里要测试微信公众号, 但又不愿意忍受每次改下代码就提交到版本库, 再发布到生产这个琐碎的流程, 所以必须有一个本地能测试的方法, 到知乎上找了一个方法(引用知乎操晓峰的回答). 原理是HTTP请求重定向, 将微信中要访问的url转发到你设置的代理服务器, 代理服务器转发到你的开发服务器. 有趣的是, 在公司一直没有完全成功, 总有一个页面是刷不出来, 查看Charles发现传输速度极慢, 真想">
+    <meta name="description" content="I’ll use an example to introduce how to build the smallest docker image to your best, a light image will accelerate image rollout and the fast build process will speed up your development cycle.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="微信本地测试">
-<meta property="og:url" content="https://songrgg.github.io/programming/wechat-local-debug/index.html">
+<meta property="og:title" content="how to build the smallest docker image as fast as you can">
+<meta property="og:url" content="https://songrgg.github.io/operation/how-to-build-a-smallest-docker-image/index.html">
 <meta property="og:site_name" content="Blog | Songrgg">
-<meta property="og:description" content="项目里要测试微信公众号, 但又不愿意忍受每次改下代码就提交到版本库, 再发布到生产这个琐碎的流程, 所以必须有一个本地能测试的方法, 到知乎上找了一个方法(引用知乎操晓峰的回答). 原理是HTTP请求重定向, 将微信中要访问的url转发到你设置的代理服务器, 代理服务器转发到你的开发服务器. 有趣的是, 在公司一直没有完全成功, 总有一个页面是刷不出来, 查看Charles发现传输速度极慢, 真想">
+<meta property="og:description" content="I’ll use an example to introduce how to build the smallest docker image to your best, a light image will accelerate image rollout and the fast build process will speed up your development cycle.">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://songrgg.github.io/images/wechat.png">
-<meta property="article:published_time" content="2015-03-11T20:10:00.000Z">
-<meta property="article:modified_time" content="2019-09-12T20:02:11.295Z">
+<meta property="og:image" content="https://songrgg.github.io/images/docker-build.png">
+<meta property="article:published_time" content="2020-03-15T19:11:50.000Z">
+<meta property="article:modified_time" content="2020-03-15T21:55:04.735Z">
 <meta property="article:author" content="songrgg">
-<meta property="article:tag" content="wechat">
+<meta property="article:tag" content="docker">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://songrgg.github.io/images/wechat.png">
+<meta name="twitter:image" content="https://songrgg.github.io/images/docker-build.png">
 
 
 
@@ -127,7 +127,7 @@
     
     <div class="card-image">
         <span  class="image is-7by1">
-            <img class="thumbnail" src="/images/wechat.png" alt="微信本地测试">
+            <img class="thumbnail" src="/images/docker-build.png" alt="how to build the smallest docker image as fast as you can">
         </span>
     </div>
     
@@ -135,17 +135,17 @@
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2015-03-11T20:10:00.000Z">2015-03-11</time>
+                <time class="level-item has-text-grey" datetime="2020-03-15T19:11:50.000Z">2020-03-15</time>
                 
                 <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/programming/">programming</a>
+                <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                 </div>
                 
                 
                 <span class="level-item has-text-grey">
                     
                     
-                    a minute read (About 187 words)
+                    6 minutes read (About 854 words)
                 </span>
                 
                 
@@ -154,13 +154,46 @@
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                微信本地测试
+                how to build the smallest docker image as fast as you can
             
         </h1>
         <div class="content">
-            <p>项目里要测试微信公众号, 但又不愿意忍受每次改下代码就提交到版本库, 再发布到生产这个琐碎的流程, 所以必须有一个本地能测试的方法, 到知乎上找了一个方法(引用<a href="http://www.zhihu.com/question/25456655">知乎操晓峰的回答</a>).</p>
-<p>原理是HTTP请求重定向, 将微信中要访问的url转发到你设置的代理服务器, 代理服务器转发到你的开发服务器.</p>
-<p>有趣的是, 在公司一直没有完全成功, 总有一个页面是刷不出来, 查看Charles发现传输速度极慢, 真想吐槽公司的网络. 回家后重试了一次, 完全成功.</p>
+            <p>I’ll use an example to introduce how to build the smallest docker image to your best, a light image will accelerate image rollout and the fast build process will speed up your development cycle.</p>
+<a id="more"></a>
+
+<h2 id="A-Golang-sample"><a href="#A-Golang-sample" class="headerlink" title="A Golang sample"></a>A Golang sample</h2><p>It’s quite common that we use golang to implement microservice, for example tens of golang service docker images are deployed to the Kubernetes.</p>
+<p>Consider we need to make our first golang service image, it runs the following code as an HTTP server.</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">  <span class="string">"net/http"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  http.HandleFunc(<span class="string">"/"</span>, test)</span><br><span class="line">  http.ListenAndServe(<span class="string">":8080"</span>, <span class="literal">nil</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">test</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">  w.Header().Set(<span class="string">"Service"</span>, <span class="string">"Test"</span>)</span><br><span class="line">  w.WriteHeader(<span class="number">200</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Docker-it"><a href="#Docker-it" class="headerlink" title="Docker it!"></a>Docker it!</h3><p>The intuitive solution is to run <code>go run main.go</code> in the docker, so let’s use golang image as a base image.</p>
+<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> golang:<span class="number">1.14</span>.<span class="number">0</span>-alpine</span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /go/src/github.com/songrgg/testservice/</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> main.go .</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> [ <span class="string">"go"</span>, <span class="string">"run"</span>, <span class="string">"main.go"</span> ]</span></span><br></pre></td></tr></table></figure>
+
+<p>Run <code>docker build .</code> and it shows</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Sending build context to Docker daemon  3.072kB</span><br><span class="line">Step 1/4 : FROM golang:1.14.0-alpine</span><br><span class="line"> ---&gt; 51e47ee4db58</span><br><span class="line">Step 2/4 : WORKDIR /go/src/github.com/songrgg/testservice/</span><br><span class="line"> ---&gt; Using cache</span><br><span class="line"> ---&gt; 8dc325ca7ca6</span><br><span class="line">Step 3/4 : COPY main.go .</span><br><span class="line"> ---&gt; Using cache</span><br><span class="line"> ---&gt; c46c5f5bfda8</span><br><span class="line">Step 4/4 : CMD [ <span class="string">"go"</span>, <span class="string">"run"</span>, <span class="string">"main.go"</span> ]</span><br><span class="line"> ---&gt; Using cache</span><br><span class="line"> ---&gt; acc5a6d462f5</span><br><span class="line">Successfully built acc5a6d462f5</span><br><span class="line"></span><br><span class="line">$ docker image inspect acc5a6d462f5 --format=<span class="string">'&#123;&#123;.Size&#125;&#125;'</span></span><br><span class="line">369193951</span><br></pre></td></tr></table></figure>
+
+<p>It’s 369193951 bytes near <strong>370MB</strong>.</p>
+<h3 id="Reduce-the-unnecessary-files"><a href="#Reduce-the-unnecessary-files" class="headerlink" title="Reduce the unnecessary files"></a>Reduce the unnecessary files</h3><p>Golang is a compilation language which can be packed into a binary, we can reduce the size by only putting the binary into the image.</p>
+<p>We know that the latest docker supports multi-stage builds which can eliminate the intermediate layers effectively, the revised dockerfile looks like this:</p>
+<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> golang:<span class="number">1.14</span>.<span class="number">0</span>-alpine</span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /go/src/github.com/songrgg/testservice/</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> main.go .</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">FROM</span> alpine:latest</span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> apk --no-cache add ca-certificates</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /root/</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> --from=0 /go/src/github.com/songrgg/testservice/app .</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> [<span class="string">"./app"</span>]</span></span><br></pre></td></tr></table></figure>
+
+<p>Let’s see the layers it generates.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">$ docker build .</span><br><span class="line">Sending build context to Docker daemon  3.072kB</span><br><span class="line">Step 1/9 : FROM golang:1.14.0-alpine</span><br><span class="line"> ---&gt; 51e47ee4db58</span><br><span class="line">Step 2/9 : WORKDIR /go/src/github.com/songrgg/testservice/</span><br><span class="line"> ---&gt; Using cache</span><br><span class="line"> ---&gt; 8dc325ca7ca6</span><br><span class="line">Step 3/9 : COPY main.go .</span><br><span class="line"> ---&gt; Using cache</span><br><span class="line"> ---&gt; c46c5f5bfda8</span><br><span class="line">Step 4/9 : RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .</span><br><span class="line"> ---&gt; Running <span class="keyword">in</span> be3bdce1ec48</span><br><span class="line">Removing intermediate container be3bdce1ec48</span><br><span class="line"> ---&gt; 9c3470f9e73d</span><br><span class="line">Step 5/9 : FROM alpine:latest</span><br><span class="line"> ---&gt; 053cde6e8953</span><br><span class="line">Step 6/9 : RUN apk --no-cache add ca-certificates</span><br><span class="line"> ---&gt; Running <span class="keyword">in</span> 6acd18e2d2ba</span><br><span class="line">fetch http://dl-cdn.alpinelinux.org/alpine/v3.6/main/x86_64/APKINDEX.tar.gz</span><br><span class="line">fetch http://dl-cdn.alpinelinux.org/alpine/v3.6/community/x86_64/APKINDEX.tar.gz</span><br><span class="line">(1/1) Installing ca-certificates (20161130-r3)</span><br><span class="line">Executing busybox-1.26.2-r7.trigger</span><br><span class="line">Executing ca-certificates-20161130-r3.trigger</span><br><span class="line">OK: 5 MiB <span class="keyword">in</span> 12 packages</span><br><span class="line">Removing intermediate container 6acd18e2d2ba</span><br><span class="line"> ---&gt; 7b4ee3222013</span><br><span class="line">Step 7/9 : WORKDIR /root/</span><br><span class="line"> ---&gt; Running <span class="keyword">in</span> 336a8a2115a6</span><br><span class="line">Removing intermediate container 336a8a2115a6</span><br><span class="line"> ---&gt; 77fa1196ab2f</span><br><span class="line">Step 8/9 : COPY --from=0 /go/src/github.com/songrgg/testservice/app .</span><br><span class="line"> ---&gt; c6bc47f614af</span><br><span class="line">Step 9/9 : CMD [<span class="string">"./app"</span>]</span><br><span class="line"> ---&gt; Running <span class="keyword">in</span> f77053027c4b</span><br><span class="line">Removing intermediate container f77053027c4b</span><br><span class="line"> ---&gt; d327f978f1d8</span><br><span class="line">Successfully built d327f978f1d8</span><br><span class="line"></span><br><span class="line">$ docker inspect d327f978f1d8 --format=<span class="string">'&#123;&#123;.Size&#125;&#125;'</span></span><br><span class="line">11924648</span><br></pre></td></tr></table></figure>
+
+<p>We could notice there are several intermediate containers removed, they’re layers from the first stage and prepare the executable for the second stage.</p>
+<p>Most importantly, the docker image size is below <strong>12MB</strong>.</p>
+<p>The most important factor is we changed the FROM image to alpine which is only <strong>4.2MB</strong>, so the extra size is almost the size of the golang process.</p>
+<h3 id="From-scratch"><a href="#From-scratch" class="headerlink" title="From scratch?"></a>From scratch?</h3><p>Yeah, the base image could be smaller, <code>FROM scratch</code> is a base image that will make the next command to be the first layer in your image.</p>
+<p>I changed the <code>FROM alpine:latest</code> to <code>FROM scratch</code>, the image size is <strong>7MB</strong> now, but I would suggest using alpine because it’ll be hard for you in scratch if you want to debug within the container. So you’ll need a balance between the image size and functionality :)</p>
+<h2 id="Some-pitfalls-you-may-face"><a href="#Some-pitfalls-you-may-face" class="headerlink" title="Some pitfalls you may face"></a>Some pitfalls you may face</h2><h3 id="Unnecessary-large-build-context"><a href="#Unnecessary-large-build-context" class="headerlink" title="Unnecessary large build context"></a>Unnecessary large build context</h3><p>Docker build will send the build context to docker daemon at first, the context is default to the current directory, so please be sure the files in the current directory is necessary or is small enough. If the file size is big, it will affect docker build speed terribly.</p>
+<h3 id="Wrong-command-order"><a href="#Wrong-command-order" class="headerlink" title="Wrong command order"></a>Wrong command order</h3><p>Just remember to put the stable layers before the changeable layers, because docker will cache the layers if they are not changed, it’s calculated by the hash value of their content.</p>
+<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu</span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> changeable.txt .</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> apt-get update &amp;&amp; apt-get install curl</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> ...</span></span><br></pre></td></tr></table></figure>
+
+<p>In the above example, every time the changeable.txt is changed, it will rerun every commands after it and waste time doing the things it could prevent. Just turn to the following form.</p>
+<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu</span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> apt-get update &amp;&amp; apt-get install curl</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> ...</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> changeable.txt .</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
+<li><a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/">Best practises for writing Dockerfile</a></li>
+</ol>
 
         </div>
         
@@ -168,7 +201,7 @@
             <div class="level-start">
                 <div class="level-item">
                     <span class="is-size-6 has-text-grey has-mr-7">#</span>
-                    <a class="has-link-grey -link" href="/tags/wechat/" rel="tag">wechat</a>
+                    <a class="has-link-grey -link" href="/tags/docker/" rel="tag">docker</a>
                 </div>
             </div>
         </div>
@@ -190,17 +223,10 @@
 <div class="card card-transparent">
     <div class="level post-navigation is-flex-wrap is-mobile">
         
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/programming/mit-distributed-system-01/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">Mit分布式系统课程-Lab2-PartB</span>
-            </a>
-        </div>
-        
         
         <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/programming/levelDB-cache/">
-                <span class="level-item">levelDB里缓存实现</span>
+            <a class="level level-item has-link-grey  article-nav-next" href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/">
+                <span class="level-item">How to check and monitor SSL certificates expiration with Telegraf</span>
                 <i class="level-item fas fa-chevron-right"></i>
             </a>
         </div>
@@ -216,8 +242,8 @@
         
 <script>
     var disqus_config = function () {
-        this.page.url = 'https://songrgg.github.io/programming/wechat-local-debug/';
-        this.page.identifier = 'programming/wechat-local-debug/';
+        this.page.url = 'https://songrgg.github.io/operation/how-to-build-a-smallest-docker-image/';
+        this.page.identifier = 'operation/how-to-build-a-smallest-docker-image/';
     };
     (function() {
         var d = document, s = d.createElement('script');  
@@ -245,19 +271,19 @@
             "name": "songrgg"
         },
         "publisher": {},
-        "headline": "微信本地测试",
+        "headline": "how to build the smallest docker image as fast as you can",
         "image": [
-            "https://songrgg.github.io/images/wechat.png"
+            "https://songrgg.github.io/images/docker-build.png"
         ],
-        "keywords": "wechat",
-        "genre": "programming",
-        "datePublished": "2015-03-11",
-        "dateCreated": "2015-03-11",
-        "dateModified": "2019-09-12",
-        "url": "https://songrgg.github.io/programming/wechat-local-debug/",
-        "mainEntityOfPage": "https://songrgg.github.io/programming/wechat-local-debug/",
-        "description": "项目里要测试微信公众号, 但又不愿意忍受每次改下代码就提交到版本库, 再发布到生产这个琐碎的流程, 所以必须有一个本地能测试的方法, 到知乎上找了一个方法(引用知乎操晓峰的回答).原理是HTTP请求重定向, 将微信中要访问的url转发到你设置的代理服务器, 代理服务器转发到你的开发服务器.有趣的是, 在公司一直没有完全成功, 总有一个页面是刷不出来, 查看Charles发现传输速度极慢, 真想",
-        "wordCount": 14
+        "keywords": "docker",
+        "genre": "operation",
+        "datePublished": "2020-03-15",
+        "dateCreated": "2020-03-15",
+        "dateModified": "2020-03-15",
+        "url": "https://songrgg.github.io/operation/how-to-build-a-smallest-docker-image/",
+        "mainEntityOfPage": "https://songrgg.github.io/operation/how-to-build-a-smallest-docker-image/",
+        "description": "I’ll use an example to introduce how to build the smallest docker image to your best, a light image will accelerate image rollout and the fast build process will speed up your development cycle.",
+        "wordCount": 1012
     }
 </script>
 

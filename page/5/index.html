@@ -60,15 +60,7 @@
 <link rel="stylesheet" href="/css/back-to-top.css">
 
     
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-74431120-1"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'UA-74431120-1');
-</script>
-
+    
     
     
     
@@ -132,6 +124,87 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main">
+    
+
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2016-02-28T00:27:50.000Z">2016-02-28</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/programming/">programming</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    2 minutes read (About 312 words)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/programming/mahout-tutorial/">Mahout入门-1</a>
+            
+        </h1>
+        <div class="content">
+            <h3 id="Mahout是什么？"><a href="#Mahout是什么？" class="headerlink" title="Mahout是什么？"></a>Mahout是什么？</h3><p>Mahout是用来进行机器学习和推荐算法的一个Java框架。</p>
+<h3 id="一个简单的基于用户的协同过滤的示例"><a href="#一个简单的基于用户的协同过滤的示例" class="headerlink" title="一个简单的基于用户的协同过滤的示例"></a>一个简单的基于用户的协同过滤的示例</h3><p>读取用户对电影评分的数据集，为ID为2的用户推荐3部电影。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.mahout;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.mahout.cf.taste.common.TasteException;</span><br><span class="line"><span class="keyword">import</span> org.apache.mahout.cf.taste.impl.model.file.FileDataModel;</span><br><span class="line"><span class="keyword">import</span> org.apache.mahout.cf.taste.impl.neighborhood.ThresholdUserNeighborhood;</span><br><span class="line"><span class="keyword">import</span> org.apache.mahout.cf.taste.impl.recommender.GenericUserBasedRecommender;</span><br><span class="line"><span class="keyword">import</span> org.apache.mahout.cf.taste.impl.similarity.PearsonCorrelationSimilarity;</span><br><span class="line"><span class="keyword">import</span> org.apache.mahout.cf.taste.model.DataModel;</span><br><span class="line"><span class="keyword">import</span> org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;</span><br><span class="line"><span class="keyword">import</span> org.apache.mahout.cf.taste.recommender.RecommendedItem;</span><br><span class="line"><span class="keyword">import</span> org.apache.mahout.cf.taste.recommender.UserBasedRecommender;</span><br><span class="line"><span class="keyword">import</span> org.apache.mahout.cf.taste.similarity.UserSimilarity;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.File;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            DataModel model = <span class="keyword">new</span> FileDataModel(<span class="keyword">new</span> File(<span class="string">"resources/dataset.csv"</span>));</span><br><span class="line"></span><br><span class="line">            UserSimilarity similarity = <span class="keyword">new</span> PearsonCorrelationSimilarity(model);</span><br><span class="line"></span><br><span class="line">            UserNeighborhood neighborhood = <span class="keyword">new</span> ThresholdUserNeighborhood(<span class="number">0.10</span>, similarity, model);</span><br><span class="line"></span><br><span class="line">            UserBasedRecommender recommender = <span class="keyword">new</span> GenericUserBasedRecommender(model, neighborhood, similarity);</span><br><span class="line"></span><br><span class="line">            List&lt;RecommendedItem&gt; recommendations = recommender.recommend(<span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line">            <span class="keyword">for</span> (RecommendedItem recommendation : recommendations) &#123;</span><br><span class="line">                System.out.println(recommendation);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (TasteException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="实践后感"><a href="#实践后感" class="headerlink" title="实践后感"></a>实践后感</h3><p>好久没有碰Java系列，今天又是看了Mahout的示例，看起来很简单，结果自己试了下，发现要调整IDE，配置Maven，包括数据集文件路径的设置都要注意。</p>
+<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><ul>
+<li><a href="https://mahout.apache.org/users/recommender/userbased-5-minutes.html">官网示例</a></li>
+</ul>
+
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "Mahout入门-1",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "mahout machine learning",
+        "genre": "programming",
+        "datePublished": "2016-02-28",
+        "dateCreated": "2016-02-28",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/programming/mahout-tutorial/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/mahout-tutorial/",
+        "description": "Mahout是什么？Mahout是用来进行机器学习和推荐算法的一个Java框架。一个简单的基于用户的协同过滤的示例读取用户对电影评分的数据集，为ID为2的用户推荐3部电影。12345678910111213141516171819202122232425262728293031323334353637383940package com.mahout;import org.apache.maho",
+        "wordCount": 364
+    }
+</script>
+
+
+
     
 
 <div class="card">
@@ -872,81 +945,6 @@
 
 
 
-    
-
-<div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2015-04-01T19:27:50.000Z">2015-04-01</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/life/">life</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    2 minutes read (About 251 words)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/life/first-hand-doc/">拒绝二手资料</a>
-            
-        </h1>
-        <div class="content">
-            <p>不扯远了, 缘起是我玩了这么久计算机, 做了这么久的web开发, 竟然tm的没有真正看过http的文档, 不仅是http, 其它的一些, 像写sheme的时候竟然也没有看过scheme的规格文档, 真是服了自己, 这些关于http,scheme,java,php等都是通过间接从别人消化了之后的陈述获得, 这样速度固然快, 但是难免不能完整的经历一个技术的发展思想, 缘何来, 向何处去, 这样子的不完整性是非常不利于深入领域, 钻研核心的. 所以我给自己定下规矩, 凡事准备严肃对待的事物都要去学习它的第一手资料, 了解它们来龙去脉, 不然绝不说自己是真正会这些东西.</p>
-<p>今天是张国荣先生离开第12年, 感谢他和他的作品给我带来的那么多的<a href="http://music.163.com/#/song?id=26079015">正能量</a>.</p>
-
-        </div>
-        
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "author": {
-            "@type": "Person",
-            "name": "songrgg"
-        },
-        "publisher": {},
-        "headline": "拒绝二手资料",
-        "image": [
-            "https://songrgg.github.io/images/thumbnail.svg"
-        ],
-        "keywords": "",
-        "genre": "life",
-        "datePublished": "2015-04-01",
-        "dateCreated": "2015-04-01",
-        "dateModified": "2019-09-12",
-        "url": "https://songrgg.github.io/life/first-hand-doc/",
-        "mainEntityOfPage": "https://songrgg.github.io/life/first-hand-doc/",
-        "description": "不扯远了, 缘起是我玩了这么久计算机, 做了这么久的web开发, 竟然tm的没有真正看过http的文档, 不仅是http, 其它的一些, 像写sheme的时候竟然也没有看过scheme的规格文档, 真是服了自己, 这些关于http,scheme,java,php等都是通过间接从别人消化了之后的陈述获得, 这样速度固然快, 但是难免不能完整的经历一个技术的发展思想, 缘何来, 向何处去, 这样子的不",
-        "wordCount": 21
-    }
-</script>
-
-
-
 
     
 <div class="card card-transparent">
@@ -1019,7 +1017,7 @@
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            49
+                            50
                         </p>
                     </a>
                 </div>
@@ -1132,7 +1130,7 @@
                 <span class="level-item">operation</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">14</span>
+                <span class="level-item tag">15</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/programming/">
@@ -1153,7 +1151,7 @@
         <h3 class="menu-label">
             Tag Cloud
         </h3>
-        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 12.5px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
+        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 12.5px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
     </div>
 </div>
     
@@ -1165,6 +1163,25 @@
         <h3 class="menu-label">
             Recent
         </h3>
+        
+        <article class="media">
+            
+            <a href="/operation/how-to-build-a-smallest-docker-image/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/docker-build.png" alt="how to build the smallest docker image as fast as you can">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-15T19:11:50.000Z">2020-03-15</time></div>
+                    <a href="/operation/how-to-build-a-smallest-docker-image/" class="title has-link-black-ter is-size-6 has-text-weight-normal">how to build the smallest docker image as fast as you can</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
+                    </p>
+                </div>
+            </div>
+        </article>
         
         <article class="media">
             
@@ -1242,25 +1259,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/host-swagger-documentation-with-yaml-json-files/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/swagger_editor.png" alt="How to host Swagger documentation using yaml/json configuration files?">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-12T19:11:50.000Z">2019-09-12</time></div>
-                    <a href="/operation/host-swagger-documentation-with-yaml-json-files/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to host Swagger documentation using yaml/json configuration files?</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
         
@@ -1271,6 +1269,17 @@
             Archives
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/03/">
+                <span class="level-start">
+                    <span class="level-item">March 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2020/02/">
@@ -1734,7 +1743,7 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/docker/">
                         <span class="tag">docker</span>
-                        <span class="tag is-grey">2</span>
+                        <span class="tag is-grey">3</span>
                     </a>
                 </div>
                 
@@ -2049,6 +2058,25 @@
         
         <article class="media">
             
+            <a href="/operation/how-to-build-a-smallest-docker-image/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/docker-build.png" alt="how to build the smallest docker image as fast as you can">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-15T19:11:50.000Z">2020-03-15</time></div>
+                    <a href="/operation/how-to-build-a-smallest-docker-image/" class="title has-link-black-ter is-size-6 has-text-weight-normal">how to build the smallest docker image as fast as you can</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor SSL certificates expiration with Telegraf">
@@ -2123,25 +2151,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/host-swagger-documentation-with-yaml-json-files/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/swagger_editor.png" alt="How to host Swagger documentation using yaml/json configuration files?">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-12T19:11:50.000Z">2019-09-12</time></div>
-                    <a href="/operation/host-swagger-documentation-with-yaml-json-files/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to host Swagger documentation using yaml/json configuration files?</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
     
@@ -2152,6 +2161,17 @@
             Archives
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/03/">
+                <span class="level-start">
+                    <span class="level-item">March 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2020/02/">
@@ -2615,7 +2635,7 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/docker/">
                         <span class="tag">docker</span>
-                        <span class="tag is-grey">2</span>
+                        <span class="tag is-grey">3</span>
                     </a>
                 </div>
                 

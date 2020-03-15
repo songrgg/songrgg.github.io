@@ -60,15 +60,7 @@
 <link rel="stylesheet" href="/css/back-to-top.css">
 
     
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-74431120-1"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'UA-74431120-1');
-</script>
-
+    
     
     
     
@@ -142,6 +134,93 @@
         </nav>
     </div>
 </div>
+
+    
+
+<div class="card">
+    
+    <div class="card-image">
+        <a href="/operation/how-to-build-a-smallest-docker-image/" class="image is-7by1">
+            <img class="thumbnail" src="/images/docker-build.png" alt="how to build the smallest docker image as fast as you can">
+        </a>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-03-15T19:11:50.000Z">2020-03-15</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/operation/">operation</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    6 minutes read (About 854 words)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/operation/how-to-build-a-smallest-docker-image/">how to build the smallest docker image as fast as you can</a>
+            
+        </h1>
+        <div class="content">
+            <p>I’ll use an example to introduce how to build the smallest docker image to your best, a light image will accelerate image rollout and the fast build process will speed up your development cycle.</p>
+        </div>
+        
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/operation/how-to-build-a-smallest-docker-image/#more">Read More</a>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "how to build the smallest docker image as fast as you can",
+        "image": [
+            "https://songrgg.github.io/images/docker-build.png"
+        ],
+        "keywords": "docker",
+        "genre": "operation",
+        "datePublished": "2020-03-15",
+        "dateCreated": "2020-03-15",
+        "dateModified": "2020-03-15",
+        "url": "https://songrgg.github.io/operation/how-to-build-a-smallest-docker-image/",
+        "mainEntityOfPage": "https://songrgg.github.io/operation/how-to-build-a-smallest-docker-image/",
+        "description": "I’ll use an example to introduce how to build the smallest docker image to your best, a light image will accelerate image rollout and the fast build process will speed up your development cycle.",
+        "wordCount": 1012
+    }
+</script>
+
+
 
     
 
@@ -943,142 +1022,6 @@
 
 
 
-    
-
-<div class="card">
-    
-    <div class="card-image">
-        <a href="/operation/ansible-frequently-used-commands/" class="image is-7by1">
-            <img class="thumbnail" src="/images/ansible.png" alt="Ansible常用命令">
-        </a>
-    </div>
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-03-05T20:27:50.000Z">2018-03-05</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    7 minutes read (About 1054 words)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/operation/ansible-frequently-used-commands/">Ansible常用命令</a>
-            
-        </h1>
-        <div class="content">
-            <h3 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h3><p>记录一下常用的Ansible指令、模块，方便检索。</p>
-<h3 id="Ansible主机"><a href="#Ansible主机" class="headerlink" title="Ansible主机"></a>Ansible主机</h3><p>/etc/ansible/hosts中，server是目标服务器列表名，包含两个服务器</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[spark]</span><br><span class="line">10.0.0.1</span><br><span class="line">10.0.0.2</span><br></pre></td></tr></table></figure>
-
-<h3 id="Ansible-Shell模块"><a href="#Ansible-Shell模块" class="headerlink" title="Ansible Shell模块"></a>Ansible Shell模块</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在spark集群上执行ls指令</span></span><br><span class="line">$ ansible spark -m shell -a <span class="string">'ls'</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="Ansible-playbook"><a href="#Ansible-playbook" class="headerlink" title="Ansible-playbook"></a>Ansible-playbook</h3><p>执行较大的复杂任务时，以<code>YAML</code>的声明语法来配置，并且可以放置一些模板类文件和资源文件等。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">|___python.yml</span><br><span class="line">|___python.host</span><br><span class="line">|___roles</span><br><span class="line">| |___python</span><br><span class="line">| | |___defaults  # 默认变量</span><br><span class="line">| | |___handlers  # 可以被任务使用或者任何该任务之外的地方</span><br><span class="line">| | |___files</span><br><span class="line">| | |___vars      # 其它变量</span><br><span class="line">| | |___templates # 模板</span><br><span class="line">| | |___meta      # 元数据</span><br><span class="line">| | |___tasks     # 主要任务列表</span><br><span class="line">| | | |___main.yml</span><br><span class="line">| |___airflow</span><br><span class="line">| | |___tasks</span><br><span class="line">| | | |___main.yml</span><br><span class="line">| | | |___templates</span><br><span class="line">| | | | |___airflow.cfg</span><br></pre></td></tr></table></figure>
-
-<h4 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="comment"># 声明变量</span></span><br><span class="line"><span class="attr">foo:</span></span><br><span class="line">  <span class="attr">field1:</span> <span class="string">one</span></span><br><span class="line">  <span class="attr">field2:</span> <span class="string">two</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用base_path</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">hosts:</span> <span class="string">app_servers</span></span><br><span class="line">  <span class="attr">vars:</span></span><br><span class="line">      <span class="attr">app_path:</span> <span class="string">&#123;</span> <span class="string">&#123;</span> <span class="string">base_path</span> <span class="string">&#125;</span> <span class="string">&#125;/22</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在命令行传入变量</span></span><br><span class="line">$ ansible-playbook release.yml --extra-vars <span class="string">"hosts=vipers user=starbuck"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 文件形式</span></span><br><span class="line">$ ansible-playbook release.yml --extra-vars <span class="string">"@some_file.json"</span></span><br></pre></td></tr></table></figure>
-
-<p>更多的变量还有3类作用域等，以后用到再加。</p>
-<h4 id="文件"><a href="#文件" class="headerlink" title="文件"></a>文件</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将files目录下的conf/发送到目标节点</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">copy</span> <span class="string">conf</span> <span class="string">files</span></span><br><span class="line">  <span class="attr">copy:</span> <span class="string">src=conf/agent.conf</span> <span class="string">dest=/opt/flume/apache-flume-1.7.0-bin/conf/</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="handler"><a href="#handler" class="headerlink" title="handler"></a>handler</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># handlers/main.yml</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">start</span> <span class="string">telegraf</span></span><br><span class="line">  <span class="attr">service:</span> <span class="string">name=telegraf</span> <span class="string">state=started</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 拷贝docker配置文件并触发docker重启</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">copy</span> <span class="string">docker</span> <span class="string">conf</span> <span class="string">to</span> <span class="string">dest</span> <span class="string">host</span></span><br><span class="line">  <span class="attr">copy:</span> <span class="string">src=conf/docker.conf</span> <span class="string">dest=/etc/telegraf/telegraf.d/</span></span><br><span class="line">  <span class="attr">when:</span> <span class="string">"'docker' in group_names"</span></span><br><span class="line">  <span class="attr">notify:</span> <span class="string">restart</span> <span class="string">telegraf</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="任务"><a href="#任务" class="headerlink" title="任务"></a>任务</h4><p><code>roles</code>目录就是按具体安装的功能模块划分，比如python模块、jdk模块、spark模块等等，他们相互不重复，并且可以有依赖关系，比如jdk -&gt; spark，通过多个role的组合搭配出各种环境的配置方法。</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># python/tasks/main.yml</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">pip</span></span><br><span class="line">  <span class="attr">apt:</span> </span><br><span class="line">    <span class="attr">name:</span> <span class="string">python-pip</span></span><br><span class="line">    <span class="attr">state:</span> <span class="string">present</span></span><br><span class="line">  <span class="attr">become:</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Upgrade</span> <span class="string">pip</span></span><br><span class="line">  <span class="attr">pip:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">pip</span></span><br><span class="line">    <span class="attr">extra_args:</span> <span class="string">--upgrade</span> <span class="string">-i</span> <span class="string">https://pypi.doubanio.com/simple/</span></span><br><span class="line">  <span class="attr">become:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># airflow/tasks/main.yml</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Create</span> <span class="string">virtualenv</span> <span class="string">for</span> <span class="string">airflow</span></span><br><span class="line">  <span class="attr">command:</span> <span class="string">virtualenv</span> <span class="string">/home/ubuntu/airflow_v</span> <span class="string">creates=/home/ubuntu/airflow_v</span></span><br><span class="line">  <span class="attr">become:</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">mysqlclient</span></span><br><span class="line">  <span class="attr">apt:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">libmysqlclient-dev</span></span><br><span class="line">    <span class="attr">state:</span> <span class="string">present</span></span><br><span class="line">  <span class="attr">become:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">airflow</span> <span class="string">within</span> <span class="string">`airflow_v`</span></span><br><span class="line">  <span class="attr">pip:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">apache-airflow[all]</span></span><br><span class="line">    <span class="attr">extra_args:</span> <span class="string">-i</span> <span class="string">https://pypi.doubanio.com/simple/</span></span><br><span class="line">    <span class="attr">virtualenv:</span> <span class="string">/home/ubuntu/airflow_v</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">celery[redis]</span> <span class="string">within</span> <span class="string">`airflow_v`</span></span><br><span class="line">  <span class="attr">pip:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">celery[redis]</span></span><br><span class="line">    <span class="attr">extra_args:</span> <span class="string">-i</span> <span class="string">https://pypi.doubanio.com/simple/</span></span><br><span class="line">    <span class="attr">virtualenv:</span> <span class="string">/home/ubuntu/airflow_v</span></span><br><span class="line">    </span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Create</span> <span class="string">Airflow</span> <span class="string">home</span></span><br><span class="line">  <span class="attr">file:</span></span><br><span class="line">    <span class="attr">path:</span> <span class="string">/home/ubuntu/airflow</span></span><br><span class="line">    <span class="attr">state:</span> <span class="string">directory</span></span><br><span class="line">    <span class="attr">mode:</span> <span class="number">0755</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Initialize</span> <span class="string">airflow</span> <span class="string">database</span></span><br><span class="line">  <span class="attr">command:</span> <span class="string">source</span> <span class="string">/home/ubuntu/airflow_v/bin/activate</span> <span class="string">&amp;&amp;</span> <span class="string">/home/ubuntu/airflow_v/bin/airflow</span> <span class="string">initdb</span> <span class="string">creates=/home/ubuntu/airflow/airflow.cfg</span></span><br><span class="line">  <span class="attr">environment:</span></span><br><span class="line">    <span class="attr">AIRFLOW_HOME:</span> <span class="string">/home/ubuntu/airflow</span></span><br><span class="line">    </span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Syncronize</span> <span class="string">airflow</span> <span class="string">configuration</span></span><br><span class="line">  <span class="attr">synchronize:</span></span><br><span class="line">    <span class="attr">src:</span> <span class="string">templates/airflow.cfg</span></span><br><span class="line">    <span class="attr">dest:</span> <span class="string">/home/ubuntu/airflow/airflow.cfg</span></span><br><span class="line">  <span class="attr">become:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="入口文件"><a href="#入口文件" class="headerlink" title="入口文件"></a>入口文件</h4><p><code>python.yml</code>是ansible入口文件，包含目标host、运行的具体任务。</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="comment"># 发布机上的代码初始化</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">hosts:</span> <span class="string">spark</span></span><br><span class="line">  <span class="attr">roles:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">python</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">airflow</span></span><br></pre></td></tr></table></figure>
-
-<p>下面是任务中常用的模块</p>
-<hr>
-<h4 id="apt安装模块"><a href="#apt安装模块" class="headerlink" title="apt安装模块"></a>apt安装模块</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装pip</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">pip</span></span><br><span class="line">  <span class="attr">apt:</span> </span><br><span class="line">    <span class="attr">name:</span> <span class="string">python-pip</span></span><br><span class="line">    <span class="attr">state:</span> <span class="string">present</span></span><br><span class="line">  <span class="attr">become:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="Pip安装模块"><a href="#Pip安装模块" class="headerlink" title="Pip安装模块"></a>Pip安装模块</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用pip升级pip</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Upgrade</span> <span class="string">pip</span></span><br><span class="line">  <span class="attr">pip:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">pip</span></span><br><span class="line">  <span class="attr">extra_args:</span> <span class="string">--upgrade</span> <span class="string">-i</span> <span class="string">https://pypi.doubanio.com/simple/</span></span><br><span class="line">  <span class="attr">become:</span> <span class="literal">false</span></span><br><span class="line">  </span><br><span class="line"><span class="comment"># 使用指定虚拟环境安装依赖</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">celery[redis]</span> <span class="string">within</span> <span class="string">`airflow_v`</span></span><br><span class="line">  <span class="attr">pip:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">celery[redis]</span></span><br><span class="line">    <span class="attr">extra_args:</span> <span class="string">-i</span> <span class="string">https://pypi.doubanio.com/simple/</span></span><br><span class="line">    <span class="attr">virtualenv:</span> <span class="string">/home/ubuntu/airflow_v</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="Shell模块"><a href="#Shell模块" class="headerlink" title="Shell模块"></a>Shell模块</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Initialize</span> <span class="string">airflow</span> <span class="string">database</span></span><br><span class="line">  <span class="attr">command:</span> <span class="string">source</span> <span class="string">/home/ubuntu/airflow_v/bin/activate</span> <span class="string">&amp;&amp;</span> <span class="string">/home/ubuntu/airflow_v/bin/airflow</span> <span class="string">initdb</span> <span class="string">creates=/home/ubuntu/airflow/airflow.cfg</span></span><br><span class="line">  <span class="attr">environment:</span></span><br><span class="line">    <span class="attr">AIRFLOW_HOME:</span> <span class="string">/home/ubuntu/airflow</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="File模块"><a href="#File模块" class="headerlink" title="File模块"></a>File模块</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在目标服务器上创建权限为0755的目录</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Create</span> <span class="string">Airflow</span> <span class="string">home</span></span><br><span class="line">  <span class="attr">file:</span></span><br><span class="line">    <span class="attr">path:</span> <span class="string">/home/ubuntu/airflow</span></span><br><span class="line">    <span class="attr">state:</span> <span class="string">directory</span></span><br><span class="line">    <span class="attr">mode:</span> <span class="number">0755</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="Synchronize模块"><a href="#Synchronize模块" class="headerlink" title="Synchronize模块"></a>Synchronize模块</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将本地文件同步到目标服务器上</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Syncronize</span> <span class="string">airflow</span> <span class="string">configuration</span></span><br><span class="line">  <span class="attr">synchronize:</span></span><br><span class="line">    <span class="attr">src:</span> <span class="string">templates/airflow.cfg</span></span><br><span class="line">    <span class="attr">dest:</span> <span class="string">/home/ubuntu/airflow/airflow.cfg</span></span><br><span class="line">  <span class="attr">become:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="下载模块"><a href="#下载模块" class="headerlink" title="下载模块"></a>下载模块</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 从指定URL下载文件到目标服务器指定目录</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Download</span> <span class="string">the</span> <span class="string">Go</span> <span class="string">tarball</span></span><br><span class="line">  <span class="attr">get_url:</span></span><br><span class="line">    <span class="attr">url:</span> <span class="string">"<span class="template-variable">&#123;&#123; go_download_location &#125;&#125;</span>"</span></span><br><span class="line">    <span class="attr">dest:</span> <span class="string">/usr/local/src/&#123;&#123;</span> <span class="string">go_tarball</span> <span class="string">&#125;&#125;</span></span><br><span class="line">    <span class="attr">checksum:</span> <span class="string">"<span class="template-variable">&#123;&#123; go_tarball_checksum &#125;&#125;</span>"</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="Systemd模块"><a href="#Systemd模块" class="headerlink" title="Systemd模块"></a>Systemd模块</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 重启docker服务</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">restart</span> <span class="string">docker</span></span><br><span class="line">  <span class="attr">systemd:</span></span><br><span class="line">    <span class="attr">state:</span> <span class="string">restarted</span></span><br><span class="line">    <span class="attr">daemon_reload:</span> <span class="literal">yes</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">docker</span></span><br><span class="line">  <span class="attr">become:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="Template模块"><a href="#Template模块" class="headerlink" title="Template模块"></a>Template模块</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将templates目录下的docker.my模板复制到目标服务器的/etc/default/docker目录</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Configure</span> <span class="string">docker</span> <span class="string">mirror</span> <span class="string">registry</span> <span class="string">to</span> <span class="string">Aliyun</span></span><br><span class="line">  <span class="attr">template:</span> <span class="string">src=docker.my</span> <span class="string">dest=/etc/default/docker</span></span><br><span class="line">  <span class="attr">notify:</span> <span class="string">restart</span> <span class="string">docker</span></span><br><span class="line">  <span class="attr">become:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="Blockinfile模块"><a href="#Blockinfile模块" class="headerlink" title="Blockinfile模块"></a>Blockinfile模块</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 一个官网例子，在/etc/hosts里添加映射</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Add</span> <span class="string">mappings</span> <span class="string">to</span> <span class="string">/etc/hosts</span></span><br><span class="line">  <span class="attr">blockinfile:</span></span><br><span class="line">    <span class="attr">path:</span> <span class="string">/etc/hosts</span></span><br><span class="line">    <span class="attr">block:</span> <span class="string">|</span></span><br><span class="line">      <span class="string">&#123;&#123;</span> <span class="string">item.ip</span> <span class="string">&#125;&#125;</span> <span class="string">&#123;&#123;</span> <span class="string">item.name</span> <span class="string">&#125;&#125;</span></span><br><span class="line">    <span class="attr">marker:</span> <span class="string">"# &#123;mark&#125; ANSIBLE MANAGED BLOCK <span class="template-variable">&#123;&#123; item.name &#125;&#125;</span>"</span></span><br><span class="line">  <span class="attr">with_items:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#123;</span> <span class="attr">name:</span> <span class="string">host1,</span> <span class="attr">ip:</span> <span class="number">10.10</span><span class="number">.1</span><span class="number">.10</span> <span class="string">&#125;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#123;</span> <span class="attr">name:</span> <span class="string">host2,</span> <span class="attr">ip:</span> <span class="number">10.10</span><span class="number">.1</span><span class="number">.11</span> <span class="string">&#125;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#123;</span> <span class="attr">name:</span> <span class="string">host3,</span> <span class="attr">ip:</span> <span class="number">10.10</span><span class="number">.1</span><span class="number">.12</span> <span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="Copy模块"><a href="#Copy模块" class="headerlink" title="Copy模块"></a>Copy模块</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 拷贝zookeeper配置文件</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">copy</span> <span class="string">zookeeper</span> <span class="string">conf</span> <span class="string">to</span> <span class="string">dest</span> <span class="string">host</span></span><br><span class="line">  <span class="attr">copy:</span> <span class="string">src=conf/zookeeper.conf</span> <span class="string">dest=/etc/zookeeper/conf/</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="Service模块"><a href="#Service模块" class="headerlink" title="Service模块"></a>Service模块</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">restart</span> <span class="string">telegraf</span></span><br><span class="line">  <span class="attr">service:</span> <span class="string">name=telegraf</span> <span class="string">state=restarted</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><ol>
-<li><a href="http://docs.ansible.com/ansible/latest/" title="Ansible文档">http://docs.ansible.com/ansible/latest/</a></li>
-</ol>
-
-        </div>
-        
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "author": {
-            "@type": "Person",
-            "name": "songrgg"
-        },
-        "publisher": {},
-        "headline": "Ansible常用命令",
-        "image": [
-            "https://songrgg.github.io/images/ansible.png"
-        ],
-        "keywords": "",
-        "genre": "operation",
-        "datePublished": "2018-03-05",
-        "dateCreated": "2018-03-05",
-        "dateModified": "2019-12-14",
-        "url": "https://songrgg.github.io/operation/ansible-frequently-used-commands/",
-        "mainEntityOfPage": "https://songrgg.github.io/operation/ansible-frequently-used-commands/",
-        "description": "动机记录一下常用的Ansible指令、模块，方便检索。Ansible主机/etc/ansible/hosts中，server是目标服务器列表名，包含两个服务器123[spark]10.0.0.110.0.0.2Ansible Shell模块12# 在spark集群上执行ls指令$ ansible spark -m shell -a 'ls'Ansible-playbook执行较大的复杂",
-        "wordCount": 1549
-    }
-</script>
-
-
-
 
     
 <div class="card card-transparent">
@@ -1143,7 +1086,7 @@
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            49
+                            50
                         </p>
                     </a>
                 </div>
@@ -1256,7 +1199,7 @@
                 <span class="level-item">operation</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">14</span>
+                <span class="level-item tag">15</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/programming/">
@@ -1277,7 +1220,7 @@
         <h3 class="menu-label">
             Tag Cloud
         </h3>
-        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 12.5px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
+        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 12.5px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
     </div>
 </div>
     
@@ -1289,6 +1232,25 @@
         <h3 class="menu-label">
             Recent
         </h3>
+        
+        <article class="media">
+            
+            <a href="/operation/how-to-build-a-smallest-docker-image/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/docker-build.png" alt="how to build the smallest docker image as fast as you can">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-15T19:11:50.000Z">2020-03-15</time></div>
+                    <a href="/operation/how-to-build-a-smallest-docker-image/" class="title has-link-black-ter is-size-6 has-text-weight-normal">how to build the smallest docker image as fast as you can</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
+                    </p>
+                </div>
+            </div>
+        </article>
         
         <article class="media">
             
@@ -1366,25 +1328,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/host-swagger-documentation-with-yaml-json-files/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/swagger_editor.png" alt="How to host Swagger documentation using yaml/json configuration files?">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-12T19:11:50.000Z">2019-09-12</time></div>
-                    <a href="/operation/host-swagger-documentation-with-yaml-json-files/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to host Swagger documentation using yaml/json configuration files?</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
         
@@ -1395,6 +1338,17 @@
             Archives
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/03/">
+                <span class="level-start">
+                    <span class="level-item">March 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2020/02/">
@@ -1858,7 +1812,7 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/docker/">
                         <span class="tag">docker</span>
-                        <span class="tag is-grey">2</span>
+                        <span class="tag is-grey">3</span>
                     </a>
                 </div>
                 
@@ -2173,6 +2127,25 @@
         
         <article class="media">
             
+            <a href="/operation/how-to-build-a-smallest-docker-image/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/docker-build.png" alt="how to build the smallest docker image as fast as you can">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-15T19:11:50.000Z">2020-03-15</time></div>
+                    <a href="/operation/how-to-build-a-smallest-docker-image/" class="title has-link-black-ter is-size-6 has-text-weight-normal">how to build the smallest docker image as fast as you can</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor SSL certificates expiration with Telegraf">
@@ -2247,25 +2220,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/host-swagger-documentation-with-yaml-json-files/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/swagger_editor.png" alt="How to host Swagger documentation using yaml/json configuration files?">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-12T19:11:50.000Z">2019-09-12</time></div>
-                    <a href="/operation/host-swagger-documentation-with-yaml-json-files/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to host Swagger documentation using yaml/json configuration files?</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
     
@@ -2276,6 +2230,17 @@
             Archives
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/03/">
+                <span class="level-start">
+                    <span class="level-item">March 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2020/02/">
@@ -2739,7 +2704,7 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/docker/">
                         <span class="tag">docker</span>
-                        <span class="tag is-grey">2</span>
+                        <span class="tag is-grey">3</span>
                     </a>
                 </div>
                 

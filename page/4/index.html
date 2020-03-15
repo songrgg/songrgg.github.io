@@ -60,15 +60,7 @@
 <link rel="stylesheet" href="/css/back-to-top.css">
 
     
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-74431120-1"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'UA-74431120-1');
-</script>
-
+    
     
     
     
@@ -132,6 +124,104 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main">
+    
+
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2016-10-15T22:00:00.000Z">2016-10-16</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/programming/">programming</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    3 minutes read (About 468 words)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/programming/xhprof-install-record/">xhprof安装记录</a>
+            
+        </h1>
+        <div class="content">
+            <blockquote>
+<p>选择一个工具分析PHP函数调用的资源耗用明细，以图表化的形式展现，方便优化代码。</p>
+</blockquote>
+<h2 id="安装xhprof"><a href="#安装xhprof" class="headerlink" title="安装xhprof"></a>安装xhprof</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pecl install xhprof-beta</span><br></pre></td></tr></table></figure>
+
+<p>在php.ini引用的extension中添加<code>extension=xhprof.so</code></p>
+<h2 id="GUI"><a href="#GUI" class="headerlink" title="GUI"></a>GUI</h2><p>这里选择了xhgui，它的原理是在需要测试性能的脚本前加上PHP的一段代码，将收集到的性能数据存储到文件或者mongodb等存储介质中去。</p>
+<h4 id="MongoDB"><a href="#MongoDB" class="headerlink" title="MongoDB"></a>MongoDB</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install mongodb</span><br></pre></td></tr></table></figure>
+
+<h4 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /var/www</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/perftools/xhgui.git</span><br><span class="line"><span class="built_in">cd</span> xhgui</span><br><span class="line">php install.php</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>如果不能以root身份运行，那么sudo -u www-data php install.php</p>
+</li>
+<li><p>安装的时候出现<code>the requested PHP extension mongodb is missing from your system</code>问题是平台的拓展名为<strong>mongo.so</strong>，而composer检查的是<strong>mongodb.so</strong>，只要加上<code>--ignore-platform-reqs</code></p>
+</li>
+<li><p>如果composer问题不清楚，建议单独跑composer命令，加上-vvv打开调试模式</p>
+</li>
+</ul>
+<h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><p>如前面说的原理是在头部添加一段PHP代码，这里通过在Nginx里配置，或者PHP ini auto_prepend_file在php.ini中添加auto_prepend_file。</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~ \.php</span> &#123;</span><br><span class="line">    <span class="attribute">include</span> fastcgi_params;</span><br><span class="line">    <span class="attribute">fastcgi_buffers</span> <span class="number">128</span> <span class="number">4k</span>;</span><br><span class="line">    <span class="attribute">fastcgi_pass</span>   <span class="number">127.0.0.1:9000</span>;</span><br><span class="line">    <span class="attribute">fastcgi_index</span>  index.php;</span><br><span class="line">    <span class="attribute">fastcgi_param</span>  SCRIPT_FILENAME  <span class="variable">$document_root</span><span class="variable">$fastcgi_script_name</span>;</span><br><span class="line">    <span class="attribute">fastcgi_param</span>  PHP_VALUE <span class="string">"auto_prepend_file=\"/opt/htdocs/xhgui/external/header.php\""</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>在config目录下添加config.php配置</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">return</span> <span class="keyword">array</span>(</span><br><span class="line">    <span class="string">'debug'</span> =&gt; <span class="keyword">false</span>,</span><br><span class="line">    <span class="string">'mode'</span> =&gt; <span class="string">'development'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Can be either mongodb or file.</span></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    'save.handler' =&gt; 'file',</span></span><br><span class="line"><span class="comment">    'save.handler.filename' =&gt; dirname(__DIR__) . '/cache/' . 'xhgui.data.' . microtime(true) . '_' . substr(md5($url), 0, 6),</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="string">'save.handler'</span> =&gt; <span class="string">'mongodb'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Needed for file save handler. Beware of file locking. You can adujst this file path</span></span><br><span class="line">    <span class="comment">// to reduce locking problems (eg uniqid, time ...)</span></span><br><span class="line">    <span class="comment">//'save.handler.filename' =&gt; __DIR__.'/../data/xhgui_'.date('Ymd').'.dat',</span></span><br><span class="line">    <span class="string">'db.host'</span> =&gt; <span class="string">'127.0.0.1:27017'</span>,</span><br><span class="line">    <span class="string">'db.db'</span> =&gt; <span class="string">'xhprof'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Allows you to pass additional options like replicaSet to MongoClient.</span></span><br><span class="line">    <span class="comment">// 'username', 'password' and 'db' (where the user is added)</span></span><br><span class="line">    <span class="string">'db.options'</span> =&gt; <span class="keyword">array</span>(),</span><br><span class="line">    <span class="string">'templates.path'</span> =&gt; dirname(<span class="keyword">__DIR__</span>) . <span class="string">'/src/templates'</span>,</span><br><span class="line">    <span class="string">'date.format'</span> =&gt; <span class="string">'M jS H:i:s'</span>,</span><br><span class="line">    <span class="string">'detail.count'</span> =&gt; <span class="number">6</span>,</span><br><span class="line">    <span class="string">'page.limit'</span> =&gt; <span class="number">25</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Profile 1 in 100 requests.</span></span><br><span class="line">    <span class="comment">// You can return true to profile every request.</span></span><br><span class="line">    <span class="string">'profiler.enable'</span> =&gt; <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> rand(<span class="number">1</span>, <span class="number">100</span>) === <span class="number">3</span>;</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="string">'profiler.simple_url'</span> =&gt; <span class="function"><span class="keyword">function</span><span class="params">($url)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> preg_replace(<span class="string">'/\=\d+/'</span>, <span class="string">''</span>, $url);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "xhprof安装记录",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "php xhprof",
+        "genre": "programming",
+        "datePublished": "2016-10-16",
+        "dateCreated": "2016-10-16",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/programming/xhprof-install-record/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/xhprof-install-record/",
+        "description": "选择一个工具分析PHP函数调用的资源耗用明细，以图表化的形式展现，方便优化代码。安装xhprof1$ pecl install xhprof-beta在php.ini引用的extension中添加extension=xhprof.soGUI这里选择了xhgui，它的原理是在需要测试性能的脚本前加上PHP的一段代码，将收集到的性能数据存储到文件或者mongodb等存储介质中去。Mong",
+        "wordCount": 515
+    }
+</script>
+
+
+
     
 
 <div class="card">
@@ -208,6 +298,88 @@
         "mainEntityOfPage": "https://songrgg.github.io/programming/spring-data-redis-issuse/",
         "description": "前两天上线了一个新功能，导致线上业务的缓存总是无法更新，报错也是非常奇怪，redis.clients.jedis.exceptions.JedisConnectionException: Unknown reply: 5，google到的原因是Spring data redis中的scan操作，它获取了redis的连接之后，在操作没有完全结束之前就把redis连接放回连接池，其它线程从连接池里复用",
         "wordCount": 25
+    }
+</script>
+
+
+
+    
+
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2016-07-30T22:00:00.000Z">2016-07-31</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/operation/">operation</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    a minute read (About 221 words)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/operation/mysql-utf8mb4-encode/">MySQL支持emoji</a>
+            
+        </h1>
+        <div class="content">
+            <h3 id="方案1-应用层支持"><a href="#方案1-应用层支持" class="headerlink" title="方案1: 应用层支持"></a>方案1: 应用层支持</h3><p>MySQL默认的数据库编码是utf8，对于emoji文字是不能直接存储的，要想存储emoji，有许多库支持对emoji的转换，例如将😊转存为<code>:smile:</code>，放在数据库里，在从数据库里取出来的时候，再转换为😊，这是应用层的方案。</p>
+<h3 id="方案2-存储层支持"><a href="#方案2-存储层支持" class="headerlink" title="方案2: 存储层支持"></a>方案2: 存储层支持</h3><p>MySQL编码设置为utf8mb4，直接支持emoji，不需要应用层的改动。  </p>
+<p>注意事项:<br><strong>MySQL索引的长度不能大于767字节, utf8 1个字存3byte, utf8mb4存4byte，相对应VARCHAR的字节数分别是255和191，所以要把索引字段的长度限制到191。</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> &lt;table1&gt; <span class="keyword">MODIFY</span> <span class="keyword">COLUMN</span> &lt;col1_indexed&gt; <span class="built_in">VARCHAR</span>(<span class="number">191</span>);</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> &lt;table1&gt; <span class="keyword">CONVERT</span> <span class="keyword">TO</span> <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8mb4 <span class="keyword">COLLATE</span> utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a href="https://mathiasbynens.be/notes/mysql-utf8mb4">How to support full Unicode in MySQL databases</a></li>
+</ol>
+
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "MySQL支持emoji",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "mysql",
+        "genre": "operation",
+        "datePublished": "2016-07-31",
+        "dateCreated": "2016-07-31",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/operation/mysql-utf8mb4-encode/",
+        "mainEntityOfPage": "https://songrgg.github.io/operation/mysql-utf8mb4-encode/",
+        "description": "方案1: 应用层支持MySQL默认的数据库编码是utf8，对于emoji文字是不能直接存储的，要想存储emoji，有许多库支持对emoji的转换，例如将😊转存为:smile:，放在数据库里，在从数据库里取出来的时候，再转换为😊，这是应用层的方案。方案2: 存储层支持MySQL编码设置为utf8mb4，直接支持emoji，不需要应用层的改动。  注意事项:MySQL索引的长度不能大于767字",
+        "wordCount": 66
     }
 </script>
 
@@ -294,88 +466,6 @@
         "mainEntityOfPage": "https://songrgg.github.io/programming/wechat-share-problem/",
         "description": "调试前端打开debug模式，浏览器打开时在console里会打印微信分享初始化信息，在微信里会以alert形式出现。常见问题签名的时候注意大小写签名时候用的url需要和当前位置的url保持一致微信二次分享失败 微信在第二次分享的链接里增加了后缀，如?from=singlemessage&amp;isappinstalled=1，这里需要转义12345678910111213$.ajax",
         "wordCount": 140
-    }
-</script>
-
-
-
-    
-
-<div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2016-07-30T22:00:00.000Z">2016-07-31</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    a minute read (About 221 words)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/operation/mysql-utf8mb4-encode/">MySQL支持emoji</a>
-            
-        </h1>
-        <div class="content">
-            <h3 id="方案1-应用层支持"><a href="#方案1-应用层支持" class="headerlink" title="方案1: 应用层支持"></a>方案1: 应用层支持</h3><p>MySQL默认的数据库编码是utf8，对于emoji文字是不能直接存储的，要想存储emoji，有许多库支持对emoji的转换，例如将😊转存为<code>:smile:</code>，放在数据库里，在从数据库里取出来的时候，再转换为😊，这是应用层的方案。</p>
-<h3 id="方案2-存储层支持"><a href="#方案2-存储层支持" class="headerlink" title="方案2: 存储层支持"></a>方案2: 存储层支持</h3><p>MySQL编码设置为utf8mb4，直接支持emoji，不需要应用层的改动。  </p>
-<p>注意事项:<br><strong>MySQL索引的长度不能大于767字节, utf8 1个字存3byte, utf8mb4存4byte，相对应VARCHAR的字节数分别是255和191，所以要把索引字段的长度限制到191。</strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> &lt;table1&gt; <span class="keyword">MODIFY</span> <span class="keyword">COLUMN</span> &lt;col1_indexed&gt; <span class="built_in">VARCHAR</span>(<span class="number">191</span>);</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> &lt;table1&gt; <span class="keyword">CONVERT</span> <span class="keyword">TO</span> <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8mb4 <span class="keyword">COLLATE</span> utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
-<li><a href="https://mathiasbynens.be/notes/mysql-utf8mb4">How to support full Unicode in MySQL databases</a></li>
-</ol>
-
-        </div>
-        
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "author": {
-            "@type": "Person",
-            "name": "songrgg"
-        },
-        "publisher": {},
-        "headline": "MySQL支持emoji",
-        "image": [
-            "https://songrgg.github.io/images/thumbnail.svg"
-        ],
-        "keywords": "mysql",
-        "genre": "operation",
-        "datePublished": "2016-07-31",
-        "dateCreated": "2016-07-31",
-        "dateModified": "2019-09-12",
-        "url": "https://songrgg.github.io/operation/mysql-utf8mb4-encode/",
-        "mainEntityOfPage": "https://songrgg.github.io/operation/mysql-utf8mb4-encode/",
-        "description": "方案1: 应用层支持MySQL默认的数据库编码是utf8，对于emoji文字是不能直接存储的，要想存储emoji，有许多库支持对emoji的转换，例如将😊转存为:smile:，放在数据库里，在从数据库里取出来的时候，再转换为😊，这是应用层的方案。方案2: 存储层支持MySQL编码设置为utf8mb4，直接支持emoji，不需要应用层的改动。  注意事项:MySQL索引的长度不能大于767字",
-        "wordCount": 66
     }
 </script>
 
@@ -755,87 +845,6 @@
 
 
 
-    
-
-<div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2016-02-28T00:27:50.000Z">2016-02-28</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/programming/">programming</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    2 minutes read (About 312 words)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/programming/mahout-tutorial/">Mahout入门-1</a>
-            
-        </h1>
-        <div class="content">
-            <h3 id="Mahout是什么？"><a href="#Mahout是什么？" class="headerlink" title="Mahout是什么？"></a>Mahout是什么？</h3><p>Mahout是用来进行机器学习和推荐算法的一个Java框架。</p>
-<h3 id="一个简单的基于用户的协同过滤的示例"><a href="#一个简单的基于用户的协同过滤的示例" class="headerlink" title="一个简单的基于用户的协同过滤的示例"></a>一个简单的基于用户的协同过滤的示例</h3><p>读取用户对电影评分的数据集，为ID为2的用户推荐3部电影。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.mahout;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.mahout.cf.taste.common.TasteException;</span><br><span class="line"><span class="keyword">import</span> org.apache.mahout.cf.taste.impl.model.file.FileDataModel;</span><br><span class="line"><span class="keyword">import</span> org.apache.mahout.cf.taste.impl.neighborhood.ThresholdUserNeighborhood;</span><br><span class="line"><span class="keyword">import</span> org.apache.mahout.cf.taste.impl.recommender.GenericUserBasedRecommender;</span><br><span class="line"><span class="keyword">import</span> org.apache.mahout.cf.taste.impl.similarity.PearsonCorrelationSimilarity;</span><br><span class="line"><span class="keyword">import</span> org.apache.mahout.cf.taste.model.DataModel;</span><br><span class="line"><span class="keyword">import</span> org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;</span><br><span class="line"><span class="keyword">import</span> org.apache.mahout.cf.taste.recommender.RecommendedItem;</span><br><span class="line"><span class="keyword">import</span> org.apache.mahout.cf.taste.recommender.UserBasedRecommender;</span><br><span class="line"><span class="keyword">import</span> org.apache.mahout.cf.taste.similarity.UserSimilarity;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.File;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            DataModel model = <span class="keyword">new</span> FileDataModel(<span class="keyword">new</span> File(<span class="string">"resources/dataset.csv"</span>));</span><br><span class="line"></span><br><span class="line">            UserSimilarity similarity = <span class="keyword">new</span> PearsonCorrelationSimilarity(model);</span><br><span class="line"></span><br><span class="line">            UserNeighborhood neighborhood = <span class="keyword">new</span> ThresholdUserNeighborhood(<span class="number">0.10</span>, similarity, model);</span><br><span class="line"></span><br><span class="line">            UserBasedRecommender recommender = <span class="keyword">new</span> GenericUserBasedRecommender(model, neighborhood, similarity);</span><br><span class="line"></span><br><span class="line">            List&lt;RecommendedItem&gt; recommendations = recommender.recommend(<span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line">            <span class="keyword">for</span> (RecommendedItem recommendation : recommendations) &#123;</span><br><span class="line">                System.out.println(recommendation);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (TasteException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="实践后感"><a href="#实践后感" class="headerlink" title="实践后感"></a>实践后感</h3><p>好久没有碰Java系列，今天又是看了Mahout的示例，看起来很简单，结果自己试了下，发现要调整IDE，配置Maven，包括数据集文件路径的设置都要注意。</p>
-<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><ul>
-<li><a href="https://mahout.apache.org/users/recommender/userbased-5-minutes.html">官网示例</a></li>
-</ul>
-
-        </div>
-        
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "author": {
-            "@type": "Person",
-            "name": "songrgg"
-        },
-        "publisher": {},
-        "headline": "Mahout入门-1",
-        "image": [
-            "https://songrgg.github.io/images/thumbnail.svg"
-        ],
-        "keywords": "mahout machine learning",
-        "genre": "programming",
-        "datePublished": "2016-02-28",
-        "dateCreated": "2016-02-28",
-        "dateModified": "2019-09-12",
-        "url": "https://songrgg.github.io/programming/mahout-tutorial/",
-        "mainEntityOfPage": "https://songrgg.github.io/programming/mahout-tutorial/",
-        "description": "Mahout是什么？Mahout是用来进行机器学习和推荐算法的一个Java框架。一个简单的基于用户的协同过滤的示例读取用户对电影评分的数据集，为ID为2的用户推荐3部电影。12345678910111213141516171819202122232425262728293031323334353637383940package com.mahout;import org.apache.maho",
-        "wordCount": 364
-    }
-</script>
-
-
-
 
     
 <div class="card card-transparent">
@@ -910,7 +919,7 @@
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            49
+                            50
                         </p>
                     </a>
                 </div>
@@ -1023,7 +1032,7 @@
                 <span class="level-item">operation</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">14</span>
+                <span class="level-item tag">15</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/programming/">
@@ -1044,7 +1053,7 @@
         <h3 class="menu-label">
             Tag Cloud
         </h3>
-        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 12.5px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
+        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 12.5px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
     </div>
 </div>
     
@@ -1056,6 +1065,25 @@
         <h3 class="menu-label">
             Recent
         </h3>
+        
+        <article class="media">
+            
+            <a href="/operation/how-to-build-a-smallest-docker-image/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/docker-build.png" alt="how to build the smallest docker image as fast as you can">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-15T19:11:50.000Z">2020-03-15</time></div>
+                    <a href="/operation/how-to-build-a-smallest-docker-image/" class="title has-link-black-ter is-size-6 has-text-weight-normal">how to build the smallest docker image as fast as you can</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
+                    </p>
+                </div>
+            </div>
+        </article>
         
         <article class="media">
             
@@ -1133,25 +1161,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/host-swagger-documentation-with-yaml-json-files/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/swagger_editor.png" alt="How to host Swagger documentation using yaml/json configuration files?">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-12T19:11:50.000Z">2019-09-12</time></div>
-                    <a href="/operation/host-swagger-documentation-with-yaml-json-files/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to host Swagger documentation using yaml/json configuration files?</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
         
@@ -1162,6 +1171,17 @@
             Archives
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/03/">
+                <span class="level-start">
+                    <span class="level-item">March 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2020/02/">
@@ -1625,7 +1645,7 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/docker/">
                         <span class="tag">docker</span>
-                        <span class="tag is-grey">2</span>
+                        <span class="tag is-grey">3</span>
                     </a>
                 </div>
                 
@@ -1940,6 +1960,25 @@
         
         <article class="media">
             
+            <a href="/operation/how-to-build-a-smallest-docker-image/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/docker-build.png" alt="how to build the smallest docker image as fast as you can">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-15T19:11:50.000Z">2020-03-15</time></div>
+                    <a href="/operation/how-to-build-a-smallest-docker-image/" class="title has-link-black-ter is-size-6 has-text-weight-normal">how to build the smallest docker image as fast as you can</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor SSL certificates expiration with Telegraf">
@@ -2014,25 +2053,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/host-swagger-documentation-with-yaml-json-files/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/swagger_editor.png" alt="How to host Swagger documentation using yaml/json configuration files?">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-12T19:11:50.000Z">2019-09-12</time></div>
-                    <a href="/operation/host-swagger-documentation-with-yaml-json-files/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to host Swagger documentation using yaml/json configuration files?</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
     
@@ -2043,6 +2063,17 @@
             Archives
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/03/">
+                <span class="level-start">
+                    <span class="level-item">March 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2020/02/">
@@ -2506,7 +2537,7 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/docker/">
                         <span class="tag">docker</span>
-                        <span class="tag is-grey">2</span>
+                        <span class="tag is-grey">3</span>
                     </a>
                 </div>
                 
