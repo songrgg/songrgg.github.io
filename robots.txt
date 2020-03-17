@@ -5,6 +5,4 @@ Allow: /categories/
 Allow: /tags/
 Allow: /about/
 
-Disallow: /archives/*/
-
 Sitemap: https://songrgg.github.io/sitemap.xml
