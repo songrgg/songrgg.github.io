@@ -60,7 +60,15 @@
 <link rel="stylesheet" href="/css/back-to-top.css">
 
     
-    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-74431120-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-74431120-1');
+</script>
+
     
     
     
@@ -124,6 +132,97 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main">
+    
+
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2016-10-21T22:00:00.000Z">2016-10-22</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/life/">life</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    2 minutes read (About 347 words)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/life/raspberry3-docker/">Raspberry 3安装docker</a>
+            
+        </h1>
+        <div class="content">
+            <h3 id="SD卡制作"><a href="#SD卡制作" class="headerlink" title="SD卡制作"></a>SD卡制作</h3><p>准备一张4GB或者以上的micro sd卡，下载<a href="https://www.raspberrypi.org/downloads/raspbian/">系统镜像</a>，例如raspbian-jessie-lite.img，并使用刷机工具，如<code>Pi filler</code>将其写入sd卡，当然也可以使用命令行的dd，或者其它工具，要注意的是sd卡必须是fat32格式的文件系统，不然树莓派是无法识别的。</p>
+<h3 id="开机启动"><a href="#开机启动" class="headerlink" title="开机启动"></a>开机启动</h3><p>先把所有的线材都连上之后，最后再通电，应该很顺利能看到启动的系统。</p>
+<h3 id="设置WIFI"><a href="#设置WIFI" class="headerlink" title="设置WIFI"></a>设置WIFI</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'network=&#123;</span></span><br><span class="line"><span class="string">  ssid="your-ssid"</span></span><br><span class="line"><span class="string">  psk="your-psk"</span></span><br><span class="line"><span class="string">&#125;'</span> | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf</span><br></pre></td></tr></table></figure>
+
+<p>如果你的WIFI设置没有启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ifconfig wlan0 up</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置apt国内镜像"><a href="#设置apt国内镜像" class="headerlink" title="设置apt国内镜像"></a>设置apt国内镜像</h3><p>阿里云的镜像还是很快的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'deb http://mirrors.aliyun.com/raspbian/raspbian/ wheezy main non-free contrib\ndeb-src http://mirrors.aliyun.com/raspbian/raspbian/ wheezy main non-free contrib'</span> | sudo tee /etc/apt/sources.list.d/hypriot.list</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="docker安装"><a href="#docker安装" class="headerlink" title="docker安装"></a>docker安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ssh pi@raspberrypi.local</span><br><span class="line">sudo apt-get install -y apt-transport-https</span><br><span class="line">wget -q https://packagecloud.io/gpg.key -O - | sudo apt-key add -</span><br><span class="line"><span class="built_in">echo</span> <span class="string">'deb https://packagecloud.io/Hypriot/Schatzkiste/debian/ wheezy main'</span> | sudo tee /etc/apt/sources.list.d/hypriot.list</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install -y docker-hypriot</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> docker</span><br></pre></td></tr></table></figure>
+
+<p>以非root权限运行docker</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo usermod -aG docker `whoami`</span><br></pre></td></tr></table></figure>
+
+<p>如果没有起作用，需要重新登录</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://blog.hypriot.com/post/run-docker-rpi3-with-wifi/">Run Docker on a Raspberry Pi 3 with onboard WiFi</a></p>
+
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "Raspberry 3安装docker",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "docker raspberry",
+        "genre": "life",
+        "datePublished": "2016-10-22",
+        "dateCreated": "2016-10-22",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/life/raspberry3-docker/",
+        "mainEntityOfPage": "https://songrgg.github.io/life/raspberry3-docker/",
+        "description": "SD卡制作准备一张4GB或者以上的micro sd卡，下载系统镜像，例如raspbian-jessie-lite.img，并使用刷机工具，如Pi filler将其写入sd卡，当然也可以使用命令行的dd，或者其它工具，要注意的是sd卡必须是fat32格式的文件系统，不然树莓派是无法识别的。开机启动先把所有的线材都连上之后，最后再通电，应该很顺利能看到启动的系统。设置WIFI1234echo 'n",
+        "wordCount": 149
+    }
+</script>
+
+
+
     
 
 <div class="card">
@@ -743,108 +842,6 @@
 
 
 
-    
-
-<div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2016-02-29T23:00:00.000Z">2016-03-01</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    3 minutes read (About 387 words)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/operation/iOS9-universal-links/">支持iOS9 Universal links遇到的问题</a>
-            
-        </h1>
-        <div class="content">
-            <p>记录为iOS9上的APP支持Universal links遇到的一些问题。</p>
-<ul>
-<li><p>在Web服务器上传apple-app-site-association文件</p>
-<ul>
-<li>必须支持HTTPS获取配置文件</li>
-<li>文件名后不加<code>.json</code>后缀</li>
-<li>必须在<strong>根目录</strong>下，例如官网地址为<code>www.site.com</code>，那么必须通过<code>https://www.site.com/apple-app-site-association</code>访问到该文件</li>
-<li><code>details</code>为列表，列表元素中的<code>paths</code>是数组，且下标越小匹配优先级越高</li>
-<li><code>paths</code>可以使用<code>*</code>匹配任何字符串，<code>?</code>来匹配单个字符</li>
-<li><code>appID</code>格式为<code>{teamId}.{bundleId}</code><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"applinks"</span>:&#123;</span><br><span class="line">        <span class="attr">"apps"</span>:[],</span><br><span class="line">        <span class="attr">"details"</span>:[</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">"appID"</span>:<span class="string">"U9JEY66N6A.com.ss.iphone.article.News"</span>,</span><br><span class="line">                <span class="attr">"paths"</span>:[<span class="string">"/m/detail/*"</span>,<span class="string">"/"</span>]</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">"appID"</span>:<span class="string">"U9JEY66N6A.com.ss.iphone.article.Explore"</span>,</span><br><span class="line">                <span class="attr">"paths"</span>:[<span class="string">"/m/detail/*"</span>,<span class="string">"/"</span>]</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">"appID"</span>:<span class="string">"U9JEY66N6A.com.ss.iphone.article.NewsSocial"</span>,</span><br><span class="line">                <span class="attr">"paths"</span>:[<span class="string">"/m/detail/*"</span>,<span class="string">"/"</span>]</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>应用增加applinks支持</p>
-</li>
-<li><p>测试效果</p>
-<ul>
-<li><p>Safari端<br>可以长按链接，选择使用Web browser打开，或者使用Native APP打开，iOS会记录用户记录，下次用户点击链接，默认使用APP打开，反之，如果用户选择使用浏览器打开链接，下次点击链接默认用浏览器打开。<br>所以，Safari会根据用户最近行为决定如何打开Universal Links，记住用户习惯。</p>
-</li>
-<li><p>微信内置浏览器<br>不支持长按链接选择打开方式，默认直接使用APP打开。</p>
-</li>
-</ul>
-</li>
-<li><p>引用</p>
-<ul>
-<li><a href="https://developer.apple.com/library/ios/documentation/General/Conceptual/AppSearch/UniversalLinks.html">Support Universal Links</a></li>
-<li><a href="http://www.cocoachina.com/ios/20150902/13321.html">iOS 9学习系列：打通 iOS 9 的通用链接（Universal Links）</a></li>
-</ul>
-</li>
-</ul>
-
-        </div>
-        
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "author": {
-            "@type": "Person",
-            "name": "songrgg"
-        },
-        "publisher": {},
-        "headline": "支持iOS9 Universal links遇到的问题",
-        "image": [
-            "https://songrgg.github.io/images/thumbnail.svg"
-        ],
-        "keywords": "universal link",
-        "genre": "operation",
-        "datePublished": "2016-03-01",
-        "dateCreated": "2016-03-01",
-        "dateModified": "2019-12-14",
-        "url": "https://songrgg.github.io/operation/iOS9-universal-links/",
-        "mainEntityOfPage": "https://songrgg.github.io/operation/iOS9-universal-links/",
-        "description": "记录为iOS9上的APP支持Universal links遇到的一些问题。在Web服务器上传apple-app-site-association文件必须支持HTTPS获取配置文件文件名后不加.json后缀必须在根目录下，例如官网地址为www.site.com，那么必须通过https://www.site.com/apple-app-site-association访问到该文件deta",
-        "wordCount": 274
-    }
-</script>
-
-
-
 
     
 <div class="card card-transparent">
@@ -919,7 +916,7 @@
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            50
+                            51
                         </p>
                     </a>
                 </div>
@@ -943,7 +940,7 @@
                     </p>
                     <a href="/tags">
                         <p class="title has-text-weight-normal">
-                            57
+                            58
                         </p>
                     </a>
                 </div>
@@ -1032,7 +1029,7 @@
                 <span class="level-item">operation</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">15</span>
+                <span class="level-item tag">16</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/programming/">
@@ -1053,7 +1050,7 @@
         <h3 class="menu-label">
             Tag Cloud
         </h3>
-        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 12.5px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
+        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/influxdb/" style="font-size: 10px;">influxdb</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 12.5px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
     </div>
 </div>
     
@@ -1065,6 +1062,25 @@
         <h3 class="menu-label">
             Recent
         </h3>
+        
+        <article class="media">
+            
+            <a href="/operation/influxdb-command-cheatsheet/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/Influxdb_logo.png" alt="InfluxDB command cheatsheet">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-17T23:11:50.000Z">2020-03-18</time></div>
+                    <a href="/operation/influxdb-command-cheatsheet/" class="title has-link-black-ter is-size-6 has-text-weight-normal">InfluxDB command cheatsheet</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
+                    </p>
+                </div>
+            </div>
+        </article>
         
         <article class="media">
             
@@ -1142,25 +1158,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/install-spinnaker-on-centos/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="How to install Spinnaker on CentOS 7">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-18T22:00:00.000Z">2019-09-19</time></div>
-                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to install Spinnaker on CentOS 7</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
         
@@ -1178,7 +1175,7 @@
                     <span class="level-item">March 2020</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">1</span>
+                    <span class="level-item tag">2</span>
                 </span>
             </a>
         </li>
@@ -1716,6 +1713,13 @@
                     <a class="tags has-addons" href="/tags/hive/">
                         <span class="tag">hive</span>
                         <span class="tag is-grey">3</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/influxdb/">
+                        <span class="tag">influxdb</span>
+                        <span class="tag is-grey">1</span>
                     </a>
                 </div>
                 
@@ -1960,6 +1964,25 @@
         
         <article class="media">
             
+            <a href="/operation/influxdb-command-cheatsheet/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/Influxdb_logo.png" alt="InfluxDB command cheatsheet">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-17T23:11:50.000Z">2020-03-18</time></div>
+                    <a href="/operation/influxdb-command-cheatsheet/" class="title has-link-black-ter is-size-6 has-text-weight-normal">InfluxDB command cheatsheet</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/operation/how-to-build-a-smallest-docker-image/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/docker-build.png" alt="how to build the smallest docker image as fast as you can">
@@ -2034,25 +2057,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/install-spinnaker-on-centos/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/spin-dependencies.jpeg" alt="How to install Spinnaker on CentOS 7">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-18T22:00:00.000Z">2019-09-19</time></div>
-                    <a href="/operation/install-spinnaker-on-centos/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to install Spinnaker on CentOS 7</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
     
@@ -2070,7 +2074,7 @@
                     <span class="level-item">March 2020</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">1</span>
+                    <span class="level-item tag">2</span>
                 </span>
             </a>
         </li>
@@ -2608,6 +2612,13 @@
                     <a class="tags has-addons" href="/tags/hive/">
                         <span class="tag">hive</span>
                         <span class="tag is-grey">3</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/influxdb/">
+                        <span class="tag">influxdb</span>
+                        <span class="tag is-grey">1</span>
                     </a>
                 </div>
                 
