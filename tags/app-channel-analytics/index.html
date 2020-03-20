@@ -148,7 +148,7 @@
     
     <div class="card-image">
         <a href="/programming/spark-on-hive-app-channel-analytics/" class="image is-7by1">
-            <img class="thumbnail" src="/images/androidgeo.png" alt="Spark on Hive实现APP渠道分析">
+            <img class="thumbnail" src="/images/androidgeo.webp" alt="Spark on Hive实现APP渠道分析">
         </a>
     </div>
     
@@ -188,7 +188,7 @@
 <li>品牌占比</li>
 <li>操作系统占比</li>
 </ul>
-<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><p><img src="/images/app-channel-analytics-architecture.png" alt="app channel analytics"></p>
+<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><p><img src="/images/app-channel-analytics-architecture.webp" alt="app channel analytics"></p>
 <h3 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h3><p>APP激活时上报给服务端数据，Flume处理数据并将数据发送到Kafka。</p>
 <h4 id="数据格式"><a href="#数据格式" class="headerlink" title="数据格式"></a>数据格式</h4><p>客户端上报对JSON格式更加友好，所以这里选择使用JSON格式，格式定义一方面需要考虑客户端的开发成本，一方面需要考虑日后的拓展性，所以最直接的方法是统一固定的字段，将根据事件所变化的内容放到拓展字段里去，拓展字段是Map类型，可以支持各种拓展的形式。</p>
 <h4 id="数据内容"><a href="#数据内容" class="headerlink" title="数据内容"></a>数据内容</h4><p>以此次渠道分析为例，客户端需要上传客户端的渠道、APP版本、设备标志符、设备型号等信息，更详细的如Geo信息，如果想获得更好的数据展示效果，可以上传，但在此场景可以不需要，这些是主动上报的部分。还有一部分内容是需要在服务端获取的，例如设备IP，为了之后的地理展示，可以使用MaxMind公司的IP与城市对应的数据库进行地理解析。</p>
@@ -250,13 +250,13 @@
         "publisher": {},
         "headline": "Spark on Hive实现APP渠道分析",
         "image": [
-            "https://songrgg.github.io/images/androidgeo.png"
+            "https://songrgg.github.io/images/androidgeo.webp"
         ],
         "keywords": "hive spark app channel analytics",
         "genre": "programming",
         "datePublished": "2018-02-04",
         "dateCreated": "2018-02-04",
-        "dateModified": "2019-12-14",
+        "dateModified": "2020-03-20",
         "url": "https://songrgg.github.io/programming/spark-on-hive-app-channel-analytics/",
         "mainEntityOfPage": "https://songrgg.github.io/programming/spark-on-hive-app-channel-analytics/",
         "description": "背景最近在做APP投放渠道分析，就是Android应用投放到应用市场，所谓渠道就是huawei,xiaomi,yingyongbao之类，运营人员根据数据分析渠道的下载安装情况、各个渠道的投放效果。需求完成一个Android渠道分析的展示面板，包含以下指标：APP总新增激活数量按渠道划分的新增数量各渠道的新增变化走势图（以小时为单位）品牌占比操作系统占比架构数据APP激活时上报",
@@ -462,7 +462,7 @@
             
             <a href="/operation/influxdb-command-cheatsheet/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/Influxdb_logo.png" alt="InfluxDB command cheatsheet">
+                    <img class="thumbnail" src="/images/Influxdb_logo.webp" alt="InfluxDB command cheatsheet">
                 </p>
             </a>
             
@@ -481,7 +481,7 @@
             
             <a href="/operation/how-to-build-a-smallest-docker-image/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/docker-build.png" alt="how to build the smallest docker image as fast as you can">
+                    <img class="thumbnail" src="/images/docker-build.webp" alt="how to build the smallest docker image as fast as you can">
                 </p>
             </a>
             
@@ -500,7 +500,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor SSL certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.webp" alt="How to check and monitor SSL certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -519,7 +519,7 @@
             
             <a href="/operation/practice-datacenter-failover-in-production/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/datacenter.jpg" alt="Practice datacenter failover in production">
+                    <img class="thumbnail" src="/images/datacenter.webp" alt="Practice datacenter failover in production">
                 </p>
             </a>
             
@@ -538,7 +538,7 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.png" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
                 </p>
             </a>
             
@@ -1361,7 +1361,7 @@
             
             <a href="/operation/influxdb-command-cheatsheet/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/Influxdb_logo.png" alt="InfluxDB command cheatsheet">
+                    <img class="thumbnail" src="/images/Influxdb_logo.webp" alt="InfluxDB command cheatsheet">
                 </p>
             </a>
             
@@ -1380,7 +1380,7 @@
             
             <a href="/operation/how-to-build-a-smallest-docker-image/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/docker-build.png" alt="how to build the smallest docker image as fast as you can">
+                    <img class="thumbnail" src="/images/docker-build.webp" alt="how to build the smallest docker image as fast as you can">
                 </p>
             </a>
             
@@ -1399,7 +1399,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor SSL certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.webp" alt="How to check and monitor SSL certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -1418,7 +1418,7 @@
             
             <a href="/operation/practice-datacenter-failover-in-production/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/datacenter.jpg" alt="Practice datacenter failover in production">
+                    <img class="thumbnail" src="/images/datacenter.webp" alt="Practice datacenter failover in production">
                 </p>
             </a>
             
@@ -1437,7 +1437,7 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.png" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
                 </p>
             </a>
             

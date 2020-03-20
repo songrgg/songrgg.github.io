@@ -19,7 +19,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://songrgg.github.io/images/og_image.png">
 <meta property="article:published_time" content="2019-03-28T18:10:00.000Z">
-<meta property="article:modified_time" content="2020-02-22T14:26:19.062Z">
+<meta property="article:modified_time" content="2020-03-20T19:02:13.409Z">
 <meta property="article:author" content="songrgg">
 <meta property="article:tag" content="microservice">
 <meta property="article:tag" content="kubernetes">
@@ -171,7 +171,7 @@
 <h3 id="Helm"><a href="#Helm" class="headerlink" title="Helm"></a>Helm</h3><p><a href="https://helm.sh">Helm</a> is package control system for Kubernetes, it’s more like the complicated version of brew on Mac.</p>
 <p>It uses Yaml and Golang templates to formulate a complete application configuration on Kubernetes. A lot of applications are packaged as Helm charts, we can build a complicated application by declaring the dependencies between these charts.</p>
 <h3 id="Istio-Helm"><a href="#Istio-Helm" class="headerlink" title="Istio + Helm"></a>Istio + Helm</h3><p>Istio project contains the <a href="https://github.com/istio/istio/blob/master/install/kubernetes/helm/istio/README.md">Helm configuration</a> itself, I recommend the users to extract the Helm brought by Istio into a standalone Git repository.</p>
-<p><img src="/images/istio-helm-git.png" alt="istio-helm-git"></p>
+<p><img src="/images/istio-helm-git.webp" alt="istio-helm-git"></p>
 <p>Like the other services, we use Git to control each component’s configuration and track every modification.</p>
 <h3 id="CI-CD"><a href="#CI-CD" class="headerlink" title="CI/CD"></a>CI/CD</h3><p>As more and more people advocate <code>infrastructure as code</code>, we not only store the Istio Helm as a Git repository, we bring the CI/CD to the infrastructure.</p>
 <p>If three Kubernetes clusters: <code>test</code>, <code>stage</code>, <code>production</code> exist, we can setup CI/CD to <code>test</code> cluster based on the specified Git <code>test</code> branch, each commit will trigger the generation of the latest Istio K8S Yaml config and apply them to the <code>test</code> cluster, after the tests on <code>test</code> environment, we brought the Istio updates to the <code>stage</code> and <code>production</code> in order.</p>
@@ -273,7 +273,7 @@
         "genre": "operation",
         "datePublished": "2019-03-28",
         "dateCreated": "2019-03-28",
-        "dateModified": "2020-02-22",
+        "dateModified": "2020-03-20",
         "url": "https://songrgg.github.io/operation/istio-version-control-on-k8s/",
         "mainEntityOfPage": "https://songrgg.github.io/operation/istio-version-control-on-k8s/",
         "description": "Istio has been adopted as a common implementation of service mesh, since more and more companies want to bring Istio into production, the version control of Istio seems a significant problem to solve.Version control is necessary as Istio components can be treated as the equivalent RPC services like",
@@ -477,7 +477,7 @@
             
             <a href="/operation/influxdb-command-cheatsheet/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/Influxdb_logo.png" alt="InfluxDB command cheatsheet">
+                    <img class="thumbnail" src="/images/Influxdb_logo.webp" alt="InfluxDB command cheatsheet">
                 </p>
             </a>
             
@@ -496,7 +496,7 @@
             
             <a href="/operation/how-to-build-a-smallest-docker-image/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/docker-build.png" alt="how to build the smallest docker image as fast as you can">
+                    <img class="thumbnail" src="/images/docker-build.webp" alt="how to build the smallest docker image as fast as you can">
                 </p>
             </a>
             
@@ -515,7 +515,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor SSL certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.webp" alt="How to check and monitor SSL certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -534,7 +534,7 @@
             
             <a href="/operation/practice-datacenter-failover-in-production/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/datacenter.jpg" alt="Practice datacenter failover in production">
+                    <img class="thumbnail" src="/images/datacenter.webp" alt="Practice datacenter failover in production">
                 </p>
             </a>
             
@@ -553,7 +553,7 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.png" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
                 </p>
             </a>
             
@@ -1376,7 +1376,7 @@
             
             <a href="/operation/influxdb-command-cheatsheet/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/Influxdb_logo.png" alt="InfluxDB command cheatsheet">
+                    <img class="thumbnail" src="/images/Influxdb_logo.webp" alt="InfluxDB command cheatsheet">
                 </p>
             </a>
             
@@ -1395,7 +1395,7 @@
             
             <a href="/operation/how-to-build-a-smallest-docker-image/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/docker-build.png" alt="how to build the smallest docker image as fast as you can">
+                    <img class="thumbnail" src="/images/docker-build.webp" alt="how to build the smallest docker image as fast as you can">
                 </p>
             </a>
             
@@ -1414,7 +1414,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor SSL certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.webp" alt="How to check and monitor SSL certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -1433,7 +1433,7 @@
             
             <a href="/operation/practice-datacenter-failover-in-production/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/datacenter.jpg" alt="Practice datacenter failover in production">
+                    <img class="thumbnail" src="/images/datacenter.webp" alt="Practice datacenter failover in production">
                 </p>
             </a>
             
@@ -1452,7 +1452,7 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.png" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
                 </p>
             </a>
             

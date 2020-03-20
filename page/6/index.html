@@ -184,7 +184,7 @@
 <h3 id="今天的面试体验"><a href="#今天的面试体验" class="headerlink" title="今天的面试体验"></a>今天的面试体验</h3><p>今天和lead聊了聊, 基本聊的就是以上的内容, 数据库确实是非常重要的, 特别是面对这样的访问量以及查询场景, 经常要查询销量前十的产品, 根据用户搜索进行内容查询, 这种情况下索引要建的好. 不过数据大多是多在用户的购买记录吧, 估计得分库分表了. 最后lead语重心长地道出了”项目到后来要思考的都是哲学问题啊”, 这点我还是挺赞同的, 在我有限的设计程序结构的经验上, 我最分裂的情况都是如果要拓展应该怎么设计架构, 才能易于拓展, 我这代码写的够健壮吗? 那些奇葩的scenario都覆盖了吗? 用的人会觉得好用吗? 我自己哪? 这个产品的思想是什么? 我对这个思想是报什么态度的, 有对错吗?</p>
 <h3 id="之后"><a href="#之后" class="headerlink" title="之后"></a>之后</h3><p>还有家!!公司的面试, 想着还是尽快面了吧, 自己的初衷是为了能认真的提高自己, 不管如何还是要坚定这一想法, 勿忘初衷啊!!!!!!!!!!!!!!!!!!!!!!!!!!!!</p>
 <h3 id="插曲"><a href="#插曲" class="headerlink" title="插曲"></a>插曲</h3><p>前两天看到躺在自家的ipv, 想着和它的快乐日子, 于是决定拯救它于水火之中, 不就是硬盘坏了吗, 换一个就是了, 看到网上有人卖的ssd, 就入了一块, 今天货到了, 就给它换上, 可惜充电线没有, 得到公司才能看到效果了, 拆机似难实易, 换好还是挺高兴的. 上纪念图.</p>
-<p><img src="https://songrgg.github.io/images/fixipod.jpg" alt="拆机成功"></p>
+<p><img src="https://songrgg.github.io/images/fixipod.webp" alt="拆机成功"></p>
 
         </div>
         
@@ -217,7 +217,7 @@
         "genre": "life",
         "datePublished": "2015-04-08",
         "dateCreated": "2015-04-08",
-        "dateModified": "2020-02-21",
+        "dateModified": "2020-03-20",
         "url": "https://songrgg.github.io/life/interview-and-my-ipv/",
         "mainEntityOfPage": "https://songrgg.github.io/life/interview-and-my-ipv/",
         "description": "面试今天去面试了一家公司, 跟自己说面完要写个小结, 记录这次面试的前后历程.这次面试的缘起是因为团队有较大变动, 也开始重新审视自己, 正是在这个时候, 发现自己所处的环境还是非常“危险”的, 是指的自己处于一种不温不火的酱油状态, 整天游离在完成工作和无聊消沉的独处中, 并且成为了温吞吞的人, 于是发现现在的环境实在不是特别适合自己当初要进来的初衷, 突然渴望那种每天都在蜕变, 每天都在痛并",
@@ -320,7 +320,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    8 minutes read (About 1178 words)
+                    8 minutes read (About 1170 words)
                 </span>
                 
                 
@@ -336,7 +336,7 @@
             <p>前两天删了在github上的6.824, 因为课程里说了不要把源码放在公共的地方, 之前没删一直心有歉意, 还好进度没这么快, 应该对别人也不会造成影响.</p>
 <p>言归正传, 这星期空余时间一直在看Lab2的Part B, 今天因为身体不适, 请假一天在家, 开始实现思路, 并记录一下自己遇到的一些大小问题.</p>
 <h3 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h3><p>实现基于viewservice(Lab1实现的视图服务器, 用来记录主副服务器的地址)的键值服务器, 分别为primary(主服务器),Backup(备份服务器), 客户端通过viewservice获得primary的地址, 发送键值的存取请求, primary在响应请求的同时, 将数据备份到backup服务器. 实现完成后, 通过所有的unit test.</p>
-<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><p><img src="http://songrgg.github.io/images/pbservice-common-state.png" alt="2个kv服务器, viewservice以及客户端"></p>
+<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><p><img src="/images/pbservice-common-state.webp" alt="2个kv服务器, viewservice以及客户端"></p>
 <ol>
 <li>viewservice<ul>
 <li>存储并提供primary以及backup的信息  </li>
@@ -381,7 +381,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ go run server.go                                                             </span><br><span class="line">Start syncing...</span><br><span class="line">name  =&gt;  srg</span><br><span class="line">age  =&gt;  25</span><br><span class="line">Finish syncing...</span><br></pre></td></tr></table></figure>
 
 <p>在我把这页的hint也看完的时候, 发现里面提到这个问题, 建议直接把这个map作为参数传递.</p>
-<p><img src="http://songrgg.github.io/images/Lab2PartB.png" alt="最后贴上过关纪念"></p>
+<p><img src="/images/Lab2PartB.webp" alt="最后贴上过关纪念"></p>
 
         </div>
         
@@ -414,7 +414,7 @@
         "genre": "programming",
         "datePublished": "2015-03-19",
         "dateCreated": "2015-03-19",
-        "dateModified": "2019-09-12",
+        "dateModified": "2020-03-20",
         "url": "https://songrgg.github.io/programming/mit-distributed-system-01/",
         "mainEntityOfPage": "https://songrgg.github.io/programming/mit-distributed-system-01/",
         "description": "前两天删了在github上的6.824, 因为课程里说了不要把源码放在公共的地方, 之前没删一直心有歉意, 还好进度没这么快, 应该对别人也不会造成影响.言归正传, 这星期空余时间一直在看Lab2的Part B, 今天因为身体不适, 请假一天在家, 开始实现思路, 并记录一下自己遇到的一些大小问题.目标实现基于viewservice(Lab1实现的视图服务器, 用来记录主副服务器的地址)的键值",
@@ -430,7 +430,7 @@
     
     <div class="card-image">
         <a href="/programming/wechat-local-debug/" class="image is-7by1">
-            <img class="thumbnail" src="/images/wechat.png" alt="微信本地测试">
+            <img class="thumbnail" src="/images/wechat.webp" alt="微信本地测试">
         </a>
     </div>
     
@@ -490,13 +490,13 @@
         "publisher": {},
         "headline": "微信本地测试",
         "image": [
-            "https://songrgg.github.io/images/wechat.png"
+            "https://songrgg.github.io/images/wechat.webp"
         ],
         "keywords": "wechat",
         "genre": "programming",
         "datePublished": "2015-03-11",
         "dateCreated": "2015-03-11",
-        "dateModified": "2019-09-12",
+        "dateModified": "2020-03-20",
         "url": "https://songrgg.github.io/programming/wechat-local-debug/",
         "mainEntityOfPage": "https://songrgg.github.io/programming/wechat-local-debug/",
         "description": "项目里要测试微信公众号, 但又不愿意忍受每次改下代码就提交到版本库, 再发布到生产这个琐碎的流程, 所以必须有一个本地能测试的方法, 到知乎上找了一个方法(引用知乎操晓峰的回答).原理是HTTP请求重定向, 将微信中要访问的url转发到你设置的代理服务器, 代理服务器转发到你的开发服务器.有趣的是, 在公司一直没有完全成功, 总有一个页面是刷不出来, 查看Charles发现传输速度极慢, 真想",
@@ -1097,7 +1097,7 @@
             
             <a href="/operation/influxdb-command-cheatsheet/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/Influxdb_logo.png" alt="InfluxDB command cheatsheet">
+                    <img class="thumbnail" src="/images/Influxdb_logo.webp" alt="InfluxDB command cheatsheet">
                 </p>
             </a>
             
@@ -1116,7 +1116,7 @@
             
             <a href="/operation/how-to-build-a-smallest-docker-image/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/docker-build.png" alt="how to build the smallest docker image as fast as you can">
+                    <img class="thumbnail" src="/images/docker-build.webp" alt="how to build the smallest docker image as fast as you can">
                 </p>
             </a>
             
@@ -1135,7 +1135,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor SSL certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.webp" alt="How to check and monitor SSL certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -1154,7 +1154,7 @@
             
             <a href="/operation/practice-datacenter-failover-in-production/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/datacenter.jpg" alt="Practice datacenter failover in production">
+                    <img class="thumbnail" src="/images/datacenter.webp" alt="Practice datacenter failover in production">
                 </p>
             </a>
             
@@ -1173,7 +1173,7 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.png" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
                 </p>
             </a>
             
@@ -1996,7 +1996,7 @@
             
             <a href="/operation/influxdb-command-cheatsheet/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/Influxdb_logo.png" alt="InfluxDB command cheatsheet">
+                    <img class="thumbnail" src="/images/Influxdb_logo.webp" alt="InfluxDB command cheatsheet">
                 </p>
             </a>
             
@@ -2015,7 +2015,7 @@
             
             <a href="/operation/how-to-build-a-smallest-docker-image/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/docker-build.png" alt="how to build the smallest docker image as fast as you can">
+                    <img class="thumbnail" src="/images/docker-build.webp" alt="how to build the smallest docker image as fast as you can">
                 </p>
             </a>
             
@@ -2034,7 +2034,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor SSL certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.webp" alt="How to check and monitor SSL certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -2053,7 +2053,7 @@
             
             <a href="/operation/practice-datacenter-failover-in-production/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/datacenter.jpg" alt="Practice datacenter failover in production">
+                    <img class="thumbnail" src="/images/datacenter.webp" alt="Practice datacenter failover in production">
                 </p>
             </a>
             
@@ -2072,7 +2072,7 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.png" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
                 </p>
             </a>
             

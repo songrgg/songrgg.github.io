@@ -148,7 +148,7 @@
     
     <div class="card-image">
         <a href="/operation/practice-datacenter-failover-in-production/" class="image is-7by1">
-            <img class="thumbnail" src="/images/datacenter.jpg" alt="Practice datacenter failover in production">
+            <img class="thumbnail" src="/images/datacenter.webp" alt="Practice datacenter failover in production">
         </a>
     </div>
     
@@ -213,13 +213,13 @@
         "publisher": {},
         "headline": "Practice datacenter failover in production",
         "image": [
-            "https://songrgg.github.io/images/datacenter.jpg"
+            "https://songrgg.github.io/images/datacenter.webp"
         ],
         "keywords": "distributed system data center failover resilience chaos engineering",
         "genre": "operation",
         "datePublished": "2019-12-13",
         "dateCreated": "2019-12-13",
-        "dateModified": "2020-02-22",
+        "dateModified": "2020-03-20",
         "url": "https://songrgg.github.io/operation/practice-datacenter-failover-in-production/",
         "mainEntityOfPage": "https://songrgg.github.io/operation/practice-datacenter-failover-in-production/",
         "description": "Distributed system is like human body, it will have issues and break. There’s a theory that we feed it with issues deliberately and constantly, the body will be more and more stable and robust. It’s the same to system, put some issues to datacenters and let them failover automatically.",
@@ -328,7 +328,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    8 minutes read (About 1178 words)
+                    8 minutes read (About 1170 words)
                 </span>
                 
                 
@@ -344,7 +344,7 @@
             <p>前两天删了在github上的6.824, 因为课程里说了不要把源码放在公共的地方, 之前没删一直心有歉意, 还好进度没这么快, 应该对别人也不会造成影响.</p>
 <p>言归正传, 这星期空余时间一直在看Lab2的Part B, 今天因为身体不适, 请假一天在家, 开始实现思路, 并记录一下自己遇到的一些大小问题.</p>
 <h3 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h3><p>实现基于viewservice(Lab1实现的视图服务器, 用来记录主副服务器的地址)的键值服务器, 分别为primary(主服务器),Backup(备份服务器), 客户端通过viewservice获得primary的地址, 发送键值的存取请求, primary在响应请求的同时, 将数据备份到backup服务器. 实现完成后, 通过所有的unit test.</p>
-<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><p><img src="http://songrgg.github.io/images/pbservice-common-state.png" alt="2个kv服务器, viewservice以及客户端"></p>
+<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><p><img src="/images/pbservice-common-state.webp" alt="2个kv服务器, viewservice以及客户端"></p>
 <ol>
 <li>viewservice<ul>
 <li>存储并提供primary以及backup的信息  </li>
@@ -389,7 +389,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ go run server.go                                                             </span><br><span class="line">Start syncing...</span><br><span class="line">name  =&gt;  srg</span><br><span class="line">age  =&gt;  25</span><br><span class="line">Finish syncing...</span><br></pre></td></tr></table></figure>
 
 <p>在我把这页的hint也看完的时候, 发现里面提到这个问题, 建议直接把这个map作为参数传递.</p>
-<p><img src="http://songrgg.github.io/images/Lab2PartB.png" alt="最后贴上过关纪念"></p>
+<p><img src="/images/Lab2PartB.webp" alt="最后贴上过关纪念"></p>
 
         </div>
         
@@ -422,7 +422,7 @@
         "genre": "programming",
         "datePublished": "2015-03-19",
         "dateCreated": "2015-03-19",
-        "dateModified": "2019-09-12",
+        "dateModified": "2020-03-20",
         "url": "https://songrgg.github.io/programming/mit-distributed-system-01/",
         "mainEntityOfPage": "https://songrgg.github.io/programming/mit-distributed-system-01/",
         "description": "前两天删了在github上的6.824, 因为课程里说了不要把源码放在公共的地方, 之前没删一直心有歉意, 还好进度没这么快, 应该对别人也不会造成影响.言归正传, 这星期空余时间一直在看Lab2的Part B, 今天因为身体不适, 请假一天在家, 开始实现思路, 并记录一下自己遇到的一些大小问题.目标实现基于viewservice(Lab1实现的视图服务器, 用来记录主副服务器的地址)的键值",
@@ -628,7 +628,7 @@
             
             <a href="/operation/influxdb-command-cheatsheet/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/Influxdb_logo.png" alt="InfluxDB command cheatsheet">
+                    <img class="thumbnail" src="/images/Influxdb_logo.webp" alt="InfluxDB command cheatsheet">
                 </p>
             </a>
             
@@ -647,7 +647,7 @@
             
             <a href="/operation/how-to-build-a-smallest-docker-image/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/docker-build.png" alt="how to build the smallest docker image as fast as you can">
+                    <img class="thumbnail" src="/images/docker-build.webp" alt="how to build the smallest docker image as fast as you can">
                 </p>
             </a>
             
@@ -666,7 +666,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor SSL certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.webp" alt="How to check and monitor SSL certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -685,7 +685,7 @@
             
             <a href="/operation/practice-datacenter-failover-in-production/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/datacenter.jpg" alt="Practice datacenter failover in production">
+                    <img class="thumbnail" src="/images/datacenter.webp" alt="Practice datacenter failover in production">
                 </p>
             </a>
             
@@ -704,7 +704,7 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.png" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
                 </p>
             </a>
             
@@ -1527,7 +1527,7 @@
             
             <a href="/operation/influxdb-command-cheatsheet/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/Influxdb_logo.png" alt="InfluxDB command cheatsheet">
+                    <img class="thumbnail" src="/images/Influxdb_logo.webp" alt="InfluxDB command cheatsheet">
                 </p>
             </a>
             
@@ -1546,7 +1546,7 @@
             
             <a href="/operation/how-to-build-a-smallest-docker-image/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/docker-build.png" alt="how to build the smallest docker image as fast as you can">
+                    <img class="thumbnail" src="/images/docker-build.webp" alt="how to build the smallest docker image as fast as you can">
                 </p>
             </a>
             
@@ -1565,7 +1565,7 @@
             
             <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration-days.jpeg" alt="How to check and monitor SSL certificates expiration with Telegraf">
+                    <img class="thumbnail" src="/images/certificate-expiration-days.webp" alt="How to check and monitor SSL certificates expiration with Telegraf">
                 </p>
             </a>
             
@@ -1584,7 +1584,7 @@
             
             <a href="/operation/practice-datacenter-failover-in-production/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/datacenter.jpg" alt="Practice datacenter failover in production">
+                    <img class="thumbnail" src="/images/datacenter.webp" alt="Practice datacenter failover in production">
                 </p>
             </a>
             
@@ -1603,7 +1603,7 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.png" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
                 </p>
             </a>
             
