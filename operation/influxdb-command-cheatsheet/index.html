@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html  lang="en">
-<head>
-    <meta charset="utf-8" />
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8">
 
-<meta name="generator" content="Hexo 4.2.0" />
+<meta name="generator" content="Hexo 4.2.0">
 
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 <title>InfluxDB command cheatsheet - Blog | Songrgg</title>
 
@@ -88,7 +86,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                SongRong&#39;s Experience
+                SongRong's Experience
             
             </a>
         </div>
@@ -96,20 +94,15 @@
             
             <div class="navbar-start">
                 
-                <a class="navbar-item"
-                href="/">Home</a>
+                <a class="navbar-item" href="/">Home</a>
                 
-                <a class="navbar-item"
-                href="/archives">Archives</a>
+                <a class="navbar-item" href="/archives">Archives</a>
                 
-                <a class="navbar-item"
-                href="/categories">Categories</a>
+                <a class="navbar-item" href="/categories">Categories</a>
                 
-                <a class="navbar-item"
-                href="/tags">Tags</a>
+                <a class="navbar-item" href="/tags">Tags</a>
                 
-                <a class="navbar-item"
-                href="/about">About</a>
+                <a class="navbar-item" href="/about">About</a>
                 
             </div>
             
@@ -134,7 +127,7 @@
 <div class="card">
     
     <div class="card-image">
-        <span  class="image is-7by1">
+        <span class="image is-7by1">
             <img class="thumbnail" src="/images/Influxdb_logo.webp" alt="InfluxDB command cheatsheet">
         </span>
     </div>
@@ -169,23 +162,23 @@
             <p>This article is InfluxDB command cheatsheet about how to interact with influxDB server and query the metrics. The InfluxDB version I tested is <a href="https://docs.influxdata.com/influxdb/v1.7/">v1.7.10</a></p>
 <a id="more"></a>
 
-<h2 id="Connect-amp-Start"><a href="#Connect-amp-Start" class="headerlink" title="Connect &amp; Start"></a>Connect &amp; Start</h2><p>Connect to InfluxDB server and select the database.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ influx -host 127.0.0.1 -port 8086</span><br><span class="line">&gt; SHOW DATABASES;</span><br><span class="line">name: databases</span><br><span class="line">name</span><br><span class="line">----</span><br><span class="line">_internal</span><br><span class="line">&gt; CREATE DATABASE <span class="built_in">test</span>;</span><br><span class="line">&gt; USE <span class="built_in">test</span>;</span><br><span class="line">Using database <span class="built_in">test</span></span><br><span class="line">&gt; --- fill the database with some points</span><br><span class="line">&gt; INSERT temperature,machine=unit42,<span class="built_in">type</span>=assembly external=25,internal=37</span><br><span class="line">&gt; INSERT temperature,machine=unit43,<span class="built_in">type</span>=assembly external=25,internal=37</span><br><span class="line">&gt; INSERT temperature,machine=unit43,<span class="built_in">type</span>=not_assembly external=25,internal=37</span><br></pre></td></tr></table></figure>
+<h2 id="Connect-amp-Start"><a href="#Connect-amp-Start" class="headerlink" title="Connect & Start"></a>Connect & Start</h2><p>Connect to InfluxDB server and select the database.</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ influx -host 127.0.0.1 -port 8086</span><br><span class="line">> SHOW DATABASES;</span><br><span class="line">name: databases</span><br><span class="line">name</span><br><span class="line">----</span><br><span class="line">_internal</span><br><span class="line">> CREATE DATABASE <span class="built_in">test</span>;</span><br><span class="line">> USE <span class="built_in">test</span>;</span><br><span class="line">Using database <span class="built_in">test</span></span><br><span class="line">> --- fill the database with some points</span><br><span class="line">> INSERT temperature,machine=unit42,<span class="built_in">type</span>=assembly external=25,internal=37</span><br><span class="line">> INSERT temperature,machine=unit43,<span class="built_in">type</span>=assembly external=25,internal=37</span><br><span class="line">> INSERT temperature,machine=unit43,<span class="built_in">type</span>=not_assembly external=25,internal=37</span><br></pre></td></tr></tbody></table></figure>
 
 <h2 id="Show-everything"><a href="#Show-everything" class="headerlink" title="Show everything"></a>Show everything</h2><p><strong>Show</strong> is a helpful command that will help you find all the schemas you may use.</p>
-<h3 id="Show-common-information"><a href="#Show-common-information" class="headerlink" title="Show common information"></a>Show common information</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt; --- list all databases</span><br><span class="line">&gt; SHOW DATABASES</span><br><span class="line">&gt; --- show all measurements</span><br><span class="line">&gt; SHOW MEASUREMENTS</span><br><span class="line">&gt; --- show measurements <span class="built_in">where</span> machine tag = <span class="string">'unit42'</span></span><br><span class="line">&gt; SHOW MEASUREMENTS WHERE <span class="string">"machine"</span> = <span class="string">'unit42'</span></span><br><span class="line">&gt; --- show measurements that start with <span class="string">'temp'</span></span><br><span class="line">&gt; SHOW MEASUREMENTS WITH MEASUREMENT =~ /temp.*/</span><br><span class="line">&gt; --- show all running queries</span><br><span class="line">&gt; SHOW QUERIES</span><br><span class="line">&gt; --- show all retention policies on a database</span><br><span class="line">&gt; SHOW RETENTION POLICIES ON <span class="string">"test"</span></span><br><span class="line">&gt; --- show all users <span class="keyword">in</span> InfluxDB</span><br><span class="line">&gt; SHOW USERS</span><br></pre></td></tr></table></figure>
+<h3 id="Show-common-information"><a href="#Show-common-information" class="headerlink" title="Show common information"></a>Show common information</h3><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">> --- list all databases</span><br><span class="line">> SHOW DATABASES</span><br><span class="line">> --- show all measurements</span><br><span class="line">> SHOW MEASUREMENTS</span><br><span class="line">> --- show measurements <span class="built_in">where</span> machine tag = <span class="string">'unit42'</span></span><br><span class="line">> SHOW MEASUREMENTS WHERE <span class="string">"machine"</span> = <span class="string">'unit42'</span></span><br><span class="line">> --- show measurements that start with <span class="string">'temp'</span></span><br><span class="line">> SHOW MEASUREMENTS WITH MEASUREMENT =~ /temp.*/</span><br><span class="line">> --- show all running queries</span><br><span class="line">> SHOW QUERIES</span><br><span class="line">> --- show all retention policies on a database</span><br><span class="line">> SHOW RETENTION POLICIES ON <span class="string">"test"</span></span><br><span class="line">> --- show all users <span class="keyword">in</span> InfluxDB</span><br><span class="line">> SHOW USERS</span><br></pre></td></tr></tbody></table></figure>
 
-<h3 id="Show-series"><a href="#Show-series" class="headerlink" title="Show series"></a>Show series</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&gt; --- show all series</span><br><span class="line">&gt; show series from temperature</span><br><span class="line">key</span><br><span class="line">---</span><br><span class="line">temperature,machine=unit42,<span class="built_in">type</span>=assembly</span><br><span class="line">temperature,machine=unit43,<span class="built_in">type</span>=assembly</span><br><span class="line">temperature,machine=unit43,<span class="built_in">type</span>=not_assembly</span><br><span class="line">&gt; --- show series from machine unit42</span><br><span class="line">&gt; SHOW SERIES FROM temperature WHERE machine = <span class="string">'unit42'</span></span><br><span class="line">key</span><br><span class="line">---</span><br><span class="line">temperature,machine=unit42,<span class="built_in">type</span>=assembly</span><br><span class="line">&gt; -- show estimated cardinality of the series on current database</span><br><span class="line">&gt; SHOW SERIES CARDINALITY</span><br><span class="line">-- show estimated cardinality of the series on specified database</span><br><span class="line">&gt; SHOW SERIES CARDINALITY ON mydb</span><br><span class="line">cardinality estimation</span><br><span class="line">----------------------</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+<h3 id="Show-series"><a href="#Show-series" class="headerlink" title="Show series"></a>Show series</h3><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">> --- show all series</span><br><span class="line">> show series from temperature</span><br><span class="line">key</span><br><span class="line">---</span><br><span class="line">temperature,machine=unit42,<span class="built_in">type</span>=assembly</span><br><span class="line">temperature,machine=unit43,<span class="built_in">type</span>=assembly</span><br><span class="line">temperature,machine=unit43,<span class="built_in">type</span>=not_assembly</span><br><span class="line">> --- show series from machine unit42</span><br><span class="line">> SHOW SERIES FROM temperature WHERE machine = <span class="string">'unit42'</span></span><br><span class="line">key</span><br><span class="line">---</span><br><span class="line">temperature,machine=unit42,<span class="built_in">type</span>=assembly</span><br><span class="line">> -- show estimated cardinality of the series on current database</span><br><span class="line">> SHOW SERIES CARDINALITY</span><br><span class="line">-- show estimated cardinality of the series on specified database</span><br><span class="line">> SHOW SERIES CARDINALITY ON mydb</span><br><span class="line">cardinality estimation</span><br><span class="line">----------------------</span><br><span class="line">3</span><br></pre></td></tr></tbody></table></figure>
 
-<h3 id="Show-tag"><a href="#Show-tag" class="headerlink" title="Show tag"></a>Show tag</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&gt; --- show tag keys</span><br><span class="line">&gt; SHOW TAG KEYS</span><br><span class="line">name: temperature</span><br><span class="line">tagKey</span><br><span class="line">------</span><br><span class="line">machine</span><br><span class="line"><span class="built_in">type</span></span><br><span class="line">&gt; --- show all tag keys from the temperature measurement</span><br><span class="line">&gt; SHOW TAG KEYS FROM <span class="string">"temperature"</span></span><br><span class="line">&gt; --- show all tag keys <span class="built_in">where</span> the machine key = <span class="string">'unit42'</span></span><br><span class="line">&gt; SHOW TAG KEYS WHERE <span class="string">"machine"</span> = <span class="string">'unit42'</span></span><br><span class="line">&gt; --- show all tag values across all measurements <span class="keyword">for</span> the machine tag</span><br><span class="line">&gt; SHOW TAG VALUES WITH KEY = <span class="string">"machine"</span></span><br><span class="line">name: temperature</span><br><span class="line">key     value</span><br><span class="line">---     -----</span><br><span class="line">machine unit42</span><br><span class="line">machine unit43</span><br><span class="line">&gt; --- show tag values <span class="keyword">for</span> a specific database and measurement</span><br><span class="line">&gt; SHOW TAG VALUES ON <span class="built_in">test</span> FROM temperature WITH KEY = <span class="string">"machine"</span></span><br></pre></td></tr></table></figure>
+<h3 id="Show-tag"><a href="#Show-tag" class="headerlink" title="Show tag"></a>Show tag</h3><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">> --- show tag keys</span><br><span class="line">> SHOW TAG KEYS</span><br><span class="line">name: temperature</span><br><span class="line">tagKey</span><br><span class="line">------</span><br><span class="line">machine</span><br><span class="line"><span class="built_in">type</span></span><br><span class="line">> --- show all tag keys from the temperature measurement</span><br><span class="line">> SHOW TAG KEYS FROM <span class="string">"temperature"</span></span><br><span class="line">> --- show all tag keys <span class="built_in">where</span> the machine key = <span class="string">'unit42'</span></span><br><span class="line">> SHOW TAG KEYS WHERE <span class="string">"machine"</span> = <span class="string">'unit42'</span></span><br><span class="line">> --- show all tag values across all measurements <span class="keyword">for</span> the machine tag</span><br><span class="line">> SHOW TAG VALUES WITH KEY = <span class="string">"machine"</span></span><br><span class="line">name: temperature</span><br><span class="line">key     value</span><br><span class="line">---     -----</span><br><span class="line">machine unit42</span><br><span class="line">machine unit43</span><br><span class="line">> --- show tag values <span class="keyword">for</span> a specific database and measurement</span><br><span class="line">> SHOW TAG VALUES ON <span class="built_in">test</span> FROM temperature WITH KEY = <span class="string">"machine"</span></span><br></pre></td></tr></tbody></table></figure>
 
-<h3 id="Show-field"><a href="#Show-field" class="headerlink" title="Show field"></a>Show field</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; SHOW FIELD KEYS ON <span class="built_in">test</span></span><br><span class="line">name: temperature</span><br><span class="line">fieldKey fieldType</span><br><span class="line">-------- ---------</span><br><span class="line">external <span class="built_in">float</span></span><br><span class="line">internal <span class="built_in">float</span></span><br></pre></td></tr></table></figure>
+<h3 id="Show-field"><a href="#Show-field" class="headerlink" title="Show field"></a>Show field</h3><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">> SHOW FIELD KEYS ON <span class="built_in">test</span></span><br><span class="line">name: temperature</span><br><span class="line">fieldKey fieldType</span><br><span class="line">-------- ---------</span><br><span class="line">external <span class="built_in">float</span></span><br><span class="line">internal <span class="built_in">float</span></span><br></pre></td></tr></tbody></table></figure>
 
-<h3 id="Show-cardinality"><a href="#Show-cardinality" class="headerlink" title="Show cardinality"></a>Show cardinality</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; SHOW MEASUREMENT CARDINALITY</span><br><span class="line">cardinality estimation</span><br><span class="line">----------------------</span><br><span class="line">1</span><br><span class="line">&gt; SHOW MEASUREMENT EXACT CARDINALITY ON <span class="built_in">test</span></span><br><span class="line">count</span><br><span class="line">-----</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+<h3 id="Show-cardinality"><a href="#Show-cardinality" class="headerlink" title="Show cardinality"></a>Show cardinality</h3><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">> SHOW MEASUREMENT CARDINALITY</span><br><span class="line">cardinality estimation</span><br><span class="line">----------------------</span><br><span class="line">1</span><br><span class="line">> SHOW MEASUREMENT EXACT CARDINALITY ON <span class="built_in">test</span></span><br><span class="line">count</span><br><span class="line">-----</span><br><span class="line">1</span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="Measurement"><a href="#Measurement" class="headerlink" title="Measurement"></a>Measurement</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt; --- create a temperature point</span><br><span class="line">&gt; INSERT temperature,machine=unit42,<span class="built_in">type</span>=assembly external=26,internal=38</span><br><span class="line">&gt; --- select temperature <span class="keyword">for</span> unit42</span><br><span class="line">&gt; SELECT * FROM temperature WHERE <span class="string">"machine"</span> = <span class="string">'unit42'</span></span><br><span class="line">&gt; --- select specific fields and tags from measurement, NOTE: at least one field must be included</span><br><span class="line">&gt; SELECT <span class="string">"internal"</span>::field, <span class="string">"machine"</span>::tag FROM temperature WHERE <span class="string">"machine"</span> = <span class="string">'unit42'</span></span><br><span class="line">&gt; --- delete metrics from temperature measurement</span><br><span class="line">&gt; DELETE FROM <span class="string">"temperature"</span> WHERE time &lt; <span class="string">'2000-01-01T00:00:00Z'</span></span><br><span class="line">&gt; --- drop the temperature measurement</span><br><span class="line">&gt; DROP MEASUREMENT <span class="string">"temperature"</span></span><br></pre></td></tr></table></figure>
+<h2 id="Measurement"><a href="#Measurement" class="headerlink" title="Measurement"></a>Measurement</h2><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">> --- create a temperature point</span><br><span class="line">> INSERT temperature,machine=unit42,<span class="built_in">type</span>=assembly external=26,internal=38</span><br><span class="line">> --- select temperature <span class="keyword">for</span> unit42</span><br><span class="line">> SELECT * FROM temperature WHERE <span class="string">"machine"</span> = <span class="string">'unit42'</span></span><br><span class="line">> --- select specific fields and tags from measurement, NOTE: at least one field must be included</span><br><span class="line">> SELECT <span class="string">"internal"</span>::field, <span class="string">"machine"</span>::tag FROM temperature WHERE <span class="string">"machine"</span> = <span class="string">'unit42'</span></span><br><span class="line">> --- delete metrics from temperature measurement</span><br><span class="line">> DELETE FROM <span class="string">"temperature"</span> WHERE time < <span class="string">'2000-01-01T00:00:00Z'</span></span><br><span class="line">> --- drop the temperature measurement</span><br><span class="line">> DROP MEASUREMENT <span class="string">"temperature"</span></span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="Query-analysis"><a href="#Query-analysis" class="headerlink" title="Query analysis"></a>Query analysis</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt; --- explain the logic behind the query</span><br><span class="line">&gt; EXPLAIN SELECT * FROM temperature</span><br><span class="line">QUERY PLAN</span><br><span class="line">----------</span><br><span class="line">EXPRESSION: &lt;nil&gt;</span><br><span class="line">AUXILIARY FIELDS: external::<span class="built_in">float</span>, internal::<span class="built_in">float</span>, machine::tag, <span class="built_in">type</span>::tag</span><br><span class="line">NUMBER OF SHARDS: 1</span><br><span class="line">NUMBER OF SERIES: 3</span><br><span class="line">CACHED VALUES: 0</span><br><span class="line">NUMBER OF FILES: 6</span><br><span class="line">NUMBER OF BLOCKS: 6</span><br><span class="line">SIZE OF BLOCKS: 204</span><br></pre></td></tr></table></figure>
+<h2 id="Query-analysis"><a href="#Query-analysis" class="headerlink" title="Query analysis"></a>Query analysis</h2><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">> --- explain the logic behind the query</span><br><span class="line">> EXPLAIN SELECT * FROM temperature</span><br><span class="line">QUERY PLAN</span><br><span class="line">----------</span><br><span class="line">EXPRESSION: <nil></span><br><span class="line">AUXILIARY FIELDS: external::<span class="built_in">float</span>, internal::<span class="built_in">float</span>, machine::tag, <span class="built_in">type</span>::tag</span><br><span class="line">NUMBER OF SHARDS: 1</span><br><span class="line">NUMBER OF SERIES: 3</span><br><span class="line">CACHED VALUES: 0</span><br><span class="line">NUMBER OF FILES: 6</span><br><span class="line">NUMBER OF BLOCKS: 6</span><br><span class="line">SIZE OF BLOCKS: 204</span><br></pre></td></tr></tbody></table></figure>
 
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
 <li><a href="https://docs.influxdata.com/influxdb/v1.7/query_language/spec/#query-engine-internals">InfluxDB 1.7 Query language</a></li>
@@ -206,7 +199,7 @@
         
         
 <div class="sharethis-inline-share-buttons"></div>
-<script type='text/javascript' src='//platform-api.sharethis.com/js/sharethis.js#property=5df54e9fee0f770012eb9f87&amp;product=inline-share-buttons&amp;cms=sop' async='async'></script>
+<script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5df54e9fee0f770012eb9f87&product=inline-share-buttons&cms=sop" async="async"></script>
 
         
     </div>
@@ -299,7 +292,7 @@
                 <div>
                     
                     <figure class="image is-128x128 has-mb-6">
-                        <img class="is-rounded" src="https://scontent-ams4-1.cdninstagram.com/v/t51.2885-19/s320x320/73497413_448687199127642_4593963213837565952_n.jpg?_nc_ht=scontent-ams4-1.cdninstagram.com&amp;oh=e273f9e53667c4d64c3c555baa12345f&amp;oe=5E7F3D90" alt="Songrong">
+                        <img class="is-rounded" src="https://scontent-ams4-1.cdninstagram.com/v/t51.2885-19/s320x320/73497413_448687199127642_4593963213837565952_n.jpg?_nc_ht=scontent-ams4-1.cdninstagram.com&oh=e273f9e53667c4d64c3c555baa12345f&oe=5E7F3D90" alt="Songrong">
                     </figure>
                     
                     <p class="is-size-4 is-block">
@@ -368,29 +361,25 @@
         
         <div class="level is-mobile">
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Github" href="https://github.com/songrgg">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/songrgg">
                 
                 <i class="fab fa-github"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Instagram" href="https://www.instagram.com/jiangsongrong">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Instagram" href="https://www.instagram.com/jiangsongrong">
                 
                 <i class="fab fa-instagram"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
                 
                 <i class="fab fa-linkedin"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="RSS" href="/atom.xml">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="RSS" href="/atom.xml">
                 
                 <i class="fas fa-rss"></i>
                 
@@ -555,14 +544,14 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards &amp; alertings using Grafana API</a>
+                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -1454,14 +1443,14 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards &amp; alertings using Grafana API</a>
+                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -2268,13 +2257,12 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    SongRong&#39;s Experience
+                    SongRong's Experience
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2020 songrgg&nbsp;
-                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
-                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                © 2020 songrgg 
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
                 
                 </p>
             </div>
@@ -2351,7 +2339,7 @@ var IcarusThemeSettings = {
     <h6>Your browser is out-of-date!</h6>
     <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
             my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
 <script>
@@ -2414,7 +2402,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="searchbox ins-search">
     <div class="searchbox-container ins-search-container">
         <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something..." />
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
             <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="searchbox-result-wrapper ins-section-wrapper">
@@ -2441,5 +2429,5 @@ document.addEventListener('DOMContentLoaded', function () {
 <link rel="stylesheet" href="/css/search.css">
 <link rel="stylesheet" href="/css/insight.css">
     
-</body>
-</html>
+
+<script type="text/javascript" charset="utf-8" src="/js/lazyload-plugin/lazyload.intersectionObserver.min.js"></script></body></html>

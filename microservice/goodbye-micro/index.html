@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html  lang="en">
-<head>
-    <meta charset="utf-8" />
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8">
 
-<meta name="generator" content="Hexo 4.2.0" />
+<meta name="generator" content="Hexo 4.2.0">
 
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 <title>再见，micro: 迁移go-micro到纯gRPC框架 - Blog | Songrgg</title>
 
@@ -91,7 +89,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                SongRong&#39;s Experience
+                SongRong's Experience
             
             </a>
         </div>
@@ -99,20 +97,15 @@
             
             <div class="navbar-start">
                 
-                <a class="navbar-item"
-                href="/">Home</a>
+                <a class="navbar-item" href="/">Home</a>
                 
-                <a class="navbar-item"
-                href="/archives">Archives</a>
+                <a class="navbar-item" href="/archives">Archives</a>
                 
-                <a class="navbar-item"
-                href="/categories">Categories</a>
+                <a class="navbar-item" href="/categories">Categories</a>
                 
-                <a class="navbar-item"
-                href="/tags">Tags</a>
+                <a class="navbar-item" href="/tags">Tags</a>
                 
-                <a class="navbar-item"
-                href="/about">About</a>
+                <a class="navbar-item" href="/about">About</a>
                 
             </div>
             
@@ -137,7 +130,7 @@
 <div class="card">
     
     <div class="card-image">
-        <span  class="image is-7by1">
+        <span class="image is-7by1">
             <img class="thumbnail" src="/images/micro.webp" alt="再见，micro: 迁移go-micro到纯gRPC框架">
         </span>
     </div>
@@ -176,23 +169,23 @@
 <a id="more"></a>
 
 <h2 id="服务发现模块"><a href="#服务发现模块" class="headerlink" title="服务发现模块"></a>服务发现模块</h2><p>istio的服务发现支持etcd、consul等，我们需要将其改成使用kubernetes的服务名进行访问。通过实现<a href="https://gist.github.com/songrgg/22999fb7ab76a30dcac17cb28ed412d4">istio selector</a>的方式，我们将RPC调用的服务名与k8s的服务名端口做映射。</p>
-<figure class="highlight go"><figcaption><span>register.go</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> istio</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line">	<span class="string">"github.com/micro/go-micro/registry"</span></span><br><span class="line">	<span class="string">"github.com/micro/go-micro/selector"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	svcPort = <span class="number">10088</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	serviceHostMapping = <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>&#123;</span><br><span class="line">		<span class="string">"payment"</span>: <span class="string">"payment.common"</span>,</span><br><span class="line">		<span class="string">"content"</span>: <span class="string">"content.ns1"</span>,</span><br><span class="line">		<span class="string">"user"</span>:    <span class="string">"user.ns1"</span>,</span><br><span class="line">	&#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> istio <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(r *istio)</span> <span class="title">Select</span><span class="params">(service <span class="keyword">string</span>, opts ...selector.SelectOption)</span> <span class="params">(selector.Next, error)</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> host, exist := serviceHostMapping[service]; exist &#123;</span><br><span class="line">		node := &amp;registry.Node&#123;</span><br><span class="line">			Id:      service,</span><br><span class="line">			Address: host,</span><br><span class="line">			Port:    svcPort,</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="params">(*registry.Node, error)</span></span> &#123;</span><br><span class="line">			<span class="keyword">return</span> node, <span class="literal">nil</span></span><br><span class="line">		&#125;, <span class="literal">nil</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span>, fmt.Errorf(<span class="string">"service %s(%s) not found"</span>, service, svc)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><figcaption><span>register.go</span></figcaption><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> istio</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line">	<span class="string">"github.com/micro/go-micro/registry"</span></span><br><span class="line">	<span class="string">"github.com/micro/go-micro/selector"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	svcPort = <span class="number">10088</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	serviceHostMapping = <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>{</span><br><span class="line">		<span class="string">"payment"</span>: <span class="string">"payment.common"</span>,</span><br><span class="line">		<span class="string">"content"</span>: <span class="string">"content.ns1"</span>,</span><br><span class="line">		<span class="string">"user"</span>:    <span class="string">"user.ns1"</span>,</span><br><span class="line">	}</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> istio <span class="keyword">struct</span>{}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(r *istio)</span> <span class="title">Select</span><span class="params">(service <span class="keyword">string</span>, opts ...selector.SelectOption)</span> <span class="params">(selector.Next, error)</span></span> {</span><br><span class="line">	<span class="keyword">if</span> host, exist := serviceHostMapping[service]; exist {</span><br><span class="line">		node := &registry.Node{</span><br><span class="line">			Id:      service,</span><br><span class="line">			Address: host,</span><br><span class="line">			Port:    svcPort,</span><br><span class="line">		}</span><br><span class="line">		<span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="params">(*registry.Node, error)</span></span> {</span><br><span class="line">			<span class="keyword">return</span> node, <span class="literal">nil</span></span><br><span class="line">		}, <span class="literal">nil</span></span><br><span class="line">	}</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span>, fmt.Errorf(<span class="string">"service %s(%s) not found"</span>, service, svc)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></tbody></table></figure>
 
 <p>这里注意的是由于服务之间调用需要指定service name和端口，所以在这里我们把端口设置了一个magic number。</p>
 <h2 id="传输模块"><a href="#传输模块" class="headerlink" title="传输模块"></a>传输模块</h2><p>go-micro采用各种协议作为传输报文的工具，可以从<a href="https://github.com/micro/go-plugins/tree/master/transport">transport</a>中了解到，有http/grpc/tcp/utp等，我们曾先后使用过tcp、utp、gRPC，经过测试gRPC是其中最为稳定的。之前提到过gRPC只是作为传输信道，micro定义了自己的RPC接口，实现了RPC的路由、传输、重试等功能，通过自定义了protobuf的插件生成符合micro标准的proto文件。</p>
 <p>为了向后兼容，在使用grpc替换原RPC时，我也需要根据protobuf文件生成新的golang代码，其中包括client端、server端代码的变更，实际上我的更新是针对<a href="https://github.com/golang/protobuf/tree/master/protoc-gen-go">protoc-gen-go</a>，fork之后修改<a href="https://github.com/golang/protobuf/blob/master/protoc-gen-go/grpc/grpc.go">grpc/grpc.go</a>部分，在<code>func generateService()</code>中对Client端代码进行micro的适配。</p>
-<h3 id="Client"><a href="#Client" class="headerlink" title="Client"></a>Client</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *someClient)</span> <span class="title">DoSomething</span><span class="params">(ctx context.Context, in *SomeRequest, opts ...grpc.CallOption)</span> <span class="params">(*SomeResponse, error)</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="Client"><a href="#Client" class="headerlink" title="Client"></a>Client</h3><figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *someClient)</span> <span class="title">DoSomething</span><span class="params">(ctx context.Context, in *SomeRequest, opts ...grpc.CallOption)</span> <span class="params">(*SomeResponse, error)</span></span></span><br></pre></td></tr></tbody></table></figure>
 
 <h3 id="Server"><a href="#Server" class="headerlink" title="Server"></a>Server</h3><p>Server端代码的更新除了接口的适配，有一个关注点是micro的接口设计是</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DoSomething(context.Context, *SomeRequest, *SomeResponse) error</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DoSomething(context.Context, *SomeRequest, *SomeResponse) error</span><br></pre></td></tr></tbody></table></figure>
 <p>而gRPC是</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DoSomething(context.Context, *SomeRequest) (*SomeResponse, error)</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DoSomething(context.Context, *SomeRequest) (*SomeResponse, error)</span><br></pre></td></tr></tbody></table></figure>
 
 <p>micro接口设计的好处是支持服务端缓存的应用，当服务端handler触发时，cache interceptor可以将response缓存，当缓存命中时可以将其返回。而由于gRPC的版本将response放在了返回值中，运行时无法将譬如redis中字符串格式的response解码成<code>SomeResponse</code>，而micro版本由于将其放在了参数位置，所以可以通过</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">json.Unmarshall([]<span class="keyword">byte</span>(<span class="string">""</span>), &amp;SomeResponse&#123;&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">json.Unmarshall([]<span class="keyword">byte</span>(<span class="string">""</span>), &SomeResponse{})</span><br></pre></td></tr></tbody></table></figure>
 <p>从字符串恢复response。</p>
 <p>我们的做法是不改变接口的设计，而是在自动生成的golang代码中，在interceptor运行之前将response object塞入context。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Server</span></span><br><span class="line">ctx = ctx.WithValue(<span class="string">"IstioResponseBody"</span>, &amp;SomeResponse&#123;&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Interceptor</span></span><br><span class="line">obj := ctx.Value(<span class="string">"IstioResponseBody"</span>)</span><br><span class="line">json.Unmarshall([]<span class="keyword">byte</span>(<span class="string">""</span>), obj)</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Server</span></span><br><span class="line">ctx = ctx.WithValue(<span class="string">"IstioResponseBody"</span>, &SomeResponse{})</span><br><span class="line"></span><br><span class="line"><span class="comment">// Interceptor</span></span><br><span class="line">obj := ctx.Value(<span class="string">"IstioResponseBody"</span>)</span><br><span class="line">json.Unmarshall([]<span class="keyword">byte</span>(<span class="string">""</span>), obj)</span><br></pre></td></tr></tbody></table></figure>
 
 <h2 id="Interceptor模块"><a href="#Interceptor模块" class="headerlink" title="Interceptor模块"></a>Interceptor模块</h2><p>一些interceptor的迁移工作，例如logger、cache、recover等。</p>
 <h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
@@ -222,7 +215,7 @@
         
         
 <div class="sharethis-inline-share-buttons"></div>
-<script type='text/javascript' src='//platform-api.sharethis.com/js/sharethis.js#property=5df54e9fee0f770012eb9f87&amp;product=inline-share-buttons&amp;cms=sop' async='async'></script>
+<script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5df54e9fee0f770012eb9f87&product=inline-share-buttons&cms=sop" async="async"></script>
 
         
     </div>
@@ -322,7 +315,7 @@
                 <div>
                     
                     <figure class="image is-128x128 has-mb-6">
-                        <img class="is-rounded" src="https://scontent-ams4-1.cdninstagram.com/v/t51.2885-19/s320x320/73497413_448687199127642_4593963213837565952_n.jpg?_nc_ht=scontent-ams4-1.cdninstagram.com&amp;oh=e273f9e53667c4d64c3c555baa12345f&amp;oe=5E7F3D90" alt="Songrong">
+                        <img class="is-rounded" src="https://scontent-ams4-1.cdninstagram.com/v/t51.2885-19/s320x320/73497413_448687199127642_4593963213837565952_n.jpg?_nc_ht=scontent-ams4-1.cdninstagram.com&oh=e273f9e53667c4d64c3c555baa12345f&oe=5E7F3D90" alt="Songrong">
                     </figure>
                     
                     <p class="is-size-4 is-block">
@@ -391,29 +384,25 @@
         
         <div class="level is-mobile">
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Github" href="https://github.com/songrgg">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/songrgg">
                 
                 <i class="fab fa-github"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Instagram" href="https://www.instagram.com/jiangsongrong">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Instagram" href="https://www.instagram.com/jiangsongrong">
                 
                 <i class="fab fa-instagram"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
                 
                 <i class="fab fa-linkedin"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="RSS" href="/atom.xml">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="RSS" href="/atom.xml">
                 
                 <i class="fas fa-rss"></i>
                 
@@ -578,14 +567,14 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards &amp; alertings using Grafana API</a>
+                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -1477,14 +1466,14 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards &amp; alertings using Grafana API</a>
+                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -2291,13 +2280,12 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    SongRong&#39;s Experience
+                    SongRong's Experience
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2020 songrgg&nbsp;
-                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
-                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                © 2020 songrgg 
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
                 
                 </p>
             </div>
@@ -2374,7 +2362,7 @@ var IcarusThemeSettings = {
     <h6>Your browser is out-of-date!</h6>
     <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
             my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
 <script>
@@ -2437,7 +2425,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="searchbox ins-search">
     <div class="searchbox-container ins-search-container">
         <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something..." />
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
             <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="searchbox-result-wrapper ins-section-wrapper">
@@ -2464,5 +2452,5 @@ document.addEventListener('DOMContentLoaded', function () {
 <link rel="stylesheet" href="/css/search.css">
 <link rel="stylesheet" href="/css/insight.css">
     
-</body>
-</html>
+
+<script type="text/javascript" charset="utf-8" src="/js/lazyload-plugin/lazyload.intersectionObserver.min.js"></script></body></html>

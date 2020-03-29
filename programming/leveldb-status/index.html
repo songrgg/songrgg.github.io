@@ -1,21 +1,19 @@
-<!DOCTYPE html>
-<html  lang="en">
-<head>
-    <meta charset="utf-8" />
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8">
 
-<meta name="generator" content="Hexo 4.2.0" />
+<meta name="generator" content="Hexo 4.2.0">
 
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 <title>levelDB里自定义的状态 - Blog | Songrgg</title>
 
 
-    <meta name="description" content="LevelDB状态码LevelDB里专门定义了Status类，自定义了常见的状态码，用于函数的返回。 状态码类型在Status类中以枚举类型定义Code： 0 &#x3D;&gt; 处理成功1 &#x3D;&gt; 未找到2 &#x3D;&gt; 崩溃3 &#x3D;&gt; 不支持4 &#x3D;&gt; 无效的参数5 &#x3D;&gt; IO错误 并且有6个静态方法用来生成对应状态码的Status对象, 和4个判断方法来方便确认状态。   存储方式状">
+    <meta name="description" content="LevelDB状态码LevelDB里专门定义了Status类，自定义了常见的状态码，用于函数的返回。 状态码类型在Status类中以枚举类型定义Code： 0 => 处理成功1 => 未找到2 => 崩溃3 => 不支持4 => 无效的参数5 => IO错误 并且有6个静态方法用来生成对应状态码的Status对象, 和4个判断方法来方便确认状态。   存储方式状">
 <meta property="og:type" content="article">
 <meta property="og:title" content="levelDB里自定义的状态">
 <meta property="og:url" content="https://songrgg.github.io/programming/leveldb-status/index.html">
 <meta property="og:site_name" content="Blog | Songrgg">
-<meta property="og:description" content="LevelDB状态码LevelDB里专门定义了Status类，自定义了常见的状态码，用于函数的返回。 状态码类型在Status类中以枚举类型定义Code： 0 &#x3D;&gt; 处理成功1 &#x3D;&gt; 未找到2 &#x3D;&gt; 崩溃3 &#x3D;&gt; 不支持4 &#x3D;&gt; 无效的参数5 &#x3D;&gt; IO错误 并且有6个静态方法用来生成对应状态码的Status对象, 和4个判断方法来方便确认状态。   存储方式状">
+<meta property="og:description" content="LevelDB状态码LevelDB里专门定义了Status类，自定义了常见的状态码，用于函数的返回。 状态码类型在Status类中以枚举类型定义Code： 0 => 处理成功1 => 未找到2 => 崩溃3 => 不支持4 => 无效的参数5 => IO错误 并且有6个静态方法用来生成对应状态码的Status对象, 和4个判断方法来方便确认状态。   存储方式状">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://songrgg.github.io/images/og_image.png">
 <meta property="article:published_time" content="2015-02-08T21:27:50.000Z">
@@ -88,7 +86,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                SongRong&#39;s Experience
+                SongRong's Experience
             
             </a>
         </div>
@@ -96,20 +94,15 @@
             
             <div class="navbar-start">
                 
-                <a class="navbar-item"
-                href="/">Home</a>
+                <a class="navbar-item" href="/">Home</a>
                 
-                <a class="navbar-item"
-                href="/archives">Archives</a>
+                <a class="navbar-item" href="/archives">Archives</a>
                 
-                <a class="navbar-item"
-                href="/categories">Categories</a>
+                <a class="navbar-item" href="/categories">Categories</a>
                 
-                <a class="navbar-item"
-                href="/tags">Tags</a>
+                <a class="navbar-item" href="/tags">Tags</a>
                 
-                <a class="navbar-item"
-                href="/about">About</a>
+                <a class="navbar-item" href="/about">About</a>
                 
             </div>
             
@@ -162,7 +155,7 @@
         <div class="content">
             <h3 id="LevelDB状态码"><a href="#LevelDB状态码" class="headerlink" title="LevelDB状态码"></a>LevelDB状态码</h3><p>LevelDB里专门定义了Status类，自定义了常见的状态码，用于函数的返回。</p>
 <h4 id="状态码类型"><a href="#状态码类型" class="headerlink" title="状态码类型"></a>状态码类型</h4><p>在Status类中以枚举类型定义Code：</p>
-<p>0 =&gt; 处理成功<br>1 =&gt; 未找到<br>2 =&gt; 崩溃<br>3 =&gt; 不支持<br>4 =&gt; 无效的参数<br>5 =&gt; IO错误</p>
+<p>0 => 处理成功<br>1 => 未找到<br>2 => 崩溃<br>3 => 不支持<br>4 => 无效的参数<br>5 => IO错误</p>
 <p>并且有6个静态方法用来生成对应状态码的Status对象, 和4个判断方法来方便确认状态。  </p>
 <h4 id="存储方式"><a href="#存储方式" class="headerlink" title="存储方式"></a>存储方式</h4><p>状态码包括状态信息都是利用私有字符串变量state_存储，存储方式如下：</p>
 <p>0 ~ 4字节：消息长度(消息1的长度len1+分割符的长度+消息2的长度len2)<br>4 ~ 5字节：状态码<br>5 ~ 5+len1：消息1的长度<br>(若消息2不为空)<br>5+len1 ~ 7+len1：分隔符的长度(分隔符为2个字符，分别为冒号和空格)<br>7+len1 ~ 7+len1+len2：消息2的长度</p>
@@ -184,7 +177,7 @@
         
         
 <div class="sharethis-inline-share-buttons"></div>
-<script type='text/javascript' src='//platform-api.sharethis.com/js/sharethis.js#property=5df54e9fee0f770012eb9f87&amp;product=inline-share-buttons&amp;cms=sop' async='async'></script>
+<script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5df54e9fee0f770012eb9f87&product=inline-share-buttons&cms=sop" async="async"></script>
 
         
     </div>
@@ -284,7 +277,7 @@
                 <div>
                     
                     <figure class="image is-128x128 has-mb-6">
-                        <img class="is-rounded" src="https://scontent-ams4-1.cdninstagram.com/v/t51.2885-19/s320x320/73497413_448687199127642_4593963213837565952_n.jpg?_nc_ht=scontent-ams4-1.cdninstagram.com&amp;oh=e273f9e53667c4d64c3c555baa12345f&amp;oe=5E7F3D90" alt="Songrong">
+                        <img class="is-rounded" src="https://scontent-ams4-1.cdninstagram.com/v/t51.2885-19/s320x320/73497413_448687199127642_4593963213837565952_n.jpg?_nc_ht=scontent-ams4-1.cdninstagram.com&oh=e273f9e53667c4d64c3c555baa12345f&oe=5E7F3D90" alt="Songrong">
                     </figure>
                     
                     <p class="is-size-4 is-block">
@@ -353,29 +346,25 @@
         
         <div class="level is-mobile">
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Github" href="https://github.com/songrgg">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/songrgg">
                 
                 <i class="fab fa-github"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Instagram" href="https://www.instagram.com/jiangsongrong">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Instagram" href="https://www.instagram.com/jiangsongrong">
                 
                 <i class="fab fa-instagram"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
                 
                 <i class="fab fa-linkedin"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="RSS" href="/atom.xml">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="RSS" href="/atom.xml">
                 
                 <i class="fas fa-rss"></i>
                 
@@ -540,14 +529,14 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards &amp; alertings using Grafana API</a>
+                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -1439,14 +1428,14 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards &amp; alertings using Grafana API</a>
+                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -2253,13 +2242,12 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    SongRong&#39;s Experience
+                    SongRong's Experience
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2020 songrgg&nbsp;
-                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
-                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                © 2020 songrgg 
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
                 
                 </p>
             </div>
@@ -2336,7 +2324,7 @@ var IcarusThemeSettings = {
     <h6>Your browser is out-of-date!</h6>
     <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
             my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
 <script>
@@ -2399,7 +2387,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="searchbox ins-search">
     <div class="searchbox-container ins-search-container">
         <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something..." />
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
             <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="searchbox-result-wrapper ins-section-wrapper">
@@ -2426,5 +2414,5 @@ document.addEventListener('DOMContentLoaded', function () {
 <link rel="stylesheet" href="/css/search.css">
 <link rel="stylesheet" href="/css/insight.css">
     
-</body>
-</html>
+
+<script type="text/javascript" charset="utf-8" src="/js/lazyload-plugin/lazyload.intersectionObserver.min.js"></script></body></html>

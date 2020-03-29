@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html  lang="en">
-<head>
-    <meta charset="utf-8" />
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8">
 
-<meta name="generator" content="Hexo 4.2.0" />
+<meta name="generator" content="Hexo 4.2.0">
 
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 <title>Tag: golang - Blog | Songrgg</title>
 
@@ -90,7 +88,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                SongRong&#39;s Experience
+                SongRong's Experience
             
             </a>
         </div>
@@ -98,20 +96,15 @@
             
             <div class="navbar-start">
                 
-                <a class="navbar-item"
-                href="/">Home</a>
+                <a class="navbar-item" href="/">Home</a>
                 
-                <a class="navbar-item"
-                href="/archives">Archives</a>
+                <a class="navbar-item" href="/archives">Archives</a>
                 
-                <a class="navbar-item"
-                href="/categories">Categories</a>
+                <a class="navbar-item" href="/categories">Categories</a>
                 
-                <a class="navbar-item"
-                href="/tags">Tags</a>
+                <a class="navbar-item" href="/tags">Tags</a>
                 
-                <a class="navbar-item"
-                href="/about">About</a>
+                <a class="navbar-item" href="/about">About</a>
                 
             </div>
             
@@ -174,25 +167,25 @@
         </h1>
         <div class="content">
             <h3 id="goroutine之间的同步"><a href="#goroutine之间的同步" class="headerlink" title="goroutine之间的同步"></a>goroutine之间的同步</h3><p>goroutine是golang中在语言级别实现的轻量级线程，仅仅利用<strong>go</strong>就能立刻起一个新线程。多线程会引入线程之间的同步问题，经典的同步问题如生产者-消费者问题，在c，java级别需要使用锁、信号量进行共享资源的互斥使用和多线程之间的时序控制，而在golang中有channel作为同步的工具。</p>
-<h4 id="1-channel实现两个goroutine之间的通信"><a href="#1-channel实现两个goroutine之间的通信" class="headerlink" title="1. channel实现两个goroutine之间的通信"></a>1. channel实现两个goroutine之间的通信</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line">	</span><br><span class="line"><span class="keyword">import</span> <span class="string">"strconv"</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	taskChan := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>, <span class="number">3</span>)</span><br><span class="line">	doneChan := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">3</span>; i++ &#123;</span><br><span class="line">		taskChan &lt;- strconv.Itoa(i)</span><br><span class="line">		fmt.Println(<span class="string">"send: "</span>, i)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">3</span>; i++ &#123;</span><br><span class="line">			task := &lt;-taskChan</span><br><span class="line">			fmt.Println(<span class="string">"received: "</span>, task)</span><br><span class="line">		&#125;</span><br><span class="line">		doneChan &lt;- <span class="number">1</span></span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	&lt;-doneChan</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="1-channel实现两个goroutine之间的通信"><a href="#1-channel实现两个goroutine之间的通信" class="headerlink" title="1. channel实现两个goroutine之间的通信"></a>1. channel实现两个goroutine之间的通信</h4><figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line">	</span><br><span class="line"><span class="keyword">import</span> <span class="string">"strconv"</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {</span><br><span class="line">	taskChan := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>, <span class="number">3</span>)</span><br><span class="line">	doneChan := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i < <span class="number">3</span>; i++ {</span><br><span class="line">		taskChan <- strconv.Itoa(i)</span><br><span class="line">		fmt.Println(<span class="string">"send: "</span>, i)</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> {</span><br><span class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i < <span class="number">3</span>; i++ {</span><br><span class="line">			task := <-taskChan</span><br><span class="line">			fmt.Println(<span class="string">"received: "</span>, task)</span><br><span class="line">		}</span><br><span class="line">		doneChan <- <span class="number">1</span></span><br><span class="line">	}()</span><br><span class="line"></span><br><span class="line">	<-doneChan</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 <ul>
 <li>创建一个channel，<code>make(chan TYPE {, NUM})</code>, TYPE指的是channel中传输的数据类型，第二个参数是可选的，指的是channel的容量大小。</li>
-<li>向channel传入数据，<code>CHAN &lt;- DATA</code>, <strong>CHAN</strong>指的是目的channel即收集数据的一方，<strong>DATA</strong>则是要传的数据。</li>
+<li>向channel传入数据，<code>CHAN <- DATA</code>, <strong>CHAN</strong>指的是目的channel即收集数据的一方，<strong>DATA</strong>则是要传的数据。</li>
 <li>启动一个goroutine接收main routine向channel发送的数据，<code>go func(){ BODY }()</code>新建一个线程运行一个匿名函数。</li>
-<li>从channel读取数据，<code>DATA := &lt;-CHAN</code>，和向channel传入数据相反，在数据输送箭头的右侧的是channel，形象地展现了数据从‘隧道’流出到变量里。</li>
+<li>从channel读取数据，<code>DATA := <-CHAN</code>，和向channel传入数据相反，在数据输送箭头的右侧的是channel，形象地展现了数据从‘隧道’流出到变量里。</li>
 <li>通知主线程任务执行结束，doneChan的作用是为了让main routine等待这个刚起的goroutine结束，这里显示了channel的另一个特性，如果从empty channel中读取数据，则会阻塞当前routine，直到有数据可以读取。</li>
 </ul>
 <p>上面这个程序就是main routine向另一个routine发送了3条int类型的数据，当3条数据被接收到后，主线程也从阻塞状态恢复运行，随后结束。  </p>
 <h4 id="2-不要陷入“死锁”"><a href="#2-不要陷入“死锁”" class="headerlink" title="2. 不要陷入“死锁”"></a>2. 不要陷入“死锁”</h4><p>我一开始用channel的时候有报过*”fatal error: all goroutines are asleep - deadlock! “*的错误，真实的代码是下面这样的:  </p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line">	ch &lt;- <span class="number">1</span>   <span class="comment">// I'm blocked because there is no channel read yet. </span></span><br><span class="line">	fmt.Println(<span class="string">"send"</span>)</span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		&lt;-ch  <span class="comment">// I will never be called for the main routine is blocked!</span></span><br><span class="line">		fmt.Println(<span class="string">"received"</span>)</span><br><span class="line">	&#125;()</span><br><span class="line">	fmt.Println(<span class="string">"over"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {</span><br><span class="line">	ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line">	ch <- <span class="number">1</span>   <span class="comment">// I'm blocked because there is no channel read yet. </span></span><br><span class="line">	fmt.Println(<span class="string">"send"</span>)</span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> {</span><br><span class="line">		<-ch  <span class="comment">// I will never be called for the main routine is blocked!</span></span><br><span class="line">		fmt.Println(<span class="string">"received"</span>)</span><br><span class="line">	}()</span><br><span class="line">	fmt.Println(<span class="string">"over"</span>)</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 <p>我的本意是从main routine发送给另一个routine一个int型的数据，但是运行出了上述的错误，原因有2个:  </p>
 <ul>
 <li>当前routine向channel发送/接收数据时，如果另一端没有相应地接收/发送，那么当前routine则会进行休眠。</li>
-<li>这个程序的main routine先行在<code>ch &lt;- 1</code>进入休眠状态，程序的余下部分根本来不及运行，那么channel里的数据永远不会被读出，也就不能唤醒main routine，进入“死锁”。  </li>
+<li>这个程序的main routine先行在<code>ch <- 1</code>进入休眠状态，程序的余下部分根本来不及运行，那么channel里的数据永远不会被读出，也就不能唤醒main routine，进入“死锁”。  </li>
 </ul>
 <p>解决这个“死锁”的方法可是是设置channel的容量大小大于1，那么channel就不会因为数据输入而阻塞主程; 或者将数据输入channel的语句置于启动新的goroutine之后。  </p>
 <h4 id="3-channel作为状态转移的信号源"><a href="#3-channel作为状态转移的信号源" class="headerlink" title="3. channel作为状态转移的信号源"></a>3. channel作为状态转移的信号源</h4><p>我跟着MIT的分布式计算课程做了原型为Map-Reduce的课后练习，目的是实现一个Master向Worker分派任务的功能：Master服务器去等待Worker服务器连接注册，Master先将Map任务和Reduce任务分派给这些注册Worker，等待Map任务全部完成，然后将Reduce任务再分配出去，等待全部完成。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Initialize a channel which records the process of the map jobs.</span></span><br><span class="line">mapJobChannel := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)</span><br><span class="line">	</span><br><span class="line"><span class="comment">// Start a goroutine to send the nMap(the number of the Map jobs) tasks to the main routine.</span></span><br><span class="line"><span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> m := <span class="number">0</span>; m &lt; nMap; m++ &#123;</span><br><span class="line">		<span class="comment">// Send the "start a Map job &lt;m&gt;" to the receiver.</span></span><br><span class="line">		mapJobChannel &lt;- <span class="string">"start, "</span> + strconv.Itoa(m)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;()</span><br><span class="line"></span><br><span class="line"><span class="comment">// Main routine listens on this mapJobChannel for the Map job task information.</span></span><br><span class="line">nMapJobs := nMap</span><br><span class="line"></span><br><span class="line"><span class="comment">// Process the nMap Map tasks util they're all done.</span></span><br><span class="line"><span class="keyword">for</span> nMapJobs &gt; <span class="number">0</span> &#123;</span><br><span class="line">	<span class="comment">// Receive the Map tasks from the channel.</span></span><br><span class="line">	taskInfo := strings.Split(&lt;-mapJobChannel, <span class="string">","</span>)</span><br><span class="line">	state, mapNo := taskInfo[<span class="number">0</span>], taskInfo[<span class="number">1</span>]</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span> state == <span class="string">"start"</span> &#123;</span><br><span class="line">		<span class="comment">// Assign a Map task with number mapNo to a worker.</span></span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">			<span class="comment">// Wait for a worker to finish the Map task.</span></span><br><span class="line">			ok, workNo := assignJobToWorker(<span class="string">"Map"</span>, mapNo)</span><br><span class="line">			<span class="keyword">if</span> ok &#123;</span><br><span class="line">				<span class="comment">// Send a task finish signal and set the worker's state to idle.</span></span><br><span class="line">				mapJobChannel &lt;- <span class="string">"end, "</span> + mapNo</span><br><span class="line">				setWorkerState(workNo, <span class="string">"idle"</span>)</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="comment">// Restart this task and set the worker's state to finished.</span></span><br><span class="line">				mapJobChannel &lt;- <span class="string">"start, "</span> + mapNo</span><br><span class="line">				setWorkerState(workNo, <span class="string">"finished"</span>)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;()</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		nMapJobs--</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Initialize a channel which records the process of the map jobs.</span></span><br><span class="line">mapJobChannel := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)</span><br><span class="line">	</span><br><span class="line"><span class="comment">// Start a goroutine to send the nMap(the number of the Map jobs) tasks to the main routine.</span></span><br><span class="line"><span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> {</span><br><span class="line">	<span class="keyword">for</span> m := <span class="number">0</span>; m < nMap; m++ {</span><br><span class="line">		<span class="comment">// Send the "start a Map job <m>" to the receiver.</span></span><br><span class="line">		mapJobChannel <- <span class="string">"start, "</span> + strconv.Itoa(m)</span><br><span class="line">	}</span><br><span class="line">}()</span><br><span class="line"></span><br><span class="line"><span class="comment">// Main routine listens on this mapJobChannel for the Map job task information.</span></span><br><span class="line">nMapJobs := nMap</span><br><span class="line"></span><br><span class="line"><span class="comment">// Process the nMap Map tasks util they're all done.</span></span><br><span class="line"><span class="keyword">for</span> nMapJobs > <span class="number">0</span> {</span><br><span class="line">	<span class="comment">// Receive the Map tasks from the channel.</span></span><br><span class="line">	taskInfo := strings.Split(<-mapJobChannel, <span class="string">","</span>)</span><br><span class="line">	state, mapNo := taskInfo[<span class="number">0</span>], taskInfo[<span class="number">1</span>]</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span> state == <span class="string">"start"</span> {</span><br><span class="line">		<span class="comment">// Assign a Map task with number mapNo to a worker.</span></span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> {</span><br><span class="line">			<span class="comment">// Wait for a worker to finish the Map task.</span></span><br><span class="line">			ok, workNo := assignJobToWorker(<span class="string">"Map"</span>, mapNo)</span><br><span class="line">			<span class="keyword">if</span> ok {</span><br><span class="line">				<span class="comment">// Send a task finish signal and set the worker's state to idle.</span></span><br><span class="line">				mapJobChannel <- <span class="string">"end, "</span> + mapNo</span><br><span class="line">				setWorkerState(workNo, <span class="string">"idle"</span>)</span><br><span class="line">			} <span class="keyword">else</span> {</span><br><span class="line">				<span class="comment">// Restart this task and set the worker's state to finished.</span></span><br><span class="line">				mapJobChannel <- <span class="string">"start, "</span> + mapNo</span><br><span class="line">				setWorkerState(workNo, <span class="string">"finished"</span>)</span><br><span class="line">			}</span><br><span class="line">		}()</span><br><span class="line">	} <span class="keyword">else</span> {</span><br><span class="line">		nMapJobs--</span><br><span class="line">	}</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 <p>以上是我截取自己写的代码，关于用channel来传递当前Map任务的进度信息，用类似信号的方式标注当前的任务执行状态。  </p>
 <ul>
 <li>当从channel中读取到”start, {NUM}”时找一个空闲的Worker去执行Map任务，并且等待它的完成，完成成功则向channel中发送”end, {NUM}”信号，表明任务完成，如果失败，就重发”start, {NUM}”信号。</li>
@@ -257,7 +250,7 @@
                 <div>
                     
                     <figure class="image is-128x128 has-mb-6">
-                        <img class="is-rounded" src="https://scontent-ams4-1.cdninstagram.com/v/t51.2885-19/s320x320/73497413_448687199127642_4593963213837565952_n.jpg?_nc_ht=scontent-ams4-1.cdninstagram.com&amp;oh=e273f9e53667c4d64c3c555baa12345f&amp;oe=5E7F3D90" alt="Songrong">
+                        <img class="is-rounded" src="https://scontent-ams4-1.cdninstagram.com/v/t51.2885-19/s320x320/73497413_448687199127642_4593963213837565952_n.jpg?_nc_ht=scontent-ams4-1.cdninstagram.com&oh=e273f9e53667c4d64c3c555baa12345f&oe=5E7F3D90" alt="Songrong">
                     </figure>
                     
                     <p class="is-size-4 is-block">
@@ -326,29 +319,25 @@
         
         <div class="level is-mobile">
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Github" href="https://github.com/songrgg">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/songrgg">
                 
                 <i class="fab fa-github"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Instagram" href="https://www.instagram.com/jiangsongrong">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Instagram" href="https://www.instagram.com/jiangsongrong">
                 
                 <i class="fab fa-instagram"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
                 
                 <i class="fab fa-linkedin"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="RSS" href="/atom.xml">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="RSS" href="/atom.xml">
                 
                 <i class="fas fa-rss"></i>
                 
@@ -513,14 +502,14 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards &amp; alertings using Grafana API</a>
+                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -1412,14 +1401,14 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards &amp; alertings using Grafana API</a>
+                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -2226,13 +2215,12 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    SongRong&#39;s Experience
+                    SongRong's Experience
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2020 songrgg&nbsp;
-                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
-                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                © 2020 songrgg 
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
                 
                 </p>
             </div>
@@ -2309,7 +2297,7 @@ var IcarusThemeSettings = {
     <h6>Your browser is out-of-date!</h6>
     <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
             my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
 <script>
@@ -2372,7 +2360,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="searchbox ins-search">
     <div class="searchbox-container ins-search-container">
         <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something..." />
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
             <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="searchbox-result-wrapper ins-section-wrapper">
@@ -2399,5 +2387,5 @@ document.addEventListener('DOMContentLoaded', function () {
 <link rel="stylesheet" href="/css/search.css">
 <link rel="stylesheet" href="/css/insight.css">
     
-</body>
-</html>
+
+<script type="text/javascript" charset="utf-8" src="/js/lazyload-plugin/lazyload.intersectionObserver.min.js"></script></body></html>

@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html  lang="en">
-<head>
-    <meta charset="utf-8" />
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8">
 
-<meta name="generator" content="Hexo 4.2.0" />
+<meta name="generator" content="Hexo 4.2.0">
 
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 <title>gRPC Golang Client Connection Test - Blog | Songrgg</title>
 
@@ -89,7 +87,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                SongRong&#39;s Experience
+                SongRong's Experience
             
             </a>
         </div>
@@ -97,20 +95,15 @@
             
             <div class="navbar-start">
                 
-                <a class="navbar-item"
-                href="/">Home</a>
+                <a class="navbar-item" href="/">Home</a>
                 
-                <a class="navbar-item"
-                href="/archives">Archives</a>
+                <a class="navbar-item" href="/archives">Archives</a>
                 
-                <a class="navbar-item"
-                href="/categories">Categories</a>
+                <a class="navbar-item" href="/categories">Categories</a>
                 
-                <a class="navbar-item"
-                href="/tags">Tags</a>
+                <a class="navbar-item" href="/tags">Tags</a>
                 
-                <a class="navbar-item"
-                href="/about">About</a>
+                <a class="navbar-item" href="/about">About</a>
                 
             </div>
             
@@ -135,7 +128,7 @@
 <div class="card">
     
     <div class="card-image">
-        <span  class="image is-7by1">
+        <span class="image is-7by1">
             <img class="thumbnail" src="/images/grpc.webp" alt="gRPC Golang Client Connection Test">
         </span>
     </div>
@@ -178,19 +171,19 @@
 <h2 id="Performance-Comparison"><a href="#Performance-Comparison" class="headerlink" title="Performance Comparison"></a>Performance Comparison</h2><p><strong>Hardware</strong><br>MacBook Pro (15-inch, 2016)<br>Processor 2.7 GHz Intel Core i7<br>Memory 16GB 2133 MHz LPDDR3</p>
 <p><strong>Press tool, client and server run on the same machine</strong></p>
 <h3 id="When-server-just-says-hello-to-client"><a href="#When-server-just-says-hello-to-client" class="headerlink" title="When server just says hello to client"></a>When server just says hello to client</h3><ol>
-<li>Only one client, one connection <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ wrk -t2 -c100 -d10s http://localhost:10099/performance</span><br><span class="line">Running 10s <span class="built_in">test</span> @ http://localhost:10099/performance</span><br><span class="line">  2 threads and 100 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency     2.85ms    1.24ms  22.24ms   80.47%</span><br><span class="line">    Req/Sec    15.86k     2.86k   21.58k    76.50%</span><br><span class="line">  316674 requests <span class="keyword">in</span> 10.04s, 38.66MB <span class="built_in">read</span></span><br><span class="line">Requests/sec:  31532.58</span><br><span class="line">Transfer/sec:      3.85MB</span><br></pre></td></tr></table></figure></li>
-<li>Fixed-size Connection pool<br>Take connection from pool first, otherwise create a new connection. <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ wrk -t2 -c100 -d10s http://localhost:10099/performance</span><br><span class="line">Running 10s <span class="built_in">test</span> @ http://localhost:10099/performance</span><br><span class="line">  2 threads and 100 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency    36.86ms   34.35ms 334.72ms   83.30%</span><br><span class="line">    Req/Sec     1.58k   660.95     3.89k    67.86%</span><br><span class="line">  31127 requests <span class="keyword">in</span> 10.04s, 3.80MB <span class="built_in">read</span></span><br><span class="line">Requests/sec:   3100.89</span><br><span class="line">Transfer/sec:    387.61KB</span><br></pre></td></tr></table></figure></li>
+<li>Only one client, one connection <figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ wrk -t2 -c100 -d10s http://localhost:10099/performance</span><br><span class="line">Running 10s <span class="built_in">test</span> @ http://localhost:10099/performance</span><br><span class="line">  2 threads and 100 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency     2.85ms    1.24ms  22.24ms   80.47%</span><br><span class="line">    Req/Sec    15.86k     2.86k   21.58k    76.50%</span><br><span class="line">  316674 requests <span class="keyword">in</span> 10.04s, 38.66MB <span class="built_in">read</span></span><br><span class="line">Requests/sec:  31532.58</span><br><span class="line">Transfer/sec:      3.85MB</span><br></pre></td></tr></tbody></table></figure></li>
+<li>Fixed-size Connection pool<br>Take connection from pool first, otherwise create a new connection. <figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ wrk -t2 -c100 -d10s http://localhost:10099/performance</span><br><span class="line">Running 10s <span class="built_in">test</span> @ http://localhost:10099/performance</span><br><span class="line">  2 threads and 100 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency    36.86ms   34.35ms 334.72ms   83.30%</span><br><span class="line">    Req/Sec     1.58k   660.95     3.89k    67.86%</span><br><span class="line">  31127 requests <span class="keyword">in</span> 10.04s, 3.80MB <span class="built_in">read</span></span><br><span class="line">Requests/sec:   3100.89</span><br><span class="line">Transfer/sec:    387.61KB</span><br></pre></td></tr></tbody></table></figure></li>
 <li>One connection per request<br>Close to the second result, about 3000 Requests/sec</li>
 </ol>
 <h3 id="When-server-sleeps-0-5s-and-says-hello-to-client"><a href="#When-server-sleeps-0-5s-and-says-hello-to-client" class="headerlink" title="When server sleeps 0.5s and says hello to client"></a>When server sleeps 0.5s and says hello to client</h3><ol>
 <li><p>Only one client, one connection</p>
- <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ wrk -t2 -c100 -d10s http://localhost:10099/performance</span><br><span class="line">Running 10s <span class="built_in">test</span> @ http://localhost:10099/performance</span><br><span class="line">  2 threads and 100 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency   503.43ms    1.95ms 511.62ms   64.35%</span><br><span class="line">    Req/Sec   130.60    119.12   485.00     80.85%</span><br><span class="line">  2000 requests <span class="keyword">in</span> 10.10s, 250.00KB <span class="built_in">read</span></span><br><span class="line">Requests/sec:    198.04</span><br><span class="line">Transfer/sec:     24.75KB</span><br></pre></td></tr></table></figure>
+ <figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ wrk -t2 -c100 -d10s http://localhost:10099/performance</span><br><span class="line">Running 10s <span class="built_in">test</span> @ http://localhost:10099/performance</span><br><span class="line">  2 threads and 100 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency   503.43ms    1.95ms 511.62ms   64.35%</span><br><span class="line">    Req/Sec   130.60    119.12   485.00     80.85%</span><br><span class="line">  2000 requests <span class="keyword">in</span> 10.10s, 250.00KB <span class="built_in">read</span></span><br><span class="line">Requests/sec:    198.04</span><br><span class="line">Transfer/sec:     24.75KB</span><br></pre></td></tr></tbody></table></figure>
 </li>
 <li><p>Fixed-size Connection pool  </p>
- <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ wrk -t2 -c100 -d10s http://localhost:10099/performance</span><br><span class="line">Running 10s <span class="built_in">test</span> @ http://localhost:10099/performance</span><br><span class="line">  2 threads and 100 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency   504.44ms    5.14ms 529.46ms   92.58%</span><br><span class="line">    Req/Sec   119.40     95.83   470.00     85.11%</span><br><span class="line">  1901 requests <span class="keyword">in</span> 10.07s, 237.62KB <span class="built_in">read</span></span><br><span class="line">Requests/sec:    188.80</span><br><span class="line">Transfer/sec:     23.60KB</span><br></pre></td></tr></table></figure>
+ <figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ wrk -t2 -c100 -d10s http://localhost:10099/performance</span><br><span class="line">Running 10s <span class="built_in">test</span> @ http://localhost:10099/performance</span><br><span class="line">  2 threads and 100 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency   504.44ms    5.14ms 529.46ms   92.58%</span><br><span class="line">    Req/Sec   119.40     95.83   470.00     85.11%</span><br><span class="line">  1901 requests <span class="keyword">in</span> 10.07s, 237.62KB <span class="built_in">read</span></span><br><span class="line">Requests/sec:    188.80</span><br><span class="line">Transfer/sec:     23.60KB</span><br></pre></td></tr></tbody></table></figure>
 </li>
 <li><p>one connection per request</p>
- <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ wrk -t2 -c100 -d10s http://localhost:10099/performance</span><br><span class="line">Running 10s <span class="built_in">test</span> @ http://localhost:10099/performance</span><br><span class="line">  2 threads and 100 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency   509.30ms    4.85ms 529.65ms   73.74%</span><br><span class="line">    Req/Sec   188.81    188.12   494.00     71.23%</span><br><span class="line">  1900 requests <span class="keyword">in</span> 10.06s, 237.50KB <span class="built_in">read</span></span><br><span class="line">Requests/sec:    188.89</span><br><span class="line">Transfer/sec:     23.61KB</span><br></pre></td></tr></table></figure>
+ <figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ wrk -t2 -c100 -d10s http://localhost:10099/performance</span><br><span class="line">Running 10s <span class="built_in">test</span> @ http://localhost:10099/performance</span><br><span class="line">  2 threads and 100 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency   509.30ms    4.85ms 529.65ms   73.74%</span><br><span class="line">    Req/Sec   188.81    188.12   494.00     71.23%</span><br><span class="line">  1900 requests <span class="keyword">in</span> 10.06s, 237.50KB <span class="built_in">read</span></span><br><span class="line">Requests/sec:    188.89</span><br><span class="line">Transfer/sec:     23.61KB</span><br></pre></td></tr></tbody></table></figure>
 
 </li>
 </ol>
@@ -213,7 +206,7 @@
         
         
 <div class="sharethis-inline-share-buttons"></div>
-<script type='text/javascript' src='//platform-api.sharethis.com/js/sharethis.js#property=5df54e9fee0f770012eb9f87&amp;product=inline-share-buttons&amp;cms=sop' async='async'></script>
+<script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5df54e9fee0f770012eb9f87&product=inline-share-buttons&cms=sop" async="async"></script>
 
         
     </div>
@@ -313,7 +306,7 @@
                 <div>
                     
                     <figure class="image is-128x128 has-mb-6">
-                        <img class="is-rounded" src="https://scontent-ams4-1.cdninstagram.com/v/t51.2885-19/s320x320/73497413_448687199127642_4593963213837565952_n.jpg?_nc_ht=scontent-ams4-1.cdninstagram.com&amp;oh=e273f9e53667c4d64c3c555baa12345f&amp;oe=5E7F3D90" alt="Songrong">
+                        <img class="is-rounded" src="https://scontent-ams4-1.cdninstagram.com/v/t51.2885-19/s320x320/73497413_448687199127642_4593963213837565952_n.jpg?_nc_ht=scontent-ams4-1.cdninstagram.com&oh=e273f9e53667c4d64c3c555baa12345f&oe=5E7F3D90" alt="Songrong">
                     </figure>
                     
                     <p class="is-size-4 is-block">
@@ -382,29 +375,25 @@
         
         <div class="level is-mobile">
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Github" href="https://github.com/songrgg">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/songrgg">
                 
                 <i class="fab fa-github"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Instagram" href="https://www.instagram.com/jiangsongrong">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Instagram" href="https://www.instagram.com/jiangsongrong">
                 
                 <i class="fab fa-instagram"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
                 
                 <i class="fab fa-linkedin"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="RSS" href="/atom.xml">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="RSS" href="/atom.xml">
                 
                 <i class="fas fa-rss"></i>
                 
@@ -569,14 +558,14 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards &amp; alertings using Grafana API</a>
+                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -1468,14 +1457,14 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards &amp; alertings using Grafana API</a>
+                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -2282,13 +2271,12 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    SongRong&#39;s Experience
+                    SongRong's Experience
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2020 songrgg&nbsp;
-                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
-                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                © 2020 songrgg 
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
                 
                 </p>
             </div>
@@ -2365,7 +2353,7 @@ var IcarusThemeSettings = {
     <h6>Your browser is out-of-date!</h6>
     <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
             my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
 <script>
@@ -2428,7 +2416,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="searchbox ins-search">
     <div class="searchbox-container ins-search-container">
         <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something..." />
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
             <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="searchbox-result-wrapper ins-section-wrapper">
@@ -2455,5 +2443,5 @@ document.addEventListener('DOMContentLoaded', function () {
 <link rel="stylesheet" href="/css/search.css">
 <link rel="stylesheet" href="/css/insight.css">
     
-</body>
-</html>
+
+<script type="text/javascript" charset="utf-8" src="/js/lazyload-plugin/lazyload.intersectionObserver.min.js"></script></body></html>

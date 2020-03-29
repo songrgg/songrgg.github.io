@@ -1,21 +1,19 @@
-<!DOCTYPE html>
-<html  lang="en">
-<head>
-    <meta charset="utf-8" />
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8">
 
-<meta name="generator" content="Hexo 4.2.0" />
+<meta name="generator" content="Hexo 4.2.0">
 
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 <title>Raspberry 3安装docker - Blog | Songrgg</title>
 
 
-    <meta name="description" content="SD卡制作准备一张4GB或者以上的micro sd卡，下载系统镜像，例如raspbian-jessie-lite.img，并使用刷机工具，如Pi filler将其写入sd卡，当然也可以使用命令行的dd，或者其它工具，要注意的是sd卡必须是fat32格式的文件系统，不然树莓派是无法识别的。 开机启动先把所有的线材都连上之后，最后再通电，应该很顺利能看到启动的系统。 设置WIFI1234echo &#39;n">
+    <meta name="description" content="SD卡制作准备一张4GB或者以上的micro sd卡，下载系统镜像，例如raspbian-jessie-lite.img，并使用刷机工具，如Pi filler将其写入sd卡，当然也可以使用命令行的dd，或者其它工具，要注意的是sd卡必须是fat32格式的文件系统，不然树莓派是无法识别的。 开机启动先把所有的线材都连上之后，最后再通电，应该很顺利能看到启动的系统。 设置WIFI1234echo 'n">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Raspberry 3安装docker">
 <meta property="og:url" content="https://songrgg.github.io/life/raspberry3-docker/index.html">
 <meta property="og:site_name" content="Blog | Songrgg">
-<meta property="og:description" content="SD卡制作准备一张4GB或者以上的micro sd卡，下载系统镜像，例如raspbian-jessie-lite.img，并使用刷机工具，如Pi filler将其写入sd卡，当然也可以使用命令行的dd，或者其它工具，要注意的是sd卡必须是fat32格式的文件系统，不然树莓派是无法识别的。 开机启动先把所有的线材都连上之后，最后再通电，应该很顺利能看到启动的系统。 设置WIFI1234echo &#39;n">
+<meta property="og:description" content="SD卡制作准备一张4GB或者以上的micro sd卡，下载系统镜像，例如raspbian-jessie-lite.img，并使用刷机工具，如Pi filler将其写入sd卡，当然也可以使用命令行的dd，或者其它工具，要注意的是sd卡必须是fat32格式的文件系统，不然树莓派是无法识别的。 开机启动先把所有的线材都连上之后，最后再通电，应该很顺利能看到启动的系统。 设置WIFI1234echo 'n">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://songrgg.github.io/images/og_image.png">
 <meta property="article:published_time" content="2016-10-21T22:00:00.000Z">
@@ -89,7 +87,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                SongRong&#39;s Experience
+                SongRong's Experience
             
             </a>
         </div>
@@ -97,20 +95,15 @@
             
             <div class="navbar-start">
                 
-                <a class="navbar-item"
-                href="/">Home</a>
+                <a class="navbar-item" href="/">Home</a>
                 
-                <a class="navbar-item"
-                href="/archives">Archives</a>
+                <a class="navbar-item" href="/archives">Archives</a>
                 
-                <a class="navbar-item"
-                href="/categories">Categories</a>
+                <a class="navbar-item" href="/categories">Categories</a>
                 
-                <a class="navbar-item"
-                href="/tags">Tags</a>
+                <a class="navbar-item" href="/tags">Tags</a>
                 
-                <a class="navbar-item"
-                href="/about">About</a>
+                <a class="navbar-item" href="/about">About</a>
                 
             </div>
             
@@ -163,19 +156,19 @@
         <div class="content">
             <h3 id="SD卡制作"><a href="#SD卡制作" class="headerlink" title="SD卡制作"></a>SD卡制作</h3><p>准备一张4GB或者以上的micro sd卡，下载<a href="https://www.raspberrypi.org/downloads/raspbian/">系统镜像</a>，例如raspbian-jessie-lite.img，并使用刷机工具，如<code>Pi filler</code>将其写入sd卡，当然也可以使用命令行的dd，或者其它工具，要注意的是sd卡必须是fat32格式的文件系统，不然树莓派是无法识别的。</p>
 <h3 id="开机启动"><a href="#开机启动" class="headerlink" title="开机启动"></a>开机启动</h3><p>先把所有的线材都连上之后，最后再通电，应该很顺利能看到启动的系统。</p>
-<h3 id="设置WIFI"><a href="#设置WIFI" class="headerlink" title="设置WIFI"></a>设置WIFI</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'network=&#123;</span></span><br><span class="line"><span class="string">  ssid="your-ssid"</span></span><br><span class="line"><span class="string">  psk="your-psk"</span></span><br><span class="line"><span class="string">&#125;'</span> | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf</span><br></pre></td></tr></table></figure>
+<h3 id="设置WIFI"><a href="#设置WIFI" class="headerlink" title="设置WIFI"></a>设置WIFI</h3><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'network={</span></span><br><span class="line"><span class="string">  ssid="your-ssid"</span></span><br><span class="line"><span class="string">  psk="your-psk"</span></span><br><span class="line"><span class="string">}'</span> | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf</span><br></pre></td></tr></tbody></table></figure>
 
 <p>如果你的WIFI设置没有启动</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ifconfig wlan0 up</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ifconfig wlan0 up</span><br></pre></td></tr></tbody></table></figure>
 
 <h3 id="设置apt国内镜像"><a href="#设置apt国内镜像" class="headerlink" title="设置apt国内镜像"></a>设置apt国内镜像</h3><p>阿里云的镜像还是很快的。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'deb http://mirrors.aliyun.com/raspbian/raspbian/ wheezy main non-free contrib\ndeb-src http://mirrors.aliyun.com/raspbian/raspbian/ wheezy main non-free contrib'</span> | sudo tee /etc/apt/sources.list.d/hypriot.list</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'deb http://mirrors.aliyun.com/raspbian/raspbian/ wheezy main non-free contrib\ndeb-src http://mirrors.aliyun.com/raspbian/raspbian/ wheezy main non-free contrib'</span> | sudo tee /etc/apt/sources.list.d/hypriot.list</span><br></pre></td></tr></tbody></table></figure>
 
 
-<h3 id="docker安装"><a href="#docker安装" class="headerlink" title="docker安装"></a>docker安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ssh pi@raspberrypi.local</span><br><span class="line">sudo apt-get install -y apt-transport-https</span><br><span class="line">wget -q https://packagecloud.io/gpg.key -O - | sudo apt-key add -</span><br><span class="line"><span class="built_in">echo</span> <span class="string">'deb https://packagecloud.io/Hypriot/Schatzkiste/debian/ wheezy main'</span> | sudo tee /etc/apt/sources.list.d/hypriot.list</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install -y docker-hypriot</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> docker</span><br></pre></td></tr></table></figure>
+<h3 id="docker安装"><a href="#docker安装" class="headerlink" title="docker安装"></a>docker安装</h3><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ssh pi@raspberrypi.local</span><br><span class="line">sudo apt-get install -y apt-transport-https</span><br><span class="line">wget -q https://packagecloud.io/gpg.key -O - | sudo apt-key add -</span><br><span class="line"><span class="built_in">echo</span> <span class="string">'deb https://packagecloud.io/Hypriot/Schatzkiste/debian/ wheezy main'</span> | sudo tee /etc/apt/sources.list.d/hypriot.list</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install -y docker-hypriot</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> docker</span><br></pre></td></tr></tbody></table></figure>
 
 <p>以非root权限运行docker</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo usermod -aG docker `whoami`</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo usermod -aG docker `whoami`</span><br></pre></td></tr></tbody></table></figure>
 
 <p>如果没有起作用，需要重新登录</p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://blog.hypriot.com/post/run-docker-rpi3-with-wifi/">Run Docker on a Raspberry Pi 3 with onboard WiFi</a></p>
@@ -195,7 +188,7 @@
         
         
 <div class="sharethis-inline-share-buttons"></div>
-<script type='text/javascript' src='//platform-api.sharethis.com/js/sharethis.js#property=5df54e9fee0f770012eb9f87&amp;product=inline-share-buttons&amp;cms=sop' async='async'></script>
+<script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5df54e9fee0f770012eb9f87&product=inline-share-buttons&cms=sop" async="async"></script>
 
         
     </div>
@@ -295,7 +288,7 @@
                 <div>
                     
                     <figure class="image is-128x128 has-mb-6">
-                        <img class="is-rounded" src="https://scontent-ams4-1.cdninstagram.com/v/t51.2885-19/s320x320/73497413_448687199127642_4593963213837565952_n.jpg?_nc_ht=scontent-ams4-1.cdninstagram.com&amp;oh=e273f9e53667c4d64c3c555baa12345f&amp;oe=5E7F3D90" alt="Songrong">
+                        <img class="is-rounded" src="https://scontent-ams4-1.cdninstagram.com/v/t51.2885-19/s320x320/73497413_448687199127642_4593963213837565952_n.jpg?_nc_ht=scontent-ams4-1.cdninstagram.com&oh=e273f9e53667c4d64c3c555baa12345f&oe=5E7F3D90" alt="Songrong">
                     </figure>
                     
                     <p class="is-size-4 is-block">
@@ -364,29 +357,25 @@
         
         <div class="level is-mobile">
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Github" href="https://github.com/songrgg">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/songrgg">
                 
                 <i class="fab fa-github"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Instagram" href="https://www.instagram.com/jiangsongrong">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Instagram" href="https://www.instagram.com/jiangsongrong">
                 
                 <i class="fab fa-instagram"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
                 
                 <i class="fab fa-linkedin"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="RSS" href="/atom.xml">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="RSS" href="/atom.xml">
                 
                 <i class="fas fa-rss"></i>
                 
@@ -551,14 +540,14 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards &amp; alertings using Grafana API</a>
+                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -1450,14 +1439,14 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards &amp; alertings using Grafana API</a>
+                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -2264,13 +2253,12 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    SongRong&#39;s Experience
+                    SongRong's Experience
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2020 songrgg&nbsp;
-                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
-                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                © 2020 songrgg 
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
                 
                 </p>
             </div>
@@ -2347,7 +2335,7 @@ var IcarusThemeSettings = {
     <h6>Your browser is out-of-date!</h6>
     <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
             my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
 <script>
@@ -2410,7 +2398,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="searchbox ins-search">
     <div class="searchbox-container ins-search-container">
         <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something..." />
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
             <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="searchbox-result-wrapper ins-section-wrapper">
@@ -2437,5 +2425,5 @@ document.addEventListener('DOMContentLoaded', function () {
 <link rel="stylesheet" href="/css/search.css">
 <link rel="stylesheet" href="/css/insight.css">
     
-</body>
-</html>
+
+<script type="text/javascript" charset="utf-8" src="/js/lazyload-plugin/lazyload.intersectionObserver.min.js"></script></body></html>

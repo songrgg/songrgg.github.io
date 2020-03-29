@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html  lang="en">
-<head>
-    <meta charset="utf-8" />
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8">
 
-<meta name="generator" content="Hexo 4.2.0" />
+<meta name="generator" content="Hexo 4.2.0">
 
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 <title>Hive on spark实践 - Blog | Songrgg</title>
 
@@ -89,7 +87,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                SongRong&#39;s Experience
+                SongRong's Experience
             
             </a>
         </div>
@@ -97,20 +95,15 @@
             
             <div class="navbar-start">
                 
-                <a class="navbar-item"
-                href="/">Home</a>
+                <a class="navbar-item" href="/">Home</a>
                 
-                <a class="navbar-item"
-                href="/archives">Archives</a>
+                <a class="navbar-item" href="/archives">Archives</a>
                 
-                <a class="navbar-item"
-                href="/categories">Categories</a>
+                <a class="navbar-item" href="/categories">Categories</a>
                 
-                <a class="navbar-item"
-                href="/tags">Tags</a>
+                <a class="navbar-item" href="/tags">Tags</a>
                 
-                <a class="navbar-item"
-                href="/about">About</a>
+                <a class="navbar-item" href="/about">About</a>
                 
             </div>
             
@@ -135,7 +128,7 @@
 <div class="card">
     
     <div class="card-image">
-        <span  class="image is-7by1">
+        <span class="image is-7by1">
             <img class="thumbnail" src="/images/hive.webp" alt="Hive on spark实践">
         </span>
     </div>
@@ -170,26 +163,26 @@
             <h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>利用Cloudera的CDH套件搭建好Hadoop 2.6，可CDH中的Hive版本不高，于是独立安装Hive 2.3，由于Hive的执行引擎默认是Spark，根据Hive官网上的Hive on Spark教程开始配置。</p>
 <h5 id="Standalone"><a href="#Standalone" class="headerlink" title="Standalone"></a>Standalone</h5><p>配置了Spark Standalone模式之后，配置Hive遇到一些困难。</p>
 <p>由于使用的是pre-build版本的Spark，遇到报错：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java.lang.NoSuchFieldError: SPARK_RPC_CLIENT_CONNECT_TIMEOUT</span><br><span class="line">    at org.apache.hive.spark.client.rpc.RpcConfiguration.&lt;clinit&gt;(RpcConfiguration.java:46)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java.lang.NoSuchFieldError: SPARK_RPC_CLIENT_CONNECT_TIMEOUT</span><br><span class="line">    at org.apache.hive.spark.client.rpc.RpcConfiguration.<clinit>(RpcConfiguration.java:46)</span><br></pre></td></tr></tbody></table></figure>
 
 <p>接下来要自己编译Spark without Hive，可是一直没有解决，报错为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[info] &#39;compiler-interface&#39; not yet compiled for Scala 2.11.8. Compiling...</span><br><span class="line">error: scala.reflect.internal.MissingRequirementError: object java.lang.Object in compiler mirror not found.</span><br><span class="line">	at scala.reflect.internal.MissingRequirementError$.signal(MissingRequirementError.scala:17)</span><br><span class="line">	at scala.reflect.internal.MissingRequirementError$.notFound(MissingRequirementError.scala:18)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[info] 'compiler-interface' not yet compiled for Scala 2.11.8. Compiling...</span><br><span class="line">error: scala.reflect.internal.MissingRequirementError: object java.lang.Object in compiler mirror not found.</span><br><span class="line">	at scala.reflect.internal.MissingRequirementError$.signal(MissingRequirementError.scala:17)</span><br><span class="line">	at scala.reflect.internal.MissingRequirementError$.notFound(MissingRequirementError.scala:18)</span><br></pre></td></tr></tbody></table></figure>
 
 <p>非常曲折，最后选择尝试已经配置好的Yarn模式的Spark。</p>
 <h5 id="Yarn"><a href="#Yarn" class="headerlink" title="Yarn"></a>Yarn</h5><p>Yarn模式的Spark集群已经就绪，在Hive中配置Spark</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">set hive.execution.engine&#x3D;spark;</span><br><span class="line">set spark.master&#x3D;yarn;</span><br><span class="line">set spark.executor.memory&#x3D;512m;</span><br><span class="line">set spark.serializer&#x3D;org.apache.spark.serializer.KryoSerializer;</span><br><span class="line">set spark.eventLog.enabled&#x3D;true;</span><br><span class="line">set spark.eventLog.dir&#x3D;&lt;Spark event log folder (must exist)&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">set hive.execution.engine=spark;</span><br><span class="line">set spark.master=yarn;</span><br><span class="line">set spark.executor.memory=512m;</span><br><span class="line">set spark.serializer=org.apache.spark.serializer.KryoSerializer;</span><br><span class="line">set spark.eventLog.enabled=true;</span><br><span class="line">set spark.eventLog.dir=<Spark event log folder (must exist)></span><br></pre></td></tr></tbody></table></figure>
 
 <p>上传Spark应用所需的Spark依赖jar包到Hdfs中，例如放到Hdfs中的/spark-jars目录，并配置hive-site.xml</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">name</span>&gt;</span>spark.yarn.jars<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">value</span>&gt;</span>hdfs://xxxx:8020/spark-jars/*<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag"><<span class="name">property</span>></span></span><br><span class="line">  <span class="tag"><<span class="name">name</span>></span>spark.yarn.jars<span class="tag"></<span class="name">name</span>></span></span><br><span class="line">  <span class="tag"><<span class="name">value</span>></span>hdfs://xxxx:8020/spark-jars/*<span class="tag"></<span class="name">value</span>></span></span><br><span class="line"><span class="tag"></<span class="name">property</span>></span></span><br></pre></td></tr></tbody></table></figure>
 
 <p>注意这里需要保证使用Hive时的用户能够有权限访问Hdfs上指定的目录。</p>
 <h4 id="用户数据导入"><a href="#用户数据导入" class="headerlink" title="用户数据导入"></a>用户数据导入</h4><h5 id="源数据"><a href="#源数据" class="headerlink" title="源数据"></a>源数据</h5><p>当源数据是JSON并位于Hdfs的/tmp目录，如</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"time"</span>: <span class="string">"1515682813526"</span>,</span><br><span class="line">    <span class="string">"uid"</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="string">"ip"</span>: <span class="string">"1.1.1.1"</span>,</span><br><span class="line">    <span class="string">"path"</span>: <span class="string">"https://github.com"</span>,</span><br><span class="line">    <span class="string">"referer"</span>: <span class="string">"https://google.com"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">{</span><br><span class="line">    <span class="string">"time"</span>: <span class="string">"1515682813526"</span>,</span><br><span class="line">    <span class="string">"uid"</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="string">"ip"</span>: <span class="string">"1.1.1.1"</span>,</span><br><span class="line">    <span class="string">"path"</span>: <span class="string">"https://github.com"</span>,</span><br><span class="line">    <span class="string">"referer"</span>: <span class="string">"https://google.com"</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<h5 id="创建Hive外部表"><a href="#创建Hive外部表" class="headerlink" title="创建Hive外部表"></a>创建Hive外部表</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">EXTERNAL</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> tmp.pageview(</span><br><span class="line">    <span class="built_in">time</span> <span class="built_in">BIGINT</span>,</span><br><span class="line">    uid  <span class="built_in">BIGINT</span>,</span><br><span class="line">    ip   <span class="keyword">STRING</span>,</span><br><span class="line">    <span class="keyword">path</span> <span class="keyword">STRING</span>,</span><br><span class="line">    referer <span class="keyword">STRING</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">ROW</span> <span class="keyword">FORMAT</span> SERDE <span class="string">'org.apache.hive.hcatalog.data.JsonSerDe'</span></span><br><span class="line"><span class="keyword">STORED</span> <span class="keyword">AS</span> TEXTFILE</span><br><span class="line">LOCATION <span class="string">'/tmp'</span>;</span><br></pre></td></tr></table></figure>
+<h5 id="创建Hive外部表"><a href="#创建Hive外部表" class="headerlink" title="创建Hive外部表"></a>创建Hive外部表</h5><figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">EXTERNAL</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> tmp.pageview(</span><br><span class="line">    <span class="built_in">time</span> <span class="built_in">BIGINT</span>,</span><br><span class="line">    uid  <span class="built_in">BIGINT</span>,</span><br><span class="line">    ip   <span class="keyword">STRING</span>,</span><br><span class="line">    <span class="keyword">path</span> <span class="keyword">STRING</span>,</span><br><span class="line">    referer <span class="keyword">STRING</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">ROW</span> <span class="keyword">FORMAT</span> SERDE <span class="string">'org.apache.hive.hcatalog.data.JsonSerDe'</span></span><br><span class="line"><span class="keyword">STORED</span> <span class="keyword">AS</span> TEXTFILE</span><br><span class="line">LOCATION <span class="string">'/tmp'</span>;</span><br></pre></td></tr></tbody></table></figure>
 
 <h5 id="导入ORC表"><a href="#导入ORC表" class="headerlink" title="导入ORC表"></a>导入ORC表</h5><p>ORC表是Hive的一种高效表，在查询上更加快速，可以从外部表将数据导入ORC表。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> orc.pageview(</span><br><span class="line">    <span class="built_in">time</span> <span class="built_in">BIGINT</span>,</span><br><span class="line">    uid  <span class="built_in">BIGINT</span>,</span><br><span class="line">    ip   <span class="keyword">STRING</span>,</span><br><span class="line">    <span class="keyword">path</span> <span class="keyword">STRING</span>,</span><br><span class="line">    referer <span class="keyword">STRING</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">STORED</span> <span class="keyword">AS</span> ORC;</span><br><span class="line"></span><br><span class="line">FROM tmp.pageview pv</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="keyword">TABLE</span> orc.pageview</span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">time</span>, uid, ip, <span class="keyword">path</span>, referer;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> orc.pageview(</span><br><span class="line">    <span class="built_in">time</span> <span class="built_in">BIGINT</span>,</span><br><span class="line">    uid  <span class="built_in">BIGINT</span>,</span><br><span class="line">    ip   <span class="keyword">STRING</span>,</span><br><span class="line">    <span class="keyword">path</span> <span class="keyword">STRING</span>,</span><br><span class="line">    referer <span class="keyword">STRING</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">STORED</span> <span class="keyword">AS</span> ORC;</span><br><span class="line"></span><br><span class="line">FROM tmp.pageview pv</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="keyword">TABLE</span> orc.pageview</span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">time</span>, uid, ip, <span class="keyword">path</span>, referer;</span><br></pre></td></tr></tbody></table></figure>
 
         </div>
         
@@ -206,7 +199,7 @@
         
         
 <div class="sharethis-inline-share-buttons"></div>
-<script type='text/javascript' src='//platform-api.sharethis.com/js/sharethis.js#property=5df54e9fee0f770012eb9f87&amp;product=inline-share-buttons&amp;cms=sop' async='async'></script>
+<script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5df54e9fee0f770012eb9f87&product=inline-share-buttons&cms=sop" async="async"></script>
 
         
     </div>
@@ -306,7 +299,7 @@
                 <div>
                     
                     <figure class="image is-128x128 has-mb-6">
-                        <img class="is-rounded" src="https://scontent-ams4-1.cdninstagram.com/v/t51.2885-19/s320x320/73497413_448687199127642_4593963213837565952_n.jpg?_nc_ht=scontent-ams4-1.cdninstagram.com&amp;oh=e273f9e53667c4d64c3c555baa12345f&amp;oe=5E7F3D90" alt="Songrong">
+                        <img class="is-rounded" src="https://scontent-ams4-1.cdninstagram.com/v/t51.2885-19/s320x320/73497413_448687199127642_4593963213837565952_n.jpg?_nc_ht=scontent-ams4-1.cdninstagram.com&oh=e273f9e53667c4d64c3c555baa12345f&oe=5E7F3D90" alt="Songrong">
                     </figure>
                     
                     <p class="is-size-4 is-block">
@@ -375,29 +368,25 @@
         
         <div class="level is-mobile">
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Github" href="https://github.com/songrgg">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/songrgg">
                 
                 <i class="fab fa-github"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Instagram" href="https://www.instagram.com/jiangsongrong">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Instagram" href="https://www.instagram.com/jiangsongrong">
                 
                 <i class="fab fa-instagram"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
                 
                 <i class="fab fa-linkedin"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="RSS" href="/atom.xml">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="RSS" href="/atom.xml">
                 
                 <i class="fas fa-rss"></i>
                 
@@ -562,14 +551,14 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards &amp; alertings using Grafana API</a>
+                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -1461,14 +1450,14 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards &amp; alertings using Grafana API</a>
+                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -2275,13 +2264,12 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    SongRong&#39;s Experience
+                    SongRong's Experience
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2020 songrgg&nbsp;
-                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
-                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                © 2020 songrgg 
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
                 
                 </p>
             </div>
@@ -2358,7 +2346,7 @@ var IcarusThemeSettings = {
     <h6>Your browser is out-of-date!</h6>
     <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
             my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
 <script>
@@ -2421,7 +2409,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="searchbox ins-search">
     <div class="searchbox-container ins-search-container">
         <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something..." />
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
             <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="searchbox-result-wrapper ins-section-wrapper">
@@ -2448,5 +2436,5 @@ document.addEventListener('DOMContentLoaded', function () {
 <link rel="stylesheet" href="/css/search.css">
 <link rel="stylesheet" href="/css/insight.css">
     
-</body>
-</html>
+
+<script type="text/javascript" charset="utf-8" src="/js/lazyload-plugin/lazyload.intersectionObserver.min.js"></script></body></html>

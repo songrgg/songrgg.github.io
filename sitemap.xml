@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://songrgg.github.io/operation/host-swagger-documentation-with-yaml-json-files/</loc>
+    
+    <lastmod>2020-03-29T16:20:56.815Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://songrgg.github.io/programming/wechat-share-problem/</loc>
     
     <lastmod>2020-03-20T19:02:13.416Z</lastmod>
@@ -114,13 +121,6 @@
   </url>
   
   <url>
-    <loc>https://songrgg.github.io/operation/host-swagger-documentation-with-yaml-json-files/</loc>
-    
-    <lastmod>2020-03-20T19:02:13.403Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://songrgg.github.io/programming/hive-on-spark-practice/</loc>
     
     <lastmod>2020-03-20T19:02:13.402Z</lastmod>
@@ -142,14 +142,14 @@
   </url>
   
   <url>
-    <loc>https://songrgg.github.io/operation/extend-kubernetes-dns/</loc>
+    <loc>https://songrgg.github.io/microservice/goodbye-micro/</loc>
     
     <lastmod>2020-03-20T19:02:13.399Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://songrgg.github.io/microservice/goodbye-micro/</loc>
+    <loc>https://songrgg.github.io/operation/extend-kubernetes-dns/</loc>
     
     <lastmod>2020-03-20T19:02:13.399Z</lastmod>
     
@@ -170,14 +170,14 @@
   </url>
   
   <url>
-    <loc>https://songrgg.github.io/operation/ansible-frequently-used-commands/</loc>
+    <loc>https://songrgg.github.io/operation/build-ci-with-gitlab/</loc>
     
     <lastmod>2020-03-20T19:02:13.396Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://songrgg.github.io/operation/build-ci-with-gitlab/</loc>
+    <loc>https://songrgg.github.io/operation/ansible-frequently-used-commands/</loc>
     
     <lastmod>2020-03-20T19:02:13.396Z</lastmod>
     

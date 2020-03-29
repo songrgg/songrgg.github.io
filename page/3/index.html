@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html  lang="en">
-<head>
-    <meta charset="utf-8" />
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8">
 
-<meta name="generator" content="Hexo 4.2.0" />
+<meta name="generator" content="Hexo 4.2.0">
 
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 <title>Blog | Songrgg</title>
 
@@ -90,7 +88,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                SongRong&#39;s Experience
+                SongRong's Experience
             
             </a>
         </div>
@@ -98,20 +96,15 @@
             
             <div class="navbar-start">
                 
-                <a class="navbar-item"
-                href="/">Home</a>
+                <a class="navbar-item" href="/">Home</a>
                 
-                <a class="navbar-item"
-                href="/archives">Archives</a>
+                <a class="navbar-item" href="/archives">Archives</a>
                 
-                <a class="navbar-item"
-                href="/categories">Categories</a>
+                <a class="navbar-item" href="/categories">Categories</a>
                 
-                <a class="navbar-item"
-                href="/tags">Tags</a>
+                <a class="navbar-item" href="/tags">Tags</a>
                 
-                <a class="navbar-item"
-                href="/about">About</a>
+                <a class="navbar-item" href="/about">About</a>
                 
             </div>
             
@@ -172,26 +165,26 @@
             <h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>利用Cloudera的CDH套件搭建好Hadoop 2.6，可CDH中的Hive版本不高，于是独立安装Hive 2.3，由于Hive的执行引擎默认是Spark，根据Hive官网上的Hive on Spark教程开始配置。</p>
 <h5 id="Standalone"><a href="#Standalone" class="headerlink" title="Standalone"></a>Standalone</h5><p>配置了Spark Standalone模式之后，配置Hive遇到一些困难。</p>
 <p>由于使用的是pre-build版本的Spark，遇到报错：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java.lang.NoSuchFieldError: SPARK_RPC_CLIENT_CONNECT_TIMEOUT</span><br><span class="line">    at org.apache.hive.spark.client.rpc.RpcConfiguration.&lt;clinit&gt;(RpcConfiguration.java:46)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java.lang.NoSuchFieldError: SPARK_RPC_CLIENT_CONNECT_TIMEOUT</span><br><span class="line">    at org.apache.hive.spark.client.rpc.RpcConfiguration.<clinit>(RpcConfiguration.java:46)</span><br></pre></td></tr></tbody></table></figure>
 
 <p>接下来要自己编译Spark without Hive，可是一直没有解决，报错为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[info] &#39;compiler-interface&#39; not yet compiled for Scala 2.11.8. Compiling...</span><br><span class="line">error: scala.reflect.internal.MissingRequirementError: object java.lang.Object in compiler mirror not found.</span><br><span class="line">	at scala.reflect.internal.MissingRequirementError$.signal(MissingRequirementError.scala:17)</span><br><span class="line">	at scala.reflect.internal.MissingRequirementError$.notFound(MissingRequirementError.scala:18)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[info] 'compiler-interface' not yet compiled for Scala 2.11.8. Compiling...</span><br><span class="line">error: scala.reflect.internal.MissingRequirementError: object java.lang.Object in compiler mirror not found.</span><br><span class="line">	at scala.reflect.internal.MissingRequirementError$.signal(MissingRequirementError.scala:17)</span><br><span class="line">	at scala.reflect.internal.MissingRequirementError$.notFound(MissingRequirementError.scala:18)</span><br></pre></td></tr></tbody></table></figure>
 
 <p>非常曲折，最后选择尝试已经配置好的Yarn模式的Spark。</p>
 <h5 id="Yarn"><a href="#Yarn" class="headerlink" title="Yarn"></a>Yarn</h5><p>Yarn模式的Spark集群已经就绪，在Hive中配置Spark</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">set hive.execution.engine&#x3D;spark;</span><br><span class="line">set spark.master&#x3D;yarn;</span><br><span class="line">set spark.executor.memory&#x3D;512m;</span><br><span class="line">set spark.serializer&#x3D;org.apache.spark.serializer.KryoSerializer;</span><br><span class="line">set spark.eventLog.enabled&#x3D;true;</span><br><span class="line">set spark.eventLog.dir&#x3D;&lt;Spark event log folder (must exist)&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">set hive.execution.engine=spark;</span><br><span class="line">set spark.master=yarn;</span><br><span class="line">set spark.executor.memory=512m;</span><br><span class="line">set spark.serializer=org.apache.spark.serializer.KryoSerializer;</span><br><span class="line">set spark.eventLog.enabled=true;</span><br><span class="line">set spark.eventLog.dir=<Spark event log folder (must exist)></span><br></pre></td></tr></tbody></table></figure>
 
 <p>上传Spark应用所需的Spark依赖jar包到Hdfs中，例如放到Hdfs中的/spark-jars目录，并配置hive-site.xml</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">name</span>&gt;</span>spark.yarn.jars<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">value</span>&gt;</span>hdfs://xxxx:8020/spark-jars/*<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag"><<span class="name">property</span>></span></span><br><span class="line">  <span class="tag"><<span class="name">name</span>></span>spark.yarn.jars<span class="tag"></<span class="name">name</span>></span></span><br><span class="line">  <span class="tag"><<span class="name">value</span>></span>hdfs://xxxx:8020/spark-jars/*<span class="tag"></<span class="name">value</span>></span></span><br><span class="line"><span class="tag"></<span class="name">property</span>></span></span><br></pre></td></tr></tbody></table></figure>
 
 <p>注意这里需要保证使用Hive时的用户能够有权限访问Hdfs上指定的目录。</p>
 <h4 id="用户数据导入"><a href="#用户数据导入" class="headerlink" title="用户数据导入"></a>用户数据导入</h4><h5 id="源数据"><a href="#源数据" class="headerlink" title="源数据"></a>源数据</h5><p>当源数据是JSON并位于Hdfs的/tmp目录，如</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"time"</span>: <span class="string">"1515682813526"</span>,</span><br><span class="line">    <span class="string">"uid"</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="string">"ip"</span>: <span class="string">"1.1.1.1"</span>,</span><br><span class="line">    <span class="string">"path"</span>: <span class="string">"https://github.com"</span>,</span><br><span class="line">    <span class="string">"referer"</span>: <span class="string">"https://google.com"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">{</span><br><span class="line">    <span class="string">"time"</span>: <span class="string">"1515682813526"</span>,</span><br><span class="line">    <span class="string">"uid"</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="string">"ip"</span>: <span class="string">"1.1.1.1"</span>,</span><br><span class="line">    <span class="string">"path"</span>: <span class="string">"https://github.com"</span>,</span><br><span class="line">    <span class="string">"referer"</span>: <span class="string">"https://google.com"</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<h5 id="创建Hive外部表"><a href="#创建Hive外部表" class="headerlink" title="创建Hive外部表"></a>创建Hive外部表</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">EXTERNAL</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> tmp.pageview(</span><br><span class="line">    <span class="built_in">time</span> <span class="built_in">BIGINT</span>,</span><br><span class="line">    uid  <span class="built_in">BIGINT</span>,</span><br><span class="line">    ip   <span class="keyword">STRING</span>,</span><br><span class="line">    <span class="keyword">path</span> <span class="keyword">STRING</span>,</span><br><span class="line">    referer <span class="keyword">STRING</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">ROW</span> <span class="keyword">FORMAT</span> SERDE <span class="string">'org.apache.hive.hcatalog.data.JsonSerDe'</span></span><br><span class="line"><span class="keyword">STORED</span> <span class="keyword">AS</span> TEXTFILE</span><br><span class="line">LOCATION <span class="string">'/tmp'</span>;</span><br></pre></td></tr></table></figure>
+<h5 id="创建Hive外部表"><a href="#创建Hive外部表" class="headerlink" title="创建Hive外部表"></a>创建Hive外部表</h5><figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">EXTERNAL</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> tmp.pageview(</span><br><span class="line">    <span class="built_in">time</span> <span class="built_in">BIGINT</span>,</span><br><span class="line">    uid  <span class="built_in">BIGINT</span>,</span><br><span class="line">    ip   <span class="keyword">STRING</span>,</span><br><span class="line">    <span class="keyword">path</span> <span class="keyword">STRING</span>,</span><br><span class="line">    referer <span class="keyword">STRING</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">ROW</span> <span class="keyword">FORMAT</span> SERDE <span class="string">'org.apache.hive.hcatalog.data.JsonSerDe'</span></span><br><span class="line"><span class="keyword">STORED</span> <span class="keyword">AS</span> TEXTFILE</span><br><span class="line">LOCATION <span class="string">'/tmp'</span>;</span><br></pre></td></tr></tbody></table></figure>
 
 <h5 id="导入ORC表"><a href="#导入ORC表" class="headerlink" title="导入ORC表"></a>导入ORC表</h5><p>ORC表是Hive的一种高效表，在查询上更加快速，可以从外部表将数据导入ORC表。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> orc.pageview(</span><br><span class="line">    <span class="built_in">time</span> <span class="built_in">BIGINT</span>,</span><br><span class="line">    uid  <span class="built_in">BIGINT</span>,</span><br><span class="line">    ip   <span class="keyword">STRING</span>,</span><br><span class="line">    <span class="keyword">path</span> <span class="keyword">STRING</span>,</span><br><span class="line">    referer <span class="keyword">STRING</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">STORED</span> <span class="keyword">AS</span> ORC;</span><br><span class="line"></span><br><span class="line">FROM tmp.pageview pv</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="keyword">TABLE</span> orc.pageview</span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">time</span>, uid, ip, <span class="keyword">path</span>, referer;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> orc.pageview(</span><br><span class="line">    <span class="built_in">time</span> <span class="built_in">BIGINT</span>,</span><br><span class="line">    uid  <span class="built_in">BIGINT</span>,</span><br><span class="line">    ip   <span class="keyword">STRING</span>,</span><br><span class="line">    <span class="keyword">path</span> <span class="keyword">STRING</span>,</span><br><span class="line">    referer <span class="keyword">STRING</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">STORED</span> <span class="keyword">AS</span> ORC;</span><br><span class="line"></span><br><span class="line">FROM tmp.pageview pv</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="keyword">TABLE</span> orc.pageview</span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">time</span>, uid, ip, <span class="keyword">path</span>, referer;</span><br></pre></td></tr></tbody></table></figure>
 
         </div>
         
@@ -272,22 +265,22 @@
         </h1>
         <div class="content">
             <h3 id="生产环境搭建etcd"><a href="#生产环境搭建etcd" class="headerlink" title="生产环境搭建etcd"></a>生产环境搭建etcd</h3><p>以搭建3节点高可用ETCD集群为例，分别在三台主机上初始化<code>ETCD1</code>,<code>ETCD2</code>,<code>ETCD3</code>作为机器IP地址。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">$ ETCD1=http://10.0.0.1</span><br><span class="line">$ ETCD2=http://10.0.0.2</span><br><span class="line">$ ETCD2=http://10.0.0.3</span><br><span class="line"></span><br><span class="line"><span class="comment"># 节点1为4核4GB的机器</span></span><br><span class="line">$ etcd --name etcd1 \</span><br><span class="line">--initial-advertise-peer-urls <span class="variable">$ETCD1</span>:2380  \</span><br><span class="line">--listen-peer-urls <span class="variable">$ETCD1</span>:2380  \</span><br><span class="line">--listen-client-urls <span class="variable">$ETCD1</span>:2379,http://127.0.0.1:2379 \</span><br><span class="line">--advertise-client-urls <span class="variable">$ETCD1</span>:2379  \</span><br><span class="line">--initial-cluster-token etcd-cluster \</span><br><span class="line">--initial-cluster etcd1=<span class="variable">$ETCD1</span>:2380,etcd2=<span class="variable">$ETCD2</span>:2380,etcd3=<span class="variable">$ETCD3</span>:2380 \</span><br><span class="line">--auto-compaction-retention=1 \</span><br><span class="line">--quota-backend-bytes=$((4*1024*1024*1024)) \</span><br><span class="line">--initial-cluster-state new</span><br><span class="line"></span><br><span class="line"><span class="comment"># 节点2为4核4GB的机器</span></span><br><span class="line">$ etcd  --name etcd2 \</span><br><span class="line">--initial-advertise-peer-urls <span class="variable">$ETCD2</span>:2380 \</span><br><span class="line">--listen-peer-urls <span class="variable">$ETCD2</span>:2380 \</span><br><span class="line">--listen-client-urls <span class="variable">$ETCD2</span>:2379,http://127.0.0.1:2379 \</span><br><span class="line">--advertise-client-urls <span class="variable">$ETCD2</span>:2379 \</span><br><span class="line">--initial-cluster-token etcd-cluster \</span><br><span class="line">--initial-cluster etcd1=<span class="variable">$ETCD1</span>:2380,etcd2=<span class="variable">$ETCD2</span>:2380,etcd3=<span class="variable">$ETCD3</span>:2380 \</span><br><span class="line">--auto-compaction-retention=1 \</span><br><span class="line">--quota-backend-bytes=$((4*1024*1024*1024)) \</span><br><span class="line">--initial-cluster-state new</span><br><span class="line"></span><br><span class="line"><span class="comment"># 节点3为4核4GB的机器</span></span><br><span class="line">$ etcd  --name etcd3 \</span><br><span class="line">--initial-advertise-peer-urls <span class="variable">$ETCD3</span>:2380 \</span><br><span class="line">--listen-peer-urls <span class="variable">$ETCD3</span>:2380 \</span><br><span class="line">--listen-client-urls <span class="variable">$ETCD3</span>:2379,http://127.0.0.1:2379 \</span><br><span class="line">--advertise-client-urls <span class="variable">$ETCD3</span>:2379 \</span><br><span class="line">--initial-cluster-token etcd-cluster \</span><br><span class="line">--initial-cluster etcd1=<span class="variable">$ETCD1</span>:2380,etcd2=<span class="variable">$ETCD2</span>:2380,etcd3=<span class="variable">$ETCD3</span>:2380 \</span><br><span class="line">--auto-compaction-retention=1 \</span><br><span class="line">--quota-backend-bytes=$((4*1024*1024*1024)) \</span><br><span class="line">--initial-cluster-state new</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查集群是否正确启动</span></span><br><span class="line">$ etcdctl --endpoints=<span class="variable">$ETCD1</span>:2379 member list</span><br><span class="line">400938f1eaf1d0ed: name=etcd3 peerURLs=http://10.0.0.1:2380 clientURLs=http://10.0.0.1:2379 isLeader=<span class="literal">false</span></span><br><span class="line">bd0ff97b33ac1165: name=etcd2 peerURLs=http://10.0.0.2:2380 clientURLs=http://10.0.0.2:2379 isLeader=<span class="literal">false</span></span><br><span class="line">be62429afec4445f: name=etcd1 peerURLs=http://10.0.0.3:2380 clientURLs=http://10.0.0.3:2379 isLeader=<span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">$ ETCD1=http://10.0.0.1</span><br><span class="line">$ ETCD2=http://10.0.0.2</span><br><span class="line">$ ETCD2=http://10.0.0.3</span><br><span class="line"></span><br><span class="line"><span class="comment"># 节点1为4核4GB的机器</span></span><br><span class="line">$ etcd --name etcd1 \</span><br><span class="line">--initial-advertise-peer-urls <span class="variable">$ETCD1</span>:2380  \</span><br><span class="line">--listen-peer-urls <span class="variable">$ETCD1</span>:2380  \</span><br><span class="line">--listen-client-urls <span class="variable">$ETCD1</span>:2379,http://127.0.0.1:2379 \</span><br><span class="line">--advertise-client-urls <span class="variable">$ETCD1</span>:2379  \</span><br><span class="line">--initial-cluster-token etcd-cluster \</span><br><span class="line">--initial-cluster etcd1=<span class="variable">$ETCD1</span>:2380,etcd2=<span class="variable">$ETCD2</span>:2380,etcd3=<span class="variable">$ETCD3</span>:2380 \</span><br><span class="line">--auto-compaction-retention=1 \</span><br><span class="line">--quota-backend-bytes=$((4*1024*1024*1024)) \</span><br><span class="line">--initial-cluster-state new</span><br><span class="line"></span><br><span class="line"><span class="comment"># 节点2为4核4GB的机器</span></span><br><span class="line">$ etcd  --name etcd2 \</span><br><span class="line">--initial-advertise-peer-urls <span class="variable">$ETCD2</span>:2380 \</span><br><span class="line">--listen-peer-urls <span class="variable">$ETCD2</span>:2380 \</span><br><span class="line">--listen-client-urls <span class="variable">$ETCD2</span>:2379,http://127.0.0.1:2379 \</span><br><span class="line">--advertise-client-urls <span class="variable">$ETCD2</span>:2379 \</span><br><span class="line">--initial-cluster-token etcd-cluster \</span><br><span class="line">--initial-cluster etcd1=<span class="variable">$ETCD1</span>:2380,etcd2=<span class="variable">$ETCD2</span>:2380,etcd3=<span class="variable">$ETCD3</span>:2380 \</span><br><span class="line">--auto-compaction-retention=1 \</span><br><span class="line">--quota-backend-bytes=$((4*1024*1024*1024)) \</span><br><span class="line">--initial-cluster-state new</span><br><span class="line"></span><br><span class="line"><span class="comment"># 节点3为4核4GB的机器</span></span><br><span class="line">$ etcd  --name etcd3 \</span><br><span class="line">--initial-advertise-peer-urls <span class="variable">$ETCD3</span>:2380 \</span><br><span class="line">--listen-peer-urls <span class="variable">$ETCD3</span>:2380 \</span><br><span class="line">--listen-client-urls <span class="variable">$ETCD3</span>:2379,http://127.0.0.1:2379 \</span><br><span class="line">--advertise-client-urls <span class="variable">$ETCD3</span>:2379 \</span><br><span class="line">--initial-cluster-token etcd-cluster \</span><br><span class="line">--initial-cluster etcd1=<span class="variable">$ETCD1</span>:2380,etcd2=<span class="variable">$ETCD2</span>:2380,etcd3=<span class="variable">$ETCD3</span>:2380 \</span><br><span class="line">--auto-compaction-retention=1 \</span><br><span class="line">--quota-backend-bytes=$((4*1024*1024*1024)) \</span><br><span class="line">--initial-cluster-state new</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查集群是否正确启动</span></span><br><span class="line">$ etcdctl --endpoints=<span class="variable">$ETCD1</span>:2379 member list</span><br><span class="line">400938f1eaf1d0ed: name=etcd3 peerURLs=http://10.0.0.1:2380 clientURLs=http://10.0.0.1:2379 isLeader=<span class="literal">false</span></span><br><span class="line">bd0ff97b33ac1165: name=etcd2 peerURLs=http://10.0.0.2:2380 clientURLs=http://10.0.0.2:2379 isLeader=<span class="literal">false</span></span><br><span class="line">be62429afec4445f: name=etcd1 peerURLs=http://10.0.0.3:2380 clientURLs=http://10.0.0.3:2379 isLeader=<span class="literal">true</span></span><br></pre></td></tr></tbody></table></figure>
 
 <h3 id="历史记录压缩"><a href="#历史记录压缩" class="headerlink" title="历史记录压缩"></a>历史记录压缩</h3><p>如果将etcd用作服务发现，每次服务注册和更新都可以看做一条新数据，日积月累，这些数据的量会导致etcd占用内存越来越大，直到etcd到达空间配额限制的时候，etcd的写入将会被静止，影响线上服务，定期删除历史记录就是避免这种情况。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 只保留一个小时的历史数据</span></span><br><span class="line">$ etcd --auto-compaction-retention=1</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 只保留一个小时的历史数据</span></span><br><span class="line">$ etcd --auto-compaction-retention=1</span><br></pre></td></tr></tbody></table></figure>
 
 <h3 id="磁盘去碎片化"><a href="#磁盘去碎片化" class="headerlink" title="磁盘去碎片化"></a>磁盘去碎片化</h3><p><a href="https://coreos.com/etcd/docs/latest/op-guide/maintenance.html#defragmentation">etcd官方</a>是说在进行compaction操作之后，旧的revision被压缩，会产生内部的碎片，内部碎片是指空闲状态的，能被后端使用但是仍然消耗存储空间的磁盘空间。去碎片化实际上是将存储空间还给文件系统。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ etcdctl defrag</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ etcdctl defrag</span><br></pre></td></tr></tbody></table></figure>
 
 <h3 id="空间配额"><a href="#空间配额" class="headerlink" title="空间配额"></a>空间配额</h3><p>空间配额用来保障集群可靠地进行操作。如果没有限制配额，当键空间变大之后，直到用光了磁盘空间，它就会影响etcd集群的表现。当任意节点超出空间配额， 那么它将进入维护状态，只接受读/删操作。只有释放了足够空间、去碎片化了后端数据库并且清理了空间配额之后，集群才能继续正常操作。</p>
 <p>默认限制是<strong>2GB</strong>，可以通过<code>--quota-backend-bytes</code>配置，最高上限为<strong>8GB</strong>。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 显式配置配额为16MB</span></span><br><span class="line">$ etcd --quota-backend-bytes=$((16*1024*1024))</span><br><span class="line">$ ETCDCTL_API=3 etcdctl --write-out=table endpoint status</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 显式配置配额为16MB</span></span><br><span class="line">$ etcd --quota-backend-bytes=$((16*1024*1024))</span><br><span class="line">$ ETCDCTL_API=3 etcdctl --write-out=table endpoint status</span><br></pre></td></tr></tbody></table></figure>
 
 <p>如果遇到空间配额不足的情况，那么需要对etcd进行操作。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取当前版本号</span></span><br><span class="line">$ rev=$(ETCDCTL_API=3 etcdctl --endpoints=:2379 endpoint status --write-out=<span class="string">"json"</span> | egrep -o <span class="string">'"revision":[0-9]*'</span> | egrep -o <span class="string">'[0-9]*'</span>）</span><br><span class="line"><span class="comment"># 压缩所有旧版本</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl compact <span class="variable">$rev</span></span><br><span class="line"><span class="comment"># 去碎片化</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl defrag</span><br><span class="line"><span class="comment"># 取消警报</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl alarm disarm</span><br><span class="line"><span class="comment"># 测试通过</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl put newkey 123</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取当前版本号</span></span><br><span class="line">$ rev=$(ETCDCTL_API=3 etcdctl --endpoints=:2379 endpoint status --write-out=<span class="string">"json"</span> | egrep -o <span class="string">'"revision":[0-9]*'</span> | egrep -o <span class="string">'[0-9]*'</span>）</span><br><span class="line"><span class="comment"># 压缩所有旧版本</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl compact <span class="variable">$rev</span></span><br><span class="line"><span class="comment"># 去碎片化</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl defrag</span><br><span class="line"><span class="comment"># 取消警报</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl alarm disarm</span><br><span class="line"><span class="comment"># 测试通过</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl put newkey 123</span><br></pre></td></tr></tbody></table></figure>
 
-<h3 id="快照备份"><a href="#快照备份" class="headerlink" title="快照备份"></a>快照备份</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ etcdctl snapshot save backup.db</span><br><span class="line">$ etcdctl --write-out=table snapshot status backup.db</span><br><span class="line">+----------+----------+------------+------------+</span><br><span class="line">|   HASH   | REVISION | TOTAL KEYS | TOTAL SIZE |</span><br><span class="line">+----------+----------+------------+------------+</span><br><span class="line">| fe01cf57 |       10 |          7 | 2.1 MB     |</span><br><span class="line">+----------+----------+------------+------------+</span><br></pre></td></tr></table></figure>
+<h3 id="快照备份"><a href="#快照备份" class="headerlink" title="快照备份"></a>快照备份</h3><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ etcdctl snapshot save backup.db</span><br><span class="line">$ etcdctl --write-out=table snapshot status backup.db</span><br><span class="line">+----------+----------+------------+------------+</span><br><span class="line">|   HASH   | REVISION | TOTAL KEYS | TOTAL SIZE |</span><br><span class="line">+----------+----------+------------+------------+</span><br><span class="line">| fe01cf57 |       10 |          7 | 2.1 MB     |</span><br><span class="line">+----------+----------+------------+------------+</span><br></pre></td></tr></tbody></table></figure>
 
 <h3 id="调优"><a href="#调优" class="headerlink" title="调优"></a>调优</h3><p>跨数据中心时，需要调整心跳间隔和选举超时时间<br>默认的心跳时间是100ms，建议为round trip时间<br>默认选举超时是1000ms</p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
@@ -579,7 +572,7 @@
         "image": [
             "https://songrgg.github.io/images/config-in-docker.webp"
         ],
-        "keywords": "microservice configuration management",
+        "keywords": "configuration management microservice",
         "genre": "microservice",
         "datePublished": "2017-04-15",
         "dateCreated": "2017-04-15",
@@ -904,7 +897,7 @@
 <li>API gateway查询服务发现，找到user服务和store服务，将用户信息和商品ID发送给store服务，</li>
 <li>store服务查询MySQL，找到商品信息，生成订单信息，将请求发送给payment服务</li>
 <li>payment服务根据用户指定的支付渠道，向第三方服务发起请求，存储订单信息，并返回订单状态</li>
-<li>store服务 -&gt; API gateway -&gt; LB</li>
+<li>store服务 -> API gateway -> LB</li>
 <li>LB返回数据到浏览器</li>
 </ol>
 <h3 id="微服务技术"><a href="#微服务技术" class="headerlink" title="微服务技术"></a>微服务技术</h3><p><img src="/images/Microservice-SKILLS.png" alt="技术图谱"></p>
@@ -970,7 +963,7 @@
             
             <li><a class="pagination-link has-text-black-ter" href="/page/4/">4</a></li>
             
-            <li><span class="pagination-ellipsis has-text-black-ter">&hellip;</span></li>
+            <li><span class="pagination-ellipsis has-text-black-ter">…</span></li>
             
             <li><a class="pagination-link has-text-black-ter" href="/page/7/">7</a></li>
             
@@ -993,7 +986,7 @@
                 <div>
                     
                     <figure class="image is-128x128 has-mb-6">
-                        <img class="is-rounded" src="https://scontent-ams4-1.cdninstagram.com/v/t51.2885-19/s320x320/73497413_448687199127642_4593963213837565952_n.jpg?_nc_ht=scontent-ams4-1.cdninstagram.com&amp;oh=e273f9e53667c4d64c3c555baa12345f&amp;oe=5E7F3D90" alt="Songrong">
+                        <img class="is-rounded" src="https://scontent-ams4-1.cdninstagram.com/v/t51.2885-19/s320x320/73497413_448687199127642_4593963213837565952_n.jpg?_nc_ht=scontent-ams4-1.cdninstagram.com&oh=e273f9e53667c4d64c3c555baa12345f&oe=5E7F3D90" alt="Songrong">
                     </figure>
                     
                     <p class="is-size-4 is-block">
@@ -1062,29 +1055,25 @@
         
         <div class="level is-mobile">
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Github" href="https://github.com/songrgg">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/songrgg">
                 
                 <i class="fab fa-github"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Instagram" href="https://www.instagram.com/jiangsongrong">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Instagram" href="https://www.instagram.com/jiangsongrong">
                 
                 <i class="fab fa-instagram"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
                 
                 <i class="fab fa-linkedin"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="RSS" href="/atom.xml">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="RSS" href="/atom.xml">
                 
                 <i class="fas fa-rss"></i>
                 
@@ -1249,14 +1238,14 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards &amp; alertings using Grafana API</a>
+                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -2148,14 +2137,14 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards &amp; alertings using Grafana API</a>
+                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -2962,13 +2951,12 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    SongRong&#39;s Experience
+                    SongRong's Experience
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2020 songrgg&nbsp;
-                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
-                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                © 2020 songrgg 
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
                 
                 </p>
             </div>
@@ -3045,7 +3033,7 @@ var IcarusThemeSettings = {
     <h6>Your browser is out-of-date!</h6>
     <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
             my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
 <script>
@@ -3108,7 +3096,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="searchbox ins-search">
     <div class="searchbox-container ins-search-container">
         <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something..." />
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
             <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="searchbox-result-wrapper ins-section-wrapper">
@@ -3135,5 +3123,5 @@ document.addEventListener('DOMContentLoaded', function () {
 <link rel="stylesheet" href="/css/search.css">
 <link rel="stylesheet" href="/css/insight.css">
     
-</body>
-</html>
+
+<script type="text/javascript" charset="utf-8" src="/js/lazyload-plugin/lazyload.intersectionObserver.min.js"></script></body></html>

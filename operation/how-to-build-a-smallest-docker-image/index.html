@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html  lang="en">
-<head>
-    <meta charset="utf-8" />
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8">
 
-<meta name="generator" content="Hexo 4.2.0" />
+<meta name="generator" content="Hexo 4.2.0">
 
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 <title>how to build the smallest docker image as fast as you can - Blog | Songrgg</title>
 
@@ -88,7 +86,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                SongRong&#39;s Experience
+                SongRong's Experience
             
             </a>
         </div>
@@ -96,20 +94,15 @@
             
             <div class="navbar-start">
                 
-                <a class="navbar-item"
-                href="/">Home</a>
+                <a class="navbar-item" href="/">Home</a>
                 
-                <a class="navbar-item"
-                href="/archives">Archives</a>
+                <a class="navbar-item" href="/archives">Archives</a>
                 
-                <a class="navbar-item"
-                href="/categories">Categories</a>
+                <a class="navbar-item" href="/categories">Categories</a>
                 
-                <a class="navbar-item"
-                href="/tags">Tags</a>
+                <a class="navbar-item" href="/tags">Tags</a>
                 
-                <a class="navbar-item"
-                href="/about">About</a>
+                <a class="navbar-item" href="/about">About</a>
                 
             </div>
             
@@ -134,7 +127,7 @@
 <div class="card">
     
     <div class="card-image">
-        <span  class="image is-7by1">
+        <span class="image is-7by1">
             <img class="thumbnail" src="/images/docker-build.webp" alt="how to build the smallest docker image as fast as you can">
         </span>
     </div>
@@ -171,21 +164,21 @@
 
 <h2 id="A-Golang-sample"><a href="#A-Golang-sample" class="headerlink" title="A Golang sample"></a>A Golang sample</h2><p>It’s quite common that we use golang to implement microservice, for example tens of golang service docker images are deployed to the Kubernetes.</p>
 <p>Consider we need to make our first golang service image, it runs the following code as an HTTP server.</p>
-<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">  <span class="string">"net/http"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  http.HandleFunc(<span class="string">"/"</span>, test)</span><br><span class="line">  http.ListenAndServe(<span class="string">":8080"</span>, <span class="literal">nil</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">test</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">  w.Header().Set(<span class="string">"Service"</span>, <span class="string">"Test"</span>)</span><br><span class="line">  w.WriteHeader(<span class="number">200</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight golang"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">  <span class="string">"net/http"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {</span><br><span class="line">  http.HandleFunc(<span class="string">"/"</span>, test)</span><br><span class="line">  http.ListenAndServe(<span class="string">":8080"</span>, <span class="literal">nil</span>)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">test</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> {</span><br><span class="line">  w.Header().Set(<span class="string">"Service"</span>, <span class="string">"Test"</span>)</span><br><span class="line">  w.WriteHeader(<span class="number">200</span>)</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <h3 id="Docker-it"><a href="#Docker-it" class="headerlink" title="Docker it!"></a>Docker it!</h3><p>The intuitive solution is to run <code>go run main.go</code> in the docker, so let’s use golang image as a base image.</p>
-<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> golang:<span class="number">1.14</span>.<span class="number">0</span>-alpine</span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /go/src/github.com/songrgg/testservice/</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> main.go .</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> [ <span class="string">"go"</span>, <span class="string">"run"</span>, <span class="string">"main.go"</span> ]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight docker"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> golang:<span class="number">1.14</span>.<span class="number">0</span>-alpine</span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /go/src/github.com/songrgg/testservice/</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> main.go .</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> [ <span class="string">"go"</span>, <span class="string">"run"</span>, <span class="string">"main.go"</span> ]</span></span><br></pre></td></tr></tbody></table></figure>
 
 <p>Run <code>docker build .</code> and it shows</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Sending build context to Docker daemon  3.072kB</span><br><span class="line">Step 1/4 : FROM golang:1.14.0-alpine</span><br><span class="line"> ---&gt; 51e47ee4db58</span><br><span class="line">Step 2/4 : WORKDIR /go/src/github.com/songrgg/testservice/</span><br><span class="line"> ---&gt; Using cache</span><br><span class="line"> ---&gt; 8dc325ca7ca6</span><br><span class="line">Step 3/4 : COPY main.go .</span><br><span class="line"> ---&gt; Using cache</span><br><span class="line"> ---&gt; c46c5f5bfda8</span><br><span class="line">Step 4/4 : CMD [ <span class="string">"go"</span>, <span class="string">"run"</span>, <span class="string">"main.go"</span> ]</span><br><span class="line"> ---&gt; Using cache</span><br><span class="line"> ---&gt; acc5a6d462f5</span><br><span class="line">Successfully built acc5a6d462f5</span><br><span class="line"></span><br><span class="line">$ docker image inspect acc5a6d462f5 --format=<span class="string">'&#123;&#123;.Size&#125;&#125;'</span></span><br><span class="line">369193951</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Sending build context to Docker daemon  3.072kB</span><br><span class="line">Step 1/4 : FROM golang:1.14.0-alpine</span><br><span class="line"> ---> 51e47ee4db58</span><br><span class="line">Step 2/4 : WORKDIR /go/src/github.com/songrgg/testservice/</span><br><span class="line"> ---> Using cache</span><br><span class="line"> ---> 8dc325ca7ca6</span><br><span class="line">Step 3/4 : COPY main.go .</span><br><span class="line"> ---> Using cache</span><br><span class="line"> ---> c46c5f5bfda8</span><br><span class="line">Step 4/4 : CMD [ <span class="string">"go"</span>, <span class="string">"run"</span>, <span class="string">"main.go"</span> ]</span><br><span class="line"> ---> Using cache</span><br><span class="line"> ---> acc5a6d462f5</span><br><span class="line">Successfully built acc5a6d462f5</span><br><span class="line"></span><br><span class="line">$ docker image inspect acc5a6d462f5 --format=<span class="string">'{{.Size}}'</span></span><br><span class="line">369193951</span><br></pre></td></tr></tbody></table></figure>
 
 <p>It’s 369193951 bytes near <strong>370MB</strong>.</p>
 <h3 id="Reduce-the-unnecessary-files"><a href="#Reduce-the-unnecessary-files" class="headerlink" title="Reduce the unnecessary files"></a>Reduce the unnecessary files</h3><p>Golang is a compilation language which can be packed into a binary, we can reduce the size by only putting the binary into the image.</p>
 <p>We know that the latest docker supports multi-stage builds which can eliminate the intermediate layers effectively, the revised dockerfile looks like this:</p>
-<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> golang:<span class="number">1.14</span>.<span class="number">0</span>-alpine</span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /go/src/github.com/songrgg/testservice/</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> main.go .</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">FROM</span> alpine:latest</span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> apk --no-cache add ca-certificates</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /root/</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> --from=0 /go/src/github.com/songrgg/testservice/app .</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> [<span class="string">"./app"</span>]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight docker"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> golang:<span class="number">1.14</span>.<span class="number">0</span>-alpine</span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /go/src/github.com/songrgg/testservice/</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> main.go .</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">FROM</span> alpine:latest</span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> apk --no-cache add ca-certificates</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /root/</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> --from=0 /go/src/github.com/songrgg/testservice/app .</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> [<span class="string">"./app"</span>]</span></span><br></pre></td></tr></tbody></table></figure>
 
 <p>Let’s see the layers it generates.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">$ docker build .</span><br><span class="line">Sending build context to Docker daemon  3.072kB</span><br><span class="line">Step 1/9 : FROM golang:1.14.0-alpine</span><br><span class="line"> ---&gt; 51e47ee4db58</span><br><span class="line">Step 2/9 : WORKDIR /go/src/github.com/songrgg/testservice/</span><br><span class="line"> ---&gt; Using cache</span><br><span class="line"> ---&gt; 8dc325ca7ca6</span><br><span class="line">Step 3/9 : COPY main.go .</span><br><span class="line"> ---&gt; Using cache</span><br><span class="line"> ---&gt; c46c5f5bfda8</span><br><span class="line">Step 4/9 : RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .</span><br><span class="line"> ---&gt; Running <span class="keyword">in</span> be3bdce1ec48</span><br><span class="line">Removing intermediate container be3bdce1ec48</span><br><span class="line"> ---&gt; 9c3470f9e73d</span><br><span class="line">Step 5/9 : FROM alpine:latest</span><br><span class="line"> ---&gt; 053cde6e8953</span><br><span class="line">Step 6/9 : RUN apk --no-cache add ca-certificates</span><br><span class="line"> ---&gt; Running <span class="keyword">in</span> 6acd18e2d2ba</span><br><span class="line">fetch http://dl-cdn.alpinelinux.org/alpine/v3.6/main/x86_64/APKINDEX.tar.gz</span><br><span class="line">fetch http://dl-cdn.alpinelinux.org/alpine/v3.6/community/x86_64/APKINDEX.tar.gz</span><br><span class="line">(1/1) Installing ca-certificates (20161130-r3)</span><br><span class="line">Executing busybox-1.26.2-r7.trigger</span><br><span class="line">Executing ca-certificates-20161130-r3.trigger</span><br><span class="line">OK: 5 MiB <span class="keyword">in</span> 12 packages</span><br><span class="line">Removing intermediate container 6acd18e2d2ba</span><br><span class="line"> ---&gt; 7b4ee3222013</span><br><span class="line">Step 7/9 : WORKDIR /root/</span><br><span class="line"> ---&gt; Running <span class="keyword">in</span> 336a8a2115a6</span><br><span class="line">Removing intermediate container 336a8a2115a6</span><br><span class="line"> ---&gt; 77fa1196ab2f</span><br><span class="line">Step 8/9 : COPY --from=0 /go/src/github.com/songrgg/testservice/app .</span><br><span class="line"> ---&gt; c6bc47f614af</span><br><span class="line">Step 9/9 : CMD [<span class="string">"./app"</span>]</span><br><span class="line"> ---&gt; Running <span class="keyword">in</span> f77053027c4b</span><br><span class="line">Removing intermediate container f77053027c4b</span><br><span class="line"> ---&gt; d327f978f1d8</span><br><span class="line">Successfully built d327f978f1d8</span><br><span class="line"></span><br><span class="line">$ docker inspect d327f978f1d8 --format=<span class="string">'&#123;&#123;.Size&#125;&#125;'</span></span><br><span class="line">11924648</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">$ docker build .</span><br><span class="line">Sending build context to Docker daemon  3.072kB</span><br><span class="line">Step 1/9 : FROM golang:1.14.0-alpine</span><br><span class="line"> ---> 51e47ee4db58</span><br><span class="line">Step 2/9 : WORKDIR /go/src/github.com/songrgg/testservice/</span><br><span class="line"> ---> Using cache</span><br><span class="line"> ---> 8dc325ca7ca6</span><br><span class="line">Step 3/9 : COPY main.go .</span><br><span class="line"> ---> Using cache</span><br><span class="line"> ---> c46c5f5bfda8</span><br><span class="line">Step 4/9 : RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .</span><br><span class="line"> ---> Running <span class="keyword">in</span> be3bdce1ec48</span><br><span class="line">Removing intermediate container be3bdce1ec48</span><br><span class="line"> ---> 9c3470f9e73d</span><br><span class="line">Step 5/9 : FROM alpine:latest</span><br><span class="line"> ---> 053cde6e8953</span><br><span class="line">Step 6/9 : RUN apk --no-cache add ca-certificates</span><br><span class="line"> ---> Running <span class="keyword">in</span> 6acd18e2d2ba</span><br><span class="line">fetch http://dl-cdn.alpinelinux.org/alpine/v3.6/main/x86_64/APKINDEX.tar.gz</span><br><span class="line">fetch http://dl-cdn.alpinelinux.org/alpine/v3.6/community/x86_64/APKINDEX.tar.gz</span><br><span class="line">(1/1) Installing ca-certificates (20161130-r3)</span><br><span class="line">Executing busybox-1.26.2-r7.trigger</span><br><span class="line">Executing ca-certificates-20161130-r3.trigger</span><br><span class="line">OK: 5 MiB <span class="keyword">in</span> 12 packages</span><br><span class="line">Removing intermediate container 6acd18e2d2ba</span><br><span class="line"> ---> 7b4ee3222013</span><br><span class="line">Step 7/9 : WORKDIR /root/</span><br><span class="line"> ---> Running <span class="keyword">in</span> 336a8a2115a6</span><br><span class="line">Removing intermediate container 336a8a2115a6</span><br><span class="line"> ---> 77fa1196ab2f</span><br><span class="line">Step 8/9 : COPY --from=0 /go/src/github.com/songrgg/testservice/app .</span><br><span class="line"> ---> c6bc47f614af</span><br><span class="line">Step 9/9 : CMD [<span class="string">"./app"</span>]</span><br><span class="line"> ---> Running <span class="keyword">in</span> f77053027c4b</span><br><span class="line">Removing intermediate container f77053027c4b</span><br><span class="line"> ---> d327f978f1d8</span><br><span class="line">Successfully built d327f978f1d8</span><br><span class="line"></span><br><span class="line">$ docker inspect d327f978f1d8 --format=<span class="string">'{{.Size}}'</span></span><br><span class="line">11924648</span><br></pre></td></tr></tbody></table></figure>
 
 <p>We could notice there are several intermediate containers removed, they’re layers from the first stage and prepare the executable for the second stage.</p>
 <p>Most importantly, the docker image size is below <strong>12MB</strong>.</p>
@@ -194,10 +187,10 @@
 <p>I changed the <code>FROM alpine:latest</code> to <code>FROM scratch</code>, the image size is <strong>7MB</strong> now, but I would suggest using alpine because it’ll be hard for you in scratch if you want to debug within the container. So you’ll need a balance between the image size and functionality :)</p>
 <h2 id="Some-pitfalls-you-may-face"><a href="#Some-pitfalls-you-may-face" class="headerlink" title="Some pitfalls you may face"></a>Some pitfalls you may face</h2><h3 id="Unnecessary-large-build-context"><a href="#Unnecessary-large-build-context" class="headerlink" title="Unnecessary large build context"></a>Unnecessary large build context</h3><p>Docker build will send the build context to docker daemon at first, the context is default to the current directory, so please be sure the files in the current directory is necessary or is small enough. If the file size is big, it will affect docker build speed terribly.</p>
 <h3 id="Wrong-command-order"><a href="#Wrong-command-order" class="headerlink" title="Wrong command order"></a>Wrong command order</h3><p>Just remember to put the stable layers before the changeable layers, because docker will cache the layers if they are not changed, it’s calculated by the hash value of their content.</p>
-<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu</span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> changeable.txt .</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> apt-get update &amp;&amp; apt-get install curl</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> ...</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight docker"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu</span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> changeable.txt .</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> apt-get update && apt-get install curl</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> ...</span></span><br></pre></td></tr></tbody></table></figure>
 
 <p>In the above example, every time the changeable.txt is changed, it will rerun every commands after it and waste time doing the things it could prevent. Just turn to the following form.</p>
-<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu</span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> apt-get update &amp;&amp; apt-get install curl</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> ...</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> changeable.txt .</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight docker"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu</span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> apt-get update && apt-get install curl</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> ...</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> changeable.txt .</span></span><br></pre></td></tr></tbody></table></figure>
 
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
 <li><a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/">Best practises for writing Dockerfile</a></li>
@@ -218,7 +211,7 @@
         
         
 <div class="sharethis-inline-share-buttons"></div>
-<script type='text/javascript' src='//platform-api.sharethis.com/js/sharethis.js#property=5df54e9fee0f770012eb9f87&amp;product=inline-share-buttons&amp;cms=sop' async='async'></script>
+<script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5df54e9fee0f770012eb9f87&product=inline-share-buttons&cms=sop" async="async"></script>
 
         
     </div>
@@ -318,7 +311,7 @@
                 <div>
                     
                     <figure class="image is-128x128 has-mb-6">
-                        <img class="is-rounded" src="https://scontent-ams4-1.cdninstagram.com/v/t51.2885-19/s320x320/73497413_448687199127642_4593963213837565952_n.jpg?_nc_ht=scontent-ams4-1.cdninstagram.com&amp;oh=e273f9e53667c4d64c3c555baa12345f&amp;oe=5E7F3D90" alt="Songrong">
+                        <img class="is-rounded" src="https://scontent-ams4-1.cdninstagram.com/v/t51.2885-19/s320x320/73497413_448687199127642_4593963213837565952_n.jpg?_nc_ht=scontent-ams4-1.cdninstagram.com&oh=e273f9e53667c4d64c3c555baa12345f&oe=5E7F3D90" alt="Songrong">
                     </figure>
                     
                     <p class="is-size-4 is-block">
@@ -387,29 +380,25 @@
         
         <div class="level is-mobile">
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Github" href="https://github.com/songrgg">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/songrgg">
                 
                 <i class="fab fa-github"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Instagram" href="https://www.instagram.com/jiangsongrong">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Instagram" href="https://www.instagram.com/jiangsongrong">
                 
                 <i class="fab fa-instagram"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
                 
                 <i class="fab fa-linkedin"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="RSS" href="/atom.xml">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="RSS" href="/atom.xml">
                 
                 <i class="fas fa-rss"></i>
                 
@@ -574,14 +563,14 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards &amp; alertings using Grafana API</a>
+                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -1473,14 +1462,14 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards &amp; alertings using Grafana API</a>
+                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -2287,13 +2276,12 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    SongRong&#39;s Experience
+                    SongRong's Experience
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2020 songrgg&nbsp;
-                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
-                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                © 2020 songrgg 
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
                 
                 </p>
             </div>
@@ -2370,7 +2358,7 @@ var IcarusThemeSettings = {
     <h6>Your browser is out-of-date!</h6>
     <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
             my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
 <script>
@@ -2433,7 +2421,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="searchbox ins-search">
     <div class="searchbox-container ins-search-container">
         <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something..." />
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
             <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="searchbox-result-wrapper ins-section-wrapper">
@@ -2460,5 +2448,5 @@ document.addEventListener('DOMContentLoaded', function () {
 <link rel="stylesheet" href="/css/search.css">
 <link rel="stylesheet" href="/css/insight.css">
     
-</body>
-</html>
+
+<script type="text/javascript" charset="utf-8" src="/js/lazyload-plugin/lazyload.intersectionObserver.min.js"></script></body></html>

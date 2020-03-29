@@ -1,21 +1,19 @@
-<!DOCTYPE html>
-<html  lang="en">
-<head>
-    <meta charset="utf-8" />
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8">
 
-<meta name="generator" content="Hexo 4.2.0" />
+<meta name="generator" content="Hexo 4.2.0">
 
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 <title>为PHP7添加新的语法特性 - Blog | Songrgg</title>
 
 
-    <meta name="description" content="好文章！nikic介绍了如何向PHP添加新的语法特性，原文写的非常精彩，具体是添加in语法功能，使最终实现： 12345678$words &#x3D; [&#39;hello&#39;, &#39;world&#39;, &#39;foo&#39;, &#39;bar&#39;];var_dump(&#39;hello&#39; in $words); &#x2F;&#x2F; truevar_dump(&#39;foo&#39; in $words);   &#x2F;&#x2F; truevar_dump(&#39;blub&#39; in $wor">
+    <meta name="description" content="好文章！nikic介绍了如何向PHP添加新的语法特性，原文写的非常精彩，具体是添加in语法功能，使最终实现： 12345678$words = ['hello', 'world', 'foo', 'bar'];var_dump('hello' in $words); // truevar_dump('foo' in $words);   // truevar_dump('blub' in $wor">
 <meta property="og:type" content="article">
 <meta property="og:title" content="为PHP7添加新的语法特性">
 <meta property="og:url" content="https://songrgg.github.io/programming/add-syntactic-feature-to-php7/index.html">
 <meta property="og:site_name" content="Blog | Songrgg">
-<meta property="og:description" content="好文章！nikic介绍了如何向PHP添加新的语法特性，原文写的非常精彩，具体是添加in语法功能，使最终实现： 12345678$words &#x3D; [&#39;hello&#39;, &#39;world&#39;, &#39;foo&#39;, &#39;bar&#39;];var_dump(&#39;hello&#39; in $words); &#x2F;&#x2F; truevar_dump(&#39;foo&#39; in $words);   &#x2F;&#x2F; truevar_dump(&#39;blub&#39; in $wor">
+<meta property="og:description" content="好文章！nikic介绍了如何向PHP添加新的语法特性，原文写的非常精彩，具体是添加in语法功能，使最终实现： 12345678$words = ['hello', 'world', 'foo', 'bar'];var_dump('hello' in $words); // truevar_dump('foo' in $words);   // truevar_dump('blub' in $wor">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://songrgg.github.io/images/og_image.png">
 <meta property="article:published_time" content="2015-08-17T21:53:30.000Z">
@@ -92,7 +90,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                SongRong&#39;s Experience
+                SongRong's Experience
             
             </a>
         </div>
@@ -100,20 +98,15 @@
             
             <div class="navbar-start">
                 
-                <a class="navbar-item"
-                href="/">Home</a>
+                <a class="navbar-item" href="/">Home</a>
                 
-                <a class="navbar-item"
-                href="/archives">Archives</a>
+                <a class="navbar-item" href="/archives">Archives</a>
                 
-                <a class="navbar-item"
-                href="/categories">Categories</a>
+                <a class="navbar-item" href="/categories">Categories</a>
                 
-                <a class="navbar-item"
-                href="/tags">Tags</a>
+                <a class="navbar-item" href="/tags">Tags</a>
                 
-                <a class="navbar-item"
-                href="/about">About</a>
+                <a class="navbar-item" href="/about">About</a>
                 
             </div>
             
@@ -165,61 +158,61 @@
         </h1>
         <div class="content">
             <h3 id="好文章！"><a href="#好文章！" class="headerlink" title="好文章！"></a>好文章！</h3><p><a href="http://nikic.github.io/">nikic</a>介绍了如何向PHP添加新的语法特性，<a href="http://nikic.github.io/2012/07/27/How-to-add-new-syntactic-features-to-PHP.html">原文</a>写的非常精彩，具体是添加<code>in</code>语法功能，使最终实现：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$words = [<span class="string">'hello'</span>, <span class="string">'world'</span>, <span class="string">'foo'</span>, <span class="string">'bar'</span>];</span><br><span class="line">var_dump(<span class="string">'hello'</span> in $words); <span class="comment">// true</span></span><br><span class="line">var_dump(<span class="string">'foo'</span> in $words);   <span class="comment">// true</span></span><br><span class="line">var_dump(<span class="string">'blub'</span> in $words);  <span class="comment">// false</span></span><br><span class="line"></span><br><span class="line">$string = <span class="string">'PHP is fun!'</span>;</span><br><span class="line">var_dump(<span class="string">'PHP'</span> in $string);    <span class="comment">// true</span></span><br><span class="line">var_dump(<span class="string">'Python'</span> in $string); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$words = [<span class="string">'hello'</span>, <span class="string">'world'</span>, <span class="string">'foo'</span>, <span class="string">'bar'</span>];</span><br><span class="line">var_dump(<span class="string">'hello'</span> in $words); <span class="comment">// true</span></span><br><span class="line">var_dump(<span class="string">'foo'</span> in $words);   <span class="comment">// true</span></span><br><span class="line">var_dump(<span class="string">'blub'</span> in $words);  <span class="comment">// false</span></span><br><span class="line"></span><br><span class="line">$string = <span class="string">'PHP is fun!'</span>;</span><br><span class="line">var_dump(<span class="string">'PHP'</span> in $string);    <span class="comment">// true</span></span><br><span class="line">var_dump(<span class="string">'Python'</span> in $string); <span class="comment">// false</span></span><br></pre></td></tr></tbody></table></figure>
 
 <p>我进行了一下实践，根据PHP7进行了些修改，具体记录下自己的实践过程和心得。</p>
 <h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><p>从<a href="https://github.com/php/php-src/tree/PHP-7.0.0">Github</a>上下载PHP7的源码，准备好PHP的开发编译环境，我是基于ubuntu，所以运行如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get -y install build-essential autoconf bison re2c</span><br><span class="line">下一步，编译PHP7</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">cd</span> php-src</span><br><span class="line"><span class="comment"># create new branch for in operator</span></span><br><span class="line">$ git checkout -b addInOperator</span><br><span class="line"><span class="comment"># build ./configure script</span></span><br><span class="line">$ ./buildconf</span><br><span class="line"><span class="comment"># configure PHP in debug mode and with thread safety</span></span><br><span class="line">$ ./configure --<span class="built_in">disable</span>-all --<span class="built_in">enable</span>-debug --<span class="built_in">enable</span>-maintainer-zts</span><br><span class="line"><span class="comment"># compile (4 is the number of cores you have)</span></span><br><span class="line">$ make -j4</span><br><span class="line"></span><br><span class="line"><span class="comment">#PHP的二进制就是`sapi/cli/php`，可以运行以下命令测试是否编译成功：</span></span><br><span class="line">$ ./sapi/cli/php -v</span><br><span class="line">$ ./sapi/cli/php -r <span class="string">'echo "Hallo World!";'</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get -y install build-essential autoconf bison re2c</span><br><span class="line">下一步，编译PHP7</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">cd</span> php-src</span><br><span class="line"><span class="comment"># create new branch for in operator</span></span><br><span class="line">$ git checkout -b addInOperator</span><br><span class="line"><span class="comment"># build ./configure script</span></span><br><span class="line">$ ./buildconf</span><br><span class="line"><span class="comment"># configure PHP in debug mode and with thread safety</span></span><br><span class="line">$ ./configure --<span class="built_in">disable</span>-all --<span class="built_in">enable</span>-debug --<span class="built_in">enable</span>-maintainer-zts</span><br><span class="line"><span class="comment"># compile (4 is the number of cores you have)</span></span><br><span class="line">$ make -j4</span><br><span class="line"></span><br><span class="line"><span class="comment">#PHP的二进制就是`sapi/cli/php`，可以运行以下命令测试是否编译成功：</span></span><br><span class="line">$ ./sapi/cli/php -v</span><br><span class="line">$ ./sapi/cli/php -r <span class="string">'echo "Hallo World!";'</span></span><br></pre></td></tr></tbody></table></figure>
 
 <h3 id="PHP脚本的生命历程"><a href="#PHP脚本的生命历程" class="headerlink" title="PHP脚本的生命历程"></a>PHP脚本的生命历程</h3><p>PHP脚本运行经过3个主要阶段：  </p>
 <ol>
 <li>词法分析</li>
-<li>语法分析&amp;编译</li>
+<li>语法分析&编译</li>
 <li>执行</li>
 </ol>
 <h3 id="词法分析"><a href="#词法分析" class="headerlink" title="词法分析"></a>词法分析</h3><p>这个阶段是将源码根据规则分解成称为<code>token</code>更小的单元，为后面的语法分析提供材料。<br>修改位于<code>Zend/</code>目录的<code>zend_language_scanner.l</code>，这个文件定义了词法记号规则，为了让PHP能识别<code>in</code>作为关键词。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;ST_IN_SCRIPTING&gt;&quot;in&quot; &#123;</span><br><span class="line">    RETURN_TOKEN(T_IN);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><ST_IN_SCRIPTING>"in" {</span><br><span class="line">    RETURN_TOKEN(T_IN);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <p>为了让Zend引擎能识别<code>T_IN</code>这个记号，在<code>zend_language_parser.y</code>中加入：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%token T_IN &quot;in (T_IN)&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%token T_IN "in (T_IN)"</span><br></pre></td></tr></tbody></table></figure>
 
 <p>重新生成<code>tokenizer</code>系列源文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd ext&#x2F;tokenizer</span><br><span class="line">$ .&#x2F;tokenizer_data_gen.sh</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd ext/tokenizer</span><br><span class="line">$ ./tokenizer_data_gen.sh</span><br></pre></td></tr></tbody></table></figure>
 
-<h3 id="语法分析-amp-编译"><a href="#语法分析-amp-编译" class="headerlink" title="语法分析&amp;编译"></a>语法分析&amp;编译</h3><p>向语法分析增加<code>in</code>所应用的表达式规则，在<code>zend_language_parser.y</code>加入：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">expr_without_variable:</span><br><span class="line">...</span><br><span class="line">|   expr T_IN expr  &#123; $$ &#x3D; zend_ast_create_binary_op(ZEND_IN, $1, $3); &#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h3 id="语法分析-amp-编译"><a href="#语法分析-amp-编译" class="headerlink" title="语法分析&编译"></a>语法分析&编译</h3><p>向语法分析增加<code>in</code>所应用的表达式规则，在<code>zend_language_parser.y</code>加入：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">expr_without_variable:</span><br><span class="line">...</span><br><span class="line">|   expr T_IN expr  { $$ = zend_ast_create_binary_op(ZEND_IN, $1, $3); }</span><br><span class="line">...</span><br></pre></td></tr></tbody></table></figure>
 
 <p>再设置<code>in</code>的操作符优先级，在语法分析文件中找到以下行，并在行尾加入<code>T_IN</code>：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%nonassoc &#39;&lt;&#39; T_IS_SMALLER_OR_EQUAL &#39;&gt;&#39; T_IS_GREATER_OR_EQUAL</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%nonassoc '<' T_IS_SMALLER_OR_EQUAL '>' T_IS_GREATER_OR_EQUAL</span><br></pre></td></tr></tbody></table></figure>
 
 <h3 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h3><p>最后在<code>zend_vm_def.h</code>中添加具体的执行逻辑：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">ZEND_VM_HANDLER(<span class="number">173</span>, ZEND_IN, CONST|TMPVAR|CV, CONST|TMPVAR|CV)</span><br><span class="line">&#123;</span><br><span class="line">    USE_OPLINE</span><br><span class="line">    zend_free_op free_op1, free_op2;</span><br><span class="line">    zval *op1, *op2;</span><br><span class="line"></span><br><span class="line">    SAVE_OPLINE();</span><br><span class="line">    op1 = GET_OP1_ZVAL_PTR_UNDEF(BP_VAR_R);</span><br><span class="line">    op2 = GET_OP2_ZVAL_PTR_UNDEF(BP_VAR_R);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// TODO</span></span><br><span class="line"></span><br><span class="line">    FREE_OP1();</span><br><span class="line">    FREE_OP2();</span><br><span class="line">    CHECK_EXCEPTION();</span><br><span class="line">    ZEND_VM_NEXT_OPCODE();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">ZEND_VM_HANDLER(<span class="number">173</span>, ZEND_IN, CONST|TMPVAR|CV, CONST|TMPVAR|CV)</span><br><span class="line">{</span><br><span class="line">    USE_OPLINE</span><br><span class="line">    zend_free_op free_op1, free_op2;</span><br><span class="line">    zval *op1, *op2;</span><br><span class="line"></span><br><span class="line">    SAVE_OPLINE();</span><br><span class="line">    op1 = GET_OP1_ZVAL_PTR_UNDEF(BP_VAR_R);</span><br><span class="line">    op2 = GET_OP2_ZVAL_PTR_UNDEF(BP_VAR_R);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// TODO</span></span><br><span class="line"></span><br><span class="line">    FREE_OP1();</span><br><span class="line">    FREE_OP2();</span><br><span class="line">    CHECK_EXCEPTION();</span><br><span class="line">    ZEND_VM_NEXT_OPCODE();</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <p>在PHP源码根目录运行：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ./sapi/cli/php ./Zend/zend_vm_gen.php</span><br><span class="line">$ make -j4</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ./sapi/cli/php ./Zend/zend_vm_gen.php</span><br><span class="line">$ make -j4</span><br></pre></td></tr></tbody></table></figure>
 
 <p><code>zend_vm_gen.php</code>是根据<code>zend_vm_def.h</code>中的定义生成<code>zend_vm_*.*</code>系列的文件。</p>
 <p>之后测试编译后的<code>PHP</code>：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./sapi/cli/php -r <span class="string">'var_dump("s" in "str");'</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./sapi/cli/php -r <span class="string">'var_dump("s" in "str");'</span></span><br></pre></td></tr></tbody></table></figure>
 
 <p>会出现<code>Segmentation fault</code>，原因是我之前在<code>zend_language_parser.y</code>中加入的操作是<code>zend_ast_create_binary_op</code>，所以在编译时会调用位于<code>zend_opcode.c</code>的<code>get_binary_op</code>方法，这个方法返回一个函数指针，用于处理<code>expr in expr</code>这个操作两个参数的语句。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">binary_op_type op = get_binary_op(ast-&gt;attr);</span><br><span class="line">ret = op(result, &amp;op1, &amp;op2);</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">binary_op_type op = get_binary_op(ast->attr);</span><br><span class="line">ret = op(result, &op1, &op2);</span><br></pre></td></tr></tbody></table></figure>
 
 <p>所以之后我在3处添加代码：</p>
 <p><code>zend_opcode.c</code>中添加查询<code>ZEND_IN</code>操作函数的代码</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ZEND_API binary_op_type <span class="title">get_binary_op</span><span class="params">(<span class="keyword">int</span> opcode)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">switch</span> (opcode) &#123;</span><br><span class="line">        ... </span><br><span class="line">        <span class="keyword">case</span> ZEND_IN:</span><br><span class="line">            <span class="keyword">return</span> (binary_op_type) in_function;</span><br><span class="line">        ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ZEND_API binary_op_type <span class="title">get_binary_op</span><span class="params">(<span class="keyword">int</span> opcode)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">switch</span> (opcode) {</span><br><span class="line">        ... </span><br><span class="line">        <span class="keyword">case</span> ZEND_IN:</span><br><span class="line">            <span class="keyword">return</span> (binary_op_type) in_function;</span><br><span class="line">        ...</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <p><code>zend_operators.c</code>中添加处理函数</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ZEND_API <span class="keyword">int</span> ZEND_FASTCALL <span class="title">in_function</span><span class="params">(zval *result, zval *op1, zval *op2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    zval op1_copy, op2_copy;</span><br><span class="line">    <span class="keyword">int</span> use_copy1 = <span class="number">0</span>, use_copy2 = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">switch</span> (Z_TYPE_P(op2)) &#123;</span><br><span class="line">        <span class="keyword">case</span> IS_STRING:</span><br><span class="line">            use_copy1 = zend_make_printable_zval(op1, &amp;op1_copy);</span><br><span class="line">            <span class="keyword">if</span> (use_copy1) &#123;</span><br><span class="line">                op1 = &amp;op1_copy;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (Z_STRLEN_P(op1) == <span class="number">0</span>) &#123;</span><br><span class="line">                ZVAL_TRUE(result);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">const</span> <span class="keyword">char</span> *found = zend_memnstr_ex(</span><br><span class="line">                    Z_STRVAL_P(op2),</span><br><span class="line">                    Z_STRVAL_P(op1),</span><br><span class="line">                    Z_STRLEN_P(op1),</span><br><span class="line">                    Z_STRVAL_P(op2) + Z_STRLEN_P(op2)</span><br><span class="line">                );</span><br><span class="line"></span><br><span class="line">                ZVAL_BOOL(result, found != <span class="literal">NULL</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> IS_ARRAY:</span><br><span class="line">            use_copy1 = zend_make_printable_zval(op1, &amp;op1_copy);</span><br><span class="line">            <span class="keyword">if</span> (use_copy1) &#123;</span><br><span class="line">                op1 = &amp;op1_copy;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            ZVAL_BOOL(result, zend_hash_exists(Z_ARR_P(op2), Z_STR_P(op1)));</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            zend_error(E_EXCEPTION | E_ERROR, <span class="string">"Unsupported operand types"</span>);</span><br><span class="line">            ZVAL_FALSE(result);</span><br><span class="line">            <span class="keyword">return</span> FAILURE;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (use_copy1) &#123;</span><br><span class="line">        zval_dtor(&amp;op1_copy);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> SUCCESS;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ZEND_API <span class="keyword">int</span> ZEND_FASTCALL <span class="title">in_function</span><span class="params">(zval *result, zval *op1, zval *op2)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    zval op1_copy, op2_copy;</span><br><span class="line">    <span class="keyword">int</span> use_copy1 = <span class="number">0</span>, use_copy2 = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">switch</span> (Z_TYPE_P(op2)) {</span><br><span class="line">        <span class="keyword">case</span> IS_STRING:</span><br><span class="line">            use_copy1 = zend_make_printable_zval(op1, &op1_copy);</span><br><span class="line">            <span class="keyword">if</span> (use_copy1) {</span><br><span class="line">                op1 = &op1_copy;</span><br><span class="line">            }</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (Z_STRLEN_P(op1) == <span class="number">0</span>) {</span><br><span class="line">                ZVAL_TRUE(result);</span><br><span class="line">            } <span class="keyword">else</span> {</span><br><span class="line">                <span class="keyword">const</span> <span class="keyword">char</span> *found = zend_memnstr_ex(</span><br><span class="line">                    Z_STRVAL_P(op2),</span><br><span class="line">                    Z_STRVAL_P(op1),</span><br><span class="line">                    Z_STRLEN_P(op1),</span><br><span class="line">                    Z_STRVAL_P(op2) + Z_STRLEN_P(op2)</span><br><span class="line">                );</span><br><span class="line"></span><br><span class="line">                ZVAL_BOOL(result, found != <span class="literal">NULL</span>);</span><br><span class="line">            }</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> IS_ARRAY:</span><br><span class="line">            use_copy1 = zend_make_printable_zval(op1, &op1_copy);</span><br><span class="line">            <span class="keyword">if</span> (use_copy1) {</span><br><span class="line">                op1 = &op1_copy;</span><br><span class="line">            }</span><br><span class="line"></span><br><span class="line">            ZVAL_BOOL(result, zend_hash_exists(Z_ARR_P(op2), Z_STR_P(op1)));</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            zend_error(E_EXCEPTION | E_ERROR, <span class="string">"Unsupported operand types"</span>);</span><br><span class="line">            ZVAL_FALSE(result);</span><br><span class="line">            <span class="keyword">return</span> FAILURE;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (use_copy1) {</span><br><span class="line">        zval_dtor(&op1_copy);</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> SUCCESS;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <p><code>zend_vm_def.h</code>中补上<code>TODO</code>该做的处理逻辑</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 我在系统里的最新操作号是173，根据实际为准</span></span><br><span class="line">ZEND_VM_HANDLER(<span class="number">173</span>, ZEND_IN, CONST|TMPVAR|CV, CONST|TMPVAR|CV)</span><br><span class="line">&#123;</span><br><span class="line">    USE_OPLINE</span><br><span class="line">    zend_free_op free_op1, free_op2;</span><br><span class="line">    zval *op1, *op2;</span><br><span class="line"></span><br><span class="line">    SAVE_OPLINE();</span><br><span class="line">    op1 = GET_OP1_ZVAL_PTR_UNDEF(BP_VAR_R);</span><br><span class="line">    op2 = GET_OP2_ZVAL_PTR_UNDEF(BP_VAR_R);</span><br><span class="line"></span><br><span class="line">    in_function(EX_VAR(opline-&gt;result.var), op1, op2);</span><br><span class="line">    ZVAL_TRUE(EX_VAR(opline-&gt;result.var));</span><br><span class="line"></span><br><span class="line">    FREE_OP1();</span><br><span class="line">    FREE_OP2();</span><br><span class="line">    CHECK_EXCEPTION();</span><br><span class="line">    ZEND_VM_NEXT_OPCODE();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 我在系统里的最新操作号是173，根据实际为准</span></span><br><span class="line">ZEND_VM_HANDLER(<span class="number">173</span>, ZEND_IN, CONST|TMPVAR|CV, CONST|TMPVAR|CV)</span><br><span class="line">{</span><br><span class="line">    USE_OPLINE</span><br><span class="line">    zend_free_op free_op1, free_op2;</span><br><span class="line">    zval *op1, *op2;</span><br><span class="line"></span><br><span class="line">    SAVE_OPLINE();</span><br><span class="line">    op1 = GET_OP1_ZVAL_PTR_UNDEF(BP_VAR_R);</span><br><span class="line">    op2 = GET_OP2_ZVAL_PTR_UNDEF(BP_VAR_R);</span><br><span class="line"></span><br><span class="line">    in_function(EX_VAR(opline->result.var), op1, op2);</span><br><span class="line">    ZVAL_TRUE(EX_VAR(opline->result.var));</span><br><span class="line"></span><br><span class="line">    FREE_OP1();</span><br><span class="line">    FREE_OP2();</span><br><span class="line">    CHECK_EXCEPTION();</span><br><span class="line">    ZEND_VM_NEXT_OPCODE();</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <p>依旧是在PHP源码根目录下运行：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ./sapi/cli/php ./Zend/zend_vm_gen.php</span><br><span class="line">$ make -j4</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ./sapi/cli/php ./Zend/zend_vm_gen.php</span><br><span class="line">$ make -j4</span><br></pre></td></tr></tbody></table></figure>
 
 <p>现在再测试生成的<code>php</code>，应该会满足：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ ./sapi/cli/php -r <span class="string">'var_dump("s" in "str");'</span></span><br><span class="line">bool(<span class="literal">true</span>)</span><br><span class="line">$ ./sapi/cli/php -r <span class="string">'var_dump("s" in "xxx");'</span></span><br><span class="line">bool(<span class="literal">false</span>)</span><br><span class="line">$ ./sapi/cli/php -r <span class="string">'var_dump("a" in ["a"=&gt;1]);'</span></span><br><span class="line">bool(<span class="literal">true</span>)</span><br><span class="line">$ ./sapi/cli/php -r <span class="string">'var_dump("a" in ["b"=&gt;1]);'</span></span><br><span class="line">bool(<span class="literal">false</span>)</span><br><span class="line">$ ./sapi/cli/php -r <span class="string">'var_dump("s" in 123);'</span></span><br><span class="line">Fatal error: Unsupported operand types <span class="keyword">in</span> Command line code on line 1</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ ./sapi/cli/php -r <span class="string">'var_dump("s" in "str");'</span></span><br><span class="line">bool(<span class="literal">true</span>)</span><br><span class="line">$ ./sapi/cli/php -r <span class="string">'var_dump("s" in "xxx");'</span></span><br><span class="line">bool(<span class="literal">false</span>)</span><br><span class="line">$ ./sapi/cli/php -r <span class="string">'var_dump("a" in ["a"=>1]);'</span></span><br><span class="line">bool(<span class="literal">true</span>)</span><br><span class="line">$ ./sapi/cli/php -r <span class="string">'var_dump("a" in ["b"=>1]);'</span></span><br><span class="line">bool(<span class="literal">false</span>)</span><br><span class="line">$ ./sapi/cli/php -r <span class="string">'var_dump("s" in 123);'</span></span><br><span class="line">Fatal error: Unsupported operand types <span class="keyword">in</span> Command line code on line 1</span><br></pre></td></tr></tbody></table></figure>
 
 <h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>实际进行了一番操作之后，对于<code>PHP</code>的运行机制会落实到更小的单位，从解释阶段到文件级别。<br><code>PHP7</code>版本引入了<code>ast</code>这个中间结构，比起<a href="http://nikic.github.io/">nikic</a>那个版本来说，需要修改更多文件，下一步要剖析一下<code>ast</code>在<code>PHP7</code>中的作用和在执行过程中的角色。</p>
 
@@ -229,7 +222,7 @@
         
         
 <div class="sharethis-inline-share-buttons"></div>
-<script type='text/javascript' src='//platform-api.sharethis.com/js/sharethis.js#property=5df54e9fee0f770012eb9f87&amp;product=inline-share-buttons&amp;cms=sop' async='async'></script>
+<script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5df54e9fee0f770012eb9f87&product=inline-share-buttons&cms=sop" async="async"></script>
 
         
     </div>
@@ -329,7 +322,7 @@
                 <div>
                     
                     <figure class="image is-128x128 has-mb-6">
-                        <img class="is-rounded" src="https://scontent-ams4-1.cdninstagram.com/v/t51.2885-19/s320x320/73497413_448687199127642_4593963213837565952_n.jpg?_nc_ht=scontent-ams4-1.cdninstagram.com&amp;oh=e273f9e53667c4d64c3c555baa12345f&amp;oe=5E7F3D90" alt="Songrong">
+                        <img class="is-rounded" src="https://scontent-ams4-1.cdninstagram.com/v/t51.2885-19/s320x320/73497413_448687199127642_4593963213837565952_n.jpg?_nc_ht=scontent-ams4-1.cdninstagram.com&oh=e273f9e53667c4d64c3c555baa12345f&oe=5E7F3D90" alt="Songrong">
                     </figure>
                     
                     <p class="is-size-4 is-block">
@@ -398,29 +391,25 @@
         
         <div class="level is-mobile">
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Github" href="https://github.com/songrgg">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/songrgg">
                 
                 <i class="fab fa-github"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Instagram" href="https://www.instagram.com/jiangsongrong">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Instagram" href="https://www.instagram.com/jiangsongrong">
                 
                 <i class="fab fa-instagram"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
                 
                 <i class="fab fa-linkedin"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="RSS" href="/atom.xml">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="RSS" href="/atom.xml">
                 
                 <i class="fas fa-rss"></i>
                 
@@ -585,14 +574,14 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards &amp; alertings using Grafana API</a>
+                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -1484,14 +1473,14 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards &amp; alertings using Grafana API</a>
+                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -2298,13 +2287,12 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    SongRong&#39;s Experience
+                    SongRong's Experience
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2020 songrgg&nbsp;
-                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
-                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                © 2020 songrgg 
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
                 
                 </p>
             </div>
@@ -2381,7 +2369,7 @@ var IcarusThemeSettings = {
     <h6>Your browser is out-of-date!</h6>
     <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
             my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
 <script>
@@ -2444,7 +2432,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="searchbox ins-search">
     <div class="searchbox-container ins-search-container">
         <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something..." />
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
             <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="searchbox-result-wrapper ins-section-wrapper">
@@ -2471,5 +2459,5 @@ document.addEventListener('DOMContentLoaded', function () {
 <link rel="stylesheet" href="/css/search.css">
 <link rel="stylesheet" href="/css/insight.css">
     
-</body>
-</html>
+
+<script type="text/javascript" charset="utf-8" src="/js/lazyload-plugin/lazyload.intersectionObserver.min.js"></script></body></html>

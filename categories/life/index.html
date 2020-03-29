@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html  lang="en">
-<head>
-    <meta charset="utf-8" />
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8">
 
-<meta name="generator" content="Hexo 4.2.0" />
+<meta name="generator" content="Hexo 4.2.0">
 
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 <title>Category: life - Blog | Songrgg</title>
 
@@ -90,7 +88,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                SongRong&#39;s Experience
+                SongRong's Experience
             
             </a>
         </div>
@@ -98,20 +96,15 @@
             
             <div class="navbar-start">
                 
-                <a class="navbar-item"
-                href="/">Home</a>
+                <a class="navbar-item" href="/">Home</a>
                 
-                <a class="navbar-item"
-                href="/archives">Archives</a>
+                <a class="navbar-item" href="/archives">Archives</a>
                 
-                <a class="navbar-item"
-                href="/categories">Categories</a>
+                <a class="navbar-item" href="/categories">Categories</a>
                 
-                <a class="navbar-item"
-                href="/tags">Tags</a>
+                <a class="navbar-item" href="/tags">Tags</a>
                 
-                <a class="navbar-item"
-                href="/about">About</a>
+                <a class="navbar-item" href="/about">About</a>
                 
             </div>
             
@@ -176,19 +169,19 @@
         <div class="content">
             <h3 id="SD卡制作"><a href="#SD卡制作" class="headerlink" title="SD卡制作"></a>SD卡制作</h3><p>准备一张4GB或者以上的micro sd卡，下载<a href="https://www.raspberrypi.org/downloads/raspbian/">系统镜像</a>，例如raspbian-jessie-lite.img，并使用刷机工具，如<code>Pi filler</code>将其写入sd卡，当然也可以使用命令行的dd，或者其它工具，要注意的是sd卡必须是fat32格式的文件系统，不然树莓派是无法识别的。</p>
 <h3 id="开机启动"><a href="#开机启动" class="headerlink" title="开机启动"></a>开机启动</h3><p>先把所有的线材都连上之后，最后再通电，应该很顺利能看到启动的系统。</p>
-<h3 id="设置WIFI"><a href="#设置WIFI" class="headerlink" title="设置WIFI"></a>设置WIFI</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'network=&#123;</span></span><br><span class="line"><span class="string">  ssid="your-ssid"</span></span><br><span class="line"><span class="string">  psk="your-psk"</span></span><br><span class="line"><span class="string">&#125;'</span> | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf</span><br></pre></td></tr></table></figure>
+<h3 id="设置WIFI"><a href="#设置WIFI" class="headerlink" title="设置WIFI"></a>设置WIFI</h3><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'network={</span></span><br><span class="line"><span class="string">  ssid="your-ssid"</span></span><br><span class="line"><span class="string">  psk="your-psk"</span></span><br><span class="line"><span class="string">}'</span> | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf</span><br></pre></td></tr></tbody></table></figure>
 
 <p>如果你的WIFI设置没有启动</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ifconfig wlan0 up</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ifconfig wlan0 up</span><br></pre></td></tr></tbody></table></figure>
 
 <h3 id="设置apt国内镜像"><a href="#设置apt国内镜像" class="headerlink" title="设置apt国内镜像"></a>设置apt国内镜像</h3><p>阿里云的镜像还是很快的。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'deb http://mirrors.aliyun.com/raspbian/raspbian/ wheezy main non-free contrib\ndeb-src http://mirrors.aliyun.com/raspbian/raspbian/ wheezy main non-free contrib'</span> | sudo tee /etc/apt/sources.list.d/hypriot.list</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'deb http://mirrors.aliyun.com/raspbian/raspbian/ wheezy main non-free contrib\ndeb-src http://mirrors.aliyun.com/raspbian/raspbian/ wheezy main non-free contrib'</span> | sudo tee /etc/apt/sources.list.d/hypriot.list</span><br></pre></td></tr></tbody></table></figure>
 
 
-<h3 id="docker安装"><a href="#docker安装" class="headerlink" title="docker安装"></a>docker安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ssh pi@raspberrypi.local</span><br><span class="line">sudo apt-get install -y apt-transport-https</span><br><span class="line">wget -q https://packagecloud.io/gpg.key -O - | sudo apt-key add -</span><br><span class="line"><span class="built_in">echo</span> <span class="string">'deb https://packagecloud.io/Hypriot/Schatzkiste/debian/ wheezy main'</span> | sudo tee /etc/apt/sources.list.d/hypriot.list</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install -y docker-hypriot</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> docker</span><br></pre></td></tr></table></figure>
+<h3 id="docker安装"><a href="#docker安装" class="headerlink" title="docker安装"></a>docker安装</h3><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ssh pi@raspberrypi.local</span><br><span class="line">sudo apt-get install -y apt-transport-https</span><br><span class="line">wget -q https://packagecloud.io/gpg.key -O - | sudo apt-key add -</span><br><span class="line"><span class="built_in">echo</span> <span class="string">'deb https://packagecloud.io/Hypriot/Schatzkiste/debian/ wheezy main'</span> | sudo tee /etc/apt/sources.list.d/hypriot.list</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install -y docker-hypriot</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> docker</span><br></pre></td></tr></tbody></table></figure>
 
 <p>以非root权限运行docker</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo usermod -aG docker `whoami`</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo usermod -aG docker `whoami`</span><br></pre></td></tr></tbody></table></figure>
 
 <p>如果没有起作用，需要重新登录</p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://blog.hypriot.com/post/run-docker-rpi3-with-wifi/">Run Docker on a Raspberry Pi 3 with onboard WiFi</a></p>
@@ -444,8 +437,8 @@
 <p>知乎上有个人发了条message说”我baidu笔试被刷了，我觉得人生灰暗。。求开导” ，我非常蛋疼地已自己的经历来鼓励他，甚至有些自嘲，他没放在心上，以为是我的笑谈、</p>
 <p>可是我并没有放弃，我仍在找寻着机会，marine帮我找了很多信息，让我去尝试，鼓励我说，我可以的！于是我尝试了知乎，知乎的jobs网页做的非常酷，网页上的各职位需求用该职位所需的技术来作为媒介，显示需求什么样的人，我当时就很兴奋，觉得cool！于是投了简历，知乎的哥哥很快给了回应，并且给了我两个笔试题，一道是实现server监视特定端口的用户发言请求，请求是json格式，你要做的是判断它是否是垃圾发言，1分钟内不能多余10条，不能发10条重复的发言！</p>
 <p>我花了几天，实现了一个简易的server和client测试程序，我很蛋疼地用c实现，代码量还是挺大的，不过确实server的一些知识，重新复习了一下，比如，套接字如何稳定地读写，因为read，write是不阻塞的，所以你必须通过检查返回值来判断是否成功的读写！ 而且read，write返回值为-1时，还需判断是否是被中断引起的、</p>
-<p>等我交了之后，那个哥哥下午给我个电话，和我进行了一次电话面试，一开始就劈头盖脸地问我，为什么用K&amp;R写法，问我对它有多少了解，这种写法是一时兴起，我就如实说了，他反问了一句笔试觉得好玩吗？ 额。。我真的被震住了，太强势了，我当时非常怯懦地说没想清楚，我错了、 然后的电话就已他问我一些关于c的问题，和我还有别的技术兴趣等，可是我被开始K&amp;R问题弄得有点凌乱，似乎我觉得有股火在烧！是的，感觉很不爽，但是觉得自己没想清楚是有点虚，所以有种有火无处发的感觉！期间很插曲地手机没电了，关了5分钟机，我觉得炸鸡了、、</p>
-<p>补完剩下的电话之后，我有种虚脱的感觉，和marine谈论自己对于那个哥哥对我K&amp;R写法的强烈打击，marine的话当时就给了我一道灵光！我瞬间觉得人生充满了光明！他说，”我喜欢”是一个非常好的理由，K&amp;R是c语言最早的一代的写法，那时候混沌初开，但是充满了黑客的精神，以前的开源项目都是K&amp;R写法，我这么写首先是喜欢开源文化，黑客文化，其次那么多人那么写，我想和别人不一样，我想要不一样的写法，我想做一个cool的人，程序员不就是要追求cool，不就是要炫技吗，编译器支不支持是另一回事，这表明我的一种态度！</p>
+<p>等我交了之后，那个哥哥下午给我个电话，和我进行了一次电话面试，一开始就劈头盖脸地问我，为什么用K&R写法，问我对它有多少了解，这种写法是一时兴起，我就如实说了，他反问了一句笔试觉得好玩吗？ 额。。我真的被震住了，太强势了，我当时非常怯懦地说没想清楚，我错了、 然后的电话就已他问我一些关于c的问题，和我还有别的技术兴趣等，可是我被开始K&R问题弄得有点凌乱，似乎我觉得有股火在烧！是的，感觉很不爽，但是觉得自己没想清楚是有点虚，所以有种有火无处发的感觉！期间很插曲地手机没电了，关了5分钟机，我觉得炸鸡了、、</p>
+<p>补完剩下的电话之后，我有种虚脱的感觉，和marine谈论自己对于那个哥哥对我K&R写法的强烈打击，marine的话当时就给了我一道灵光！我瞬间觉得人生充满了光明！他说，”我喜欢”是一个非常好的理由，K&R是c语言最早的一代的写法，那时候混沌初开，但是充满了黑客的精神，以前的开源项目都是K&R写法，我这么写首先是喜欢开源文化，黑客文化，其次那么多人那么写，我想和别人不一样，我想要不一样的写法，我想做一个cool的人，程序员不就是要追求cool，不就是要炫技吗，编译器支不支持是另一回事，这表明我的一种态度！</p>
 <p>我非常赞同他说的话，好像说出了心声，但是既喜且悲，悲的是因为自己和人的打交道太少，自己又怯懦，不能强势地表达出自己的想法，我觉得他们不要我也是情理之中，一个不敢说出自己意见的人，怎么配说自己是程序员哪！我顿时有种自惭、不过也为我发现自己这个巨大的缺失而高兴！</p>
 <p>突然面试的机会又来了，以前投过ibm，前两天ibm跟我说要给我视频面试，我很高兴，又有机会来找到自己的不足！ibm的哥哥人很好，问了我一下面试的基础问题，问了我一下和团队合作时，对队友的一些看法，最后的时候还给我了建议：1. 下次面试让室友知道，别让他们光着膀子乱走！ 2. 准备自我介绍  3. 加强表达能力、 三个建议很中肯！很感谢他！</p>
 <p>程序水平对我反而是其次了，和人的沟通才是重点，毕竟合作是大项目的基础！！！</p>
@@ -508,7 +501,7 @@
                 <div>
                     
                     <figure class="image is-128x128 has-mb-6">
-                        <img class="is-rounded" src="https://scontent-ams4-1.cdninstagram.com/v/t51.2885-19/s320x320/73497413_448687199127642_4593963213837565952_n.jpg?_nc_ht=scontent-ams4-1.cdninstagram.com&amp;oh=e273f9e53667c4d64c3c555baa12345f&amp;oe=5E7F3D90" alt="Songrong">
+                        <img class="is-rounded" src="https://scontent-ams4-1.cdninstagram.com/v/t51.2885-19/s320x320/73497413_448687199127642_4593963213837565952_n.jpg?_nc_ht=scontent-ams4-1.cdninstagram.com&oh=e273f9e53667c4d64c3c555baa12345f&oe=5E7F3D90" alt="Songrong">
                     </figure>
                     
                     <p class="is-size-4 is-block">
@@ -577,29 +570,25 @@
         
         <div class="level is-mobile">
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Github" href="https://github.com/songrgg">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/songrgg">
                 
                 <i class="fab fa-github"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Instagram" href="https://www.instagram.com/jiangsongrong">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Instagram" href="https://www.instagram.com/jiangsongrong">
                 
                 <i class="fab fa-instagram"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
                 
                 <i class="fab fa-linkedin"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="RSS" href="/atom.xml">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="RSS" href="/atom.xml">
                 
                 <i class="fas fa-rss"></i>
                 
@@ -764,14 +753,14 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards &amp; alertings using Grafana API</a>
+                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -1663,14 +1652,14 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards &amp; alertings using Grafana API</a>
+                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -2477,13 +2466,12 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    SongRong&#39;s Experience
+                    SongRong's Experience
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2020 songrgg&nbsp;
-                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
-                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                © 2020 songrgg 
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
                 
                 </p>
             </div>
@@ -2560,7 +2548,7 @@ var IcarusThemeSettings = {
     <h6>Your browser is out-of-date!</h6>
     <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
             my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
 <script>
@@ -2623,7 +2611,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="searchbox ins-search">
     <div class="searchbox-container ins-search-container">
         <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something..." />
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
             <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="searchbox-result-wrapper ins-section-wrapper">
@@ -2650,5 +2638,5 @@ document.addEventListener('DOMContentLoaded', function () {
 <link rel="stylesheet" href="/css/search.css">
 <link rel="stylesheet" href="/css/insight.css">
     
-</body>
-</html>
+
+<script type="text/javascript" charset="utf-8" src="/js/lazyload-plugin/lazyload.intersectionObserver.min.js"></script></body></html>

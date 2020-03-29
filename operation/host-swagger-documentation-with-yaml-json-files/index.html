@@ -1,25 +1,23 @@
-<!DOCTYPE html>
-<html  lang="en">
-<head>
-    <meta charset="utf-8" />
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8">
 
-<meta name="generator" content="Hexo 4.2.0" />
+<meta name="generator" content="Hexo 4.2.0">
 
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 <title>How to host Swagger documentation using yaml/json configuration files? - Blog | Songrgg</title>
 
 
     <meta name="description" content="Maintain the swagger documentation by Swagger Editor and then you can use the yaml files to generate online swagger documentation easily with Spring boot.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="How to host Swagger documentation using yaml&#x2F;json configuration files?">
+<meta property="og:title" content="How to host Swagger documentation using yaml/json configuration files?">
 <meta property="og:url" content="https://songrgg.github.io/operation/host-swagger-documentation-with-yaml-json-files/index.html">
 <meta property="og:site_name" content="Blog | Songrgg">
 <meta property="og:description" content="Maintain the swagger documentation by Swagger Editor and then you can use the yaml files to generate online swagger documentation easily with Spring boot.">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://songrgg.github.io/images/swagger_editor.webp">
 <meta property="article:published_time" content="2019-09-12T19:11:50.000Z">
-<meta property="article:modified_time" content="2020-03-20T19:02:13.403Z">
+<meta property="article:modified_time" content="2020-03-29T16:20:56.815Z">
 <meta property="article:author" content="songrgg">
 <meta property="article:tag" content="swagger">
 <meta property="article:tag" content="spring boot">
@@ -89,7 +87,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                SongRong&#39;s Experience
+                SongRong's Experience
             
             </a>
         </div>
@@ -97,20 +95,15 @@
             
             <div class="navbar-start">
                 
-                <a class="navbar-item"
-                href="/">Home</a>
+                <a class="navbar-item" href="/">Home</a>
                 
-                <a class="navbar-item"
-                href="/archives">Archives</a>
+                <a class="navbar-item" href="/archives">Archives</a>
                 
-                <a class="navbar-item"
-                href="/categories">Categories</a>
+                <a class="navbar-item" href="/categories">Categories</a>
                 
-                <a class="navbar-item"
-                href="/tags">Tags</a>
+                <a class="navbar-item" href="/tags">Tags</a>
                 
-                <a class="navbar-item"
-                href="/about">About</a>
+                <a class="navbar-item" href="/about">About</a>
                 
             </div>
             
@@ -135,7 +128,7 @@
 <div class="card">
     
     <div class="card-image">
-        <span  class="image is-7by1">
+        <span class="image is-7by1">
             <img class="thumbnail" src="/images/swagger_editor.webp" alt="How to host Swagger documentation using yaml/json configuration files?">
         </span>
     </div>
@@ -154,7 +147,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    2 minutes read (About 345 words)
+                    2 minutes read (About 352 words)
                 </span>
                 
                 
@@ -176,19 +169,20 @@
 <li>Redeploy the Spring boot project</li>
 </ol>
 <h2 id="How-to-setup-in-Spring-boot"><a href="#How-to-setup-in-Spring-boot" class="headerlink" title="How to setup in Spring boot?"></a>How to setup in Spring boot?</h2><p>Swagger provides swagger-ui and some jars to host a documentation, you can use Java annotations or yaml files to autogenerate the swagger documentation. The example below is using static yaml files to generate documentation.</p>
+<p>Demo project: <a href="https://github.com/songrgg/swaggerdemo">https://github.com/songrgg/swaggerdemo</a></p>
 <p><strong>src/main/resources/static/swagger-apis/api1/swagger.yaml</strong><br>The static yaml file is fetched from Swagger Editor, put it under the resources directory.</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">swagger:</span> <span class="string">"2.0"</span></span><br><span class="line"><span class="attr">info:</span></span><br><span class="line">  <span class="attr">description:</span> <span class="string">"This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters."</span></span><br><span class="line">  <span class="attr">version:</span> <span class="string">"1.0.0"</span></span><br><span class="line">  <span class="attr">title:</span> <span class="string">"Swagger Petstore"</span></span><br><span class="line">  <span class="attr">termsOfService:</span> <span class="string">"http://swagger.io/terms/"</span></span><br><span class="line">  <span class="attr">contact:</span></span><br><span class="line">    <span class="attr">email:</span> <span class="string">"apiteam@swagger.io"</span></span><br><span class="line">  <span class="attr">license:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">"Apache 2.0"</span></span><br><span class="line">    <span class="attr">url:</span> <span class="string">"http://www.apache.org/licenses/LICENSE-2.0.html"</span></span><br><span class="line"><span class="string">...</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">swagger:</span> <span class="string">"2.0"</span></span><br><span class="line"><span class="attr">info:</span></span><br><span class="line">  <span class="attr">description:</span> <span class="string">"This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters."</span></span><br><span class="line">  <span class="attr">version:</span> <span class="string">"1.0.0"</span></span><br><span class="line">  <span class="attr">title:</span> <span class="string">"Swagger Petstore"</span></span><br><span class="line">  <span class="attr">termsOfService:</span> <span class="string">"http://swagger.io/terms/"</span></span><br><span class="line">  <span class="attr">contact:</span></span><br><span class="line">    <span class="attr">email:</span> <span class="string">"apiteam@swagger.io"</span></span><br><span class="line">  <span class="attr">license:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">"Apache 2.0"</span></span><br><span class="line">    <span class="attr">url:</span> <span class="string">"http://www.apache.org/licenses/LICENSE-2.0.html"</span></span><br><span class="line"><span class="string">...</span></span><br></pre></td></tr></tbody></table></figure>
 
 <p><strong>Application.java</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableSwagger</span>2</span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">KrabDocsApplication</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(KrabDocsApplication<span class="class">.<span class="keyword">class</span>, <span class="title">args</span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Docket <span class="title">swagger</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Docket(SWAGGER_2)</span><br><span class="line">            .select()</span><br><span class="line">            .apis(RequestHandlerSelectors.any())</span><br><span class="line">            .paths(PathSelectors.any())</span><br><span class="line">            .build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableSwagger</span>2</span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SwaggerDemoApplication</span> </span>{</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>{</span><br><span class="line">        SpringApplication.run(SwaggerDemoApplication<span class="class">.<span class="keyword">class</span>, <span class="title">args</span>)</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Docket <span class="title">swagger</span><span class="params">()</span> </span>{</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Docket(SWAGGER_2)</span><br><span class="line">            .select()</span><br><span class="line">            .apis(RequestHandlerSelectors.any())</span><br><span class="line">            .paths(PathSelectors.any())</span><br><span class="line">            .build();</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <p><strong>SwaggerSpecConfig.java</strong><br>Read the static yaml files:<br><code>src/main/resources/swagger-apis/api1/swagger.yaml</code> and <code>src/main/resources/swagger-apis/api2/swagger.yaml</code>.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SwaggerSpecConfig</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Primary</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> SwaggerResourcesProvider <span class="title">swaggerResourcesProvider</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">        InMemorySwaggerResourcesProvider defaultResourcesProvider)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> () -&gt; &#123;</span><br><span class="line">            List&lt;SwaggerResource&gt; resources = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">            Arrays.asList(<span class="string">"api1"</span>, <span class="string">"api2"</span>)</span><br><span class="line">                .forEach(resourceName -&gt; resources.add(loadResource(resourceName)));</span><br><span class="line">            <span class="keyword">return</span> resources;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> SwaggerResource <span class="title">loadResource</span><span class="params">(String resource)</span> </span>&#123;</span><br><span class="line">        SwaggerResource wsResource = <span class="keyword">new</span> SwaggerResource();</span><br><span class="line">        wsResource.setName(resource);</span><br><span class="line">        wsResource.setSwaggerVersion(<span class="string">"2.0"</span>);</span><br><span class="line">        wsResource.setLocation(<span class="string">"/swagger-apis/"</span> + resource + <span class="string">"/swagger.yaml"</span>);</span><br><span class="line">        <span class="keyword">return</span> wsResource;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SwaggerSpecConfig</span> </span>{</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Primary</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> SwaggerResourcesProvider <span class="title">swaggerResourcesProvider</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">        InMemorySwaggerResourcesProvider defaultResourcesProvider)</span> </span>{</span><br><span class="line">        <span class="keyword">return</span> () -> {</span><br><span class="line">            List<swaggerresource> resources = <span class="keyword">new</span> ArrayList<>();</swaggerresource></span><br><span class="line">            Arrays.asList(<span class="string">"api1"</span>, <span class="string">"api2"</span>)</span><br><span class="line">                .forEach(resourceName -> resources.add(loadResource(resourceName)));</span><br><span class="line">            <span class="keyword">return</span> resources;</span><br><span class="line">        };</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> SwaggerResource <span class="title">loadResource</span><span class="params">(String resource)</span> </span>{</span><br><span class="line">        SwaggerResource wsResource = <span class="keyword">new</span> SwaggerResource();</span><br><span class="line">        wsResource.setName(resource);</span><br><span class="line">        wsResource.setSwaggerVersion(<span class="string">"2.0"</span>);</span><br><span class="line">        wsResource.setLocation(<span class="string">"/swagger-apis/"</span> + resource + <span class="string">"/swagger.yaml"</span>);</span><br><span class="line">        <span class="keyword">return</span> wsResource;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <p><strong>pom.xml</strong></p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.springfox<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springfox-swagger-common<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.9.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.springfox<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springfox-swagger-ui<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.9.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.springfox<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springfox-swagger2<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.9.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag"><<span class="name">dependency</span>></span></span><br><span class="line">    <span class="tag"><<span class="name">groupId</span>></span>io.springfox<span class="tag"><!--<span class="name"-->groupId</span>></span><br><span class="line">    <span class="tag"><<span class="name">artifactId</span>></span>springfox-swagger-common<span class="tag"><!--<span class="name"-->artifactId</span>></span><br><span class="line">    <span class="tag"><<span class="name">version</span>></span>2.9.2<span class="tag"><!--<span class="name"-->version</span>></span><br><span class="line"><span class="tag"><!--<span class="name"-->dependency</span>></span><br><span class="line"></span><br><span class="line"><span class="tag"><<span class="name">dependency</span>></span></span><br><span class="line">    <span class="tag"><<span class="name">groupId</span>></span>io.springfox<span class="tag"><!--<span class="name"-->groupId</span>></span><br><span class="line">    <span class="tag"><<span class="name">artifactId</span>></span>springfox-swagger-ui<span class="tag"><!--<span class="name"-->artifactId</span>></span><br><span class="line">    <span class="tag"><<span class="name">version</span>></span>2.9.2<span class="tag"><!--<span class="name"-->version</span>></span><br><span class="line"><span class="tag"><!--<span class="name"-->dependency</span>></span><br><span class="line"></span><br><span class="line"><span class="tag"><<span class="name">dependency</span>></span></span><br><span class="line">    <span class="tag"><<span class="name">groupId</span>></span>io.springfox<span class="tag"><!--<span class="name"-->groupId</span>></span><br><span class="line">    <span class="tag"><<span class="name">artifactId</span>></span>springfox-swagger2<span class="tag"><!--<span class="name"-->artifactId</span>></span><br><span class="line">    <span class="tag"><<span class="name">version</span>></span>2.9.2<span class="tag"><!--<span class="name"-->version</span>></span><br><span class="line"><span class="tag"><!--<span class="name"-->dependency</span>></span><br></pre></td></tr></tbody></table></figure>
 
-<p>Run the spring boot server and access <code>&lt;hostname&gt;/swagger-ui.html</code> to see the documentation.</p>
+<p>Run the spring boot server and access <code><hostname>/swagger-ui.html</hostname></code> to see the documentation.</p>
 
         </div>
         
@@ -205,7 +199,7 @@
         
         
 <div class="sharethis-inline-share-buttons"></div>
-<script type='text/javascript' src='//platform-api.sharethis.com/js/sharethis.js#property=5df54e9fee0f770012eb9f87&amp;product=inline-share-buttons&amp;cms=sop' async='async'></script>
+<script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5df54e9fee0f770012eb9f87&product=inline-share-buttons&cms=sop" async="async"></script>
 
         
     </div>
@@ -281,11 +275,11 @@
         "genre": "operation",
         "datePublished": "2019-09-12",
         "dateCreated": "2019-09-12",
-        "dateModified": "2020-03-20",
+        "dateModified": "2020-03-29",
         "url": "https://songrgg.github.io/operation/host-swagger-documentation-with-yaml-json-files/",
         "mainEntityOfPage": "https://songrgg.github.io/operation/host-swagger-documentation-with-yaml-json-files/",
         "description": "Maintain the swagger documentation by Swagger Editor and then you can use the yaml files to generate online swagger documentation easily with Spring boot.",
-        "wordCount": 795
+        "wordCount": 798
     }
 </script>
 
@@ -305,7 +299,7 @@
                 <div>
                     
                     <figure class="image is-128x128 has-mb-6">
-                        <img class="is-rounded" src="https://scontent-ams4-1.cdninstagram.com/v/t51.2885-19/s320x320/73497413_448687199127642_4593963213837565952_n.jpg?_nc_ht=scontent-ams4-1.cdninstagram.com&amp;oh=e273f9e53667c4d64c3c555baa12345f&amp;oe=5E7F3D90" alt="Songrong">
+                        <img class="is-rounded" src="https://scontent-ams4-1.cdninstagram.com/v/t51.2885-19/s320x320/73497413_448687199127642_4593963213837565952_n.jpg?_nc_ht=scontent-ams4-1.cdninstagram.com&oh=e273f9e53667c4d64c3c555baa12345f&oe=5E7F3D90" alt="Songrong">
                     </figure>
                     
                     <p class="is-size-4 is-block">
@@ -374,29 +368,25 @@
         
         <div class="level is-mobile">
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Github" href="https://github.com/songrgg">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/songrgg">
                 
                 <i class="fab fa-github"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Instagram" href="https://www.instagram.com/jiangsongrong">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Instagram" href="https://www.instagram.com/jiangsongrong">
                 
                 <i class="fab fa-instagram"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
                 
                 <i class="fab fa-linkedin"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="RSS" href="/atom.xml">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="RSS" href="/atom.xml">
                 
                 <i class="fas fa-rss"></i>
                 
@@ -561,14 +551,14 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards &amp; alertings using Grafana API</a>
+                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -1460,14 +1450,14 @@
             
             <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards &amp; alertings using Grafana API">
+                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards &amp; alertings using Grafana API</a>
+                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                     </p>
@@ -2274,13 +2264,12 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    SongRong&#39;s Experience
+                    SongRong's Experience
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2020 songrgg&nbsp;
-                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
-                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                © 2020 songrgg 
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
                 
                 </p>
             </div>
@@ -2357,7 +2346,7 @@ var IcarusThemeSettings = {
     <h6>Your browser is out-of-date!</h6>
     <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
             my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
 <script>
@@ -2420,7 +2409,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="searchbox ins-search">
     <div class="searchbox-container ins-search-container">
         <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something..." />
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
             <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="searchbox-result-wrapper ins-section-wrapper">
@@ -2447,5 +2436,5 @@ document.addEventListener('DOMContentLoaded', function () {
 <link rel="stylesheet" href="/css/search.css">
 <link rel="stylesheet" href="/css/insight.css">
     
-</body>
-</html>
+
+<script type="text/javascript" charset="utf-8" src="/js/lazyload-plugin/lazyload.intersectionObserver.min.js"></script></body></html>
