@@ -1,9 +1,11 @@
-<!DOCTYPE html><html lang="en"><head>
-    <meta charset="utf-8">
+<!DOCTYPE html>
+<html  lang="en">
+<head>
+    <meta charset="utf-8" />
 
-<meta name="generator" content="Hexo 4.2.0">
+<meta name="generator" content="Hexo 4.2.0" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
 <title>Blog | Songrgg</title>
 
@@ -88,7 +90,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                SongRong's Experience
+                SongRong&#39;s Experience
             
             </a>
         </div>
@@ -96,15 +98,20 @@
             
             <div class="navbar-start">
                 
-                <a class="navbar-item" href="/">Home</a>
+                <a class="navbar-item"
+                href="/">Home</a>
                 
-                <a class="navbar-item" href="/archives">Archives</a>
+                <a class="navbar-item"
+                href="/archives">Archives</a>
                 
-                <a class="navbar-item" href="/categories">Categories</a>
+                <a class="navbar-item"
+                href="/categories">Categories</a>
                 
-                <a class="navbar-item" href="/tags">Tags</a>
+                <a class="navbar-item"
+                href="/tags">Tags</a>
                 
-                <a class="navbar-item" href="/about">About</a>
+                <a class="navbar-item"
+                href="/about">About</a>
                 
             </div>
             
@@ -125,6 +132,131 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main">
+    
+
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2017-03-25T23:00:00.000Z">2017-03-26</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/microservice/">microservice</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    4 minutes read (About 571 words)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/microservice/microservice-in-action-1/">微服务实践一: 架构图谱</a>
+            
+        </h1>
+        <div class="content">
+            <h3 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h3><ol>
+<li>服务拆分与服务发现</li>
+<li>微服务框架选择</li>
+<li>服务间通信</li>
+<li><a href="/microservice/microservice-in-action-3/">服务编排</a></li>
+<li><a href="/microservice/microservice-in-action-4/">配置管理</a></li>
+<li><a href="/microservice/microservice-in-action-2/">服务容错与降级</a></li>
+<li>监控<ul>
+<li>API监控</li>
+<li>服务调用链</li>
+<li>服务负载</li>
+<li>基础依赖监控</li>
+</ul>
+</li>
+<li>日志分析</li>
+</ol>
+<h3 id="Monolithic-vs-Microservice"><a href="#Monolithic-vs-Microservice" class="headerlink" title="Monolithic vs Microservice"></a>Monolithic vs Microservice</h3><table>
+<thead>
+<tr>
+<th></th>
+<th align="center">Monolithic</th>
+<th align="right">Microservice</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>开发测试</td>
+<td align="center">Java类语言项目越大，运行调试需要越多的编译时间，本地调试有较多依赖，况且业务复杂后不易新人上手</td>
+<td align="right">只有部分功能的代码，运行更快速，根据业务划分，方便新人上手</td>
+</tr>
+<tr>
+<td>部署</td>
+<td align="center">更新整个项目</td>
+<td align="right">更新一个微服务</td>
+</tr>
+<tr>
+<td>生产调试</td>
+<td align="center">日志集中，调试方便</td>
+<td align="right">日志分散，服务依赖复杂；拓容简便</td>
+</tr>
+</tbody></table>
+<p>这两种架构视乎业务的复杂程度和代码量的大小，复杂程度低于一定程度，还是单一应用开发更快速，部署更加容易，因为服务拆分和线上的调试这些都是需要成本，反之，当业务不断增加，代码不断膨胀，服务拆分显得逐渐重要，公共功能能抽出来做成基础服务，各个业务所需的轮子也不需要重新造一遍，反而节省了开发成本，同时对于新人的加入，由于服务职责单一，让新人进来一个一个服务地熟悉，好过于一个大而全的项目。</p>
+<h3 id="微服务基础架构"><a href="#微服务基础架构" class="headerlink" title="微服务基础架构"></a>微服务基础架构</h3><p><img src="/images/Microservice.webp" alt="部署架构"></p>
+<h3 id="处理流程"><a href="#处理流程" class="headerlink" title="处理流程"></a>处理流程</h3><ol>
+<li>浏览器发起下单请求到负载均衡(LB)</li>
+<li>负载均衡派发请求到API gateway</li>
+<li>API gateway查询服务发现，找到user服务和store服务，将用户信息和商品ID发送给store服务，</li>
+<li>store服务查询MySQL，找到商品信息，生成订单信息，将请求发送给payment服务</li>
+<li>payment服务根据用户指定的支付渠道，向第三方服务发起请求，存储订单信息，并返回订单状态</li>
+<li>store服务 -&gt; API gateway -&gt; LB</li>
+<li>LB返回数据到浏览器</li>
+</ol>
+<h3 id="微服务技术"><a href="#微服务技术" class="headerlink" title="微服务技术"></a>微服务技术</h3><p><img src="/images/Microservice-SKILLS.png" alt="技术图谱"></p>
+
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "微服务实践一: 架构图谱",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "architecture microservice",
+        "genre": "microservice",
+        "datePublished": "2017-03-26",
+        "dateCreated": "2017-03-26",
+        "dateModified": "2020-03-20",
+        "url": "https://songrgg.github.io/microservice/microservice-in-action-1/",
+        "mainEntityOfPage": "https://songrgg.github.io/microservice/microservice-in-action-1/",
+        "description": "目录服务拆分与服务发现微服务框架选择服务间通信服务编排配置管理服务容错与降级监控API监控服务调用链服务负载基础依赖监控日志分析Monolithic vs MicroserviceMonolithicMicroservice开发测试Java类语言项目越大，运行调试需要越多的编译时间，本地调试有较多依赖，况且业务复杂后不易新人上手只有部分功能的代",
+        "wordCount": 47
+    }
+</script>
+
+
+
     
 
 <div class="card">
@@ -158,19 +290,19 @@
         <div class="content">
             <h3 id="SD卡制作"><a href="#SD卡制作" class="headerlink" title="SD卡制作"></a>SD卡制作</h3><p>准备一张4GB或者以上的micro sd卡，下载<a href="https://www.raspberrypi.org/downloads/raspbian/">系统镜像</a>，例如raspbian-jessie-lite.img，并使用刷机工具，如<code>Pi filler</code>将其写入sd卡，当然也可以使用命令行的dd，或者其它工具，要注意的是sd卡必须是fat32格式的文件系统，不然树莓派是无法识别的。</p>
 <h3 id="开机启动"><a href="#开机启动" class="headerlink" title="开机启动"></a>开机启动</h3><p>先把所有的线材都连上之后，最后再通电，应该很顺利能看到启动的系统。</p>
-<h3 id="设置WIFI"><a href="#设置WIFI" class="headerlink" title="设置WIFI"></a>设置WIFI</h3><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'network={</span></span><br><span class="line"><span class="string">  ssid="your-ssid"</span></span><br><span class="line"><span class="string">  psk="your-psk"</span></span><br><span class="line"><span class="string">}'</span> | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="设置WIFI"><a href="#设置WIFI" class="headerlink" title="设置WIFI"></a>设置WIFI</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'network=&#123;</span></span><br><span class="line"><span class="string">  ssid="your-ssid"</span></span><br><span class="line"><span class="string">  psk="your-psk"</span></span><br><span class="line"><span class="string">&#125;'</span> | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf</span><br></pre></td></tr></table></figure>
 
 <p>如果你的WIFI设置没有启动</p>
-<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ifconfig wlan0 up</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ifconfig wlan0 up</span><br></pre></td></tr></table></figure>
 
 <h3 id="设置apt国内镜像"><a href="#设置apt国内镜像" class="headerlink" title="设置apt国内镜像"></a>设置apt国内镜像</h3><p>阿里云的镜像还是很快的。</p>
-<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'deb http://mirrors.aliyun.com/raspbian/raspbian/ wheezy main non-free contrib\ndeb-src http://mirrors.aliyun.com/raspbian/raspbian/ wheezy main non-free contrib'</span> | sudo tee /etc/apt/sources.list.d/hypriot.list</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'deb http://mirrors.aliyun.com/raspbian/raspbian/ wheezy main non-free contrib\ndeb-src http://mirrors.aliyun.com/raspbian/raspbian/ wheezy main non-free contrib'</span> | sudo tee /etc/apt/sources.list.d/hypriot.list</span><br></pre></td></tr></table></figure>
 
 
-<h3 id="docker安装"><a href="#docker安装" class="headerlink" title="docker安装"></a>docker安装</h3><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ssh pi@raspberrypi.local</span><br><span class="line">sudo apt-get install -y apt-transport-https</span><br><span class="line">wget -q https://packagecloud.io/gpg.key -O - | sudo apt-key add -</span><br><span class="line"><span class="built_in">echo</span> <span class="string">'deb https://packagecloud.io/Hypriot/Schatzkiste/debian/ wheezy main'</span> | sudo tee /etc/apt/sources.list.d/hypriot.list</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install -y docker-hypriot</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> docker</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="docker安装"><a href="#docker安装" class="headerlink" title="docker安装"></a>docker安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ssh pi@raspberrypi.local</span><br><span class="line">sudo apt-get install -y apt-transport-https</span><br><span class="line">wget -q https://packagecloud.io/gpg.key -O - | sudo apt-key add -</span><br><span class="line"><span class="built_in">echo</span> <span class="string">'deb https://packagecloud.io/Hypriot/Schatzkiste/debian/ wheezy main'</span> | sudo tee /etc/apt/sources.list.d/hypriot.list</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install -y docker-hypriot</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> docker</span><br></pre></td></tr></table></figure>
 
 <p>以非root权限运行docker</p>
-<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo usermod -aG docker `whoami`</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo usermod -aG docker `whoami`</span><br></pre></td></tr></table></figure>
 
 <p>如果没有起作用，需要重新登录</p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://blog.hypriot.com/post/run-docker-rpi3-with-wifi/">Run Docker on a Raspberry Pi 3 with onboard WiFi</a></p>
@@ -250,13 +382,13 @@
             <blockquote>
 <p>选择一个工具分析PHP函数调用的资源耗用明细，以图表化的形式展现，方便优化代码。</p>
 </blockquote>
-<h2 id="安装xhprof"><a href="#安装xhprof" class="headerlink" title="安装xhprof"></a>安装xhprof</h2><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pecl install xhprof-beta</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="安装xhprof"><a href="#安装xhprof" class="headerlink" title="安装xhprof"></a>安装xhprof</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pecl install xhprof-beta</span><br></pre></td></tr></table></figure>
 
 <p>在php.ini引用的extension中添加<code>extension=xhprof.so</code></p>
 <h2 id="GUI"><a href="#GUI" class="headerlink" title="GUI"></a>GUI</h2><p>这里选择了xhgui，它的原理是在需要测试性能的脚本前加上PHP的一段代码，将收集到的性能数据存储到文件或者mongodb等存储介质中去。</p>
-<h4 id="MongoDB"><a href="#MongoDB" class="headerlink" title="MongoDB"></a>MongoDB</h4><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install mongodb</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="MongoDB"><a href="#MongoDB" class="headerlink" title="MongoDB"></a>MongoDB</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install mongodb</span><br></pre></td></tr></table></figure>
 
-<h4 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h4><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /var/www</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/perftools/xhgui.git</span><br><span class="line"><span class="built_in">cd</span> xhgui</span><br><span class="line">php install.php</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /var/www</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/perftools/xhgui.git</span><br><span class="line"><span class="built_in">cd</span> xhgui</span><br><span class="line">php install.php</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li><p>如果不能以root身份运行，那么sudo -u www-data php install.php</p>
@@ -267,10 +399,10 @@
 </li>
 </ul>
 <h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><p>如前面说的原理是在头部添加一段PHP代码，这里通过在Nginx里配置，或者PHP ini auto_prepend_file在php.ini中添加auto_prepend_file。</p>
-<figure class="highlight nginx"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~ \.php</span> {</span><br><span class="line">    <span class="attribute">include</span> fastcgi_params;</span><br><span class="line">    <span class="attribute">fastcgi_buffers</span> <span class="number">128</span> <span class="number">4k</span>;</span><br><span class="line">    <span class="attribute">fastcgi_pass</span>   <span class="number">127.0.0.1:9000</span>;</span><br><span class="line">    <span class="attribute">fastcgi_index</span>  index.php;</span><br><span class="line">    <span class="attribute">fastcgi_param</span>  SCRIPT_FILENAME  <span class="variable">$document_root</span><span class="variable">$fastcgi_script_name</span>;</span><br><span class="line">    <span class="attribute">fastcgi_param</span>  PHP_VALUE <span class="string">"auto_prepend_file=\"/opt/htdocs/xhgui/external/header.php\""</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~ \.php</span> &#123;</span><br><span class="line">    <span class="attribute">include</span> fastcgi_params;</span><br><span class="line">    <span class="attribute">fastcgi_buffers</span> <span class="number">128</span> <span class="number">4k</span>;</span><br><span class="line">    <span class="attribute">fastcgi_pass</span>   <span class="number">127.0.0.1:9000</span>;</span><br><span class="line">    <span class="attribute">fastcgi_index</span>  index.php;</span><br><span class="line">    <span class="attribute">fastcgi_param</span>  SCRIPT_FILENAME  <span class="variable">$document_root</span><span class="variable">$fastcgi_script_name</span>;</span><br><span class="line">    <span class="attribute">fastcgi_param</span>  PHP_VALUE <span class="string">"auto_prepend_file=\"/opt/htdocs/xhgui/external/header.php\""</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>在config目录下添加config.php配置</p>
-<figure class="highlight php"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"><?php</span></span><br><span class="line"><span class="keyword">return</span> <span class="keyword">array</span>(</span><br><span class="line">    <span class="string">'debug'</span> => <span class="keyword">false</span>,</span><br><span class="line">    <span class="string">'mode'</span> => <span class="string">'development'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Can be either mongodb or file.</span></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    'save.handler' => 'file',</span></span><br><span class="line"><span class="comment">    'save.handler.filename' => dirname(__DIR__) . '/cache/' . 'xhgui.data.' . microtime(true) . '_' . substr(md5($url), 0, 6),</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="string">'save.handler'</span> => <span class="string">'mongodb'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Needed for file save handler. Beware of file locking. You can adujst this file path</span></span><br><span class="line">    <span class="comment">// to reduce locking problems (eg uniqid, time ...)</span></span><br><span class="line">    <span class="comment">//'save.handler.filename' => __DIR__.'/../data/xhgui_'.date('Ymd').'.dat',</span></span><br><span class="line">    <span class="string">'db.host'</span> => <span class="string">'127.0.0.1:27017'</span>,</span><br><span class="line">    <span class="string">'db.db'</span> => <span class="string">'xhprof'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Allows you to pass additional options like replicaSet to MongoClient.</span></span><br><span class="line">    <span class="comment">// 'username', 'password' and 'db' (where the user is added)</span></span><br><span class="line">    <span class="string">'db.options'</span> => <span class="keyword">array</span>(),</span><br><span class="line">    <span class="string">'templates.path'</span> => dirname(<span class="keyword">__DIR__</span>) . <span class="string">'/src/templates'</span>,</span><br><span class="line">    <span class="string">'date.format'</span> => <span class="string">'M jS H:i:s'</span>,</span><br><span class="line">    <span class="string">'detail.count'</span> => <span class="number">6</span>,</span><br><span class="line">    <span class="string">'page.limit'</span> => <span class="number">25</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Profile 1 in 100 requests.</span></span><br><span class="line">    <span class="comment">// You can return true to profile every request.</span></span><br><span class="line">    <span class="string">'profiler.enable'</span> => <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</span><br><span class="line">        <span class="keyword">return</span> rand(<span class="number">1</span>, <span class="number">100</span>) === <span class="number">3</span>;</span><br><span class="line">    },</span><br><span class="line"></span><br><span class="line">    <span class="string">'profiler.simple_url'</span> => <span class="function"><span class="keyword">function</span><span class="params">($url)</span> </span>{</span><br><span class="line">        <span class="keyword">return</span> preg_replace(<span class="string">'/\=\d+/'</span>, <span class="string">''</span>, $url);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">);</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">return</span> <span class="keyword">array</span>(</span><br><span class="line">    <span class="string">'debug'</span> =&gt; <span class="keyword">false</span>,</span><br><span class="line">    <span class="string">'mode'</span> =&gt; <span class="string">'development'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Can be either mongodb or file.</span></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    'save.handler' =&gt; 'file',</span></span><br><span class="line"><span class="comment">    'save.handler.filename' =&gt; dirname(__DIR__) . '/cache/' . 'xhgui.data.' . microtime(true) . '_' . substr(md5($url), 0, 6),</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="string">'save.handler'</span> =&gt; <span class="string">'mongodb'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Needed for file save handler. Beware of file locking. You can adujst this file path</span></span><br><span class="line">    <span class="comment">// to reduce locking problems (eg uniqid, time ...)</span></span><br><span class="line">    <span class="comment">//'save.handler.filename' =&gt; __DIR__.'/../data/xhgui_'.date('Ymd').'.dat',</span></span><br><span class="line">    <span class="string">'db.host'</span> =&gt; <span class="string">'127.0.0.1:27017'</span>,</span><br><span class="line">    <span class="string">'db.db'</span> =&gt; <span class="string">'xhprof'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Allows you to pass additional options like replicaSet to MongoClient.</span></span><br><span class="line">    <span class="comment">// 'username', 'password' and 'db' (where the user is added)</span></span><br><span class="line">    <span class="string">'db.options'</span> =&gt; <span class="keyword">array</span>(),</span><br><span class="line">    <span class="string">'templates.path'</span> =&gt; dirname(<span class="keyword">__DIR__</span>) . <span class="string">'/src/templates'</span>,</span><br><span class="line">    <span class="string">'date.format'</span> =&gt; <span class="string">'M jS H:i:s'</span>,</span><br><span class="line">    <span class="string">'detail.count'</span> =&gt; <span class="number">6</span>,</span><br><span class="line">    <span class="string">'page.limit'</span> =&gt; <span class="number">25</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Profile 1 in 100 requests.</span></span><br><span class="line">    <span class="comment">// You can return true to profile every request.</span></span><br><span class="line">    <span class="string">'profiler.enable'</span> =&gt; <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> rand(<span class="number">1</span>, <span class="number">100</span>) === <span class="number">3</span>;</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="string">'profiler.simple_url'</span> =&gt; <span class="function"><span class="keyword">function</span><span class="params">($url)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> preg_replace(<span class="string">'/\=\d+/'</span>, <span class="string">''</span>, $url);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 
 
         </div>
@@ -436,9 +568,9 @@
 <h3 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h3><ol>
 <li>签名的时候注意大小写</li>
 <li>签名时候用的url需要和当前位置的url保持一致</li>
-<li>微信二次分享失败<br> 微信在第二次分享的链接里增加了后缀，如<code>?from=singlemessage&isappinstalled=1</code>，这里需要转义</li>
+<li>微信二次分享失败<br> 微信在第二次分享的链接里增加了后缀，如<code>?from=singlemessage&amp;isappinstalled=1</code>，这里需要转义</li>
 </ol>
-<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$.ajax({</span><br><span class="line">    url: <span class="string">'https://domain/wechatshare/sign?url='</span> + <span class="built_in">encodeURIComponent</span>(<span class="built_in">window</span>.location.href.split(<span class="string">'#'</span>)[<span class="number">0</span>]),</span><br><span class="line">    type: <span class="string">'get'</span>,</span><br><span class="line">    success: <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>{</span><br><span class="line">        data = <span class="built_in">JSON</span>.parse(data)</span><br><span class="line">        data.jsApiList = [</span><br><span class="line">            <span class="string">'onMenuShareTimeline'</span>, <span class="string">'onMenuShareAppMessage'</span>,<span class="string">'onMenuShareQQ'</span></span><br><span class="line">        ];</span><br><span class="line">        wx.config(data);</span><br><span class="line">    },</span><br><span class="line">    error: <span class="function"><span class="keyword">function</span> (<span class="params">xhr, textStatus</span>) </span>{</span><br><span class="line">    }</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">    url: <span class="string">'https://domain/wechatshare/sign?url='</span> + <span class="built_in">encodeURIComponent</span>(<span class="built_in">window</span>.location.href.split(<span class="string">'#'</span>)[<span class="number">0</span>]),</span><br><span class="line">    type: <span class="string">'get'</span>,</span><br><span class="line">    success: <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">        data = <span class="built_in">JSON</span>.parse(data)</span><br><span class="line">        data.jsApiList = [</span><br><span class="line">            <span class="string">'onMenuShareTimeline'</span>, <span class="string">'onMenuShareAppMessage'</span>,<span class="string">'onMenuShareQQ'</span></span><br><span class="line">        ];</span><br><span class="line">        wx.config(data);</span><br><span class="line">    &#125;,</span><br><span class="line">    error: <span class="function"><span class="keyword">function</span> (<span class="params">xhr, textStatus</span>) </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
         </div>
         
@@ -515,7 +647,7 @@
             <h3 id="方案1-应用层支持"><a href="#方案1-应用层支持" class="headerlink" title="方案1: 应用层支持"></a>方案1: 应用层支持</h3><p>MySQL默认的数据库编码是utf8，对于emoji文字是不能直接存储的，要想存储emoji，有许多库支持对emoji的转换，例如将😊转存为<code>:smile:</code>，放在数据库里，在从数据库里取出来的时候，再转换为😊，这是应用层的方案。</p>
 <h3 id="方案2-存储层支持"><a href="#方案2-存储层支持" class="headerlink" title="方案2: 存储层支持"></a>方案2: 存储层支持</h3><p>MySQL编码设置为utf8mb4，直接支持emoji，不需要应用层的改动。  </p>
 <p>注意事项:<br><strong>MySQL索引的长度不能大于767字节, utf8 1个字存3byte, utf8mb4存4byte，相对应VARCHAR的字节数分别是255和191，所以要把索引字段的长度限制到191。</strong></p>
-<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <table1> <span class="keyword">MODIFY</span> <span class="keyword">COLUMN</span> <col1_indexed> <span class="built_in">VARCHAR</span>(<span class="number">191</span>);</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <table1> <span class="keyword">CONVERT</span> <span class="keyword">TO</span> <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8mb4 <span class="keyword">COLLATE</span> utf8mb4_unicode_ci;</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> &lt;table1&gt; <span class="keyword">MODIFY</span> <span class="keyword">COLUMN</span> &lt;col1_indexed&gt; <span class="built_in">VARCHAR</span>(<span class="number">191</span>);</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> &lt;table1&gt; <span class="keyword">CONVERT</span> <span class="keyword">TO</span> <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8mb4 <span class="keyword">COLLATE</span> utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure>
 
 
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
@@ -597,24 +729,24 @@
             <h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>数据库配置主从之后，如何在代码层面实现读写分离？  </p>
 <h4 id="用户自定义设置数据库路由"><a href="#用户自定义设置数据库路由" class="headerlink" title="用户自定义设置数据库路由"></a>用户自定义设置数据库路由</h4><p>Spring boot提供了<code>AbstractRoutingDataSource</code>根据用户定义的规则选择当前的数据库，这样我们可以在执行查询之前，设置读取从库，在执行完成后，恢复到主库。  </p>
 <p>实现可动态路由的数据源，在每次数据库查询操作前执行  </p>
-<figure class="highlight java"><figcaption><span>ReadWriteSplitRoutingDataSource.java</span></figcaption><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> songrgg</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 1.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReadWriteSplitRoutingDataSource</span> <span class="keyword">extends</span> <span class="title">AbstractRoutingDataSource</span> </span>{</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Object <span class="title">determineCurrentLookupKey</span><span class="params">()</span> </span>{</span><br><span class="line">        <span class="keyword">return</span> DbContextHolder.getDbType();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight java"><figcaption><span>ReadWriteSplitRoutingDataSource.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> songrgg</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 1.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReadWriteSplitRoutingDataSource</span> <span class="keyword">extends</span> <span class="title">AbstractRoutingDataSource</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Object <span class="title">determineCurrentLookupKey</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> DbContextHolder.getDbType();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>线程私有路由配置，用于<code>ReadWriteSplitRoutingDataSource</code>动态读取配置  </p>
-<figure class="highlight java"><figcaption><span>DbContextHolder.java</span></figcaption><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> songrgg</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 1.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DbContextHolder</span> </span>{</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">enum</span> DbType {</span><br><span class="line">        MASTER,</span><br><span class="line">        SLAVE</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal<DbType> contextHolder = <span class="keyword">new</span> ThreadLocal<>();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setDbType</span><span class="params">(DbType dbType)</span> </span>{</span><br><span class="line">        <span class="keyword">if</span>(dbType == <span class="keyword">null</span>){</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</span><br><span class="line">        }</span><br><span class="line">        contextHolder.set(dbType);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> DbType <span class="title">getDbType</span><span class="params">()</span> </span>{</span><br><span class="line">        <span class="keyword">return</span> contextHolder.get() == <span class="keyword">null</span> ? DbType.MASTER : contextHolder.get();</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">clearDbType</span><span class="params">()</span> </span>{</span><br><span class="line">        contextHolder.remove();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight java"><figcaption><span>DbContextHolder.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> songrgg</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 1.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DbContextHolder</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">enum</span> DbType &#123;</span><br><span class="line">        MASTER,</span><br><span class="line">        SLAVE</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;DbType&gt; contextHolder = <span class="keyword">new</span> ThreadLocal&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setDbType</span><span class="params">(DbType dbType)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(dbType == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</span><br><span class="line">        &#125;</span><br><span class="line">        contextHolder.set(dbType);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> DbType <span class="title">getDbType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> contextHolder.get() == <span class="keyword">null</span> ? DbType.MASTER : contextHolder.get();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">clearDbType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        contextHolder.remove();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h4 id="AOP优化代码"><a href="#AOP优化代码" class="headerlink" title="AOP优化代码"></a>AOP优化代码</h4><p>利用AOP将设置数据库的操作从代码中抽离，这里的粒度控制在方法级别，所以利用注解的形式标注这个方法涉及的数据库事务只读，走从库。  </p>
 <p>只读注解，用于标注方法的数据库操作只走从库。  </p>
-<figure class="highlight java"><figcaption><span>ReadOnlyConnection.java</span></figcaption><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.wallstreetcn.hatano.config;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.ElementType;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Retention;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.RetentionPolicy;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Target;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Indicates the database operations is bound to the slave database.</span></span><br><span class="line"><span class="comment"> * AOP interceptor will set the database to the slave with this interface.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> songrgg</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 1.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Target</span>({ElementType.METHOD, ElementType.TYPE})</span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> ReadOnlyConnection {</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight java"><figcaption><span>ReadOnlyConnection.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.wallstreetcn.hatano.config;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.ElementType;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Retention;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.RetentionPolicy;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Target;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Indicates the database operations is bound to the slave database.</span></span><br><span class="line"><span class="comment"> * AOP interceptor will set the database to the slave with this interface.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> songrgg</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 1.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Target</span>(&#123;ElementType.METHOD, ElementType.TYPE&#125;)</span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> ReadOnlyConnection &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
-<figure class="highlight java"><figcaption><span>ReadOnlyConnectionInterceptor.java</span></figcaption><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.aspectj.lang.ProceedingJoinPoint;</span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Around;</span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Aspect;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.Logger;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</span><br><span class="line"><span class="keyword">import</span> org.springframework.core.Ordered;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Intercept the database operations, bind database to read-only database as this annotation</span></span><br><span class="line"><span class="comment"> * is applied.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> songrgg</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 1.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReadOnlyConnectionInterceptor</span> <span class="keyword">implements</span> <span class="title">Ordered</span> </span>{</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(ReadOnlyConnectionInterceptor<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Around</span>(<span class="string">"@annotation(readOnlyConnection)"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">proceed</span><span class="params">(ProceedingJoinPoint proceedingJoinPoint, ReadOnlyConnection readOnlyConnection)</span> <span class="keyword">throws</span> Throwable </span>{</span><br><span class="line">        <span class="keyword">try</span> {</span><br><span class="line">            logger.info(<span class="string">"set database connection to read only"</span>);</span><br><span class="line">            DbContextHolder.setDbType(DbContextHolder.DbType.SLAVE);</span><br><span class="line">            Object result = proceedingJoinPoint.proceed();</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        } <span class="keyword">finally</span> {</span><br><span class="line">            DbContextHolder.clearDbType();</span><br><span class="line">            logger.info(<span class="string">"restore database connection"</span>);</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getOrder</span><span class="params">()</span> </span>{</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight java"><figcaption><span>ReadOnlyConnectionInterceptor.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.aspectj.lang.ProceedingJoinPoint;</span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Around;</span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Aspect;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.Logger;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</span><br><span class="line"><span class="keyword">import</span> org.springframework.core.Ordered;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Intercept the database operations, bind database to read-only database as this annotation</span></span><br><span class="line"><span class="comment"> * is applied.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> songrgg</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 1.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReadOnlyConnectionInterceptor</span> <span class="keyword">implements</span> <span class="title">Ordered</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(ReadOnlyConnectionInterceptor<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Around</span>(<span class="string">"@annotation(readOnlyConnection)"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">proceed</span><span class="params">(ProceedingJoinPoint proceedingJoinPoint, ReadOnlyConnection readOnlyConnection)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            logger.info(<span class="string">"set database connection to read only"</span>);</span><br><span class="line">            DbContextHolder.setDbType(DbContextHolder.DbType.SLAVE);</span><br><span class="line">            Object result = proceedingJoinPoint.proceed();</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            DbContextHolder.clearDbType();</span><br><span class="line">            logger.info(<span class="string">"restore database connection"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getOrder</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight java"><figcaption><span>UserService.java</span></figcaption><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ReadOnlyConnection</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List<User> <span class="title">getUsers</span><span class="params">(Integer page, Integer limit)</span> </span>{</span><br><span class="line">    <span class="keyword">return</span> repository.findAll(<span class="keyword">new</span> PageRequest(page, limit));</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight java"><figcaption><span>UserService.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ReadOnlyConnection</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;User&gt; <span class="title">getUsers</span><span class="params">(Integer page, Integer limit)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> repository.findAll(<span class="keyword">new</span> PageRequest(page, limit));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="配置Druid数据库连接池"><a href="#配置Druid数据库连接池" class="headerlink" title="配置Druid数据库连接池"></a>配置Druid数据库连接池</h4><figure class="highlight gradle"><figcaption><span>build.gradle</span></figcaption><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">compile</span>(<span class="string">"com.alibaba:druid:1.0.18"</span>)</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="配置Druid数据库连接池"><a href="#配置Druid数据库连接池" class="headerlink" title="配置Druid数据库连接池"></a>配置Druid数据库连接池</h4><figure class="highlight gradle"><figcaption><span>build.gradle</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">compile</span>(<span class="string">"com.alibaba:druid:1.0.18"</span>)</span><br></pre></td></tr></table></figure>
 
 <h4 id="groovy依赖注入"><a href="#groovy依赖注入" class="headerlink" title="groovy依赖注入"></a>groovy依赖注入</h4><p>配置dataSource为可路由数据源  </p>
-<figure class="highlight groovy"><figcaption><span>context.groovy</span></figcaption><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.alibaba.druid.pool.DruidDataSource</span><br><span class="line"><span class="keyword">import</span> DbContextHolder</span><br><span class="line"><span class="keyword">import</span> ReadWriteSplitRoutingDataSource</span><br><span class="line"></span><br><span class="line">** SOME INITIALIZED CODE LOAD PROPERTIES **</span><br><span class="line"><span class="keyword">def</span> dataSourceMaster = <span class="keyword">new</span> DruidDataSource()</span><br><span class="line">dataSourceMaster.url = properties.get(<span class="string">'datasource.master.url'</span>)</span><br><span class="line">println(<span class="string">"master set to "</span> + dataSourceMaster.url)</span><br><span class="line">dataSourceMaster.username = properties.get(<span class="string">'datasource.master.username'</span>)</span><br><span class="line">dataSourceMaster.password = properties.get(<span class="string">'datasource.master.password'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> dataSourceSlave = <span class="keyword">new</span> DruidDataSource()</span><br><span class="line">dataSourceSlave.url = properties.get(<span class="string">'datasource.slave.url'</span>)</span><br><span class="line">println(<span class="string">"slave set to "</span> + dataSourceSlave.url)</span><br><span class="line">dataSourceSlave.username = properties.get(<span class="string">'datasource.slave.username'</span>)</span><br><span class="line">dataSourceSlave.password = properties.get(<span class="string">'datasource.slave.password'</span>)  </span><br><span class="line">beans {</span><br><span class="line">    dataSource(ReadWriteSplitRoutingDataSource) { bean -></span><br><span class="line">        targetDataSources = [</span><br><span class="line">                (DbContextHolder.DbType.MASTER): dataSourceMaster,</span><br><span class="line">                (DbContextHolder.DbType.SLAVE): dataSourceSlave</span><br><span class="line">        ]</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight groovy"><figcaption><span>context.groovy</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.alibaba.druid.pool.DruidDataSource</span><br><span class="line"><span class="keyword">import</span> DbContextHolder</span><br><span class="line"><span class="keyword">import</span> ReadWriteSplitRoutingDataSource</span><br><span class="line"></span><br><span class="line">** SOME INITIALIZED CODE LOAD PROPERTIES **</span><br><span class="line"><span class="keyword">def</span> dataSourceMaster = <span class="keyword">new</span> DruidDataSource()</span><br><span class="line">dataSourceMaster.url = properties.get(<span class="string">'datasource.master.url'</span>)</span><br><span class="line">println(<span class="string">"master set to "</span> + dataSourceMaster.url)</span><br><span class="line">dataSourceMaster.username = properties.get(<span class="string">'datasource.master.username'</span>)</span><br><span class="line">dataSourceMaster.password = properties.get(<span class="string">'datasource.master.password'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> dataSourceSlave = <span class="keyword">new</span> DruidDataSource()</span><br><span class="line">dataSourceSlave.url = properties.get(<span class="string">'datasource.slave.url'</span>)</span><br><span class="line">println(<span class="string">"slave set to "</span> + dataSourceSlave.url)</span><br><span class="line">dataSourceSlave.username = properties.get(<span class="string">'datasource.slave.username'</span>)</span><br><span class="line">dataSourceSlave.password = properties.get(<span class="string">'datasource.slave.password'</span>)  </span><br><span class="line">beans &#123;</span><br><span class="line">    dataSource(ReadWriteSplitRoutingDataSource) &#123; bean -&gt;</span><br><span class="line">        targetDataSources = [</span><br><span class="line">                (DbContextHolder.DbType.MASTER): dataSourceMaster,</span><br><span class="line">                (DbContextHolder.DbType.SLAVE): dataSourceSlave</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><ol>
 <li><a href="http://fedulov.website/2015/10/14/dynamic-datasource-routing-with-spring/">Dynamic DataSource Routing with Spring @Transactional</a></li>
@@ -694,9 +826,9 @@
         </h1>
         <div class="content">
             <h1 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h1><p>同一套代码，同一个数据源，不同的操作系统，在<code>OSX</code>上数据提取编码正常，而<code>Ubuntu</code>上拉取数据乱码，数据拉取代码如下。</p>
-<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List<String> <span class="title">mget</span><span class="params">(String... fields)</span> </span>{</span><br><span class="line">    List<<span class="keyword">byte</span>[]> arrFields = <span class="keyword">new</span> ArrayList<>();</span><br><span class="line">    <span class="keyword">for</span> (String field : fields) {</span><br><span class="line">        arrFields.add(field.getBytes());</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    List<<span class="keyword">byte</span>[]> results = redisTemplate.execute(</span><br><span class="line">            (RedisCallback<List<<span class="keyword">byte</span>[]>>) connection -> connection.mGet(arrFields.toArray(<span class="keyword">new</span> <span class="keyword">byte</span>[arrFields.size()][]))</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">if</span> (results == <span class="keyword">null</span>) {</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ArrayList<>();</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">final</span> List<String> ret = <span class="keyword">new</span> ArrayList<>();</span><br><span class="line">    results.forEach(result -> {</span><br><span class="line">        <span class="keyword">if</span> (result != <span class="keyword">null</span>) {</span><br><span class="line">            <span class="keyword">try</span> {</span><br><span class="line">                ret.add(<span class="keyword">new</span> String(result));</span><br><span class="line">            } <span class="keyword">catch</span> (UnsupportedEncodingException e) {</span><br><span class="line">                ret.add(<span class="keyword">null</span>);</span><br><span class="line">            }</span><br><span class="line">        } <span class="keyword">else</span> {</span><br><span class="line">            ret.add(<span class="keyword">null</span>);</span><br><span class="line">        }</span><br><span class="line">    });</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;String&gt; <span class="title">mget</span><span class="params">(String... fields)</span> </span>&#123;</span><br><span class="line">    List&lt;<span class="keyword">byte</span>[]&gt; arrFields = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (String field : fields) &#123;</span><br><span class="line">        arrFields.add(field.getBytes());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    List&lt;<span class="keyword">byte</span>[]&gt; results = redisTemplate.execute(</span><br><span class="line">            (RedisCallback&lt;List&lt;<span class="keyword">byte</span>[]&gt;&gt;) connection -&gt; connection.mGet(arrFields.toArray(<span class="keyword">new</span> <span class="keyword">byte</span>[arrFields.size()][]))</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">if</span> (results == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">final</span> List&lt;String&gt; ret = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    results.forEach(result -&gt; &#123;</span><br><span class="line">        <span class="keyword">if</span> (result != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                ret.add(<span class="keyword">new</span> String(result));</span><br><span class="line">            &#125; <span class="keyword">catch</span> (UnsupportedEncodingException e) &#123;</span><br><span class="line">                ret.add(<span class="keyword">null</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            ret.add(<span class="keyword">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>检查了<code>Redis</code>存储的数据都是<code>UTF-8</code>之后，怀疑是不同OS的编码有所不同，所以对提取的数据指定了编码格式，即<code>new String(data, "UTF8");</code>，解决了问题。</p>
+<p>检查了<code>Redis</code>存储的数据都是<code>UTF-8</code>之后，怀疑是不同OS的编码有所不同，所以对提取的数据指定了编码格式，即<code>new String(data, &quot;UTF8&quot;);</code>，解决了问题。</p>
 
         </div>
         
@@ -734,102 +866,6 @@
         "mainEntityOfPage": "https://songrgg.github.io/programming/jedis-utf8/",
         "description": "现象同一套代码，同一个数据源，不同的操作系统，在OSX上数据提取编码正常，而Ubuntu上拉取数据乱码，数据拉取代码如下。123456789101112131415161718192021222324252627@Overridepublic List&lt;String&gt; mget(String... fields) &#123;    List&lt;byte[]&gt; arrFie",
         "wordCount": 314
-    }
-</script>
-
-
-
-    
-
-<div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2016-03-27T22:00:00.000Z">2016-03-28</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/programming/">programming</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    3 minutes read (About 399 words)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/programming/spring-ioc-groovy/">使用Groovy进行Spring依赖注入</a>
-            
-        </h1>
-        <div class="content">
-            <h1 id="为什么选择Groovy"><a href="#为什么选择Groovy" class="headerlink" title="为什么选择Groovy?"></a>为什么选择Groovy?</h1><p>传统的依赖注入是XML，对我而言，可读性太差，太不美观，强烈地想换一个方式进行依赖注入，Groovy作为XML的替代方案，在Spring4之后被引入，是基于JVM的一门方言，具有较强的可读性，写更少的更易懂的脚本，完成同样的功能。</p>
-<h1 id="基于Spring-boot框架"><a href="#基于Spring-boot框架" class="headerlink" title="基于Spring boot框架"></a>基于Spring boot框架</h1><p>我选择了Spring boot框架作为MVC，看重了它的惯例大于配置，不用繁琐地配置。</p>
-<blockquote>
-<p><strong>以下代码是伪代码，只是大概说明使用的方式</strong></p>
-</blockquote>
-<h3 id="Application-java"><a href="#Application-java" class="headerlink" title="Application.java"></a>Application.java</h3><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Application</span> </span>{</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>{</span><br><span class="line">    Object[] sources = <span class="keyword">new</span> Object[] {</span><br><span class="line">      Application<span class="class">.<span class="keyword">class</span>,</span></span><br><span class="line">      new ClassPathResource("application_context.groovy")</span><br><span class="line">    };</span><br><span class="line">    SpringApplication.run(sources, args);</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>在Application启动的时候读入该脚本，解析出错会抛出异常。</p>
-<h3 id="src-main-resources-application-context-groovy"><a href="#src-main-resources-application-context-groovy" class="headerlink" title="src/main/resources/application_context.groovy"></a>src/main/resources/application_context.groovy</h3><figure class="highlight groovy"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">beans {</span><br><span class="line">  userService(UserMockService) {</span><br><span class="line">    parameter = <span class="string">"你能在这初始化参数"</span></span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>在groovy配置文件里能声明要注入的beans，可以配置初始化时的参数值，这里就是声明一个<code>userService</code>，它的实现是<code>UserMockService</code>。</p>
-<h3 id="UserController-java"><a href="#UserController-java" class="headerlink" title="UserController.java"></a>UserController.java</h3><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>{</span><br><span class="line">  <span class="meta">@Autowired</span></span><br><span class="line">  <span class="keyword">private</span> UserService userService;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> User <span class="title">getUserAction</span><span class="params">(Long userId)</span> </span>{</span><br><span class="line">    <span class="keyword">return</span> userService.findByUserId(userId);</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<h3 id="User-java"><a href="#User-java" class="headerlink" title="User.java"></a>User.java</h3><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>{</span><br><span class="line">  String name;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">User</span><span class="params">(String name)</span> </span>{</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<h3 id="UserService-java"><a href="#UserService-java" class="headerlink" title="UserService.java"></a>UserService.java</h3><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">UserService</span> </span>{</span><br><span class="line">  <span class="function">User <span class="title">findByUserId</span><span class="params">(Long userId)</span></span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<h3 id="UserMockService-java"><a href="#UserMockService-java" class="headerlink" title="UserMockService.java"></a>UserMockService.java</h3><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserMockService</span> <span class="keyword">implements</span> <span class="title">UserService</span> </span>{</span><br><span class="line">  <span class="keyword">private</span> String parameter;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">getParameter</span><span class="params">()</span> </span>{ <span class="keyword">return</span> parameter; }</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setParameter</span><span class="params">(String parameter)</span> </span>{</span><br><span class="line">    <span class="keyword">this</span>.parameter = parameter;</span><br><span class="line">  }</span><br><span class="line">  <span class="function"><span class="keyword">public</span> User <span class="title">findByUserId</span><span class="params">(Long userId)</span> </span>{</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> User(<span class="string">"mockUser"</span>);</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
-<li><a href="https://spring.io/blog/2014/03/03/groovy-bean-configuration-in-spring-framework-4">Spring4支持Groovy依赖注入</a></li>
-<li><a href="https://github.com/forchesatto/estudo-spring/tree/master/spring-boot-ioc">Spring boot Groovy依赖注入示例代码</a></li>
-</ul>
-<h1 id="lt-fuck-gt-XML-lt-fuck-gt"><a href="#lt-fuck-gt-XML-lt-fuck-gt" class="headerlink" title="< fuck>XML< /fuck>"></a>< fuck>XML< /fuck></h1>
-        </div>
-        
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "author": {
-            "@type": "Person",
-            "name": "songrgg"
-        },
-        "publisher": {},
-        "headline": "使用Groovy进行Spring依赖注入",
-        "image": [
-            "https://songrgg.github.io/images/thumbnail.svg"
-        ],
-        "keywords": "spring groovy dependency injection",
-        "genre": "programming",
-        "datePublished": "2016-03-28",
-        "dateCreated": "2016-03-28",
-        "dateModified": "2019-09-12",
-        "url": "https://songrgg.github.io/programming/spring-ioc-groovy/",
-        "mainEntityOfPage": "https://songrgg.github.io/programming/spring-ioc-groovy/",
-        "description": "为什么选择Groovy?传统的依赖注入是XML，对我而言，可读性太差，太不美观，强烈地想换一个方式进行依赖注入，Groovy作为XML的替代方案，在Spring4之后被引入，是基于JVM的一门方言，具有较强的可读性，写更少的更易懂的脚本，完成同样的功能。基于Spring boot框架我选择了Spring boot框架作为MVC，看重了它的惯例大于配置，不用繁琐地配置。以下代码是伪代码，只是大",
-        "wordCount": 372
     }
 </script>
 
@@ -909,7 +945,7 @@
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            51
+                            52
                         </p>
                     </a>
                 </div>
@@ -933,7 +969,7 @@
                     </p>
                     <a href="/tags">
                         <p class="title has-text-weight-normal">
-                            58
+                            60
                         </p>
                     </a>
                 </div>
@@ -949,25 +985,29 @@
         
         <div class="level is-mobile">
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/songrgg">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Github" href="https://github.com/songrgg">
                 
                 <i class="fab fa-github"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Instagram" href="https://www.instagram.com/jiangsongrong">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Instagram" href="https://www.instagram.com/jiangsongrong">
                 
                 <i class="fab fa-instagram"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
                 
                 <i class="fab fa-linkedin"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="RSS" href="/atom.xml">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="RSS" href="/atom.xml">
                 
                 <i class="fas fa-rss"></i>
                 
@@ -1026,7 +1066,7 @@
                 <span class="level-item">programming</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">25</span>
+                <span class="level-item tag">26</span>
             </span>
         </a></li>
             </ul>
@@ -1039,7 +1079,7 @@
         <h3 class="menu-label">
             Tag Cloud
         </h3>
-        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/influxdb/" style="font-size: 10px;">influxdb</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 12.5px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
+        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/influxdb/" style="font-size: 10px;">influxdb</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 12.5px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/oauth2/" style="font-size: 10px;">oauth2</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
     </div>
 </div>
     
@@ -1051,6 +1091,25 @@
         <h3 class="menu-label">
             Recent
         </h3>
+        
+        <article class="media">
+            
+            <a href="/programming/django-oauth-client-setup/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/oauth_flow.webp" alt="Setup OAuth2 client for Django in 5 minutes">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-12T22:00:00.000Z">2020-04-13</time></div>
+                    <a href="/programming/django-oauth-client-setup/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Setup OAuth2 client for Django in 5 minutes</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/programming/">programming</a>
+                    </p>
+                </div>
+            </div>
+        </article>
         
         <article class="media">
             
@@ -1128,25 +1187,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
         
@@ -1157,6 +1197,17 @@
             Archives
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/04/">
+                <span class="level-start">
+                    <span class="level-item">April 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2020/03/">
@@ -1629,6 +1680,13 @@
                 </div>
                 
                 <div class="control">
+                    <a class="tags has-addons" href="/tags/django/">
+                        <span class="tag">django</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
                     <a class="tags has-addons" href="/tags/docker/">
                         <span class="tag">docker</span>
                         <span class="tag is-grey">3</span>
@@ -1785,6 +1843,13 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/nginx/">
                         <span class="tag">nginx</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/oauth2/">
+                        <span class="tag">oauth2</span>
                         <span class="tag is-grey">1</span>
                     </a>
                 </div>
@@ -1953,6 +2018,25 @@
         
         <article class="media">
             
+            <a href="/programming/django-oauth-client-setup/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/oauth_flow.webp" alt="Setup OAuth2 client for Django in 5 minutes">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-12T22:00:00.000Z">2020-04-13</time></div>
+                    <a href="/programming/django-oauth-client-setup/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Setup OAuth2 client for Django in 5 minutes</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/programming/">programming</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/operation/influxdb-command-cheatsheet/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/Influxdb_logo.webp" alt="InfluxDB command cheatsheet">
@@ -2027,25 +2111,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
     
@@ -2056,6 +2121,17 @@
             Archives
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/04/">
+                <span class="level-start">
+                    <span class="level-item">April 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2020/03/">
@@ -2528,6 +2604,13 @@
                 </div>
                 
                 <div class="control">
+                    <a class="tags has-addons" href="/tags/django/">
+                        <span class="tag">django</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
                     <a class="tags has-addons" href="/tags/docker/">
                         <span class="tag">docker</span>
                         <span class="tag is-grey">3</span>
@@ -2689,6 +2772,13 @@
                 </div>
                 
                 <div class="control">
+                    <a class="tags has-addons" href="/tags/oauth2/">
+                        <span class="tag">oauth2</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
                     <a class="tags has-addons" href="/tags/operation/">
                         <span class="tag">operation</span>
                         <span class="tag is-grey">1</span>
@@ -2845,12 +2935,13 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    SongRong's Experience
+                    SongRong&#39;s Experience
                 
                 </a>
                 <p class="is-size-7">
-                © 2020 songrgg 
-                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                &copy; 2020 songrgg&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
                 
                 </p>
             </div>
@@ -2927,7 +3018,7 @@ var IcarusThemeSettings = {
     <h6>Your browser is out-of-date!</h6>
     <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
             my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
 <script>
@@ -2990,7 +3081,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="searchbox ins-search">
     <div class="searchbox-container ins-search-container">
         <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something..." />
             <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="searchbox-result-wrapper ins-section-wrapper">
@@ -3017,5 +3108,5 @@ document.addEventListener('DOMContentLoaded', function () {
 <link rel="stylesheet" href="/css/search.css">
 <link rel="stylesheet" href="/css/insight.css">
     
-
-<script type="text/javascript" charset="utf-8" src="/js/lazyload-plugin/lazyload.intersectionObserver.min.js"></script></body></html>
+</body>
+</html>

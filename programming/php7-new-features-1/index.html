@@ -1,9 +1,11 @@
-<!DOCTYPE html><html lang="en"><head>
-    <meta charset="utf-8">
+<!DOCTYPE html>
+<html  lang="en">
+<head>
+    <meta charset="utf-8" />
 
-<meta name="generator" content="Hexo 4.2.0">
+<meta name="generator" content="Hexo 4.2.0" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
 <title>PHP7特性概览(一) - Blog | Songrgg</title>
 
@@ -86,7 +88,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                SongRong's Experience
+                SongRong&#39;s Experience
             
             </a>
         </div>
@@ -94,15 +96,20 @@
             
             <div class="navbar-start">
                 
-                <a class="navbar-item" href="/">Home</a>
+                <a class="navbar-item"
+                href="/">Home</a>
                 
-                <a class="navbar-item" href="/archives">Archives</a>
+                <a class="navbar-item"
+                href="/archives">Archives</a>
                 
-                <a class="navbar-item" href="/categories">Categories</a>
+                <a class="navbar-item"
+                href="/categories">Categories</a>
                 
-                <a class="navbar-item" href="/tags">Tags</a>
+                <a class="navbar-item"
+                href="/tags">Tags</a>
                 
-                <a class="navbar-item" href="/about">About</a>
+                <a class="navbar-item"
+                href="/about">About</a>
                 
             </div>
             
@@ -160,34 +167,34 @@
 <h3 id="抽象语法树"><a href="#抽象语法树" class="headerlink" title="抽象语法树"></a>抽象语法树</h3><p>抽象语法树是语法分析之后产物，忽略了语法细节，是解释前端和后端的中间媒介。新增抽象语法树，解耦语法分析和编译，简化开发维护，并为以后新增一些特性，如添加抽象语法树编译hook，深入到语言级别实现功能。</p>
 <p><a href="https://wiki.php.net/rfc/abstract_syntax_tree">更详细查看</a></p>
 <h3 id="闭包this绑定"><a href="#闭包this绑定" class="headerlink" title="闭包this绑定"></a>闭包this绑定</h3><p>新增<code>Closure::call</code>，优化<code>Closure::bindTo</code>(JavaScript中bind，apply也是一样的应用场景)。</p>
-<figure class="highlight php"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"><?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>{ <span class="keyword">private</span> $x = <span class="number">3</span>; }</span><br><span class="line">$foo = <span class="keyword">new</span> Foo;</span><br><span class="line">$foobar = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{ var_dump(<span class="keyword">$this</span>->x); };</span><br><span class="line">$foobar->call($foo); <span class="comment">// prints int(3)</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>&#123; <span class="keyword">private</span> $x = <span class="number">3</span>; &#125;</span><br><span class="line">$foo = <span class="keyword">new</span> Foo;</span><br><span class="line">$foobar = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123; var_dump(<span class="keyword">$this</span>-&gt;x); &#125;;</span><br><span class="line">$foobar-&gt;call($foo); <span class="comment">// prints int(3)</span></span><br></pre></td></tr></table></figure>
 
 <p>2-3行新建Foo的对象，第4行创建了一个<code>foobar</code>的闭包，第5行调用闭包的<code>call</code>方法，将闭包体中的<code>$this</code>动态绑定到<code>$foo</code>并执行。</p>
 <p>同时官网上进行性能测试，<code>Closure::call</code>的性能优于<code>Closure::bindTo</code>。</p>
 <p><a href="https://wiki.php.net/rfc/closure_apply">更详细查看Closure::call</a></p>
 <h3 id="简化isset的语法糖"><a href="#简化isset的语法糖" class="headerlink" title="简化isset的语法糖"></a>简化isset的语法糖</h3><p>从使用者角度来说，比较贴心的一个语法糖，减少了不必要的重复代码，使用情景如：</p>
-<figure class="highlight php"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"><?php</span></span><br><span class="line"><span class="comment">// PHP 5.5.14</span></span><br><span class="line">$username = <span class="keyword">isset</span>($_GET[<span class="string">'username'</span>]) ? $_GET[<span class="string">'username'</span>] : <span class="string">'nobody'</span>;</span><br><span class="line"><span class="comment">// PHP 7</span></span><br><span class="line">$username = $_GET[<span class="string">'username'</span>] ?? <span class="string">'nobody'</span>;</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">// PHP 5.5.14</span></span><br><span class="line">$username = <span class="keyword">isset</span>($_GET[<span class="string">'username'</span>]) ? $_GET[<span class="string">'username'</span>] : <span class="string">'nobody'</span>;</span><br><span class="line"><span class="comment">// PHP 7</span></span><br><span class="line">$username = $_GET[<span class="string">'username'</span>] ?? <span class="string">'nobody'</span>;</span><br></pre></td></tr></table></figure>
 
-<p>在服务器端想获取$_GET中的变量时，若是PHP5语法，需要使用<code>?:</code>操作符，每次要重写一遍<code>$_GET['username']</code>，而在PHP7就可以使用这个贴心的语法糖，省略这个重复的表达式。</p>
+<p>在服务器端想获取$_GET中的变量时，若是PHP5语法，需要使用<code>?:</code>操作符，每次要重写一遍<code>$_GET[&#39;username&#39;]</code>，而在PHP7就可以使用这个贴心的语法糖，省略这个重复的表达式。</p>
 <p><a href="https://wiki.php.net/rfc/isset_ternary">更详细查看isset_ternary</a></p>
 <h3 id="yield-from"><a href="#yield-from" class="headerlink" title="yield from"></a>yield from</h3><p>允许<code>Generator</code>方法代理<code>Traversable</code>的对象和数组的操作。这个语法允许把<code>yield</code>语句分解成更小的概念单元，正如利用分解类方法简化面向对象代码。<br>例子：</p>
-<figure class="highlight php"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"><?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">g1</span><span class="params">()</span> </span>{</span><br><span class="line">  <span class="keyword">yield</span> <span class="number">2</span>;</span><br><span class="line">  <span class="keyword">yield</span> <span class="number">3</span>;</span><br><span class="line">  <span class="keyword">yield</span> <span class="number">4</span>;</span><br><span class="line">}</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">g2</span><span class="params">()</span> </span>{</span><br><span class="line">  <span class="keyword">yield</span> <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">yield</span> from g1();</span><br><span class="line">  <span class="keyword">yield</span> <span class="number">5</span>;</span><br><span class="line">}</span><br><span class="line"> </span><br><span class="line">$g = g2();</span><br><span class="line"><span class="keyword">foreach</span> ($g <span class="keyword">as</span> $yielded) {</span><br><span class="line">    <span class="keyword">print</span>($yielded);</span><br><span class="line">}</span><br><span class="line"><span class="comment">// output:</span></span><br><span class="line"><span class="comment">// 12345</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">g1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">yield</span> <span class="number">2</span>;</span><br><span class="line">  <span class="keyword">yield</span> <span class="number">3</span>;</span><br><span class="line">  <span class="keyword">yield</span> <span class="number">4</span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">g2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">yield</span> <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">yield</span> from g1();</span><br><span class="line">  <span class="keyword">yield</span> <span class="number">5</span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">$g = g2();</span><br><span class="line"><span class="keyword">foreach</span> ($g <span class="keyword">as</span> $yielded) &#123;</span><br><span class="line">    <span class="keyword">print</span>($yielded);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// output:</span></span><br><span class="line"><span class="comment">// 12345</span></span><br></pre></td></tr></table></figure>
 
 <p><code>yield from</code>后能跟随<code>Generator</code>，<code>Array</code>，或<code>Traversable</code>的对象。</p>
 <p><a href="https://wiki.php.net/rfc/generator-delegation">更详细查看generator delegation</a></p>
-<h3 id="匿名类"><a href="#匿名类" class="headerlink" title="匿名类"></a>匿名类</h3><figure class="highlight php"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"><?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>{}</span><br><span class="line"> </span><br><span class="line">$child = <span class="keyword">new</span> <span class="class"><span class="keyword">class</span> <span class="keyword">extends</span> <span class="title">Foo</span> </span>{};</span><br><span class="line"> </span><br><span class="line">var_dump($child <span class="keyword">instanceof</span> Foo); <span class="comment">// true</span></span><br></pre></td></tr></tbody></table></figure>
+<h3 id="匿名类"><a href="#匿名类" class="headerlink" title="匿名类"></a>匿名类</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>&#123;&#125;</span><br><span class="line"> </span><br><span class="line">$child = <span class="keyword">new</span> <span class="class"><span class="keyword">class</span> <span class="keyword">extends</span> <span class="title">Foo</span> </span>&#123;&#125;;</span><br><span class="line"> </span><br><span class="line">var_dump($child <span class="keyword">instanceof</span> Foo); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
 
 <p><a href="https://wiki.php.net/rfc/anonymous_classes">更详细查看anonymous class</a></p>
-<h3 id="标量类型声明"><a href="#标量类型声明" class="headerlink" title="标量类型声明"></a>标量类型声明</h3><figure class="highlight php"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"><?php</span></span><br><span class="line"><span class="keyword">declare</span>(strict_types=<span class="number">1</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span><span class="params">(int $a, int $b)</span>: <span class="title">int</span> </span>{</span><br><span class="line">    <span class="keyword">return</span> $a + $b;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">var_dump(add(<span class="number">1</span>, <span class="number">2</span>)); <span class="comment">// int(3)</span></span><br><span class="line"><span class="comment">// floats are truncated by default</span></span><br><span class="line">var_dump(add(<span class="number">1.5</span>, <span class="number">2.5</span>)); <span class="comment">// int(3)</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">//strings convert if there's a number part</span></span><br><span class="line">var_dump(add(<span class="string">"1"</span>, <span class="string">"2"</span>)); <span class="comment">// int(3)</span></span><br></pre></td></tr></tbody></table></figure>
+<h3 id="标量类型声明"><a href="#标量类型声明" class="headerlink" title="标量类型声明"></a>标量类型声明</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">declare</span>(strict_types=<span class="number">1</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span><span class="params">(int $a, int $b)</span>: <span class="title">int</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> $a + $b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var_dump(add(<span class="number">1</span>, <span class="number">2</span>)); <span class="comment">// int(3)</span></span><br><span class="line"><span class="comment">// floats are truncated by default</span></span><br><span class="line">var_dump(add(<span class="number">1.5</span>, <span class="number">2.5</span>)); <span class="comment">// int(3)</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">//strings convert if there's a number part</span></span><br><span class="line">var_dump(add(<span class="string">"1"</span>, <span class="string">"2"</span>)); <span class="comment">// int(3)</span></span><br></pre></td></tr></table></figure>
 
 <p><a href="https://wiki.php.net/rfc/scalar_type_hints_v5">更详细查看</a></p>
-<h3 id="返回值类型声明"><a href="#返回值类型声明" class="headerlink" title="返回值类型声明"></a>返回值类型声明</h3><figure class="highlight php"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"><?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">get_config</span><span class="params">()</span>: <span class="title">array</span> </span>{</span><br><span class="line">    <span class="keyword">return</span> [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br><span class="line">}</span><br><span class="line">var_dump(get_config());</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> &<span class="title">get_arr</span><span class="params">(array &$arr)</span>: <span class="title">array</span> </span>{</span><br><span class="line">    <span class="keyword">return</span> $arr;</span><br><span class="line">}</span><br><span class="line">$arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br><span class="line">$arr1 = get_arr($arr);</span><br><span class="line">$arr[] = <span class="number">4</span>;</span><br><span class="line"><span class="comment">// $arr1[] = 4;</span></span><br><span class="line">var_dump($arr1 === $arr);</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="返回值类型声明"><a href="#返回值类型声明" class="headerlink" title="返回值类型声明"></a>返回值类型声明</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">get_config</span><span class="params">()</span>: <span class="title">array</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br><span class="line">&#125;</span><br><span class="line">var_dump(get_config());</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> &amp;<span class="title">get_arr</span><span class="params">(array &amp;$arr)</span>: <span class="title">array</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> $arr;</span><br><span class="line">&#125;</span><br><span class="line">$arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br><span class="line">$arr1 = get_arr($arr);</span><br><span class="line">$arr[] = <span class="number">4</span>;</span><br><span class="line"><span class="comment">// $arr1[] = 4;</span></span><br><span class="line">var_dump($arr1 === $arr);</span><br></pre></td></tr></table></figure>
 
 <p><a href="https://wiki.php.net/rfc/return_types">更详细查看return_types</a></p>
 <h3 id="3路比较"><a href="#3路比较" class="headerlink" title="3路比较"></a>3路比较</h3><p>一个语法糖，用来简化比较操作符，常应用于需要使用比较函数的排序，消除用户自己写比较函数可能出现的错误。分为3种情况，大于(1)，等于(0)，小于(-1)。</p>
-<figure class="highlight php"><figcaption><span>%}</span></figcaption><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"><?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">order_func</span><span class="params">($a, $b)</span> </span>{</span><br><span class="line">    <span class="keyword">return</span> $a <=> $b;</span><br><span class="line">}</span><br><span class="line"><span class="keyword">echo</span> order_func(<span class="number">2</span>, <span class="number">2</span>); <span class="comment">// 0</span></span><br><span class="line"><span class="keyword">echo</span> order_func(<span class="number">3</span>, <span class="number">2</span>); <span class="comment">// 1</span></span><br><span class="line"><span class="keyword">echo</span> order_func(<span class="number">1</span>, <span class="number">2</span>); <span class="comment">// -1</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight php"><figcaption><span>%&#125;</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">order_func</span><span class="params">($a, $b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> $a &lt;=&gt; $b;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> order_func(<span class="number">2</span>, <span class="number">2</span>); <span class="comment">// 0</span></span><br><span class="line"><span class="keyword">echo</span> order_func(<span class="number">3</span>, <span class="number">2</span>); <span class="comment">// 1</span></span><br><span class="line"><span class="keyword">echo</span> order_func(<span class="number">1</span>, <span class="number">2</span>); <span class="comment">// -1</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="导入包的缩写"><a href="#导入包的缩写" class="headerlink" title="导入包的缩写"></a>导入包的缩写</h3><figure class="highlight php"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"><?php</span></span><br><span class="line">import shorthand</span><br><span class="line">Current <span class="keyword">use</span> <span class="title">syntax</span>:</span><br><span class="line"> </span><br><span class="line"><span class="title">use</span> <span class="title">Symfony</span>\<span class="title">Component</span>\<span class="title">Console</span>\<span class="title">Helper</span>\<span class="title">Table</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Symfony</span>\<span class="title">Component</span>\<span class="title">Console</span>\<span class="title">Input</span>\<span class="title">ArrayInput</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Symfony</span>\<span class="title">Component</span>\<span class="title">Console</span>\<span class="title">Output</span>\<span class="title">NullOutput</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Symfony</span>\<span class="title">Component</span>\<span class="title">Console</span>\<span class="title">Question</span>\<span class="title">Question</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Symfony</span>\<span class="title">Component</span>\<span class="title">Console</span>\<span class="title">Input</span>\<span class="title">InputInterface</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Symfony</span>\<span class="title">Component</span>\<span class="title">Console</span>\<span class="title">Output</span>\<span class="title">OutputInterface</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Symfony</span>\<span class="title">Component</span>\<span class="title">Console</span>\<span class="title">Question</span>\<span class="title">ChoiceQuestion</span> <span class="title">as</span> <span class="title">Choice</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Symfony</span>\<span class="title">Component</span>\<span class="title">Console</span>\<span class="title">Question</span>\<span class="title">ConfirmationQuestion</span>;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// Proposed group use syntax:</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">use</span> <span class="title">Symfony</span>\<span class="title">Component</span>\<span class="title">Console</span>\{</span><br><span class="line">  <span class="title">Helper</span>\<span class="title">Table</span>,</span><br><span class="line">  <span class="title">Input</span>\<span class="title">ArrayInput</span>,</span><br><span class="line">  <span class="title">Input</span>\<span class="title">InputInterface</span>,</span><br><span class="line">  <span class="title">Output</span>\<span class="title">NullOutput</span>,</span><br><span class="line">  <span class="title">Output</span>\<span class="title">OutputInterface</span>,</span><br><span class="line">  <span class="title">Question</span>\<span class="title">Question</span>,</span><br><span class="line">  <span class="title">Question</span>\<span class="title">ChoiceQuestion</span> <span class="title">as</span> <span class="title">Choice</span>,</span><br><span class="line">  <span class="title">Question</span>\<span class="title">ConfirmationQuestion</span>,</span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="导入包的缩写"><a href="#导入包的缩写" class="headerlink" title="导入包的缩写"></a>导入包的缩写</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">import shorthand</span><br><span class="line">Current <span class="keyword">use</span> <span class="title">syntax</span>:</span><br><span class="line"> </span><br><span class="line"><span class="title">use</span> <span class="title">Symfony</span>\<span class="title">Component</span>\<span class="title">Console</span>\<span class="title">Helper</span>\<span class="title">Table</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Symfony</span>\<span class="title">Component</span>\<span class="title">Console</span>\<span class="title">Input</span>\<span class="title">ArrayInput</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Symfony</span>\<span class="title">Component</span>\<span class="title">Console</span>\<span class="title">Output</span>\<span class="title">NullOutput</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Symfony</span>\<span class="title">Component</span>\<span class="title">Console</span>\<span class="title">Question</span>\<span class="title">Question</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Symfony</span>\<span class="title">Component</span>\<span class="title">Console</span>\<span class="title">Input</span>\<span class="title">InputInterface</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Symfony</span>\<span class="title">Component</span>\<span class="title">Console</span>\<span class="title">Output</span>\<span class="title">OutputInterface</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Symfony</span>\<span class="title">Component</span>\<span class="title">Console</span>\<span class="title">Question</span>\<span class="title">ChoiceQuestion</span> <span class="title">as</span> <span class="title">Choice</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Symfony</span>\<span class="title">Component</span>\<span class="title">Console</span>\<span class="title">Question</span>\<span class="title">ConfirmationQuestion</span>;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// Proposed group use syntax:</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">use</span> <span class="title">Symfony</span>\<span class="title">Component</span>\<span class="title">Console</span>\&#123;</span><br><span class="line">  <span class="title">Helper</span>\<span class="title">Table</span>,</span><br><span class="line">  <span class="title">Input</span>\<span class="title">ArrayInput</span>,</span><br><span class="line">  <span class="title">Input</span>\<span class="title">InputInterface</span>,</span><br><span class="line">  <span class="title">Output</span>\<span class="title">NullOutput</span>,</span><br><span class="line">  <span class="title">Output</span>\<span class="title">OutputInterface</span>,</span><br><span class="line">  <span class="title">Question</span>\<span class="title">Question</span>,</span><br><span class="line">  <span class="title">Question</span>\<span class="title">ChoiceQuestion</span> <span class="title">as</span> <span class="title">Choice</span>,</span><br><span class="line">  <span class="title">Question</span>\<span class="title">ConfirmationQuestion</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p><a href="https://wiki.php.net/rfc/group_use_declarations">更详细查看</a></p>
 
@@ -206,7 +213,7 @@
         
         
 <div class="sharethis-inline-share-buttons"></div>
-<script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5df54e9fee0f770012eb9f87&product=inline-share-buttons&cms=sop" async="async"></script>
+<script type='text/javascript' src='//platform-api.sharethis.com/js/sharethis.js#property=5df54e9fee0f770012eb9f87&amp;product=inline-share-buttons&amp;cms=sop' async='async'></script>
 
         
     </div>
@@ -335,7 +342,7 @@
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            51
+                            52
                         </p>
                     </a>
                 </div>
@@ -359,7 +366,7 @@
                     </p>
                     <a href="/tags">
                         <p class="title has-text-weight-normal">
-                            58
+                            60
                         </p>
                     </a>
                 </div>
@@ -375,25 +382,29 @@
         
         <div class="level is-mobile">
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/songrgg">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Github" href="https://github.com/songrgg">
                 
                 <i class="fab fa-github"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Instagram" href="https://www.instagram.com/jiangsongrong">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Instagram" href="https://www.instagram.com/jiangsongrong">
                 
                 <i class="fab fa-instagram"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
                 
                 <i class="fab fa-linkedin"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="RSS" href="/atom.xml">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="RSS" href="/atom.xml">
                 
                 <i class="fas fa-rss"></i>
                 
@@ -452,7 +463,7 @@
                 <span class="level-item">programming</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">25</span>
+                <span class="level-item tag">26</span>
             </span>
         </a></li>
             </ul>
@@ -465,7 +476,7 @@
         <h3 class="menu-label">
             Tag Cloud
         </h3>
-        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/influxdb/" style="font-size: 10px;">influxdb</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 12.5px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
+        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/influxdb/" style="font-size: 10px;">influxdb</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 12.5px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/oauth2/" style="font-size: 10px;">oauth2</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
     </div>
 </div>
     
@@ -477,6 +488,25 @@
         <h3 class="menu-label">
             Recent
         </h3>
+        
+        <article class="media">
+            
+            <a href="/programming/django-oauth-client-setup/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/oauth_flow.webp" alt="Setup OAuth2 client for Django in 5 minutes">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-12T22:00:00.000Z">2020-04-13</time></div>
+                    <a href="/programming/django-oauth-client-setup/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Setup OAuth2 client for Django in 5 minutes</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/programming/">programming</a>
+                    </p>
+                </div>
+            </div>
+        </article>
         
         <article class="media">
             
@@ -554,25 +584,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
         
@@ -583,6 +594,17 @@
             Archives
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/04/">
+                <span class="level-start">
+                    <span class="level-item">April 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2020/03/">
@@ -1055,6 +1077,13 @@
                 </div>
                 
                 <div class="control">
+                    <a class="tags has-addons" href="/tags/django/">
+                        <span class="tag">django</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
                     <a class="tags has-addons" href="/tags/docker/">
                         <span class="tag">docker</span>
                         <span class="tag is-grey">3</span>
@@ -1211,6 +1240,13 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/nginx/">
                         <span class="tag">nginx</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/oauth2/">
+                        <span class="tag">oauth2</span>
                         <span class="tag is-grey">1</span>
                     </a>
                 </div>
@@ -1379,6 +1415,25 @@
         
         <article class="media">
             
+            <a href="/programming/django-oauth-client-setup/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/oauth_flow.webp" alt="Setup OAuth2 client for Django in 5 minutes">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-12T22:00:00.000Z">2020-04-13</time></div>
+                    <a href="/programming/django-oauth-client-setup/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Setup OAuth2 client for Django in 5 minutes</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/programming/">programming</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/operation/influxdb-command-cheatsheet/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/Influxdb_logo.webp" alt="InfluxDB command cheatsheet">
@@ -1453,25 +1508,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
     
@@ -1482,6 +1518,17 @@
             Archives
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/04/">
+                <span class="level-start">
+                    <span class="level-item">April 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2020/03/">
@@ -1954,6 +2001,13 @@
                 </div>
                 
                 <div class="control">
+                    <a class="tags has-addons" href="/tags/django/">
+                        <span class="tag">django</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
                     <a class="tags has-addons" href="/tags/docker/">
                         <span class="tag">docker</span>
                         <span class="tag is-grey">3</span>
@@ -2115,6 +2169,13 @@
                 </div>
                 
                 <div class="control">
+                    <a class="tags has-addons" href="/tags/oauth2/">
+                        <span class="tag">oauth2</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
                     <a class="tags has-addons" href="/tags/operation/">
                         <span class="tag">operation</span>
                         <span class="tag is-grey">1</span>
@@ -2271,12 +2332,13 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    SongRong's Experience
+                    SongRong&#39;s Experience
                 
                 </a>
                 <p class="is-size-7">
-                © 2020 songrgg 
-                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                &copy; 2020 songrgg&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
                 
                 </p>
             </div>
@@ -2353,7 +2415,7 @@ var IcarusThemeSettings = {
     <h6>Your browser is out-of-date!</h6>
     <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
             my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
 <script>
@@ -2416,7 +2478,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="searchbox ins-search">
     <div class="searchbox-container ins-search-container">
         <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something..." />
             <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="searchbox-result-wrapper ins-section-wrapper">
@@ -2443,5 +2505,5 @@ document.addEventListener('DOMContentLoaded', function () {
 <link rel="stylesheet" href="/css/search.css">
 <link rel="stylesheet" href="/css/insight.css">
     
-
-<script type="text/javascript" charset="utf-8" src="/js/lazyload-plugin/lazyload.intersectionObserver.min.js"></script></body></html>
+</body>
+</html>

@@ -1,9 +1,11 @@
-<!DOCTYPE html><html lang="en"><head>
-    <meta charset="utf-8">
+<!DOCTYPE html>
+<html  lang="en">
+<head>
+    <meta charset="utf-8" />
 
-<meta name="generator" content="Hexo 4.2.0">
+<meta name="generator" content="Hexo 4.2.0" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
 <title>Blog | Songrgg</title>
 
@@ -88,7 +90,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                SongRong's Experience
+                SongRong&#39;s Experience
             
             </a>
         </div>
@@ -96,15 +98,20 @@
             
             <div class="navbar-start">
                 
-                <a class="navbar-item" href="/">Home</a>
+                <a class="navbar-item"
+                href="/">Home</a>
                 
-                <a class="navbar-item" href="/archives">Archives</a>
+                <a class="navbar-item"
+                href="/archives">Archives</a>
                 
-                <a class="navbar-item" href="/categories">Categories</a>
+                <a class="navbar-item"
+                href="/categories">Categories</a>
                 
-                <a class="navbar-item" href="/tags">Tags</a>
+                <a class="navbar-item"
+                href="/tags">Tags</a>
                 
-                <a class="navbar-item" href="/about">About</a>
+                <a class="navbar-item"
+                href="/about">About</a>
                 
             </div>
             
@@ -125,6 +132,96 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main">
+    
+
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2014-12-15T23:00:50.000Z">2014-12-16</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/programming/">programming</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    2 minutes read (About 342 words)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/programming/6.824,%20Lab2,%20part%201/">MIT 6.824 Lab2, part1小结</a>
+            
+        </h1>
+        <div class="content">
+            <h3 id="关于MIT-6-824课程的Lab-2-part-1"><a href="#关于MIT-6-824课程的Lab-2-part-1" class="headerlink" title="关于MIT 6.824课程的Lab 2, part 1"></a>关于MIT 6.824课程的Lab 2, part 1</h3><p><del>从昨晚在宾馆到今天飞机上，都在过这几个test case，终于最后有点讨巧的过了。</del></p>
+<blockquote>
+<p>View service是MIT介绍paxos之前用来入门的，它的原理是以时间先后的顺序确定主备服务器，由定期的心跳更新此关系。之所以放在单独的service里获取主备关系，是为了将主备关系从K-V系统中解耦，从而K-V系统不用关心键值操作之外的事情，让更加上层的系统进行处理。</p>
+</blockquote>
+<p>遇到的问题：</p>
+<ul>
+<li>view service当前的view，和下一个未确认的view在哪些时间点更新？<ul>
+<li>怎么认为这个服务器作为主，又怎么确认其为Backup，Idle？</li>
+<li>什么时候能将这些认识更新到服务器当前view上？</li>
+</ul>
+</li>
+<li>服务器看到的view service的当前view是怎样的？<ul>
+<li>不同服务器查询当前view状态，获得的结果是一样的吗？</li>
+</ul>
+</li>
+</ul>
+<p>我用复杂难看的if-else语句最后实现这些逻辑，但不可否认，实现的漏洞很多，我理想的解决方案还是使用状态机，可以更加清晰容易更新（用图表展现）。</p>
+
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "MIT 6.824 Lab2, part1小结",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "",
+        "genre": "programming",
+        "datePublished": "2014-12-16",
+        "dateCreated": "2014-12-16",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/programming/6.824, Lab2, part 1/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/6.824, Lab2, part 1/",
+        "description": "关于MIT 6.824课程的Lab 2, part 1从昨晚在宾馆到今天飞机上，都在过这几个test case，终于最后有点讨巧的过了。View service是MIT介绍paxos之前用来入门的，它的原理是以时间先后的顺序确定主备服务器，由定期的心跳更新此关系。之所以放在单独的service里获取主备关系，是为了将主备关系从K-V系统中解耦，从而K-V系统不用关心键值操作之外的事情，让更加上",
+        "wordCount": 17
+    }
+</script>
+
+
+
     
 
 <div class="card">
@@ -158,20 +255,20 @@
         <div class="content">
             <p>跳表的原理就是利用随机性建立索引，加速搜索，并且简化代码实现难度。具体的跳表原理不再赘述，主要是看了levelDB有一些实现细节的东西，凸显自己写的实现不足之处。</p>
 <ul>
-<li>去除冗余的key<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span><<span class="keyword">typename</span> Key, <span class="class"><span class="keyword">class</span> <span class="title">Comparator</span>></span></span><br><span class="line"><span class="class"><span class="title">struct</span> <span class="title">SkipList</span><Key,Comparator>:</span>:Node {</span><br><span class="line">  explicit Node(const Key& k) : key(k) { }</span><br><span class="line"></span><br><span class="line">  Key <span class="keyword">const</span> key;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Accessors/mutators for links.  Wrapped in methods so we can</span></span><br><span class="line">  <span class="comment">// add the appropriate barriers as necessary.</span></span><br><span class="line">  <span class="function">Node* <span class="title">Next</span><span class="params">(<span class="keyword">int</span> n)</span> </span>{</span><br><span class="line">    assert(n >= <span class="number">0</span>);</span><br><span class="line">    <span class="comment">// Use an 'acquire load' so that we observe a fully initialized</span></span><br><span class="line">    <span class="comment">// version of the returned Node.</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">reinterpret_cast</span><Node*>(next_[n].Acquire_Load());</span><br><span class="line">  }</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">SetNext</span><span class="params">(<span class="keyword">int</span> n, Node* x)</span> </span>{</span><br><span class="line">    assert(n >= <span class="number">0</span>);</span><br><span class="line">    <span class="comment">// Use a 'release store' so that anybody who reads through this</span></span><br><span class="line">    <span class="comment">// pointer observes a fully initialized version of the inserted node.</span></span><br><span class="line">    next_[n].Release_Store(x);</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="comment">// No-barrier variants that can be safely used in a few locations.</span></span><br><span class="line">  <span class="function">Node* <span class="title">NoBarrier_Next</span><span class="params">(<span class="keyword">int</span> n)</span> </span>{</span><br><span class="line">    assert(n >= <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">reinterpret_cast</span><Node*>(next_[n].NoBarrier_Load());</span><br><span class="line">  }</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">NoBarrier_SetNext</span><span class="params">(<span class="keyword">int</span> n, Node* x)</span> </span>{</span><br><span class="line">    assert(n >= <span class="number">0</span>);</span><br><span class="line">    next_[n].NoBarrier_Store(x);</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">  <span class="comment">// Array of length equal to the node height.  next_[0] is lowest level link.</span></span><br><span class="line">  port::AtomicPointer next_[<span class="number">1</span>];</span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
-这里使用一个Node节点表示所有相同key，不同高度的节点集合，仅保留了key和不同高度的向右指针，并且使用NewNode来动态分配随即高度的向右指针集合，而next_就指向这指针集合。这也是c/c++ tricky的地方。<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string"><stdio.h></span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span> {</span></span><br><span class="line">	<span class="keyword">char</span> str[<span class="number">1</span>];</span><br><span class="line">};</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>{</span><br><span class="line">	<span class="keyword">char</span>* mem = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="number">4</span>];</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < <span class="number">4</span>; i++) {</span><br><span class="line">		mem[i] = i + <span class="string">'0'</span>;</span><br><span class="line">	}	</span><br><span class="line">	Node* node = (Node*)mem;</span><br><span class="line">	<span class="keyword">char</span>* <span class="keyword">const</span> pstr = node->str;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < <span class="number">4</span>; i++) {</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"%c"</span>, pstr[i]);</span><br><span class="line">	}</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<li>去除冗余的key<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Key, <span class="class"><span class="keyword">class</span> <span class="title">Comparator</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> <span class="title">SkipList</span>&lt;Key,Comparator&gt;:</span>:Node &#123;</span><br><span class="line">  explicit Node(const Key&amp; k) : key(k) &#123; &#125;</span><br><span class="line"></span><br><span class="line">  Key <span class="keyword">const</span> key;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Accessors/mutators for links.  Wrapped in methods so we can</span></span><br><span class="line">  <span class="comment">// add the appropriate barriers as necessary.</span></span><br><span class="line">  <span class="function">Node* <span class="title">Next</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    assert(n &gt;= <span class="number">0</span>);</span><br><span class="line">    <span class="comment">// Use an 'acquire load' so that we observe a fully initialized</span></span><br><span class="line">    <span class="comment">// version of the returned Node.</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">reinterpret_cast</span>&lt;Node*&gt;(next_[n].Acquire_Load());</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">SetNext</span><span class="params">(<span class="keyword">int</span> n, Node* x)</span> </span>&#123;</span><br><span class="line">    assert(n &gt;= <span class="number">0</span>);</span><br><span class="line">    <span class="comment">// Use a 'release store' so that anybody who reads through this</span></span><br><span class="line">    <span class="comment">// pointer observes a fully initialized version of the inserted node.</span></span><br><span class="line">    next_[n].Release_Store(x);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// No-barrier variants that can be safely used in a few locations.</span></span><br><span class="line">  <span class="function">Node* <span class="title">NoBarrier_Next</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    assert(n &gt;= <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">reinterpret_cast</span>&lt;Node*&gt;(next_[n].NoBarrier_Load());</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">NoBarrier_SetNext</span><span class="params">(<span class="keyword">int</span> n, Node* x)</span> </span>&#123;</span><br><span class="line">    assert(n &gt;= <span class="number">0</span>);</span><br><span class="line">    next_[n].NoBarrier_Store(x);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">  <span class="comment">// Array of length equal to the node height.  next_[0] is lowest level link.</span></span><br><span class="line">  port::AtomicPointer next_[<span class="number">1</span>];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+这里使用一个Node节点表示所有相同key，不同高度的节点集合，仅保留了key和不同高度的向右指针，并且使用NewNode来动态分配随即高度的向右指针集合，而next_就指向这指针集合。这也是c/c++ tricky的地方。<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">	<span class="keyword">char</span> str[<span class="number">1</span>];</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">char</span>* mem = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="number">4</span>];</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) &#123;</span><br><span class="line">		mem[i] = i + <span class="string">'0'</span>;</span><br><span class="line">	&#125;	</span><br><span class="line">	Node* node = (Node*)mem;</span><br><span class="line">	<span class="keyword">char</span>* <span class="keyword">const</span> pstr = node-&gt;str;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"%c"</span>, pstr[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
 <p>就像上面这个简单的sample，成员str可以作为指针指向从数组下标0开始的元素，并且不受申明时的限制，不局限于大小1，索引至分配的最大的内存地址。</p>
 <ul>
-<li>简易随机数生成<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">uint32_t</span> Next() {</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">uint32_t</span> M = <span class="number">2147483647L</span>;   <span class="comment">// 2^31-1</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">uint64_t</span> A = <span class="number">16807</span>;  <span class="comment">// bits 14, 8, 7, 5, 2, 1, 0</span></span><br><span class="line">    <span class="comment">// We are computing</span></span><br><span class="line">    <span class="comment">//       seed_ = (seed_ * A) % M,    where M = 2^31-1</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// seed_ must not be zero or M, or else all subsequent computed values</span></span><br><span class="line">    <span class="comment">// will be zero or M respectively.  For all other values, seed_ will end</span></span><br><span class="line">    <span class="comment">// up cycling through every number in [1,M-1]</span></span><br><span class="line">    <span class="keyword">uint64_t</span> product = seed_ * A;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Compute (product % M) using the fact that ((x << 31) % M) == x.</span></span><br><span class="line">    seed_ = <span class="keyword">static_cast</span><<span class="keyword">uint32_t</span>>((product >> <span class="number">31</span>) + (product & M));</span><br><span class="line">    <span class="comment">// The first reduction may overflow by 1 bit, so we may need to</span></span><br><span class="line">    <span class="comment">// repeat.  mod == M is not possible; using > allows the faster</span></span><br><span class="line">    <span class="comment">// sign-bit-based test.</span></span><br><span class="line">    <span class="keyword">if</span> (seed_ > M) {</span><br><span class="line">      seed_ -= M;</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> seed_;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<li>简易随机数生成<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">uint32_t</span> Next() &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">uint32_t</span> M = <span class="number">2147483647L</span>;   <span class="comment">// 2^31-1</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">uint64_t</span> A = <span class="number">16807</span>;  <span class="comment">// bits 14, 8, 7, 5, 2, 1, 0</span></span><br><span class="line">    <span class="comment">// We are computing</span></span><br><span class="line">    <span class="comment">//       seed_ = (seed_ * A) % M,    where M = 2^31-1</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// seed_ must not be zero or M, or else all subsequent computed values</span></span><br><span class="line">    <span class="comment">// will be zero or M respectively.  For all other values, seed_ will end</span></span><br><span class="line">    <span class="comment">// up cycling through every number in [1,M-1]</span></span><br><span class="line">    <span class="keyword">uint64_t</span> product = seed_ * A;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Compute (product % M) using the fact that ((x &lt;&lt; 31) % M) == x.</span></span><br><span class="line">    seed_ = <span class="keyword">static_cast</span>&lt;<span class="keyword">uint32_t</span>&gt;((product &gt;&gt; <span class="number">31</span>) + (product &amp; M));</span><br><span class="line">    <span class="comment">// The first reduction may overflow by 1 bit, so we may need to</span></span><br><span class="line">    <span class="comment">// repeat.  mod == M is not possible; using &gt; allows the faster</span></span><br><span class="line">    <span class="comment">// sign-bit-based test.</span></span><br><span class="line">    <span class="keyword">if</span> (seed_ &gt; M) &#123;</span><br><span class="line">      seed_ -= M;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> seed_;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
-<p>可以看到，他使用A和M对种子进行运算，达到一定数据范围内不会重复的数集，而里面对于(product % M)，使用(product >> 31) + (product & M)进行运算优化，考虑右移和与操作的代价远小于取余操作。</p>
+<p>可以看到，他使用A和M对种子进行运算，达到一定数据范围内不会重复的数集，而里面对于(product % M)，使用(product &gt;&gt; 31) + (product &amp; M)进行运算优化，考虑右移和与操作的代价远小于取余操作。</p>
 <ul>
-<li>简洁清晰的私有帮助方法，帮助寻找小于指定key的节点<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span><<span class="keyword">typename</span> Key, <span class="class"><span class="keyword">class</span> <span class="title">Comparator</span>></span></span><br><span class="line"><span class="class"><span class="title">typename</span> <span class="title">SkipList</span><Key,Comparator>:</span>:Node*</span><br><span class="line">SkipList<Key,Comparator>::FindLessThan(<span class="keyword">const</span> Key& key) <span class="keyword">const</span> {</span><br><span class="line">  Node* x = head_;</span><br><span class="line">  <span class="keyword">int</span> level = GetMaxHeight() - <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (<span class="literal">true</span>) {</span><br><span class="line">    assert(x == head_ || compare_(x->key, key) < <span class="number">0</span>);</span><br><span class="line">    Node* next = x->Next(level);</span><br><span class="line">    <span class="keyword">if</span> (next == <span class="literal">NULL</span> || compare_(next->key, key) >= <span class="number">0</span>) {</span><br><span class="line">      <span class="keyword">if</span> (level == <span class="number">0</span>) {</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">      } <span class="keyword">else</span> {</span><br><span class="line">        <span class="comment">// Switch to next list</span></span><br><span class="line">        level--;</span><br><span class="line">	  }</span><br><span class="line">    } <span class="keyword">else</span> {</span><br><span class="line">      x = next;</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<li>简洁清晰的私有帮助方法，帮助寻找小于指定key的节点<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Key, <span class="class"><span class="keyword">class</span> <span class="title">Comparator</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">typename</span> <span class="title">SkipList</span>&lt;Key,Comparator&gt;:</span>:Node*</span><br><span class="line">SkipList&lt;Key,Comparator&gt;::FindLessThan(<span class="keyword">const</span> Key&amp; key) <span class="keyword">const</span> &#123;</span><br><span class="line">  Node* x = head_;</span><br><span class="line">  <span class="keyword">int</span> level = GetMaxHeight() - <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    assert(x == head_ || compare_(x-&gt;key, key) &lt; <span class="number">0</span>);</span><br><span class="line">    Node* next = x-&gt;Next(level);</span><br><span class="line">    <span class="keyword">if</span> (next == <span class="literal">NULL</span> || compare_(next-&gt;key, key) &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (level == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// Switch to next list</span></span><br><span class="line">        level--;</span><br><span class="line">	  &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      x = next;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 
@@ -248,25 +345,25 @@
         </h1>
         <div class="content">
             <h3 id="goroutine之间的同步"><a href="#goroutine之间的同步" class="headerlink" title="goroutine之间的同步"></a>goroutine之间的同步</h3><p>goroutine是golang中在语言级别实现的轻量级线程，仅仅利用<strong>go</strong>就能立刻起一个新线程。多线程会引入线程之间的同步问题，经典的同步问题如生产者-消费者问题，在c，java级别需要使用锁、信号量进行共享资源的互斥使用和多线程之间的时序控制，而在golang中有channel作为同步的工具。</p>
-<h4 id="1-channel实现两个goroutine之间的通信"><a href="#1-channel实现两个goroutine之间的通信" class="headerlink" title="1. channel实现两个goroutine之间的通信"></a>1. channel实现两个goroutine之间的通信</h4><figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line">	</span><br><span class="line"><span class="keyword">import</span> <span class="string">"strconv"</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {</span><br><span class="line">	taskChan := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>, <span class="number">3</span>)</span><br><span class="line">	doneChan := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i < <span class="number">3</span>; i++ {</span><br><span class="line">		taskChan <- strconv.Itoa(i)</span><br><span class="line">		fmt.Println(<span class="string">"send: "</span>, i)</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> {</span><br><span class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i < <span class="number">3</span>; i++ {</span><br><span class="line">			task := <-taskChan</span><br><span class="line">			fmt.Println(<span class="string">"received: "</span>, task)</span><br><span class="line">		}</span><br><span class="line">		doneChan <- <span class="number">1</span></span><br><span class="line">	}()</span><br><span class="line"></span><br><span class="line">	<-doneChan</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="1-channel实现两个goroutine之间的通信"><a href="#1-channel实现两个goroutine之间的通信" class="headerlink" title="1. channel实现两个goroutine之间的通信"></a>1. channel实现两个goroutine之间的通信</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line">	</span><br><span class="line"><span class="keyword">import</span> <span class="string">"strconv"</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	taskChan := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>, <span class="number">3</span>)</span><br><span class="line">	doneChan := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">3</span>; i++ &#123;</span><br><span class="line">		taskChan &lt;- strconv.Itoa(i)</span><br><span class="line">		fmt.Println(<span class="string">"send: "</span>, i)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">3</span>; i++ &#123;</span><br><span class="line">			task := &lt;-taskChan</span><br><span class="line">			fmt.Println(<span class="string">"received: "</span>, task)</span><br><span class="line">		&#125;</span><br><span class="line">		doneChan &lt;- <span class="number">1</span></span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	&lt;-doneChan</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>创建一个channel，<code>make(chan TYPE {, NUM})</code>, TYPE指的是channel中传输的数据类型，第二个参数是可选的，指的是channel的容量大小。</li>
-<li>向channel传入数据，<code>CHAN <- DATA</code>, <strong>CHAN</strong>指的是目的channel即收集数据的一方，<strong>DATA</strong>则是要传的数据。</li>
+<li>向channel传入数据，<code>CHAN &lt;- DATA</code>, <strong>CHAN</strong>指的是目的channel即收集数据的一方，<strong>DATA</strong>则是要传的数据。</li>
 <li>启动一个goroutine接收main routine向channel发送的数据，<code>go func(){ BODY }()</code>新建一个线程运行一个匿名函数。</li>
-<li>从channel读取数据，<code>DATA := <-CHAN</code>，和向channel传入数据相反，在数据输送箭头的右侧的是channel，形象地展现了数据从‘隧道’流出到变量里。</li>
+<li>从channel读取数据，<code>DATA := &lt;-CHAN</code>，和向channel传入数据相反，在数据输送箭头的右侧的是channel，形象地展现了数据从‘隧道’流出到变量里。</li>
 <li>通知主线程任务执行结束，doneChan的作用是为了让main routine等待这个刚起的goroutine结束，这里显示了channel的另一个特性，如果从empty channel中读取数据，则会阻塞当前routine，直到有数据可以读取。</li>
 </ul>
 <p>上面这个程序就是main routine向另一个routine发送了3条int类型的数据，当3条数据被接收到后，主线程也从阻塞状态恢复运行，随后结束。  </p>
 <h4 id="2-不要陷入“死锁”"><a href="#2-不要陷入“死锁”" class="headerlink" title="2. 不要陷入“死锁”"></a>2. 不要陷入“死锁”</h4><p>我一开始用channel的时候有报过*”fatal error: all goroutines are asleep - deadlock! “*的错误，真实的代码是下面这样的:  </p>
-<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {</span><br><span class="line">	ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line">	ch <- <span class="number">1</span>   <span class="comment">// I'm blocked because there is no channel read yet. </span></span><br><span class="line">	fmt.Println(<span class="string">"send"</span>)</span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> {</span><br><span class="line">		<-ch  <span class="comment">// I will never be called for the main routine is blocked!</span></span><br><span class="line">		fmt.Println(<span class="string">"received"</span>)</span><br><span class="line">	}()</span><br><span class="line">	fmt.Println(<span class="string">"over"</span>)</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line">	ch &lt;- <span class="number">1</span>   <span class="comment">// I'm blocked because there is no channel read yet. </span></span><br><span class="line">	fmt.Println(<span class="string">"send"</span>)</span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		&lt;-ch  <span class="comment">// I will never be called for the main routine is blocked!</span></span><br><span class="line">		fmt.Println(<span class="string">"received"</span>)</span><br><span class="line">	&#125;()</span><br><span class="line">	fmt.Println(<span class="string">"over"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>我的本意是从main routine发送给另一个routine一个int型的数据，但是运行出了上述的错误，原因有2个:  </p>
 <ul>
 <li>当前routine向channel发送/接收数据时，如果另一端没有相应地接收/发送，那么当前routine则会进行休眠。</li>
-<li>这个程序的main routine先行在<code>ch <- 1</code>进入休眠状态，程序的余下部分根本来不及运行，那么channel里的数据永远不会被读出，也就不能唤醒main routine，进入“死锁”。  </li>
+<li>这个程序的main routine先行在<code>ch &lt;- 1</code>进入休眠状态，程序的余下部分根本来不及运行，那么channel里的数据永远不会被读出，也就不能唤醒main routine，进入“死锁”。  </li>
 </ul>
 <p>解决这个“死锁”的方法可是是设置channel的容量大小大于1，那么channel就不会因为数据输入而阻塞主程; 或者将数据输入channel的语句置于启动新的goroutine之后。  </p>
 <h4 id="3-channel作为状态转移的信号源"><a href="#3-channel作为状态转移的信号源" class="headerlink" title="3. channel作为状态转移的信号源"></a>3. channel作为状态转移的信号源</h4><p>我跟着MIT的分布式计算课程做了原型为Map-Reduce的课后练习，目的是实现一个Master向Worker分派任务的功能：Master服务器去等待Worker服务器连接注册，Master先将Map任务和Reduce任务分派给这些注册Worker，等待Map任务全部完成，然后将Reduce任务再分配出去，等待全部完成。</p>
-<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Initialize a channel which records the process of the map jobs.</span></span><br><span class="line">mapJobChannel := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)</span><br><span class="line">	</span><br><span class="line"><span class="comment">// Start a goroutine to send the nMap(the number of the Map jobs) tasks to the main routine.</span></span><br><span class="line"><span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> {</span><br><span class="line">	<span class="keyword">for</span> m := <span class="number">0</span>; m < nMap; m++ {</span><br><span class="line">		<span class="comment">// Send the "start a Map job <m>" to the receiver.</span></span><br><span class="line">		mapJobChannel <- <span class="string">"start, "</span> + strconv.Itoa(m)</span><br><span class="line">	}</span><br><span class="line">}()</span><br><span class="line"></span><br><span class="line"><span class="comment">// Main routine listens on this mapJobChannel for the Map job task information.</span></span><br><span class="line">nMapJobs := nMap</span><br><span class="line"></span><br><span class="line"><span class="comment">// Process the nMap Map tasks util they're all done.</span></span><br><span class="line"><span class="keyword">for</span> nMapJobs > <span class="number">0</span> {</span><br><span class="line">	<span class="comment">// Receive the Map tasks from the channel.</span></span><br><span class="line">	taskInfo := strings.Split(<-mapJobChannel, <span class="string">","</span>)</span><br><span class="line">	state, mapNo := taskInfo[<span class="number">0</span>], taskInfo[<span class="number">1</span>]</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span> state == <span class="string">"start"</span> {</span><br><span class="line">		<span class="comment">// Assign a Map task with number mapNo to a worker.</span></span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> {</span><br><span class="line">			<span class="comment">// Wait for a worker to finish the Map task.</span></span><br><span class="line">			ok, workNo := assignJobToWorker(<span class="string">"Map"</span>, mapNo)</span><br><span class="line">			<span class="keyword">if</span> ok {</span><br><span class="line">				<span class="comment">// Send a task finish signal and set the worker's state to idle.</span></span><br><span class="line">				mapJobChannel <- <span class="string">"end, "</span> + mapNo</span><br><span class="line">				setWorkerState(workNo, <span class="string">"idle"</span>)</span><br><span class="line">			} <span class="keyword">else</span> {</span><br><span class="line">				<span class="comment">// Restart this task and set the worker's state to finished.</span></span><br><span class="line">				mapJobChannel <- <span class="string">"start, "</span> + mapNo</span><br><span class="line">				setWorkerState(workNo, <span class="string">"finished"</span>)</span><br><span class="line">			}</span><br><span class="line">		}()</span><br><span class="line">	} <span class="keyword">else</span> {</span><br><span class="line">		nMapJobs--</span><br><span class="line">	}</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Initialize a channel which records the process of the map jobs.</span></span><br><span class="line">mapJobChannel := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)</span><br><span class="line">	</span><br><span class="line"><span class="comment">// Start a goroutine to send the nMap(the number of the Map jobs) tasks to the main routine.</span></span><br><span class="line"><span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> m := <span class="number">0</span>; m &lt; nMap; m++ &#123;</span><br><span class="line">		<span class="comment">// Send the "start a Map job &lt;m&gt;" to the receiver.</span></span><br><span class="line">		mapJobChannel &lt;- <span class="string">"start, "</span> + strconv.Itoa(m)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;()</span><br><span class="line"></span><br><span class="line"><span class="comment">// Main routine listens on this mapJobChannel for the Map job task information.</span></span><br><span class="line">nMapJobs := nMap</span><br><span class="line"></span><br><span class="line"><span class="comment">// Process the nMap Map tasks util they're all done.</span></span><br><span class="line"><span class="keyword">for</span> nMapJobs &gt; <span class="number">0</span> &#123;</span><br><span class="line">	<span class="comment">// Receive the Map tasks from the channel.</span></span><br><span class="line">	taskInfo := strings.Split(&lt;-mapJobChannel, <span class="string">","</span>)</span><br><span class="line">	state, mapNo := taskInfo[<span class="number">0</span>], taskInfo[<span class="number">1</span>]</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span> state == <span class="string">"start"</span> &#123;</span><br><span class="line">		<span class="comment">// Assign a Map task with number mapNo to a worker.</span></span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">			<span class="comment">// Wait for a worker to finish the Map task.</span></span><br><span class="line">			ok, workNo := assignJobToWorker(<span class="string">"Map"</span>, mapNo)</span><br><span class="line">			<span class="keyword">if</span> ok &#123;</span><br><span class="line">				<span class="comment">// Send a task finish signal and set the worker's state to idle.</span></span><br><span class="line">				mapJobChannel &lt;- <span class="string">"end, "</span> + mapNo</span><br><span class="line">				setWorkerState(workNo, <span class="string">"idle"</span>)</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="comment">// Restart this task and set the worker's state to finished.</span></span><br><span class="line">				mapJobChannel &lt;- <span class="string">"start, "</span> + mapNo</span><br><span class="line">				setWorkerState(workNo, <span class="string">"finished"</span>)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;()</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		nMapJobs--</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>以上是我截取自己写的代码，关于用channel来传递当前Map任务的进度信息，用类似信号的方式标注当前的任务执行状态。  </p>
 <ul>
 <li>当从channel中读取到”start, {NUM}”时找一个空闲的Worker去执行Map任务，并且等待它的完成，完成成功则向channel中发送”end, {NUM}”信号，表明任务完成，如果失败，就重发”start, {NUM}”信号。</li>
@@ -355,8 +452,8 @@
 <p>知乎上有个人发了条message说”我baidu笔试被刷了，我觉得人生灰暗。。求开导” ，我非常蛋疼地已自己的经历来鼓励他，甚至有些自嘲，他没放在心上，以为是我的笑谈、</p>
 <p>可是我并没有放弃，我仍在找寻着机会，marine帮我找了很多信息，让我去尝试，鼓励我说，我可以的！于是我尝试了知乎，知乎的jobs网页做的非常酷，网页上的各职位需求用该职位所需的技术来作为媒介，显示需求什么样的人，我当时就很兴奋，觉得cool！于是投了简历，知乎的哥哥很快给了回应，并且给了我两个笔试题，一道是实现server监视特定端口的用户发言请求，请求是json格式，你要做的是判断它是否是垃圾发言，1分钟内不能多余10条，不能发10条重复的发言！</p>
 <p>我花了几天，实现了一个简易的server和client测试程序，我很蛋疼地用c实现，代码量还是挺大的，不过确实server的一些知识，重新复习了一下，比如，套接字如何稳定地读写，因为read，write是不阻塞的，所以你必须通过检查返回值来判断是否成功的读写！ 而且read，write返回值为-1时，还需判断是否是被中断引起的、</p>
-<p>等我交了之后，那个哥哥下午给我个电话，和我进行了一次电话面试，一开始就劈头盖脸地问我，为什么用K&R写法，问我对它有多少了解，这种写法是一时兴起，我就如实说了，他反问了一句笔试觉得好玩吗？ 额。。我真的被震住了，太强势了，我当时非常怯懦地说没想清楚，我错了、 然后的电话就已他问我一些关于c的问题，和我还有别的技术兴趣等，可是我被开始K&R问题弄得有点凌乱，似乎我觉得有股火在烧！是的，感觉很不爽，但是觉得自己没想清楚是有点虚，所以有种有火无处发的感觉！期间很插曲地手机没电了，关了5分钟机，我觉得炸鸡了、、</p>
-<p>补完剩下的电话之后，我有种虚脱的感觉，和marine谈论自己对于那个哥哥对我K&R写法的强烈打击，marine的话当时就给了我一道灵光！我瞬间觉得人生充满了光明！他说，”我喜欢”是一个非常好的理由，K&R是c语言最早的一代的写法，那时候混沌初开，但是充满了黑客的精神，以前的开源项目都是K&R写法，我这么写首先是喜欢开源文化，黑客文化，其次那么多人那么写，我想和别人不一样，我想要不一样的写法，我想做一个cool的人，程序员不就是要追求cool，不就是要炫技吗，编译器支不支持是另一回事，这表明我的一种态度！</p>
+<p>等我交了之后，那个哥哥下午给我个电话，和我进行了一次电话面试，一开始就劈头盖脸地问我，为什么用K&amp;R写法，问我对它有多少了解，这种写法是一时兴起，我就如实说了，他反问了一句笔试觉得好玩吗？ 额。。我真的被震住了，太强势了，我当时非常怯懦地说没想清楚，我错了、 然后的电话就已他问我一些关于c的问题，和我还有别的技术兴趣等，可是我被开始K&amp;R问题弄得有点凌乱，似乎我觉得有股火在烧！是的，感觉很不爽，但是觉得自己没想清楚是有点虚，所以有种有火无处发的感觉！期间很插曲地手机没电了，关了5分钟机，我觉得炸鸡了、、</p>
+<p>补完剩下的电话之后，我有种虚脱的感觉，和marine谈论自己对于那个哥哥对我K&amp;R写法的强烈打击，marine的话当时就给了我一道灵光！我瞬间觉得人生充满了光明！他说，”我喜欢”是一个非常好的理由，K&amp;R是c语言最早的一代的写法，那时候混沌初开，但是充满了黑客的精神，以前的开源项目都是K&amp;R写法，我这么写首先是喜欢开源文化，黑客文化，其次那么多人那么写，我想和别人不一样，我想要不一样的写法，我想做一个cool的人，程序员不就是要追求cool，不就是要炫技吗，编译器支不支持是另一回事，这表明我的一种态度！</p>
 <p>我非常赞同他说的话，好像说出了心声，但是既喜且悲，悲的是因为自己和人的打交道太少，自己又怯懦，不能强势地表达出自己的想法，我觉得他们不要我也是情理之中，一个不敢说出自己意见的人，怎么配说自己是程序员哪！我顿时有种自惭、不过也为我发现自己这个巨大的缺失而高兴！</p>
 <p>突然面试的机会又来了，以前投过ibm，前两天ibm跟我说要给我视频面试，我很高兴，又有机会来找到自己的不足！ibm的哥哥人很好，问了我一下面试的基础问题，问了我一下和团队合作时，对队友的一些看法，最后的时候还给我了建议：1. 下次面试让室友知道，别让他们光着膀子乱走！ 2. 准备自我介绍  3. 加强表达能力、 三个建议很中肯！很感谢他！</p>
 <p>程序水平对我反而是其次了，和人的沟通才是重点，毕竟合作是大项目的基础！！！</p>
@@ -417,7 +514,7 @@
             
             <li><a class="pagination-link has-text-black-ter" href="/">1</a></li>
             
-            <li><span class="pagination-ellipsis has-text-black-ter">…</span></li>
+            <li><span class="pagination-ellipsis has-text-black-ter">&hellip;</span></li>
             
             <li><a class="pagination-link has-text-black-ter" href="/page/6/">6</a></li>
             
@@ -471,7 +568,7 @@
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            51
+                            52
                         </p>
                     </a>
                 </div>
@@ -495,7 +592,7 @@
                     </p>
                     <a href="/tags">
                         <p class="title has-text-weight-normal">
-                            58
+                            60
                         </p>
                     </a>
                 </div>
@@ -511,25 +608,29 @@
         
         <div class="level is-mobile">
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/songrgg">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Github" href="https://github.com/songrgg">
                 
                 <i class="fab fa-github"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Instagram" href="https://www.instagram.com/jiangsongrong">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Instagram" href="https://www.instagram.com/jiangsongrong">
                 
                 <i class="fab fa-instagram"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
                 
                 <i class="fab fa-linkedin"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="RSS" href="/atom.xml">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="RSS" href="/atom.xml">
                 
                 <i class="fas fa-rss"></i>
                 
@@ -588,7 +689,7 @@
                 <span class="level-item">programming</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">25</span>
+                <span class="level-item tag">26</span>
             </span>
         </a></li>
             </ul>
@@ -601,7 +702,7 @@
         <h3 class="menu-label">
             Tag Cloud
         </h3>
-        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/influxdb/" style="font-size: 10px;">influxdb</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 12.5px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
+        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/influxdb/" style="font-size: 10px;">influxdb</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 12.5px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/oauth2/" style="font-size: 10px;">oauth2</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
     </div>
 </div>
     
@@ -613,6 +714,25 @@
         <h3 class="menu-label">
             Recent
         </h3>
+        
+        <article class="media">
+            
+            <a href="/programming/django-oauth-client-setup/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/oauth_flow.webp" alt="Setup OAuth2 client for Django in 5 minutes">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-12T22:00:00.000Z">2020-04-13</time></div>
+                    <a href="/programming/django-oauth-client-setup/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Setup OAuth2 client for Django in 5 minutes</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/programming/">programming</a>
+                    </p>
+                </div>
+            </div>
+        </article>
         
         <article class="media">
             
@@ -690,25 +810,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
         
@@ -719,6 +820,17 @@
             Archives
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/04/">
+                <span class="level-start">
+                    <span class="level-item">April 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2020/03/">
@@ -1191,6 +1303,13 @@
                 </div>
                 
                 <div class="control">
+                    <a class="tags has-addons" href="/tags/django/">
+                        <span class="tag">django</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
                     <a class="tags has-addons" href="/tags/docker/">
                         <span class="tag">docker</span>
                         <span class="tag is-grey">3</span>
@@ -1347,6 +1466,13 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/nginx/">
                         <span class="tag">nginx</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/oauth2/">
+                        <span class="tag">oauth2</span>
                         <span class="tag is-grey">1</span>
                     </a>
                 </div>
@@ -1515,6 +1641,25 @@
         
         <article class="media">
             
+            <a href="/programming/django-oauth-client-setup/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/oauth_flow.webp" alt="Setup OAuth2 client for Django in 5 minutes">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-12T22:00:00.000Z">2020-04-13</time></div>
+                    <a href="/programming/django-oauth-client-setup/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Setup OAuth2 client for Django in 5 minutes</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/programming/">programming</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/operation/influxdb-command-cheatsheet/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/Influxdb_logo.webp" alt="InfluxDB command cheatsheet">
@@ -1589,25 +1734,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
     
@@ -1618,6 +1744,17 @@
             Archives
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/04/">
+                <span class="level-start">
+                    <span class="level-item">April 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2020/03/">
@@ -2090,6 +2227,13 @@
                 </div>
                 
                 <div class="control">
+                    <a class="tags has-addons" href="/tags/django/">
+                        <span class="tag">django</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
                     <a class="tags has-addons" href="/tags/docker/">
                         <span class="tag">docker</span>
                         <span class="tag is-grey">3</span>
@@ -2251,6 +2395,13 @@
                 </div>
                 
                 <div class="control">
+                    <a class="tags has-addons" href="/tags/oauth2/">
+                        <span class="tag">oauth2</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
                     <a class="tags has-addons" href="/tags/operation/">
                         <span class="tag">operation</span>
                         <span class="tag is-grey">1</span>
@@ -2407,12 +2558,13 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    SongRong's Experience
+                    SongRong&#39;s Experience
                 
                 </a>
                 <p class="is-size-7">
-                © 2020 songrgg 
-                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                &copy; 2020 songrgg&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
                 
                 </p>
             </div>
@@ -2489,7 +2641,7 @@ var IcarusThemeSettings = {
     <h6>Your browser is out-of-date!</h6>
     <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
             my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
 <script>
@@ -2552,7 +2704,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="searchbox ins-search">
     <div class="searchbox-container ins-search-container">
         <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something..." />
             <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="searchbox-result-wrapper ins-section-wrapper">
@@ -2579,5 +2731,5 @@ document.addEventListener('DOMContentLoaded', function () {
 <link rel="stylesheet" href="/css/search.css">
 <link rel="stylesheet" href="/css/insight.css">
     
-
-<script type="text/javascript" charset="utf-8" src="/js/lazyload-plugin/lazyload.intersectionObserver.min.js"></script></body></html>
+</body>
+</html>

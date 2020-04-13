@@ -1,9 +1,11 @@
-<!DOCTYPE html><html lang="en"><head>
-    <meta charset="utf-8">
+<!DOCTYPE html>
+<html  lang="en">
+<head>
+    <meta charset="utf-8" />
 
-<meta name="generator" content="Hexo 4.2.0">
+<meta name="generator" content="Hexo 4.2.0" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
 <title>Blog | Songrgg</title>
 
@@ -88,7 +90,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                SongRong's Experience
+                SongRong&#39;s Experience
             
             </a>
         </div>
@@ -96,15 +98,20 @@
             
             <div class="navbar-start">
                 
-                <a class="navbar-item" href="/">Home</a>
+                <a class="navbar-item"
+                href="/">Home</a>
                 
-                <a class="navbar-item" href="/archives">Archives</a>
+                <a class="navbar-item"
+                href="/archives">Archives</a>
                 
-                <a class="navbar-item" href="/categories">Categories</a>
+                <a class="navbar-item"
+                href="/categories">Categories</a>
                 
-                <a class="navbar-item" href="/tags">Tags</a>
+                <a class="navbar-item"
+                href="/tags">Tags</a>
                 
-                <a class="navbar-item" href="/about">About</a>
+                <a class="navbar-item"
+                href="/about">About</a>
                 
             </div>
             
@@ -125,6 +132,130 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main">
+    
+
+<div class="card">
+    
+    <div class="card-image">
+        <a href="/programming/spark-on-hive-app-channel-analytics/" class="image is-7by1">
+            <img class="thumbnail" src="/images/androidgeo.webp" alt="Spark on Hive实现APP渠道分析">
+        </a>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2018-02-04T20:27:50.000Z">2018-02-04</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/programming/">programming</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    12 minutes read (About 1866 words)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/programming/spark-on-hive-app-channel-analytics/">Spark on Hive实现APP渠道分析</a>
+            
+        </h1>
+        <div class="content">
+            <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>最近在做APP投放渠道分析，就是Android应用投放到应用市场，所谓渠道就是huawei,xiaomi,yingyongbao之类，运营人员根据数据分析渠道的下载安装情况、各个渠道的投放效果。</p>
+<h3 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h3><p>完成一个Android渠道分析的展示面板，包含以下指标：</p>
+<ul>
+<li>APP总新增激活数量</li>
+<li>按渠道划分的新增数量</li>
+<li>各渠道的新增变化走势图（以小时为单位）</li>
+<li>品牌占比</li>
+<li>操作系统占比</li>
+</ul>
+<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><p><img src="/images/app-channel-analytics-architecture.webp" alt="app channel analytics"></p>
+<h3 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h3><p>APP激活时上报给服务端数据，Flume处理数据并将数据发送到Kafka。</p>
+<h4 id="数据格式"><a href="#数据格式" class="headerlink" title="数据格式"></a>数据格式</h4><p>客户端上报对JSON格式更加友好，所以这里选择使用JSON格式，格式定义一方面需要考虑客户端的开发成本，一方面需要考虑日后的拓展性，所以最直接的方法是统一固定的字段，将根据事件所变化的内容放到拓展字段里去，拓展字段是Map类型，可以支持各种拓展的形式。</p>
+<h4 id="数据内容"><a href="#数据内容" class="headerlink" title="数据内容"></a>数据内容</h4><p>以此次渠道分析为例，客户端需要上传客户端的渠道、APP版本、设备标志符、设备型号等信息，更详细的如Geo信息，如果想获得更好的数据展示效果，可以上传，但在此场景可以不需要，这些是主动上报的部分。还有一部分内容是需要在服务端获取的，例如设备IP，为了之后的地理展示，可以使用MaxMind公司的IP与城市对应的数据库进行地理解析。</p>
+<h4 id="数据处理"><a href="#数据处理" class="headerlink" title="数据处理"></a>数据处理</h4><p><a href="https://flume.apache.org">flume</a>接受到客户端的数据之后，需要对数据进行解析JSON，并且获得用户IP、分析Geo Location做一些轻量级的处理，因为这个部分是在前端flume做的，这个部分的flume重点是逻辑要轻，重要的是吞吐量高和延迟低。</p>
+<p>接下来前端flume把处理完的数据按照事件名发送到<a href="https://kafka.apache.org">Kafka</a>同名的topic中，后端flume消费Kafka并将消息转存到Hdfs中。</p>
+<h4 id="数据持久化"><a href="#数据持久化" class="headerlink" title="数据持久化"></a>数据持久化</h4><p>将数据从Hdfs持久化到Hive，一方面是更节省空间，一方面是更有利于<a href="https://spark.apache.org">Spark</a>进行查询。</p>
+<p>这里持久化到Hive的方法，可以有几种：</p>
+<ul>
+<li>Flume直接读取Kafka的数据并存储到Hive，这是由Flume的Hive Sink实现的，数据持久化到Hive Transaction表，是Hive 0.13引入的，支持ACID。</li>
+<li>Flume读取数据到Hdfs，支持配置文件路径，可以根据时间来划分存储路径，之后可以定期使用Hive加载数据，将数据存储到Hive中去。</li>
+</ul>
+<p>第一种方法，相对来说配置简单，省去了中间一步转储的过程。第二种方法，相对繁琐，但是之后会有一个好处。</p>
+<p>下面是设备注册表<code>device_registration</code>的schema</p>
+<figure class="highlight sql"><figcaption><span>device_registration</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`bi.device_registration`</span>(</span><br><span class="line">  <span class="string">`app_id`</span> <span class="keyword">string</span>,</span><br><span class="line">  <span class="string">`uid`</span> <span class="built_in">bigint</span>,</span><br><span class="line">  <span class="string">`time`</span> <span class="built_in">bigint</span>,</span><br><span class="line">  <span class="string">`ip`</span> <span class="keyword">string</span>,</span><br><span class="line">  <span class="string">`device_id`</span> <span class="keyword">string</span>,</span><br><span class="line">  <span class="string">`app_version`</span> <span class="keyword">string</span>,</span><br><span class="line">  <span class="string">`os_name`</span> <span class="keyword">string</span>,</span><br><span class="line">  <span class="string">`os_version`</span> <span class="keyword">string</span>,</span><br><span class="line">  <span class="string">`device_brand`</span> <span class="keyword">string</span>,</span><br><span class="line">  <span class="string">`device_model`</span> <span class="keyword">string</span>,</span><br><span class="line">  <span class="string">`ua_name`</span> <span class="keyword">string</span>,</span><br><span class="line">  <span class="string">`ua_version`</span> <span class="keyword">string</span>,</span><br><span class="line">  <span class="string">`channel`</span> <span class="keyword">string</span>,</span><br><span class="line">  <span class="string">`ts`</span> <span class="built_in">timestamp</span>,</span><br><span class="line">  <span class="string">`lon`</span> <span class="keyword">double</span>,</span><br><span class="line">  <span class="string">`lat`</span> <span class="keyword">double</span>,</span><br><span class="line">  <span class="string">`country`</span> <span class="keyword">string</span>,</span><br><span class="line">  <span class="string">`city`</span> <span class="keyword">string</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>这里要提一下，为什么有了<code>time</code>这个unix时间戳，还需要<code>ts</code>这个<code>timestamp</code>类型的时间，实际上是为了之后的查询工具<code>Superset</code>需要使用来实现按时间查询。</p>
+<h3 id="计算"><a href="#计算" class="headerlink" title="计算"></a>计算</h3><p>这里的计算每小时运行一次，从Hive中读取过去一个小时的设备激活原数据，与<code>device_registration</code>进行比对，将未出现在<code>device_registration</code>中的设备信息加入。</p>
+<p>这里可以使用<code>JOIN</code>来实现，Spark数据表之间的Join方式有多种，<code>inner</code>, <code>cross</code>, <code>outer</code>, <code>full</code>, <code>full_outer</code>, <code>left</code>, <code>left_outer</code>, <code>right</code>, <code>right_outer</code>, <code>left_semi</code>, <code>left_anti</code></p>
+<p>这里场景适合使用<code>left_anti</code>，因为是取不在这个集合的设备信息。</p>
+<p>这里还要注意，因为时间区间内的数据有可能会有重复，所以需要取时间较早的那条，这里用到了<code>groupByKey</code>和<code>reduceGroups</code>，具体是</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">deviceInfos.as[<span class="type">Device</span>]</span><br><span class="line">    .groupByKey(_.device_id)</span><br><span class="line">    .reduceGroups((x, y) =&gt; <span class="keyword">if</span> (x.time &lt; y.time) x <span class="keyword">else</span> y)</span><br><span class="line">    .map[<span class="type">Device</span>]((x: (<span class="type">String</span>, <span class="type">Device</span>)) =&gt; x._2)</span><br><span class="line">    .write.mode(<span class="type">SaveMode</span>.<span class="type">Append</span>)</span><br><span class="line">    .format(<span class="string">"hive"</span>)</span><br><span class="line">    .saveAsTable(<span class="string">"bi.device_registration"</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h3><p>查询引擎使用<a href="https://prestodb.io">Presto</a>，配置Hive Connector，实时搜索数据。刚才上面提到数据持久化Hive中的两种方法，其中支持事务的表不可用于Presto的查询，因为Hive Transaction表的数据格式未被Presto支持(详见<a href="https://github.com/prestodb/presto/issues/1970">Implement Hive ACID table support</a>)。</p>
+<h5 id="直接查询"><a href="#直接查询" class="headerlink" title="直接查询"></a>直接查询</h5><p>通过上一步的<code>device_registration</code>表，我们可以通过时间维度进行查询。</p>
+<p>直接查询就是查询raw data，数据更加丰富。这里以“按渠道划分的新增数量”为例，</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="string">"channel"</span> <span class="keyword">AS</span> <span class="string">"channel"</span>,</span><br><span class="line">       date_trunc(<span class="string">'hour'</span>, <span class="keyword">CAST</span>(ts <span class="keyword">AS</span> <span class="built_in">TIMESTAMP</span>)) <span class="keyword">AS</span> <span class="string">"__timestamp"</span>,</span><br><span class="line">       <span class="keyword">COUNT</span>(*) <span class="keyword">AS</span> <span class="string">"count"</span></span><br><span class="line"><span class="keyword">FROM</span> <span class="string">"bi"</span>.<span class="string">"device_registration"</span></span><br><span class="line"><span class="keyword">WHERE</span> <span class="string">"ts"</span> &gt;= from_iso8601_timestamp(<span class="string">'2018-02-03T16:29:29'</span>)</span><br><span class="line">  <span class="keyword">AND</span> <span class="string">"ts"</span> &lt;= from_iso8601_timestamp(<span class="string">'2018-02-05T08:29:29'</span>)</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> <span class="string">"channel"</span>,</span><br><span class="line">         date_trunc(<span class="string">'hour'</span>, <span class="keyword">CAST</span>(ts <span class="keyword">AS</span> <span class="built_in">TIMESTAMP</span>))</span><br></pre></td></tr></table></figure>
+
+<h5 id="预先计算"><a href="#预先计算" class="headerlink" title="预先计算"></a>预先计算</h5><p>预先计算就是将图表展示需要的数据结果提前计算存储到数据库，查询的时候直接就可以从结果表中查询。</p>
+<p>预先计算是用空间换时间，损失一些灵活性，不如查询raw data时可以自由定制查询。每次新增查询对于预先计算来说都需要新增加计算逻辑。随着数据量的增大，预先计算不可避免。</p>
+<h5 id="优化查询速度"><a href="#优化查询速度" class="headerlink" title="优化查询速度"></a>优化查询速度</h5><p>运行一段时间后，查询速度明显变慢，查看Hdfs上的hive目录发现数据表内的小文件多达几百上千，这是由于Spark处理完数据并写入Hive会产生非常多的bucket，与数据条数成正比，写入成本低却增加了读数据的成本，这样当数据查询时，由于Hdfs上的小文件非常之多，I/O花费很大，导致整体查询速度下降迅速，这里想办法将文件进行合并，减少文件数量。</p>
+<p>通过使用Hive执行compaction，方法比较取巧，就是在每次计算完数据之后，运行Hive脚本，通过复制数据库，Hive会自动将文件数量压缩：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> bi.device_registration_compact <span class="keyword">AS</span> <span class="keyword">SELECT</span> * <span class="keyword">from</span> bi.device_registration;</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> bi.device_registration;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> bi.device_registration_compact <span class="keyword">RENAME</span> <span class="keyword">TO</span> bi.device_registration;</span><br></pre></td></tr></table></figure>
+
+<p>将Hdfs上的文件数量降低到个位数，查询也在秒级完成，这种方法只适用于数据量不大的情况，目前记录条数在1M以内的查询速度在秒级，之后依然会考虑使用其它方案改良。</p>
+<h3 id="展示"><a href="#展示" class="headerlink" title="展示"></a>展示</h3><p><a href="https://superset.apache.org/">Superset</a>是Airbnb开源的图表展示工具，不仅支持很多后端查询引擎，并且有许多成熟的图表展示，更可贵的是拥有用户权限管理。</p>
+
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "Spark on Hive实现APP渠道分析",
+        "image": [
+            "https://songrgg.github.io/images/androidgeo.webp"
+        ],
+        "keywords": "hive spark app channel analytics",
+        "genre": "programming",
+        "datePublished": "2018-02-04",
+        "dateCreated": "2018-02-04",
+        "dateModified": "2020-03-20",
+        "url": "https://songrgg.github.io/programming/spark-on-hive-app-channel-analytics/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/spark-on-hive-app-channel-analytics/",
+        "description": "背景最近在做APP投放渠道分析，就是Android应用投放到应用市场，所谓渠道就是huawei,xiaomi,yingyongbao之类，运营人员根据数据分析渠道的下载安装情况、各个渠道的投放效果。需求完成一个Android渠道分析的展示面板，包含以下指标：APP总新增激活数量按渠道划分的新增数量各渠道的新增变化走势图（以小时为单位）品牌占比操作系统占比架构数据APP激活时上报",
+        "wordCount": 424
+    }
+</script>
+
+
+
     
 
 <div class="card">
@@ -165,26 +296,26 @@
             <h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>利用Cloudera的CDH套件搭建好Hadoop 2.6，可CDH中的Hive版本不高，于是独立安装Hive 2.3，由于Hive的执行引擎默认是Spark，根据Hive官网上的Hive on Spark教程开始配置。</p>
 <h5 id="Standalone"><a href="#Standalone" class="headerlink" title="Standalone"></a>Standalone</h5><p>配置了Spark Standalone模式之后，配置Hive遇到一些困难。</p>
 <p>由于使用的是pre-build版本的Spark，遇到报错：</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java.lang.NoSuchFieldError: SPARK_RPC_CLIENT_CONNECT_TIMEOUT</span><br><span class="line">    at org.apache.hive.spark.client.rpc.RpcConfiguration.<clinit>(RpcConfiguration.java:46)</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java.lang.NoSuchFieldError: SPARK_RPC_CLIENT_CONNECT_TIMEOUT</span><br><span class="line">    at org.apache.hive.spark.client.rpc.RpcConfiguration.&lt;clinit&gt;(RpcConfiguration.java:46)</span><br></pre></td></tr></table></figure>
 
 <p>接下来要自己编译Spark without Hive，可是一直没有解决，报错为：</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[info] 'compiler-interface' not yet compiled for Scala 2.11.8. Compiling...</span><br><span class="line">error: scala.reflect.internal.MissingRequirementError: object java.lang.Object in compiler mirror not found.</span><br><span class="line">	at scala.reflect.internal.MissingRequirementError$.signal(MissingRequirementError.scala:17)</span><br><span class="line">	at scala.reflect.internal.MissingRequirementError$.notFound(MissingRequirementError.scala:18)</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[info] &#39;compiler-interface&#39; not yet compiled for Scala 2.11.8. Compiling...</span><br><span class="line">error: scala.reflect.internal.MissingRequirementError: object java.lang.Object in compiler mirror not found.</span><br><span class="line">	at scala.reflect.internal.MissingRequirementError$.signal(MissingRequirementError.scala:17)</span><br><span class="line">	at scala.reflect.internal.MissingRequirementError$.notFound(MissingRequirementError.scala:18)</span><br></pre></td></tr></table></figure>
 
 <p>非常曲折，最后选择尝试已经配置好的Yarn模式的Spark。</p>
 <h5 id="Yarn"><a href="#Yarn" class="headerlink" title="Yarn"></a>Yarn</h5><p>Yarn模式的Spark集群已经就绪，在Hive中配置Spark</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">set hive.execution.engine=spark;</span><br><span class="line">set spark.master=yarn;</span><br><span class="line">set spark.executor.memory=512m;</span><br><span class="line">set spark.serializer=org.apache.spark.serializer.KryoSerializer;</span><br><span class="line">set spark.eventLog.enabled=true;</span><br><span class="line">set spark.eventLog.dir=<Spark event log folder (must exist)></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">set hive.execution.engine&#x3D;spark;</span><br><span class="line">set spark.master&#x3D;yarn;</span><br><span class="line">set spark.executor.memory&#x3D;512m;</span><br><span class="line">set spark.serializer&#x3D;org.apache.spark.serializer.KryoSerializer;</span><br><span class="line">set spark.eventLog.enabled&#x3D;true;</span><br><span class="line">set spark.eventLog.dir&#x3D;&lt;Spark event log folder (must exist)&gt;</span><br></pre></td></tr></table></figure>
 
 <p>上传Spark应用所需的Spark依赖jar包到Hdfs中，例如放到Hdfs中的/spark-jars目录，并配置hive-site.xml</p>
-<figure class="highlight xml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag"><<span class="name">property</span>></span></span><br><span class="line">  <span class="tag"><<span class="name">name</span>></span>spark.yarn.jars<span class="tag"></<span class="name">name</span>></span></span><br><span class="line">  <span class="tag"><<span class="name">value</span>></span>hdfs://xxxx:8020/spark-jars/*<span class="tag"></<span class="name">value</span>></span></span><br><span class="line"><span class="tag"></<span class="name">property</span>></span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">name</span>&gt;</span>spark.yarn.jars<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">value</span>&gt;</span>hdfs://xxxx:8020/spark-jars/*<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>注意这里需要保证使用Hive时的用户能够有权限访问Hdfs上指定的目录。</p>
 <h4 id="用户数据导入"><a href="#用户数据导入" class="headerlink" title="用户数据导入"></a>用户数据导入</h4><h5 id="源数据"><a href="#源数据" class="headerlink" title="源数据"></a>源数据</h5><p>当源数据是JSON并位于Hdfs的/tmp目录，如</p>
-<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">{</span><br><span class="line">    <span class="string">"time"</span>: <span class="string">"1515682813526"</span>,</span><br><span class="line">    <span class="string">"uid"</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="string">"ip"</span>: <span class="string">"1.1.1.1"</span>,</span><br><span class="line">    <span class="string">"path"</span>: <span class="string">"https://github.com"</span>,</span><br><span class="line">    <span class="string">"referer"</span>: <span class="string">"https://google.com"</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"time"</span>: <span class="string">"1515682813526"</span>,</span><br><span class="line">    <span class="string">"uid"</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="string">"ip"</span>: <span class="string">"1.1.1.1"</span>,</span><br><span class="line">    <span class="string">"path"</span>: <span class="string">"https://github.com"</span>,</span><br><span class="line">    <span class="string">"referer"</span>: <span class="string">"https://google.com"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h5 id="创建Hive外部表"><a href="#创建Hive外部表" class="headerlink" title="创建Hive外部表"></a>创建Hive外部表</h5><figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">EXTERNAL</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> tmp.pageview(</span><br><span class="line">    <span class="built_in">time</span> <span class="built_in">BIGINT</span>,</span><br><span class="line">    uid  <span class="built_in">BIGINT</span>,</span><br><span class="line">    ip   <span class="keyword">STRING</span>,</span><br><span class="line">    <span class="keyword">path</span> <span class="keyword">STRING</span>,</span><br><span class="line">    referer <span class="keyword">STRING</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">ROW</span> <span class="keyword">FORMAT</span> SERDE <span class="string">'org.apache.hive.hcatalog.data.JsonSerDe'</span></span><br><span class="line"><span class="keyword">STORED</span> <span class="keyword">AS</span> TEXTFILE</span><br><span class="line">LOCATION <span class="string">'/tmp'</span>;</span><br></pre></td></tr></tbody></table></figure>
+<h5 id="创建Hive外部表"><a href="#创建Hive外部表" class="headerlink" title="创建Hive外部表"></a>创建Hive外部表</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">EXTERNAL</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> tmp.pageview(</span><br><span class="line">    <span class="built_in">time</span> <span class="built_in">BIGINT</span>,</span><br><span class="line">    uid  <span class="built_in">BIGINT</span>,</span><br><span class="line">    ip   <span class="keyword">STRING</span>,</span><br><span class="line">    <span class="keyword">path</span> <span class="keyword">STRING</span>,</span><br><span class="line">    referer <span class="keyword">STRING</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">ROW</span> <span class="keyword">FORMAT</span> SERDE <span class="string">'org.apache.hive.hcatalog.data.JsonSerDe'</span></span><br><span class="line"><span class="keyword">STORED</span> <span class="keyword">AS</span> TEXTFILE</span><br><span class="line">LOCATION <span class="string">'/tmp'</span>;</span><br></pre></td></tr></table></figure>
 
 <h5 id="导入ORC表"><a href="#导入ORC表" class="headerlink" title="导入ORC表"></a>导入ORC表</h5><p>ORC表是Hive的一种高效表，在查询上更加快速，可以从外部表将数据导入ORC表。</p>
-<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> orc.pageview(</span><br><span class="line">    <span class="built_in">time</span> <span class="built_in">BIGINT</span>,</span><br><span class="line">    uid  <span class="built_in">BIGINT</span>,</span><br><span class="line">    ip   <span class="keyword">STRING</span>,</span><br><span class="line">    <span class="keyword">path</span> <span class="keyword">STRING</span>,</span><br><span class="line">    referer <span class="keyword">STRING</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">STORED</span> <span class="keyword">AS</span> ORC;</span><br><span class="line"></span><br><span class="line">FROM tmp.pageview pv</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="keyword">TABLE</span> orc.pageview</span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">time</span>, uid, ip, <span class="keyword">path</span>, referer;</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> orc.pageview(</span><br><span class="line">    <span class="built_in">time</span> <span class="built_in">BIGINT</span>,</span><br><span class="line">    uid  <span class="built_in">BIGINT</span>,</span><br><span class="line">    ip   <span class="keyword">STRING</span>,</span><br><span class="line">    <span class="keyword">path</span> <span class="keyword">STRING</span>,</span><br><span class="line">    referer <span class="keyword">STRING</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">STORED</span> <span class="keyword">AS</span> ORC;</span><br><span class="line"></span><br><span class="line">FROM tmp.pageview pv</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="keyword">TABLE</span> orc.pageview</span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">time</span>, uid, ip, <span class="keyword">path</span>, referer;</span><br></pre></td></tr></table></figure>
 
         </div>
         
@@ -217,7 +348,7 @@
         "genre": "programming",
         "datePublished": "2018-01-15",
         "dateCreated": "2018-01-15",
-        "dateModified": "2020-03-20",
+        "dateModified": "2020-03-30",
         "url": "https://songrgg.github.io/programming/hive-on-spark-practice/",
         "mainEntityOfPage": "https://songrgg.github.io/programming/hive-on-spark-practice/",
         "description": "配置利用Cloudera的CDH套件搭建好Hadoop 2.6，可CDH中的Hive版本不高，于是独立安装Hive 2.3，由于Hive的执行引擎默认是Spark，根据Hive官网上的Hive on Spark教程开始配置。Standalone配置了Spark Standalone模式之后，配置Hive遇到一些困难。由于使用的是pre-build版本的Spark，遇到报错：12java.la",
@@ -265,22 +396,22 @@
         </h1>
         <div class="content">
             <h3 id="生产环境搭建etcd"><a href="#生产环境搭建etcd" class="headerlink" title="生产环境搭建etcd"></a>生产环境搭建etcd</h3><p>以搭建3节点高可用ETCD集群为例，分别在三台主机上初始化<code>ETCD1</code>,<code>ETCD2</code>,<code>ETCD3</code>作为机器IP地址。</p>
-<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">$ ETCD1=http://10.0.0.1</span><br><span class="line">$ ETCD2=http://10.0.0.2</span><br><span class="line">$ ETCD2=http://10.0.0.3</span><br><span class="line"></span><br><span class="line"><span class="comment"># 节点1为4核4GB的机器</span></span><br><span class="line">$ etcd --name etcd1 \</span><br><span class="line">--initial-advertise-peer-urls <span class="variable">$ETCD1</span>:2380  \</span><br><span class="line">--listen-peer-urls <span class="variable">$ETCD1</span>:2380  \</span><br><span class="line">--listen-client-urls <span class="variable">$ETCD1</span>:2379,http://127.0.0.1:2379 \</span><br><span class="line">--advertise-client-urls <span class="variable">$ETCD1</span>:2379  \</span><br><span class="line">--initial-cluster-token etcd-cluster \</span><br><span class="line">--initial-cluster etcd1=<span class="variable">$ETCD1</span>:2380,etcd2=<span class="variable">$ETCD2</span>:2380,etcd3=<span class="variable">$ETCD3</span>:2380 \</span><br><span class="line">--auto-compaction-retention=1 \</span><br><span class="line">--quota-backend-bytes=$((4*1024*1024*1024)) \</span><br><span class="line">--initial-cluster-state new</span><br><span class="line"></span><br><span class="line"><span class="comment"># 节点2为4核4GB的机器</span></span><br><span class="line">$ etcd  --name etcd2 \</span><br><span class="line">--initial-advertise-peer-urls <span class="variable">$ETCD2</span>:2380 \</span><br><span class="line">--listen-peer-urls <span class="variable">$ETCD2</span>:2380 \</span><br><span class="line">--listen-client-urls <span class="variable">$ETCD2</span>:2379,http://127.0.0.1:2379 \</span><br><span class="line">--advertise-client-urls <span class="variable">$ETCD2</span>:2379 \</span><br><span class="line">--initial-cluster-token etcd-cluster \</span><br><span class="line">--initial-cluster etcd1=<span class="variable">$ETCD1</span>:2380,etcd2=<span class="variable">$ETCD2</span>:2380,etcd3=<span class="variable">$ETCD3</span>:2380 \</span><br><span class="line">--auto-compaction-retention=1 \</span><br><span class="line">--quota-backend-bytes=$((4*1024*1024*1024)) \</span><br><span class="line">--initial-cluster-state new</span><br><span class="line"></span><br><span class="line"><span class="comment"># 节点3为4核4GB的机器</span></span><br><span class="line">$ etcd  --name etcd3 \</span><br><span class="line">--initial-advertise-peer-urls <span class="variable">$ETCD3</span>:2380 \</span><br><span class="line">--listen-peer-urls <span class="variable">$ETCD3</span>:2380 \</span><br><span class="line">--listen-client-urls <span class="variable">$ETCD3</span>:2379,http://127.0.0.1:2379 \</span><br><span class="line">--advertise-client-urls <span class="variable">$ETCD3</span>:2379 \</span><br><span class="line">--initial-cluster-token etcd-cluster \</span><br><span class="line">--initial-cluster etcd1=<span class="variable">$ETCD1</span>:2380,etcd2=<span class="variable">$ETCD2</span>:2380,etcd3=<span class="variable">$ETCD3</span>:2380 \</span><br><span class="line">--auto-compaction-retention=1 \</span><br><span class="line">--quota-backend-bytes=$((4*1024*1024*1024)) \</span><br><span class="line">--initial-cluster-state new</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查集群是否正确启动</span></span><br><span class="line">$ etcdctl --endpoints=<span class="variable">$ETCD1</span>:2379 member list</span><br><span class="line">400938f1eaf1d0ed: name=etcd3 peerURLs=http://10.0.0.1:2380 clientURLs=http://10.0.0.1:2379 isLeader=<span class="literal">false</span></span><br><span class="line">bd0ff97b33ac1165: name=etcd2 peerURLs=http://10.0.0.2:2380 clientURLs=http://10.0.0.2:2379 isLeader=<span class="literal">false</span></span><br><span class="line">be62429afec4445f: name=etcd1 peerURLs=http://10.0.0.3:2380 clientURLs=http://10.0.0.3:2379 isLeader=<span class="literal">true</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">$ ETCD1=http://10.0.0.1</span><br><span class="line">$ ETCD2=http://10.0.0.2</span><br><span class="line">$ ETCD2=http://10.0.0.3</span><br><span class="line"></span><br><span class="line"><span class="comment"># 节点1为4核4GB的机器</span></span><br><span class="line">$ etcd --name etcd1 \</span><br><span class="line">--initial-advertise-peer-urls <span class="variable">$ETCD1</span>:2380  \</span><br><span class="line">--listen-peer-urls <span class="variable">$ETCD1</span>:2380  \</span><br><span class="line">--listen-client-urls <span class="variable">$ETCD1</span>:2379,http://127.0.0.1:2379 \</span><br><span class="line">--advertise-client-urls <span class="variable">$ETCD1</span>:2379  \</span><br><span class="line">--initial-cluster-token etcd-cluster \</span><br><span class="line">--initial-cluster etcd1=<span class="variable">$ETCD1</span>:2380,etcd2=<span class="variable">$ETCD2</span>:2380,etcd3=<span class="variable">$ETCD3</span>:2380 \</span><br><span class="line">--auto-compaction-retention=1 \</span><br><span class="line">--quota-backend-bytes=$((4*1024*1024*1024)) \</span><br><span class="line">--initial-cluster-state new</span><br><span class="line"></span><br><span class="line"><span class="comment"># 节点2为4核4GB的机器</span></span><br><span class="line">$ etcd  --name etcd2 \</span><br><span class="line">--initial-advertise-peer-urls <span class="variable">$ETCD2</span>:2380 \</span><br><span class="line">--listen-peer-urls <span class="variable">$ETCD2</span>:2380 \</span><br><span class="line">--listen-client-urls <span class="variable">$ETCD2</span>:2379,http://127.0.0.1:2379 \</span><br><span class="line">--advertise-client-urls <span class="variable">$ETCD2</span>:2379 \</span><br><span class="line">--initial-cluster-token etcd-cluster \</span><br><span class="line">--initial-cluster etcd1=<span class="variable">$ETCD1</span>:2380,etcd2=<span class="variable">$ETCD2</span>:2380,etcd3=<span class="variable">$ETCD3</span>:2380 \</span><br><span class="line">--auto-compaction-retention=1 \</span><br><span class="line">--quota-backend-bytes=$((4*1024*1024*1024)) \</span><br><span class="line">--initial-cluster-state new</span><br><span class="line"></span><br><span class="line"><span class="comment"># 节点3为4核4GB的机器</span></span><br><span class="line">$ etcd  --name etcd3 \</span><br><span class="line">--initial-advertise-peer-urls <span class="variable">$ETCD3</span>:2380 \</span><br><span class="line">--listen-peer-urls <span class="variable">$ETCD3</span>:2380 \</span><br><span class="line">--listen-client-urls <span class="variable">$ETCD3</span>:2379,http://127.0.0.1:2379 \</span><br><span class="line">--advertise-client-urls <span class="variable">$ETCD3</span>:2379 \</span><br><span class="line">--initial-cluster-token etcd-cluster \</span><br><span class="line">--initial-cluster etcd1=<span class="variable">$ETCD1</span>:2380,etcd2=<span class="variable">$ETCD2</span>:2380,etcd3=<span class="variable">$ETCD3</span>:2380 \</span><br><span class="line">--auto-compaction-retention=1 \</span><br><span class="line">--quota-backend-bytes=$((4*1024*1024*1024)) \</span><br><span class="line">--initial-cluster-state new</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查集群是否正确启动</span></span><br><span class="line">$ etcdctl --endpoints=<span class="variable">$ETCD1</span>:2379 member list</span><br><span class="line">400938f1eaf1d0ed: name=etcd3 peerURLs=http://10.0.0.1:2380 clientURLs=http://10.0.0.1:2379 isLeader=<span class="literal">false</span></span><br><span class="line">bd0ff97b33ac1165: name=etcd2 peerURLs=http://10.0.0.2:2380 clientURLs=http://10.0.0.2:2379 isLeader=<span class="literal">false</span></span><br><span class="line">be62429afec4445f: name=etcd1 peerURLs=http://10.0.0.3:2380 clientURLs=http://10.0.0.3:2379 isLeader=<span class="literal">true</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="历史记录压缩"><a href="#历史记录压缩" class="headerlink" title="历史记录压缩"></a>历史记录压缩</h3><p>如果将etcd用作服务发现，每次服务注册和更新都可以看做一条新数据，日积月累，这些数据的量会导致etcd占用内存越来越大，直到etcd到达空间配额限制的时候，etcd的写入将会被静止，影响线上服务，定期删除历史记录就是避免这种情况。</p>
-<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 只保留一个小时的历史数据</span></span><br><span class="line">$ etcd --auto-compaction-retention=1</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 只保留一个小时的历史数据</span></span><br><span class="line">$ etcd --auto-compaction-retention=1</span><br></pre></td></tr></table></figure>
 
 <h3 id="磁盘去碎片化"><a href="#磁盘去碎片化" class="headerlink" title="磁盘去碎片化"></a>磁盘去碎片化</h3><p><a href="https://coreos.com/etcd/docs/latest/op-guide/maintenance.html#defragmentation">etcd官方</a>是说在进行compaction操作之后，旧的revision被压缩，会产生内部的碎片，内部碎片是指空闲状态的，能被后端使用但是仍然消耗存储空间的磁盘空间。去碎片化实际上是将存储空间还给文件系统。</p>
-<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ etcdctl defrag</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ etcdctl defrag</span><br></pre></td></tr></table></figure>
 
 <h3 id="空间配额"><a href="#空间配额" class="headerlink" title="空间配额"></a>空间配额</h3><p>空间配额用来保障集群可靠地进行操作。如果没有限制配额，当键空间变大之后，直到用光了磁盘空间，它就会影响etcd集群的表现。当任意节点超出空间配额， 那么它将进入维护状态，只接受读/删操作。只有释放了足够空间、去碎片化了后端数据库并且清理了空间配额之后，集群才能继续正常操作。</p>
 <p>默认限制是<strong>2GB</strong>，可以通过<code>--quota-backend-bytes</code>配置，最高上限为<strong>8GB</strong>。</p>
-<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 显式配置配额为16MB</span></span><br><span class="line">$ etcd --quota-backend-bytes=$((16*1024*1024))</span><br><span class="line">$ ETCDCTL_API=3 etcdctl --write-out=table endpoint status</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 显式配置配额为16MB</span></span><br><span class="line">$ etcd --quota-backend-bytes=$((16*1024*1024))</span><br><span class="line">$ ETCDCTL_API=3 etcdctl --write-out=table endpoint status</span><br></pre></td></tr></table></figure>
 
 <p>如果遇到空间配额不足的情况，那么需要对etcd进行操作。</p>
-<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取当前版本号</span></span><br><span class="line">$ rev=$(ETCDCTL_API=3 etcdctl --endpoints=:2379 endpoint status --write-out=<span class="string">"json"</span> | egrep -o <span class="string">'"revision":[0-9]*'</span> | egrep -o <span class="string">'[0-9]*'</span>）</span><br><span class="line"><span class="comment"># 压缩所有旧版本</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl compact <span class="variable">$rev</span></span><br><span class="line"><span class="comment"># 去碎片化</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl defrag</span><br><span class="line"><span class="comment"># 取消警报</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl alarm disarm</span><br><span class="line"><span class="comment"># 测试通过</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl put newkey 123</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取当前版本号</span></span><br><span class="line">$ rev=$(ETCDCTL_API=3 etcdctl --endpoints=:2379 endpoint status --write-out=<span class="string">"json"</span> | egrep -o <span class="string">'"revision":[0-9]*'</span> | egrep -o <span class="string">'[0-9]*'</span>）</span><br><span class="line"><span class="comment"># 压缩所有旧版本</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl compact <span class="variable">$rev</span></span><br><span class="line"><span class="comment"># 去碎片化</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl defrag</span><br><span class="line"><span class="comment"># 取消警报</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl alarm disarm</span><br><span class="line"><span class="comment"># 测试通过</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl put newkey 123</span><br></pre></td></tr></table></figure>
 
-<h3 id="快照备份"><a href="#快照备份" class="headerlink" title="快照备份"></a>快照备份</h3><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ etcdctl snapshot save backup.db</span><br><span class="line">$ etcdctl --write-out=table snapshot status backup.db</span><br><span class="line">+----------+----------+------------+------------+</span><br><span class="line">|   HASH   | REVISION | TOTAL KEYS | TOTAL SIZE |</span><br><span class="line">+----------+----------+------------+------------+</span><br><span class="line">| fe01cf57 |       10 |          7 | 2.1 MB     |</span><br><span class="line">+----------+----------+------------+------------+</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="快照备份"><a href="#快照备份" class="headerlink" title="快照备份"></a>快照备份</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ etcdctl snapshot save backup.db</span><br><span class="line">$ etcdctl --write-out=table snapshot status backup.db</span><br><span class="line">+----------+----------+------------+------------+</span><br><span class="line">|   HASH   | REVISION | TOTAL KEYS | TOTAL SIZE |</span><br><span class="line">+----------+----------+------------+------------+</span><br><span class="line">| fe01cf57 |       10 |          7 | 2.1 MB     |</span><br><span class="line">+----------+----------+------------+------------+</span><br></pre></td></tr></table></figure>
 
 <h3 id="调优"><a href="#调优" class="headerlink" title="调优"></a>调优</h3><p>跨数据中心时，需要调整心跳间隔和选举超时时间<br>默认的心跳时间是100ms，建议为round trip时间<br>默认选举超时是1000ms</p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
@@ -818,131 +949,6 @@
 
 
 
-    
-
-<div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2017-03-25T23:00:00.000Z">2017-03-26</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/microservice/">microservice</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    4 minutes read (About 571 words)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/microservice/microservice-in-action-1/">微服务实践一: 架构图谱</a>
-            
-        </h1>
-        <div class="content">
-            <h3 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h3><ol>
-<li>服务拆分与服务发现</li>
-<li>微服务框架选择</li>
-<li>服务间通信</li>
-<li><a href="/microservice/microservice-in-action-3/">服务编排</a></li>
-<li><a href="/microservice/microservice-in-action-4/">配置管理</a></li>
-<li><a href="/microservice/microservice-in-action-2/">服务容错与降级</a></li>
-<li>监控<ul>
-<li>API监控</li>
-<li>服务调用链</li>
-<li>服务负载</li>
-<li>基础依赖监控</li>
-</ul>
-</li>
-<li>日志分析</li>
-</ol>
-<h3 id="Monolithic-vs-Microservice"><a href="#Monolithic-vs-Microservice" class="headerlink" title="Monolithic vs Microservice"></a>Monolithic vs Microservice</h3><table>
-<thead>
-<tr>
-<th></th>
-<th align="center">Monolithic</th>
-<th align="right">Microservice</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>开发测试</td>
-<td align="center">Java类语言项目越大，运行调试需要越多的编译时间，本地调试有较多依赖，况且业务复杂后不易新人上手</td>
-<td align="right">只有部分功能的代码，运行更快速，根据业务划分，方便新人上手</td>
-</tr>
-<tr>
-<td>部署</td>
-<td align="center">更新整个项目</td>
-<td align="right">更新一个微服务</td>
-</tr>
-<tr>
-<td>生产调试</td>
-<td align="center">日志集中，调试方便</td>
-<td align="right">日志分散，服务依赖复杂；拓容简便</td>
-</tr>
-</tbody></table>
-<p>这两种架构视乎业务的复杂程度和代码量的大小，复杂程度低于一定程度，还是单一应用开发更快速，部署更加容易，因为服务拆分和线上的调试这些都是需要成本，反之，当业务不断增加，代码不断膨胀，服务拆分显得逐渐重要，公共功能能抽出来做成基础服务，各个业务所需的轮子也不需要重新造一遍，反而节省了开发成本，同时对于新人的加入，由于服务职责单一，让新人进来一个一个服务地熟悉，好过于一个大而全的项目。</p>
-<h3 id="微服务基础架构"><a href="#微服务基础架构" class="headerlink" title="微服务基础架构"></a>微服务基础架构</h3><p><img src="/images/Microservice.webp" alt="部署架构"></p>
-<h3 id="处理流程"><a href="#处理流程" class="headerlink" title="处理流程"></a>处理流程</h3><ol>
-<li>浏览器发起下单请求到负载均衡(LB)</li>
-<li>负载均衡派发请求到API gateway</li>
-<li>API gateway查询服务发现，找到user服务和store服务，将用户信息和商品ID发送给store服务，</li>
-<li>store服务查询MySQL，找到商品信息，生成订单信息，将请求发送给payment服务</li>
-<li>payment服务根据用户指定的支付渠道，向第三方服务发起请求，存储订单信息，并返回订单状态</li>
-<li>store服务 -> API gateway -> LB</li>
-<li>LB返回数据到浏览器</li>
-</ol>
-<h3 id="微服务技术"><a href="#微服务技术" class="headerlink" title="微服务技术"></a>微服务技术</h3><p><img src="/images/Microservice-SKILLS.png" alt="技术图谱"></p>
-
-        </div>
-        
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "author": {
-            "@type": "Person",
-            "name": "songrgg"
-        },
-        "publisher": {},
-        "headline": "微服务实践一: 架构图谱",
-        "image": [
-            "https://songrgg.github.io/images/thumbnail.svg"
-        ],
-        "keywords": "architecture microservice",
-        "genre": "microservice",
-        "datePublished": "2017-03-26",
-        "dateCreated": "2017-03-26",
-        "dateModified": "2020-03-20",
-        "url": "https://songrgg.github.io/microservice/microservice-in-action-1/",
-        "mainEntityOfPage": "https://songrgg.github.io/microservice/microservice-in-action-1/",
-        "description": "目录服务拆分与服务发现微服务框架选择服务间通信服务编排配置管理服务容错与降级监控API监控服务调用链服务负载基础依赖监控日志分析Monolithic vs MicroserviceMonolithicMicroservice开发测试Java类语言项目越大，运行调试需要越多的编译时间，本地调试有较多依赖，况且业务复杂后不易新人上手只有部分功能的代",
-        "wordCount": 47
-    }
-</script>
-
-
-
 
     
 <div class="card card-transparent">
@@ -963,7 +969,7 @@
             
             <li><a class="pagination-link has-text-black-ter" href="/page/4/">4</a></li>
             
-            <li><span class="pagination-ellipsis has-text-black-ter">…</span></li>
+            <li><span class="pagination-ellipsis has-text-black-ter">&hellip;</span></li>
             
             <li><a class="pagination-link has-text-black-ter" href="/page/7/">7</a></li>
             
@@ -1015,7 +1021,7 @@
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            51
+                            52
                         </p>
                     </a>
                 </div>
@@ -1039,7 +1045,7 @@
                     </p>
                     <a href="/tags">
                         <p class="title has-text-weight-normal">
-                            58
+                            60
                         </p>
                     </a>
                 </div>
@@ -1055,25 +1061,29 @@
         
         <div class="level is-mobile">
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/songrgg">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Github" href="https://github.com/songrgg">
                 
                 <i class="fab fa-github"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Instagram" href="https://www.instagram.com/jiangsongrong">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Instagram" href="https://www.instagram.com/jiangsongrong">
                 
                 <i class="fab fa-instagram"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Linkedin" href="https://www.linkedin.com/in/songrong-jiang-6b2bb561">
                 
                 <i class="fab fa-linkedin"></i>
                 
             </a>
             
-            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener" title="RSS" href="/atom.xml">
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="RSS" href="/atom.xml">
                 
                 <i class="fas fa-rss"></i>
                 
@@ -1132,7 +1142,7 @@
                 <span class="level-item">programming</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">25</span>
+                <span class="level-item tag">26</span>
             </span>
         </a></li>
             </ul>
@@ -1145,7 +1155,7 @@
         <h3 class="menu-label">
             Tag Cloud
         </h3>
-        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/influxdb/" style="font-size: 10px;">influxdb</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 12.5px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
+        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/influxdb/" style="font-size: 10px;">influxdb</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 12.5px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/oauth2/" style="font-size: 10px;">oauth2</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
     </div>
 </div>
     
@@ -1157,6 +1167,25 @@
         <h3 class="menu-label">
             Recent
         </h3>
+        
+        <article class="media">
+            
+            <a href="/programming/django-oauth-client-setup/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/oauth_flow.webp" alt="Setup OAuth2 client for Django in 5 minutes">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-12T22:00:00.000Z">2020-04-13</time></div>
+                    <a href="/programming/django-oauth-client-setup/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Setup OAuth2 client for Django in 5 minutes</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/programming/">programming</a>
+                    </p>
+                </div>
+            </div>
+        </article>
         
         <article class="media">
             
@@ -1234,25 +1263,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
         
@@ -1263,6 +1273,17 @@
             Archives
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/04/">
+                <span class="level-start">
+                    <span class="level-item">April 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2020/03/">
@@ -1735,6 +1756,13 @@
                 </div>
                 
                 <div class="control">
+                    <a class="tags has-addons" href="/tags/django/">
+                        <span class="tag">django</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
                     <a class="tags has-addons" href="/tags/docker/">
                         <span class="tag">docker</span>
                         <span class="tag is-grey">3</span>
@@ -1891,6 +1919,13 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/nginx/">
                         <span class="tag">nginx</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/oauth2/">
+                        <span class="tag">oauth2</span>
                         <span class="tag is-grey">1</span>
                     </a>
                 </div>
@@ -2059,6 +2094,25 @@
         
         <article class="media">
             
+            <a href="/programming/django-oauth-client-setup/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/oauth_flow.webp" alt="Setup OAuth2 client for Django in 5 minutes">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-12T22:00:00.000Z">2020-04-13</time></div>
+                    <a href="/programming/django-oauth-client-setup/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Setup OAuth2 client for Django in 5 minutes</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/programming/">programming</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/operation/influxdb-command-cheatsheet/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/Influxdb_logo.webp" alt="InfluxDB command cheatsheet">
@@ -2133,25 +2187,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/use-grafana-api-generate-dashboards/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/grafana_variables_dashboard.webp" alt="Generate monitoring dashboards & alertings using Grafana API">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-22T22:00:00.000Z">2019-09-23</time></div>
-                    <a href="/operation/use-grafana-api-generate-dashboards/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Generate monitoring dashboards & alertings using Grafana API</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
     
@@ -2162,6 +2197,17 @@
             Archives
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/04/">
+                <span class="level-start">
+                    <span class="level-item">April 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2020/03/">
@@ -2634,6 +2680,13 @@
                 </div>
                 
                 <div class="control">
+                    <a class="tags has-addons" href="/tags/django/">
+                        <span class="tag">django</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
                     <a class="tags has-addons" href="/tags/docker/">
                         <span class="tag">docker</span>
                         <span class="tag is-grey">3</span>
@@ -2795,6 +2848,13 @@
                 </div>
                 
                 <div class="control">
+                    <a class="tags has-addons" href="/tags/oauth2/">
+                        <span class="tag">oauth2</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
                     <a class="tags has-addons" href="/tags/operation/">
                         <span class="tag">operation</span>
                         <span class="tag is-grey">1</span>
@@ -2951,12 +3011,13 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    SongRong's Experience
+                    SongRong&#39;s Experience
                 
                 </a>
                 <p class="is-size-7">
-                © 2020 songrgg 
-                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                &copy; 2020 songrgg&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
                 
                 </p>
             </div>
@@ -3033,7 +3094,7 @@ var IcarusThemeSettings = {
     <h6>Your browser is out-of-date!</h6>
     <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
             my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
 <script>
@@ -3096,7 +3157,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="searchbox ins-search">
     <div class="searchbox-container ins-search-container">
         <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something..." />
             <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="searchbox-result-wrapper ins-section-wrapper">
@@ -3123,5 +3184,5 @@ document.addEventListener('DOMContentLoaded', function () {
 <link rel="stylesheet" href="/css/search.css">
 <link rel="stylesheet" href="/css/insight.css">
     
-
-<script type="text/javascript" charset="utf-8" src="/js/lazyload-plugin/lazyload.intersectionObserver.min.js"></script></body></html>
+</body>
+</html>
