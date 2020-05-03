@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://songrgg.github.io/programming/linux-namespace-part01-uts-pid/</loc>
+    
+    <lastmod>2020-05-03T09:21:07.733Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://songrgg.github.io/programming/django-oauth-client-setup/</loc>
     
     <lastmod>2020-04-13T10:20:45.022Z</lastmod>
@@ -58,14 +65,14 @@
   </url>
   
   <url>
-    <loc>https://songrgg.github.io/programming/php-hashtable/</loc>
+    <loc>https://songrgg.github.io/operation/practice-datacenter-failover-in-production/</loc>
     
     <lastmod>2020-03-20T19:02:13.413Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://songrgg.github.io/operation/practice-datacenter-failover-in-production/</loc>
+    <loc>https://songrgg.github.io/programming/php-hashtable/</loc>
     
     <lastmod>2020-03-20T19:02:13.413Z</lastmod>
     
@@ -177,14 +184,14 @@
   </url>
   
   <url>
-    <loc>https://songrgg.github.io/operation/ansible-frequently-used-commands/</loc>
+    <loc>https://songrgg.github.io/operation/build-ci-with-gitlab/</loc>
     
     <lastmod>2020-03-20T19:02:13.396Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://songrgg.github.io/operation/build-ci-with-gitlab/</loc>
+    <loc>https://songrgg.github.io/operation/ansible-frequently-used-commands/</loc>
     
     <lastmod>2020-03-20T19:02:13.396Z</lastmod>
     
