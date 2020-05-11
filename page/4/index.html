@@ -140,6 +140,134 @@
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2017-04-13T22:00:00.000Z">2017-04-14</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/microservice/">microservice</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    5 minutes read (About 738 words)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/microservice/microservice-in-action-3/">微服务实践三: 服务编排</a>
+            
+        </h1>
+        <div class="content">
+            <h3 id="物理机部署"><a href="#物理机部署" class="headerlink" title="物理机部署"></a>物理机部署</h3><h4 id="传统发布流程（以Java-spring-boot为例）"><a href="#传统发布流程（以Java-spring-boot为例）" class="headerlink" title="传统发布流程（以Java spring boot为例）"></a>传统发布流程（以Java spring boot为例）</h4><ul>
+<li>编译jar包</li>
+<li>分发到服务器A,B,C</li>
+<li>服务启动，监听到指定端口</li>
+<li>配置负载均衡到已启动服务端口</li>
+<li>服务发布成功</li>
+</ul>
+<p>关于服务更新，为了实现滚动更新，可以让LB绑定的服务逐渐更新</p>
+<h4 id="传统更新流程"><a href="#传统更新流程" class="headerlink" title="传统更新流程"></a>传统更新流程</h4><ul>
+<li>编译jar包</li>
+<li>分发到服务器A,B,C</li>
+<li>将服务器A从LB上解绑，更新服务器A上的服务</li>
+<li>启动服务，通过健康检查和QA之后，将服务器A绑定到LB上</li>
+<li>继续更新服务器B和C</li>
+<li>服务完全更新成功</li>
+</ul>
+<h4 id="拓容流程"><a href="#拓容流程" class="headerlink" title="拓容流程"></a>拓容流程</h4><ul>
+<li>新增机器节点</li>
+<li>启动jar包</li>
+<li>将新节点注册到LB上</li>
+</ul>
+<h4 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h4><ul>
+<li>单机端口有限，同一个服务如果在同一个服务器更新，需要不同的端口</li>
+<li>动态更新LB</li>
+<li>拓容成本高</li>
+</ul>
+<h3 id="服务化部署（这里以kubernetes为例）"><a href="#服务化部署（这里以kubernetes为例）" class="headerlink" title="服务化部署（这里以kubernetes为例）"></a>服务化部署（这里以kubernetes为例）</h3><h4 id="k8s发布流程"><a href="#k8s发布流程" class="headerlink" title="k8s发布流程"></a>k8s发布流程</h4><ul>
+<li>构建docker镜像</li>
+<li>创建deployment和service，可以限制服务的CPU、Memory等资源，k8s寻找空闲节点启动服务</li>
+<li>更新iptables将物理机上指定端口路由到VIP(虚拟服务IP)</li>
+<li>绑定物理机端口到LB</li>
+</ul>
+<h4 id="k8s更新流程"><a href="#k8s更新流程" class="headerlink" title="k8s更新流程"></a>k8s更新流程</h4><ul>
+<li>构建docker镜像</li>
+<li>更新deployment和service，k8s更新某个pod</li>
+<li>轮流更新pod，直到所有pod更新完成</li>
+</ul>
+<h4 id="k8s拓容"><a href="#k8s拓容" class="headerlink" title="k8s拓容"></a>k8s拓容</h4><ul>
+<li>寻找空闲节点启动服务，直到达到指定数量</li>
+</ul>
+<h4 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h4><ul>
+<li>几乎无物理端口限制（k8s需要物理端口作为转发，默认为30000+，数量有限）</li>
+<li>服务间通信，可以使用serviceName或者服务的VIP进行访问，内网访问更方便</li>
+<li>虚拟化物理机资源，隔离物理资源的细节，资源控制如拓容、服务资源限制方便</li>
+</ul>
+<h3 id="Kubernetes-vs-Docker-swarm"><a href="#Kubernetes-vs-Docker-swarm" class="headerlink" title="Kubernetes vs Docker swarm"></a>Kubernetes vs Docker swarm</h3><ul>
+<li>稳定性上，k8s上基于iptables的网络路由比docker swarm的网络更加稳定</li>
+<li>配置性上，k8s比docker swarm要复杂，swarm采用manager-worker架构，由manager调度worker，docker 1.12以上对于swarm原生支持，方便启动集群，不过k8s在新版本之后也越来越易于配置</li>
+<li>管理系统上，swarm比k8s的UI界面更友好，操作性更强</li>
+</ul>
+<h3 id="微服务架构下的应用"><a href="#微服务架构下的应用" class="headerlink" title="微服务架构下的应用"></a>微服务架构下的应用</h3><ul>
+<li>外部访问可以暴露gateway到LB上，外部通过访问LB进行访问</li>
+<li>使用k8s或者swarm，服务间通信可以使用serviceName进行访问，也可以利用容器的IP，使用服务注册进行服务查询</li>
+<li>自动拓容，当检测到服务的CPU和内存利用率升高，通过水平拓展，增加服务节点；服务压力减少后，逐渐减少服务节点数量</li>
+</ul>
+
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "微服务实践三: 服务编排",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "microservice service orchestration",
+        "genre": "microservice",
+        "datePublished": "2017-04-14",
+        "dateCreated": "2017-04-14",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/microservice/microservice-in-action-3/",
+        "mainEntityOfPage": "https://songrgg.github.io/microservice/microservice-in-action-3/",
+        "description": "物理机部署传统发布流程（以Java spring boot为例）编译jar包分发到服务器A,B,C服务启动，监听到指定端口配置负载均衡到已启动服务端口服务发布成功关于服务更新，为了实现滚动更新，可以让LB绑定的服务逐渐更新传统更新流程编译jar包分发到服务器A,B,C将服务器A从LB上解绑，更新服务器A上的服务启动服务，通过健康检查和QA之后，将服务器A绑定到LB上继续更",
+        "wordCount": 62
+    }
+</script>
+
+
+
+    
+
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2017-04-01T22:00:00.000Z">2017-04-02</time>
                 
                 <div class="level-item">
@@ -635,88 +763,6 @@
 
 <div class="card">
     
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2016-07-30T22:00:00.000Z">2016-07-31</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    a minute read (About 221 words)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/operation/mysql-utf8mb4-encode/">MySQL支持emoji</a>
-            
-        </h1>
-        <div class="content">
-            <h3 id="方案1-应用层支持"><a href="#方案1-应用层支持" class="headerlink" title="方案1: 应用层支持"></a>方案1: 应用层支持</h3><p>MySQL默认的数据库编码是utf8，对于emoji文字是不能直接存储的，要想存储emoji，有许多库支持对emoji的转换，例如将😊转存为<code>:smile:</code>，放在数据库里，在从数据库里取出来的时候，再转换为😊，这是应用层的方案。</p>
-<h3 id="方案2-存储层支持"><a href="#方案2-存储层支持" class="headerlink" title="方案2: 存储层支持"></a>方案2: 存储层支持</h3><p>MySQL编码设置为utf8mb4，直接支持emoji，不需要应用层的改动。  </p>
-<p>注意事项:<br><strong>MySQL索引的长度不能大于767字节, utf8 1个字存3byte, utf8mb4存4byte，相对应VARCHAR的字节数分别是255和191，所以要把索引字段的长度限制到191。</strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> &lt;table1&gt; <span class="keyword">MODIFY</span> <span class="keyword">COLUMN</span> &lt;col1_indexed&gt; <span class="built_in">VARCHAR</span>(<span class="number">191</span>);</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> &lt;table1&gt; <span class="keyword">CONVERT</span> <span class="keyword">TO</span> <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8mb4 <span class="keyword">COLLATE</span> utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
-<li><a href="https://mathiasbynens.be/notes/mysql-utf8mb4">How to support full Unicode in MySQL databases</a></li>
-</ol>
-
-        </div>
-        
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "author": {
-            "@type": "Person",
-            "name": "songrgg"
-        },
-        "publisher": {},
-        "headline": "MySQL支持emoji",
-        "image": [
-            "https://songrgg.github.io/images/thumbnail.svg"
-        ],
-        "keywords": "mysql",
-        "genre": "operation",
-        "datePublished": "2016-07-31",
-        "dateCreated": "2016-07-31",
-        "dateModified": "2019-09-12",
-        "url": "https://songrgg.github.io/operation/mysql-utf8mb4-encode/",
-        "mainEntityOfPage": "https://songrgg.github.io/operation/mysql-utf8mb4-encode/",
-        "description": "方案1: 应用层支持MySQL默认的数据库编码是utf8，对于emoji文字是不能直接存储的，要想存储emoji，有许多库支持对emoji的转换，例如将😊转存为:smile:，放在数据库里，在从数据库里取出来的时候，再转换为😊，这是应用层的方案。方案2: 存储层支持MySQL编码设置为utf8mb4，直接支持emoji，不需要应用层的改动。  注意事项:MySQL索引的长度不能大于767字",
-        "wordCount": 66
-    }
-</script>
-
-
-
-    
-
-<div class="card">
-    
     <div class="card-image">
         <a href="/programming/wechat-share-problem/" class="image is-7by1">
             <img class="thumbnail" src="/images/wechat.webp" alt="微信分享常见问题">
@@ -807,17 +853,17 @@
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2016-06-03T22:00:00.000Z">2016-06-04</time>
+                <time class="level-item has-text-grey" datetime="2016-07-30T22:00:00.000Z">2016-07-31</time>
                 
                 <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/programming/">programming</a>
+                <a class="has-link-grey -link" href="/categories/operation/">operation</a>
                 </div>
                 
                 
                 <span class="level-item has-text-grey">
                     
                     
-                    5 minutes read (About 678 words)
+                    a minute read (About 221 words)
                 </span>
                 
                 
@@ -826,35 +872,18 @@
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/programming/spring-boot-database-read-write-split/">Spring boot实现数据库读写分离</a>
+                <a class="has-link-black-ter" href="/operation/mysql-utf8mb4-encode/">MySQL支持emoji</a>
             
         </h1>
         <div class="content">
-            <h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>数据库配置主从之后，如何在代码层面实现读写分离？  </p>
-<h4 id="用户自定义设置数据库路由"><a href="#用户自定义设置数据库路由" class="headerlink" title="用户自定义设置数据库路由"></a>用户自定义设置数据库路由</h4><p>Spring boot提供了<code>AbstractRoutingDataSource</code>根据用户定义的规则选择当前的数据库，这样我们可以在执行查询之前，设置读取从库，在执行完成后，恢复到主库。  </p>
-<p>实现可动态路由的数据源，在每次数据库查询操作前执行  </p>
-<figure class="highlight java"><figcaption><span>ReadWriteSplitRoutingDataSource.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> songrgg</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 1.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReadWriteSplitRoutingDataSource</span> <span class="keyword">extends</span> <span class="title">AbstractRoutingDataSource</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Object <span class="title">determineCurrentLookupKey</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> DbContextHolder.getDbType();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>线程私有路由配置，用于<code>ReadWriteSplitRoutingDataSource</code>动态读取配置  </p>
-<figure class="highlight java"><figcaption><span>DbContextHolder.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> songrgg</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 1.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DbContextHolder</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">enum</span> DbType &#123;</span><br><span class="line">        MASTER,</span><br><span class="line">        SLAVE</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;DbType&gt; contextHolder = <span class="keyword">new</span> ThreadLocal&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setDbType</span><span class="params">(DbType dbType)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(dbType == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</span><br><span class="line">        &#125;</span><br><span class="line">        contextHolder.set(dbType);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> DbType <span class="title">getDbType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> contextHolder.get() == <span class="keyword">null</span> ? DbType.MASTER : contextHolder.get();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">clearDbType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        contextHolder.remove();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="AOP优化代码"><a href="#AOP优化代码" class="headerlink" title="AOP优化代码"></a>AOP优化代码</h4><p>利用AOP将设置数据库的操作从代码中抽离，这里的粒度控制在方法级别，所以利用注解的形式标注这个方法涉及的数据库事务只读，走从库。  </p>
-<p>只读注解，用于标注方法的数据库操作只走从库。  </p>
-<figure class="highlight java"><figcaption><span>ReadOnlyConnection.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.wallstreetcn.hatano.config;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.ElementType;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Retention;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.RetentionPolicy;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Target;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Indicates the database operations is bound to the slave database.</span></span><br><span class="line"><span class="comment"> * AOP interceptor will set the database to the slave with this interface.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> songrgg</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 1.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Target</span>(&#123;ElementType.METHOD, ElementType.TYPE&#125;)</span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> ReadOnlyConnection &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+            <h3 id="方案1-应用层支持"><a href="#方案1-应用层支持" class="headerlink" title="方案1: 应用层支持"></a>方案1: 应用层支持</h3><p>MySQL默认的数据库编码是utf8，对于emoji文字是不能直接存储的，要想存储emoji，有许多库支持对emoji的转换，例如将😊转存为<code>:smile:</code>，放在数据库里，在从数据库里取出来的时候，再转换为😊，这是应用层的方案。</p>
+<h3 id="方案2-存储层支持"><a href="#方案2-存储层支持" class="headerlink" title="方案2: 存储层支持"></a>方案2: 存储层支持</h3><p>MySQL编码设置为utf8mb4，直接支持emoji，不需要应用层的改动。  </p>
+<p>注意事项:<br><strong>MySQL索引的长度不能大于767字节, utf8 1个字存3byte, utf8mb4存4byte，相对应VARCHAR的字节数分别是255和191，所以要把索引字段的长度限制到191。</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> &lt;table1&gt; <span class="keyword">MODIFY</span> <span class="keyword">COLUMN</span> &lt;col1_indexed&gt; <span class="built_in">VARCHAR</span>(<span class="number">191</span>);</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> &lt;table1&gt; <span class="keyword">CONVERT</span> <span class="keyword">TO</span> <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8mb4 <span class="keyword">COLLATE</span> utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure>
 
 
-<figure class="highlight java"><figcaption><span>ReadOnlyConnectionInterceptor.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.aspectj.lang.ProceedingJoinPoint;</span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Around;</span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Aspect;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.Logger;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</span><br><span class="line"><span class="keyword">import</span> org.springframework.core.Ordered;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Intercept the database operations, bind database to read-only database as this annotation</span></span><br><span class="line"><span class="comment"> * is applied.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> songrgg</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 1.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReadOnlyConnectionInterceptor</span> <span class="keyword">implements</span> <span class="title">Ordered</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(ReadOnlyConnectionInterceptor<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Around</span>(<span class="string">"@annotation(readOnlyConnection)"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">proceed</span><span class="params">(ProceedingJoinPoint proceedingJoinPoint, ReadOnlyConnection readOnlyConnection)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            logger.info(<span class="string">"set database connection to read only"</span>);</span><br><span class="line">            DbContextHolder.setDbType(DbContextHolder.DbType.SLAVE);</span><br><span class="line">            Object result = proceedingJoinPoint.proceed();</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            DbContextHolder.clearDbType();</span><br><span class="line">            logger.info(<span class="string">"restore database connection"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getOrder</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><figcaption><span>UserService.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ReadOnlyConnection</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;User&gt; <span class="title">getUsers</span><span class="params">(Integer page, Integer limit)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> repository.findAll(<span class="keyword">new</span> PageRequest(page, limit));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="配置Druid数据库连接池"><a href="#配置Druid数据库连接池" class="headerlink" title="配置Druid数据库连接池"></a>配置Druid数据库连接池</h4><figure class="highlight gradle"><figcaption><span>build.gradle</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">compile</span>(<span class="string">"com.alibaba:druid:1.0.18"</span>)</span><br></pre></td></tr></table></figure>
-
-<h4 id="groovy依赖注入"><a href="#groovy依赖注入" class="headerlink" title="groovy依赖注入"></a>groovy依赖注入</h4><p>配置dataSource为可路由数据源  </p>
-<figure class="highlight groovy"><figcaption><span>context.groovy</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.alibaba.druid.pool.DruidDataSource</span><br><span class="line"><span class="keyword">import</span> DbContextHolder</span><br><span class="line"><span class="keyword">import</span> ReadWriteSplitRoutingDataSource</span><br><span class="line"></span><br><span class="line">** SOME INITIALIZED CODE LOAD PROPERTIES **</span><br><span class="line"><span class="keyword">def</span> dataSourceMaster = <span class="keyword">new</span> DruidDataSource()</span><br><span class="line">dataSourceMaster.url = properties.get(<span class="string">'datasource.master.url'</span>)</span><br><span class="line">println(<span class="string">"master set to "</span> + dataSourceMaster.url)</span><br><span class="line">dataSourceMaster.username = properties.get(<span class="string">'datasource.master.username'</span>)</span><br><span class="line">dataSourceMaster.password = properties.get(<span class="string">'datasource.master.password'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> dataSourceSlave = <span class="keyword">new</span> DruidDataSource()</span><br><span class="line">dataSourceSlave.url = properties.get(<span class="string">'datasource.slave.url'</span>)</span><br><span class="line">println(<span class="string">"slave set to "</span> + dataSourceSlave.url)</span><br><span class="line">dataSourceSlave.username = properties.get(<span class="string">'datasource.slave.username'</span>)</span><br><span class="line">dataSourceSlave.password = properties.get(<span class="string">'datasource.slave.password'</span>)  </span><br><span class="line">beans &#123;</span><br><span class="line">    dataSource(ReadWriteSplitRoutingDataSource) &#123; bean -&gt;</span><br><span class="line">        targetDataSources = [</span><br><span class="line">                (DbContextHolder.DbType.MASTER): dataSourceMaster,</span><br><span class="line">                (DbContextHolder.DbType.SLAVE): dataSourceSlave</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><ol>
-<li><a href="http://fedulov.website/2015/10/14/dynamic-datasource-routing-with-spring/">Dynamic DataSource Routing with Spring @Transactional</a></li>
-<li><a href="https://github.com/alibaba/druid">Alibaba Druid</a></li>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a href="https://mathiasbynens.be/notes/mysql-utf8mb4">How to support full Unicode in MySQL databases</a></li>
 </ol>
 
         </div>
@@ -880,19 +909,19 @@
             "name": "songrgg"
         },
         "publisher": {},
-        "headline": "Spring boot实现数据库读写分离",
+        "headline": "MySQL支持emoji",
         "image": [
             "https://songrgg.github.io/images/thumbnail.svg"
         ],
-        "keywords": "spring boot database read write split",
-        "genre": "programming",
-        "datePublished": "2016-06-04",
-        "dateCreated": "2016-06-04",
-        "dateModified": "2019-12-14",
-        "url": "https://songrgg.github.io/programming/spring-boot-database-read-write-split/",
-        "mainEntityOfPage": "https://songrgg.github.io/programming/spring-boot-database-read-write-split/",
-        "description": "背景数据库配置主从之后，如何在代码层面实现读写分离？  用户自定义设置数据库路由Spring boot提供了AbstractRoutingDataSource根据用户定义的规则选择当前的数据库，这样我们可以在执行查询之前，设置读取从库，在执行完成后，恢复到主库。  实现可动态路由的数据源，在每次数据库查询操作前执行  ReadWriteSplitRoutingDataSource.java1",
-        "wordCount": 1011
+        "keywords": "mysql",
+        "genre": "operation",
+        "datePublished": "2016-07-31",
+        "dateCreated": "2016-07-31",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/operation/mysql-utf8mb4-encode/",
+        "mainEntityOfPage": "https://songrgg.github.io/operation/mysql-utf8mb4-encode/",
+        "description": "方案1: 应用层支持MySQL默认的数据库编码是utf8，对于emoji文字是不能直接存储的，要想存储emoji，有许多库支持对emoji的转换，例如将😊转存为:smile:，放在数据库里，在从数据库里取出来的时候，再转换为😊，这是应用层的方案。方案2: 存储层支持MySQL编码设置为utf8mb4，直接支持emoji，不需要应用层的改动。  注意事项:MySQL索引的长度不能大于767字",
+        "wordCount": 66
     }
 </script>
 
@@ -972,7 +1001,7 @@
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            53
+                            54
                         </p>
                     </a>
                 </div>
@@ -1093,7 +1122,7 @@
                 <span class="level-item">programming</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">27</span>
+                <span class="level-item tag">28</span>
             </span>
         </a></li>
             </ul>
@@ -1106,7 +1135,7 @@
         <h3 class="menu-label">
             Tag Cloud
         </h3>
-        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/influxdb/" style="font-size: 10px;">influxdb</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 12.5px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namespace/" style="font-size: 10px;">namespace</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/oauth2/" style="font-size: 10px;">oauth2</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
+        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/influxdb/" style="font-size: 10px;">influxdb</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/linux/" style="font-size: 12.5px;">linux</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 12.5px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namespace/" style="font-size: 12.5px;">namespace</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/oauth2/" style="font-size: 10px;">oauth2</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
     </div>
 </div>
     
@@ -1118,6 +1147,25 @@
         <h3 class="menu-label">
             Recent
         </h3>
+        
+        <article class="media">
+            
+            <a href="/programming/linux-namespace-part02-uid-mount/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/linux_namespace_mount.webp" alt="Linux namespace in Go - Part 2, UID and Mount">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-09T08:27:50.000Z">2020-05-09</time></div>
+                    <a href="/programming/linux-namespace-part02-uid-mount/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Linux namespace in Go - Part 2, UID and Mount</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/programming/">programming</a>
+                    </p>
+                </div>
+            </div>
+        </article>
         
         <article class="media">
             
@@ -1195,25 +1243,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration-days.webp" alt="How to check and monitor SSL certificates expiration with Telegraf">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-11T21:11:50.000Z">2020-02-11</time></div>
-                    <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to check and monitor SSL certificates expiration with Telegraf</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
         
@@ -1231,7 +1260,7 @@
                     <span class="level-item">May 2020</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">1</span>
+                    <span class="level-item tag">2</span>
                 </span>
             </a>
         </li>
@@ -1839,7 +1868,7 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/linux/">
                         <span class="tag">linux</span>
-                        <span class="tag is-grey">1</span>
+                        <span class="tag is-grey">2</span>
                     </a>
                 </div>
                 
@@ -1888,7 +1917,7 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/namespace/">
                         <span class="tag">namespace</span>
-                        <span class="tag is-grey">1</span>
+                        <span class="tag is-grey">2</span>
                     </a>
                 </div>
                 
@@ -2070,6 +2099,25 @@
         
         <article class="media">
             
+            <a href="/programming/linux-namespace-part02-uid-mount/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/linux_namespace_mount.webp" alt="Linux namespace in Go - Part 2, UID and Mount">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-09T08:27:50.000Z">2020-05-09</time></div>
+                    <a href="/programming/linux-namespace-part02-uid-mount/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Linux namespace in Go - Part 2, UID and Mount</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/programming/">programming</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/programming/linux-namespace-part01-uts-pid/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/linux_namespace_pid.webp" alt="Linux namespace in Go - Part 1, UTS and PID">
@@ -2144,25 +2192,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration-days.webp" alt="How to check and monitor SSL certificates expiration with Telegraf">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-11T21:11:50.000Z">2020-02-11</time></div>
-                    <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to check and monitor SSL certificates expiration with Telegraf</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
     
@@ -2180,7 +2209,7 @@
                     <span class="level-item">May 2020</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">1</span>
+                    <span class="level-item tag">2</span>
                 </span>
             </a>
         </li>
@@ -2788,7 +2817,7 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/linux/">
                         <span class="tag">linux</span>
-                        <span class="tag is-grey">1</span>
+                        <span class="tag is-grey">2</span>
                     </a>
                 </div>
                 
@@ -2837,7 +2866,7 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/namespace/">
                         <span class="tag">namespace</span>
-                        <span class="tag is-grey">1</span>
+                        <span class="tag is-grey">2</span>
                     </a>
                 </div>
                 

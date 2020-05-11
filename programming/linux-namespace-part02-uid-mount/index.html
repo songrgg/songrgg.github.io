@@ -7,25 +7,24 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>Tag: spinnaker - Blog | Songrgg</title>
+<title>Linux namespace in Go - Part 2, UID and Mount - Blog | Songrgg</title>
 
 
-    <meta name="description" content="A place to share programming experience and understanding of architecture.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Blog | Songrgg">
-<meta property="og:url" content="https://songrgg.github.io/tags/spinnaker/index.html">
+    <meta name="description" content="In the previous article, I did two experiments on what isolation it brings with PID and UTS, this article explains UID and Mount namespace.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux namespace in Go - Part 2, UID and Mount">
+<meta property="og:url" content="https://songrgg.github.io/programming/linux-namespace-part02-uid-mount/index.html">
 <meta property="og:site_name" content="Blog | Songrgg">
-<meta property="og:description" content="A place to share programming experience and understanding of architecture.">
+<meta property="og:description" content="In the previous article, I did two experiments on what isolation it brings with PID and UTS, this article explains UID and Mount namespace.">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://songrgg.github.io/images/og_image.png">
+<meta property="og:image" content="https://songrgg.github.io/images/linux_namespace_mount.webp">
+<meta property="article:published_time" content="2020-05-09T08:27:50.000Z">
+<meta property="article:modified_time" content="2020-05-09T16:58:41.281Z">
 <meta property="article:author" content="songrgg">
-<meta property="article:tag" content="programming">
-<meta property="article:tag" content="sre">
-<meta property="article:tag" content="kubernetes">
-<meta property="article:tag" content="service mesh">
-<meta property="article:tag" content="devops">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="namespace">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://songrgg.github.io/images/og_image.png">
+<meta name="twitter:image" content="https://songrgg.github.io/images/linux_namespace_mount.webp">
 
 
 
@@ -131,75 +130,160 @@
     <section class="section">
         <div class="container">
             <div class="columns">
-                <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main"><div class="card">
+                <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main">
+
+<div class="card">
+    
+    <div class="card-image">
+        <span  class="image is-7by1">
+            <img class="thumbnail" src="/images/linux_namespace_mount.webp" alt="Linux namespace in Go - Part 2, UID and Mount">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-05-09T08:27:50.000Z">2020-05-09</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/programming/">programming</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    8 minutes read (About 1145 words)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                Linux namespace in Go - Part 2, UID and Mount
+            
+        </h1>
+        <div class="content">
+            <p>In the <a href="/programming/linux-namespace-part01-uts-pid/">previous article</a>, I did two experiments on what isolation it brings with PID and UTS, this article explains UID and Mount namespace. </p>
+<a id="more"></a>
+
+<h2 id="UID-namespace"><a href="#UID-namespace" class="headerlink" title="UID namespace"></a>UID namespace</h2><p>As Linux man page described, </p>
+<blockquote>
+<p>User namespaces isolate security-related identifiers and attributes,<br>in particular, user IDs and group IDs (see credentials(7)), the root directory, keys (see keyrings(7)), and capabilities (see capabilities(7)).  A process’s user and group IDs can be different inside and outside a user namespace.  In particular, a process can have a normal unprivileged user ID outside a user namespace while at the same time having a user ID of 0 inside the namespace; in other words, the process has full privileges for operations inside the user namespace, but is unprivileged for operations outside the namespace.</p>
+</blockquote>
+<p>The key point is that the unprivileged user outside the namespace can be mapped to the root-user inside the new namespace by creating a UID namespace with UID mappings.</p>
+<p>Let’s take an example, on my Ubuntu I want to create a user namespace and use non-root user to run the process, as tested in my previous article, I can’t run the Go program without root permission. But with user namespace, I can map non-root user, in this case, </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> id</span></span><br><span class="line">uid=1000(srjiang) gid=1000(srjiang) groups=1000(srjiang),</span><br></pre></td></tr></table></figure>
+
+<p>to the root user in the container, </p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"os"</span></span><br><span class="line">    <span class="string">"os/exec"</span></span><br><span class="line">    <span class="string">"syscall"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    cmd := exec.Command(<span class="string">"/bin/bash"</span>)</span><br><span class="line"></span><br><span class="line">    cmd.Stdin = os.Stdin</span><br><span class="line">    cmd.Stdout = os.Stdout</span><br><span class="line">    cmd.Stderr = os.Stderr</span><br><span class="line"></span><br><span class="line">    cmd.SysProcAttr = &amp;syscall.SysProcAttr&#123;</span><br><span class="line">        Cloneflags: syscall.CLONE_NEWUTS | syscall.CLONE_NEWPID | syscall.CLONE_NEWUSER,</span><br><span class="line">        UidMappings: []syscall.SysProcIDMap&#123;</span><br><span class="line">            &#123;</span><br><span class="line">                ContainerID: <span class="number">0</span>,</span><br><span class="line">                HostID:      os.Getuid(),</span><br><span class="line">                Size:        <span class="number">1</span>,</span><br><span class="line">            &#125;,</span><br><span class="line">        &#125;,</span><br><span class="line">        GidMappings: []syscall.SysProcIDMap&#123;</span><br><span class="line">            &#123;</span><br><span class="line">                ContainerID: <span class="number">0</span>,</span><br><span class="line">                HostID:      os.Getgid(),</span><br><span class="line">                Size:        <span class="number">1</span>,</span><br><span class="line">            &#125;,</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> err := cmd.Run(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">        fmt.Printf(<span class="string">"Error running the exec.Command - %s\n"</span>, err)</span><br><span class="line">        os.Exit(<span class="number">1</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>UidMappings</strong> implements the user mapping between host and container, it will map the user id in the host to the user id in the container, the size parameter indicates it’s a contiguous range mapping. If size is 10 and containerID is 0, HostID is 1000, it means 1000-1010 will be mapped to 0-10.</p>
+<p><strong>GidMappings</strong> is the same mechanism as UidMappings, it represents Group id.</p>
+<p>Now, we’re root in the container but non-root in the host, how does the permission look like in the container?</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(container) <span class="comment"># id</span></span><br><span class="line">uid=0(root) gid=0(root) groups=0(root),65534(nogroup)</span><br><span class="line">(container) <span class="comment"># touch /testmypermission</span></span><br><span class="line">touch: cannot touch <span class="string">'/testmypermission'</span>: Permission denied</span><br></pre></td></tr></table></figure>
+
+<p>You can find out that although I’m the root user in the container, I still don’t have the permission to<br>create a file under root directory, because to the host, I’m actually a non-root user <em>srjiang</em>, I can only manipulate the files that <em>srjiang</em> can. If I run the golang program with sudo, I can operate on the root directory as I wish.</p>
+<h2 id="What-about-ps-ef"><a href="#What-about-ps-ef" class="headerlink" title="What about ps -ef?"></a>What about ps -ef?</h2><p>Remember in the previous article, I left a question how to list the processes only visible within this namespace, here comes the answer: <strong>mount a new /proc</strong>.</p>
+<p>The proc filesystem is a pseudo-filesystem which provides an interface to kernel data structures. It is commonly mounted at /proc.<br>As name explained, the process information is stored under /proc folder, most of the files in the proc filesystem are read-only, they’re dynamic and stored in memory.</p>
+<p>By default, everybody may access all /proc/[pid] directories, besides process information you can also update the process configuration.</p>
+<p>To isolate the container’s process list from the host, we need to mount a new /proc directory instead of sharing the host’s /proc, we can implement this by</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(container) <span class="comment"># mount -t proc proc /proc</span></span><br></pre></td></tr></table></figure>
+
+<p>After mounting the /proc, </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(container) <span class="comment"># ps -ef</span></span><br><span class="line">UID         PID   PPID  C STIME TTY          TIME CMD</span><br><span class="line">root          1      0  0 09:08 pts/1    00:00:00 /bin/bash</span><br><span class="line">root         74      1  0 09:56 pts/1    00:00:00 ps -ef</span><br></pre></td></tr></table></figure>
+
+<p>You’ll only see the processes within the container.</p>
+<h2 id="One-step-forward"><a href="#One-step-forward" class="headerlink" title="One step forward"></a>One step forward</h2><p>For now, we have our own <code>/proc</code> directory that supports standalone process information, but we still share other filesystem with the host, if we want to have a totally fresh filesystem, we need to prepare a new root filesystem and replace the default root filesystem with the new one.</p>
+<h3 id="Download-the-alpine-root-filesystem"><a href="#Download-the-alpine-root-filesystem" class="headerlink" title="Download the alpine root filesystem"></a>Download the alpine root filesystem</h3><p>Alpine OS is popular and secure, tiny OS, I choose it as this experiment’s OS, the files (mini root filesystem) can be downloaded from <a href="https://alpinelinux.org/downloads/">https://alpinelinux.org/downloads/</a>, after that we need to consider how to let the process use this root filesystem, we’ll pivot_root here to change the root filesystem.<br>pivot_root takes two main parameters, the first one is new_root which is where your new root filesystem is, in this case, ~/Downloads/alpine_root/; the second one put_old which is the location you want to put your current root filesystem.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(container) <span class="comment"># mount -B ~/Downloads/alpine_root/ ~/Downloads/alpine_root/</span></span><br><span class="line">(container) <span class="comment"># pivot_root ~/Downloads/alpine_root/ ~/Downloads/alpine_root/old_root</span></span><br><span class="line">(container) <span class="comment"># cd /</span></span><br><span class="line">(container) <span class="comment"># ls</span></span><br><span class="line">bin       brook     dev       etc       home      lib       media     mnt       old_root  opt       proc      root      run       sbin      srv       sys       tmp       usr       var</span><br></pre></td></tr></table></figure>
+
+<p>The reader might be asking “why do we need to mount the new root filesystem again?”,  read the pivot_root man page, you will see new_root must be a path to a mount point, but can’t be “/“, so mounting itself ensures it’s a mount point.</p>
+<p>After you run the commands in the container, you have set the alpine root filesystem now.</p>
+<h3 id="What-about-old-root"><a href="#What-about-old-root" class="headerlink" title="What about old_root?"></a>What about old_root?</h3><p>We almost forget old_root, it’s the previous root filesystem, we don’t want to see it in the container, so let’s umount it.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(container) <span class="comment"># umount /old_root</span></span><br><span class="line">umount: can<span class="string">'t unmount /old_root: Resource busy</span></span><br></pre></td></tr></table></figure>
+
+<p>Who’s using old_root now? I remember, the shell we use now is still under /old_root, we need to use alpine’s shell, so, the final workflow of the program is:</p>
+<ol>
+<li>mount alpine root filesystem</li>
+<li>mount /proc</li>
+<li>use pivot_root to use alpine</li>
+<li>chdir to the root directory</li>
+<li>umount the old root filesystem</li>
+<li>run the alpine’s shell (or whatever you like)</li>
+</ol>
+<p>For the Golang implementation, it’s here: <a href="https://github.com/songrgg/namespace-demo#mount-a-new-root-filesystem">https://github.com/songrgg/namespace-demo#mount-a-new-root-filesystem</a></p>
+<h2 id="What’s-Next"><a href="#What’s-Next" class="headerlink" title="What’s Next?"></a>What’s Next?</h2><p>Until now, we have setup an Alpine container that has separate UTS, UID, PID namespaces, we’ll create the networking namespace in the next experiment.<br>Also, in the future we can test how to limit the container resource.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://man7.org/linux/man-pages/man5/proc.5.html">Linux Manual - proc</a><br><a href="https://www.slashroot.in/proc-file-system-linux-explained">Linux /proc explained</a><br><a href="https://linux.die.net/man/8/pivot_root">Pivot_root</a><br><a href="http://man7.org/linux/man-pages/man2/pivot_root.2.html">Pivot_root2</a></p>
+
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/linux/" rel="tag">linux</a>, <a class="has-link-grey -link" href="/tags/namespace/" rel="tag">namespace</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        
+<div class="sharethis-inline-share-buttons"></div>
+<script type='text/javascript' src='//platform-api.sharethis.com/js/sharethis.js#property=5df54e9fee0f770012eb9f87&amp;product=inline-share-buttons&amp;cms=sop' async='async'></script>
+
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/programming/linux-namespace-part01-uts-pid/">
+                <span class="level-item">Linux namespace in Go - Part 1, UTS and PID</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
     <div class="card-content">
-        <nav class="breadcrumb" aria-label="breadcrumbs">
-        <ul>
-            <li><a href="/tags">Tags</a></li>
-            <li class="is-active"><a href="#" aria-current="page">spinnaker</a></li>
-        </ul>
-        </nav>
+        <h3 class="title is-5 has-text-weight-normal">Comments</h3>
+        
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://songrgg.github.io/programming/linux-namespace-part02-uid-mount/';
+        this.page.identifier = 'programming/linux-namespace-part02-uid-mount/';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'srjiang' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<div id="disqus_thread">
+    
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
     </div>
 </div>
-
-    
-
-<div class="card">
-    
-    <div class="card-image">
-        <a href="/operation/install-spinnaker-on-centos/" class="image is-7by1">
-            <img class="thumbnail" src="/images/spin-dependencies.webp" alt="How to install Spinnaker on CentOS 7">
-        </a>
-    </div>
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-09-18T22:00:00.000Z">2019-09-19</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    2 minutes read (About 309 words)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/operation/install-spinnaker-on-centos/">How to install Spinnaker on CentOS 7</a>
-            
-        </h1>
-        <div class="content">
-            <p>Spinnaker doesn’t support installation on CentOS machine, this article introduces how to use Docker to install Spinnaker components on CentOS directly.</p>
-<p>As we know, according to the spinnaker’s official documentation, spinnaker provides a tool for installing the spinnaker cluster in Kubernetes cluster or debian/ubuntu bare metal machine, but there’s not an option to install it on CentOS or other common operating systems. Althogh the <a href="https://github.com/spinnaker/spinnaker/tree/master/experimental/docker-compose">spinnaker</a> provides a way to start Spinnaker with <a href="https://docs.docker.com/compose/">Docker Compose</a>, but it’s out of date. So I created a new <a href="https://github.com/songrgg/spinnaker-compose">docker-compose project</a> to quickstart a spinnaker cluster on any kind of os.</p>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/operation/install-spinnaker-on-centos/#more">Read More</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
 
 
 
@@ -212,115 +296,21 @@
             "name": "songrgg"
         },
         "publisher": {},
-        "headline": "How to install Spinnaker on CentOS 7",
+        "headline": "Linux namespace in Go - Part 2, UID and Mount",
         "image": [
-            "https://songrgg.github.io/images/spin-dependencies.webp"
+            "https://songrgg.github.io/images/linux_namespace_mount.webp"
         ],
-        "keywords": "spinnaker docker centos",
-        "genre": "operation",
-        "datePublished": "2019-09-19",
-        "dateCreated": "2019-09-19",
-        "dateModified": "2020-03-20",
-        "url": "https://songrgg.github.io/operation/install-spinnaker-on-centos/",
-        "mainEntityOfPage": "https://songrgg.github.io/operation/install-spinnaker-on-centos/",
-        "description": "Spinnaker doesn’t support installation on CentOS machine, this article introduces how to use Docker to install Spinnaker components on CentOS directly.As we know, according to the spinnaker’s official documentation, spinnaker provides a tool for installing the spinnaker cluster in Kubernetes cluste",
-        "wordCount": 282
+        "keywords": "linux namespace",
+        "genre": "programming",
+        "datePublished": "2020-05-09",
+        "dateCreated": "2020-05-09",
+        "dateModified": "2020-05-09",
+        "url": "https://songrgg.github.io/programming/linux-namespace-part02-uid-mount/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/linux-namespace-part02-uid-mount/",
+        "description": "In the previous article, I did two experiments on what isolation it brings with PID and UTS, this article explains UID and Mount namespace. ",
+        "wordCount": 1568
     }
 </script>
-
-
-
-    
-
-<div class="card">
-    
-    <div class="card-image">
-        <a href="/operation/hackathon-spinnaker/" class="image is-7by1">
-            <img class="thumbnail" src="/images/spin-deployment-strategies.webp" alt="My first Hackathon: bring Spinnaker to my company">
-        </a>
-    </div>
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-09-11T21:11:50.000Z">2019-09-11</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    5 minutes read (About 806 words)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/operation/hackathon-spinnaker/">My first Hackathon: bring Spinnaker to my company</a>
-            
-        </h1>
-        <div class="content">
-            <p>I’ve joined my first Hackathon and worked on a project about using <a href="https://www.spinnaker.io">Spinnaker</a> as CI/CD tool within company. The biggest challenge is to install Spinnaker on CentOS 7 with <a href="https://docs.docker.com/compose/">docker-compose</a>.</p>
-<h2 id="Why-Spinnaker"><a href="#Why-Spinnaker" class="headerlink" title="Why Spinnaker?"></a>Why Spinnaker?</h2><ul>
-<li>Spinnaker is dedicated to deploy services across multiple cloud providers and the integration with AWS, GCP, Azure is out of box.</li>
-<li>It’s focused on deploy stably, support full control of workflow, developers can customize the deployment flow to improve the quality of deployment, also it’s automatic.</li>
-<li>You will have a Web UI.</li>
-</ul>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/operation/hackathon-spinnaker/#more">Read More</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "author": {
-            "@type": "Person",
-            "name": "songrgg"
-        },
-        "publisher": {},
-        "headline": "My first Hackathon: bring Spinnaker to my company",
-        "image": [
-            "https://songrgg.github.io/images/spin-deployment-strategies.webp"
-        ],
-        "keywords": "kubernetes sre cicd spinnaker docker-compose",
-        "genre": "operation",
-        "datePublished": "2019-09-11",
-        "dateCreated": "2019-09-11",
-        "dateModified": "2020-03-20",
-        "url": "https://songrgg.github.io/operation/hackathon-spinnaker/",
-        "mainEntityOfPage": "https://songrgg.github.io/operation/hackathon-spinnaker/",
-        "description": "I’ve joined my first Hackathon and worked on a project about using Spinnaker as CI/CD tool within company. The biggest challenge is to install Spinnaker on CentOS 7 with docker-compose.Why Spinnaker?Spinnaker is dedicated to deploy services across multiple cloud providers and the integration with ",
-        "wordCount": 736
-    }
-</script>
-
-
 
 </div>
                 

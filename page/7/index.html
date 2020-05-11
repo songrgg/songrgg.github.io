@@ -140,6 +140,97 @@
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2015-02-12T21:27:50.000Z">2015-02-12</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/programming/">programming</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    4 minutes read (About 605 words)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/programming/leveldb-integer-coding/">levelDB里integer编码</a>
+            
+        </h1>
+        <div class="content">
+            <h3 id="leveldb的数字编码方法"><a href="#leveldb的数字编码方法" class="headerlink" title="leveldb的数字编码方法"></a>leveldb的数字编码方法</h3><ul>
+<li><p>EncodeFixed32<br>按照机器的字节存储顺序(大端, 小端), 原样存储到一块32位内存</p>
+</li>
+<li><p>EncodeFixed64<br>按照机器的字节存储顺序(大端, 小端),  原样存储到一块64位内存</p>
+</li>
+<li><p>PutFixed32<br>将EncodeFixed32处理过的内存块追加到目的地址</p>
+</li>
+<li><p>PutFixed64<br>同PutFixed32</p>
+</li>
+<li><p>EncodeVarint32<br>将32位的无符号整数以7个有效位, 1个标志位的形式编码.</p>
+</li>
+</ul>
+<p><u>对于Varint这种整数编码, 是为了减短数值较小的整数所占的存储空间.</u> 实现方法是每8位, 低7位存储有效数值和高1位存储标记位(用来标记是否还有后续的数值), 以127和128这两个数为例:<br>127 =&gt; 0111 1111<br>第一个字节低7位是有效数值127, 最高位位0, 所以表示没有后续的数值, 于是算出它所代表的数值是127.</p>
+<p>128 =&gt; 1111 1111 0000 0001<br>第一个字节低7位是有效数值127, 最高位位1, 所以表示有后续的数值, 相同计算方法算出后续值1, 最高位标志0表示结束, 127 + (1&lt;&lt;7) = 128, 因为每8位实际表示的是7位, 所以要将1左移7位, 若有更多位, 计算方式相同.</p>
+<h4 id="leveldb里的32位编码实现"><a href="#leveldb里的32位编码实现" class="headerlink" title="leveldb里的32位编码实现:"></a>leveldb里的32位编码实现:</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span>* <span class="title">EncodeVarint32</span><span class="params">(<span class="keyword">char</span>* dst, <span class="keyword">uint32_t</span> v)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// Operate on characters as unsigneds</span></span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">char</span>* ptr = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>*&gt;(dst);</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> B = <span class="number">128</span>;</span><br><span class="line">  <span class="keyword">if</span> (v &lt; (<span class="number">1</span>&lt;&lt;<span class="number">7</span>)) &#123;</span><br><span class="line">    *(ptr++) = v;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (v &lt; (<span class="number">1</span>&lt;&lt;<span class="number">14</span>)) &#123;</span><br><span class="line">    *(ptr++) = v | B;</span><br><span class="line">    *(ptr++) = v&gt;&gt;<span class="number">7</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (v &lt; (<span class="number">1</span>&lt;&lt;<span class="number">21</span>)) &#123;</span><br><span class="line">    *(ptr++) = v | B;</span><br><span class="line">    *(ptr++) = (v&gt;&gt;<span class="number">7</span>) | B;</span><br><span class="line">    *(ptr++) = v&gt;&gt;<span class="number">14</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (v &lt; (<span class="number">1</span>&lt;&lt;<span class="number">28</span>)) &#123;</span><br><span class="line">    *(ptr++) = v | B;</span><br><span class="line">    *(ptr++) = (v&gt;&gt;<span class="number">7</span>) | B;</span><br><span class="line">    *(ptr++) = (v&gt;&gt;<span class="number">14</span>) | B;</span><br><span class="line">    *(ptr++) = v&gt;&gt;<span class="number">21</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    *(ptr++) = v | B;</span><br><span class="line">    *(ptr++) = (v&gt;&gt;<span class="number">7</span>) | B;</span><br><span class="line">    *(ptr++) = (v&gt;&gt;<span class="number">14</span>) | B;</span><br><span class="line">    *(ptr++) = (v&gt;&gt;<span class="number">21</span>) | B;</span><br><span class="line">    *(ptr++) = v&gt;&gt;<span class="number">28</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">char</span>*&gt;(ptr);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>用了5个if来判断这个数落在哪个数值区间里, 32位的数值使用变长编码能使用1-5位来表示</p>
+<h4 id="leveldb里的64位编码"><a href="#leveldb里的64位编码" class="headerlink" title="leveldb里的64位编码"></a>leveldb里的64位编码</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// leveldb implementation</span></span><br><span class="line"><span class="function"><span class="keyword">char</span>* <span class="title">EncodeVarint64</span><span class="params">(<span class="keyword">char</span>* dst, <span class="keyword">uint64_t</span> v)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> B = <span class="number">128</span>;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">char</span>* ptr = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>*&gt;(dst);</span><br><span class="line">  <span class="keyword">while</span> (v &gt;= B) &#123;</span><br><span class="line">    *(ptr++) = (v &amp; (B<span class="number">-1</span>)) | B;</span><br><span class="line">    v &gt;&gt;= <span class="number">7</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  *(ptr++) = <span class="keyword">static_cast</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt;(v);</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">char</span>*&gt;(ptr);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// My own implementation</span></span><br><span class="line"><span class="function"><span class="keyword">char</span>* <span class="title">EncodeVarint64</span><span class="params">(<span class="keyword">char</span>* dst, <span class="keyword">uint64_t</span> v)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">char</span>* ptr = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>*&gt;(dst);</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> B = <span class="number">128</span>;</span><br><span class="line">  <span class="keyword">int</span> flag = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> offset = <span class="number">0</span>; flag &gt; <span class="number">0</span> &amp;&amp; offset &lt; <span class="number">8</span>; offset++) &#123;</span><br><span class="line">  	*(ptr++) = ((v &gt;&gt; (offset * <span class="number">7</span>)) &amp; <span class="number">127</span>) | B;</span><br><span class="line">  	flag = v &gt;&gt; (offset * <span class="number">7</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">char</span>*&gt;(ptr);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>比较了我和leveldb的实现之后, 发现leveldb更简洁高效, 是因为我的实现维护了一个offset来记录当前的偏移, flag用来记录是否继续计算, 每次都需要维护这个offset和flag, leveldb直接使用v作为变量, 通过每次对它的修改, 来记录是否继续, 同时它只需要用低7位, 省去了记录偏移的麻烦, 简洁有力!</p>
+
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "levelDB里integer编码",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "leveldb",
+        "genre": "programming",
+        "datePublished": "2015-02-12",
+        "dateCreated": "2015-02-12",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/programming/leveldb-integer-coding/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/leveldb-integer-coding/",
+        "description": "leveldb的数字编码方法EncodeFixed32按照机器的字节存储顺序(大端, 小端), 原样存储到一块32位内存EncodeFixed64按照机器的字节存储顺序(大端, 小端),  原样存储到一块64位内存PutFixed32将EncodeFixed32处理过的内存块追加到目的地址PutFixed64同PutFixed32EncodeVarint32将32位的无符号整数以",
+        "wordCount": 560
+    }
+</script>
+
+
+
+    
+
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2015-02-08T21:27:50.000Z">2015-02-08</time>
                 
                 <div class="level-item">
@@ -649,7 +740,7 @@
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            53
+                            54
                         </p>
                     </a>
                 </div>
@@ -770,7 +861,7 @@
                 <span class="level-item">programming</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">27</span>
+                <span class="level-item tag">28</span>
             </span>
         </a></li>
             </ul>
@@ -783,7 +874,7 @@
         <h3 class="menu-label">
             Tag Cloud
         </h3>
-        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/influxdb/" style="font-size: 10px;">influxdb</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 12.5px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namespace/" style="font-size: 10px;">namespace</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/oauth2/" style="font-size: 10px;">oauth2</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
+        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/influxdb/" style="font-size: 10px;">influxdb</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/linux/" style="font-size: 12.5px;">linux</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 12.5px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namespace/" style="font-size: 12.5px;">namespace</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/oauth2/" style="font-size: 10px;">oauth2</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
     </div>
 </div>
     
@@ -795,6 +886,25 @@
         <h3 class="menu-label">
             Recent
         </h3>
+        
+        <article class="media">
+            
+            <a href="/programming/linux-namespace-part02-uid-mount/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/linux_namespace_mount.webp" alt="Linux namespace in Go - Part 2, UID and Mount">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-09T08:27:50.000Z">2020-05-09</time></div>
+                    <a href="/programming/linux-namespace-part02-uid-mount/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Linux namespace in Go - Part 2, UID and Mount</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/programming/">programming</a>
+                    </p>
+                </div>
+            </div>
+        </article>
         
         <article class="media">
             
@@ -872,25 +982,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration-days.webp" alt="How to check and monitor SSL certificates expiration with Telegraf">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-11T21:11:50.000Z">2020-02-11</time></div>
-                    <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to check and monitor SSL certificates expiration with Telegraf</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
         
@@ -908,7 +999,7 @@
                     <span class="level-item">May 2020</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">1</span>
+                    <span class="level-item tag">2</span>
                 </span>
             </a>
         </li>
@@ -1516,7 +1607,7 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/linux/">
                         <span class="tag">linux</span>
-                        <span class="tag is-grey">1</span>
+                        <span class="tag is-grey">2</span>
                     </a>
                 </div>
                 
@@ -1565,7 +1656,7 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/namespace/">
                         <span class="tag">namespace</span>
-                        <span class="tag is-grey">1</span>
+                        <span class="tag is-grey">2</span>
                     </a>
                 </div>
                 
@@ -1747,6 +1838,25 @@
         
         <article class="media">
             
+            <a href="/programming/linux-namespace-part02-uid-mount/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/linux_namespace_mount.webp" alt="Linux namespace in Go - Part 2, UID and Mount">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-09T08:27:50.000Z">2020-05-09</time></div>
+                    <a href="/programming/linux-namespace-part02-uid-mount/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Linux namespace in Go - Part 2, UID and Mount</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/programming/">programming</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/programming/linux-namespace-part01-uts-pid/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/linux_namespace_pid.webp" alt="Linux namespace in Go - Part 1, UTS and PID">
@@ -1821,25 +1931,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/certificate-expiration-days.webp" alt="How to check and monitor SSL certificates expiration with Telegraf">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-11T21:11:50.000Z">2020-02-11</time></div>
-                    <a href="/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How to check and monitor SSL certificates expiration with Telegraf</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
     
@@ -1857,7 +1948,7 @@
                     <span class="level-item">May 2020</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">1</span>
+                    <span class="level-item tag">2</span>
                 </span>
             </a>
         </li>
@@ -2465,7 +2556,7 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/linux/">
                         <span class="tag">linux</span>
-                        <span class="tag is-grey">1</span>
+                        <span class="tag is-grey">2</span>
                     </a>
                 </div>
                 
@@ -2514,7 +2605,7 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/namespace/">
                         <span class="tag">namespace</span>
-                        <span class="tag is-grey">1</span>
+                        <span class="tag is-grey">2</span>
                     </a>
                 </div>
                 
