@@ -140,6 +140,114 @@
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2015-02-21T21:27:50.000Z">2015-02-21</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/programming/">programming</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    7 minutes read (About 1040 words)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/programming/levelDB-cache/">levelDB里缓存实现</a>
+            
+        </h1>
+        <div class="content">
+            <h3 id="leveldb的缓存机制"><a href="#leveldb的缓存机制" class="headerlink" title="leveldb的缓存机制"></a>leveldb的缓存机制</h3><blockquote>
+<p>leveldb采用LRU机制, 利用键的哈希值前n位作为索引, 将要插入的键值对分派到指定的缓存区, 当缓存区的使用率大于总容量后, 优先淘汰最近最少使用的缓存, 独立的缓存区总量为2^n .</p>
+</blockquote>
+<h4 id="初始化ShardedLRUCache"><a href="#初始化ShardedLRUCache" class="headerlink" title="初始化ShardedLRUCache"></a>初始化ShardedLRUCache</h4><ul>
+<li>设置初始缓存容量, 并设置16个子分区的容量.<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> kNumShardBits = <span class="number">4</span>;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> kNumShards = <span class="number">1</span> &lt;&lt; kNumShardBits;</span><br><span class="line"><span class="function"><span class="keyword">explicit</span> <span class="title">ShardedLRUCache</span><span class="params">(<span class="keyword">size_t</span> capacity)</span></span></span><br><span class="line">       : last_id_(0) &#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">size_t</span> per_shard = (capacity + (kNumShards - <span class="number">1</span>)) / kNumShards;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> s = <span class="number">0</span>; s &lt; kNumShards; s++) &#123;</span><br><span class="line">    shard_[s].SetCapacity(per_shard);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="新建缓存"><a href="#新建缓存" class="headerlink" title="新建缓存"></a>新建缓存</h4><ul>
+<li>由key的hash值的前kNumShardBits位作为子缓存区索引, 默认为前4位的索引位, 索引到指定的区, 子缓存区LRUCache接管新建缓存的任务.<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ShardedLRUCache</span> :</span> <span class="keyword">public</span> Cache &#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> Handle* <span class="title">Insert</span><span class="params">(<span class="keyword">const</span> Slice&amp; key, <span class="keyword">void</span>* value, <span class="keyword">size_t</span> charge,</span></span></span><br><span class="line"><span class="function"><span class="params">                         <span class="keyword">void</span> (*deleter)(<span class="keyword">const</span> Slice&amp; key, <span class="keyword">void</span>* value))</span> </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">uint32_t</span> hash = HashSlice(key);</span><br><span class="line">    <span class="keyword">return</span> shard_[Shard(hash)].Insert(key, hash, value, charge, deleter);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></li>
+<li>LRUCache结构<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// A single shard of sharded cache.</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LRUCache</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  LRUCache();</span><br><span class="line">  ~LRUCache();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Separate from constructor so caller can easily make an array of LRUCache</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">SetCapacity</span><span class="params">(<span class="keyword">size_t</span> capacity)</span> </span>&#123; capacity_ = capacity; &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Like Cache methods, but with an extra "hash" parameter.</span></span><br><span class="line">  Cache::<span class="function">Handle* <span class="title">Insert</span><span class="params">(<span class="keyword">const</span> Slice&amp; key, <span class="keyword">uint32_t</span> hash,</span></span></span><br><span class="line"><span class="function"><span class="params">                        <span class="keyword">void</span>* value, <span class="keyword">size_t</span> charge,</span></span></span><br><span class="line"><span class="function"><span class="params">                        <span class="keyword">void</span> (*deleter)(<span class="keyword">const</span> Slice&amp; key, <span class="keyword">void</span>* value))</span></span>;</span><br><span class="line">  Cache::<span class="function">Handle* <span class="title">Lookup</span><span class="params">(<span class="keyword">const</span> Slice&amp; key, <span class="keyword">uint32_t</span> hash)</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">Release</span><span class="params">(Cache::Handle* handle)</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">Erase</span><span class="params">(<span class="keyword">const</span> Slice&amp; key, <span class="keyword">uint32_t</span> hash)</span></span>;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">LRU_Remove</span><span class="params">(LRUHandle* e)</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">LRU_Append</span><span class="params">(LRUHandle* e)</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">Unref</span><span class="params">(LRUHandle* e)</span></span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Initialized before use.</span></span><br><span class="line">  <span class="keyword">size_t</span> capacity_;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// mutex_ protects the following state.</span></span><br><span class="line">  port::Mutex mutex_;</span><br><span class="line">  <span class="keyword">size_t</span> usage_;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Dummy head of LRU list.</span></span><br><span class="line">  <span class="comment">// lru.prev is newest entry, lru.next is oldest entry.</span></span><br><span class="line">  LRUHandle lru_;</span><br><span class="line"></span><br><span class="line">  HandleTable table_;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>LRUCache才是真正具有缓存功能的结构, capacity_表示它的最大容量, mutex_规范各线程互斥地访问, usage_标志缓存中已用容量, lru_作为哑节点, 它的前节点是最新的缓存对象, 它的后节点是最老的缓存对象, table_是用来统计对象是否被缓存的哈希表.</p>
+<ul>
+<li><p>LRUCache缓存生成</p>
+<ol>
+<li>缓存的基础节点是<code>LRUHandle</code>, 储存节点的(键, 值, 哈希值, next, prev节点, 销毁处理函数等)信息. 综合上面的<code>LRUCache</code>结构也看到, 实际上, 缓存节点是双向列表存储, <code>LRUHandle lru_</code>这个哑节点用来分隔最常更新的节点和最不常更新节点. </li>
+<li>当要将缓存节点插入缓存区, 先由哈希表判断缓存是否已存在, 若存在, 将其更新至最常更新节点; 若不存在, 则插入为最常更新节点. 同时更新哈希表<code>HandleTable table_</code>.</li>
+<li>这里的HandleTable实现并没特殊之处, 我看是采用键哈希策略进行哈希, 如果键冲突则以链表进行存储.</li>
+<li>利用二级指针对链表进行插入.</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">LRUHandle* <span class="title">Insert</span><span class="params">(LRUHandle* h)</span> </span>&#123;</span><br><span class="line">  LRUHandle** ptr = FindPointer(h-&gt;key(), h-&gt;hash);</span><br><span class="line">  LRUHandle* old = *ptr;</span><br><span class="line">  h-&gt;next_hash = (old == <span class="literal">NULL</span> ? <span class="literal">NULL</span> : old-&gt;next_hash);</span><br><span class="line">  *ptr = h;</span><br><span class="line">  <span class="keyword">if</span> (old == <span class="literal">NULL</span>) &#123;</span><br><span class="line">    ++elems_;</span><br><span class="line">    <span class="keyword">if</span> (elems_ &gt; length_) &#123;</span><br><span class="line">      <span class="comment">// Since each cache entry is fairly large, we aim for a small</span></span><br><span class="line">      <span class="comment">// average linked list length (&lt;= 1).</span></span><br><span class="line">      Resize();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> old;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>二级指针<br>在HandleTable这个哈希表实现里, 有个FindPointer方法用来查找此对象是否已存在, 并返回<code>LRUHandle**</code>, 代码如下:</p>
+  <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Return a pointer to slot that points to a cache entry that</span></span><br><span class="line"><span class="comment">// matches key/hash.  If there is no such cache entry, return a</span></span><br><span class="line"><span class="comment">// pointer to the trailing slot in the corresponding linked list.</span></span><br><span class="line"><span class="function">LRUHandle** <span class="title">FindPointer</span><span class="params">(<span class="keyword">const</span> Slice&amp; key, <span class="keyword">uint32_t</span> hash)</span> </span>&#123;</span><br><span class="line">  LRUHandle** ptr = &amp;list_[hash &amp; (length_ - <span class="number">1</span>)];</span><br><span class="line">  <span class="keyword">while</span> (*ptr != <span class="literal">NULL</span> &amp;&amp;</span><br><span class="line">         ((*ptr)-&gt;hash != hash || key != (*ptr)-&gt;key())) &#123;</span><br><span class="line">    ptr = &amp;(*ptr)-&gt;next_hash;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> ptr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>可见, 如果已存在节点, 则返回这个节点的<code>LRUHandle**</code>; 如果不存在, 返回的是可以保存这个<code>LRUHandle*</code>的地址.</p>
+<ul>
+<li>LRUCache缓存查找<br>  如果缓存存在, 则将其放置到哑节点lru_的prev位置, 即最近使用节点, 相当于提升它的优先级, 便于下次快速查找; 如果不存在这个缓存, 返回<code>NULL</code>.</li>
+</ul>
+<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>看完leveldb的缓存实现, 在实现思路上, 是传统的lru算法, 使用哈希表判重, 根据缓存的请求时间提升缓存的优先级. 里面的细节例如使用哈希值的前n位进行路由, 路由到<code>2^n</code>个独立的缓存区, 各个缓存区维护自己的mutex进行并发控制; 哈希表在插入节点时判断空间使用率, 并进行自动扩容, 保证查找效率在O(1).</p>
+
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "levelDB里缓存实现",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "leveldb",
+        "genre": "programming",
+        "datePublished": "2015-02-21",
+        "dateCreated": "2015-02-21",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/programming/levelDB-cache/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/levelDB-cache/",
+        "description": "leveldb的缓存机制leveldb采用LRU机制, 利用键的哈希值前n位作为索引, 将要插入的键值对分派到指定的缓存区, 当缓存区的使用率大于总容量后, 优先淘汰最近最少使用的缓存, 独立的缓存区总量为2^n .初始化ShardedLRUCache设置初始缓存容量, 并设置16个子分区的容量.123456789static const int kNumShardBits = 4;sta",
+        "wordCount": 854
+    }
+</script>
+
+
+
+    
+
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2015-02-12T21:27:50.000Z">2015-02-12</time>
                 
                 <div class="level-item">
@@ -740,7 +848,7 @@
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            54
+                            55
                         </p>
                     </a>
                 </div>
@@ -764,7 +872,7 @@
                     </p>
                     <a href="/tags">
                         <p class="title has-text-weight-normal">
-                            62
+                            63
                         </p>
                     </a>
                 </div>
@@ -861,7 +969,7 @@
                 <span class="level-item">programming</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">28</span>
+                <span class="level-item tag">29</span>
             </span>
         </a></li>
             </ul>
@@ -874,7 +982,7 @@
         <h3 class="menu-label">
             Tag Cloud
         </h3>
-        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/influxdb/" style="font-size: 10px;">influxdb</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/linux/" style="font-size: 12.5px;">linux</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 12.5px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namespace/" style="font-size: 12.5px;">namespace</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/oauth2/" style="font-size: 10px;">oauth2</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
+        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/cgroups/" style="font-size: 10px;">cgroups</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/influxdb/" style="font-size: 10px;">influxdb</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 12.5px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namespace/" style="font-size: 15px;">namespace</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/oauth2/" style="font-size: 10px;">oauth2</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
     </div>
 </div>
     
@@ -886,6 +994,25 @@
         <h3 class="menu-label">
             Recent
         </h3>
+        
+        <article class="media">
+            
+            <a href="/programming/linux-namespace-part03-cgroups/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/cgroup.webp" alt="Linux namespace in Go - Part 3, Cgroups resource limit">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-21T18:21:50.000Z">2020-05-21</time></div>
+                    <a href="/programming/linux-namespace-part03-cgroups/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Linux namespace in Go - Part 3, Cgroups resource limit</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/programming/">programming</a>
+                    </p>
+                </div>
+            </div>
+        </article>
         
         <article class="media">
             
@@ -963,25 +1090,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/how-to-build-a-smallest-docker-image/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/docker-build.webp" alt="how to build the smallest docker image as fast as you can">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-15T19:11:50.000Z">2020-03-15</time></div>
-                    <a href="/operation/how-to-build-a-smallest-docker-image/" class="title has-link-black-ter is-size-6 has-text-weight-normal">how to build the smallest docker image as fast as you can</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
         
@@ -999,7 +1107,7 @@
                     <span class="level-item">May 2020</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">2</span>
+                    <span class="level-item tag">3</span>
                 </span>
             </a>
         </li>
@@ -1423,6 +1531,13 @@
                 </div>
                 
                 <div class="control">
+                    <a class="tags has-addons" href="/tags/cgroups/">
+                        <span class="tag">cgroups</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
                     <a class="tags has-addons" href="/tags/chaos-engineering/">
                         <span class="tag">chaos engineering</span>
                         <span class="tag is-grey">1</span>
@@ -1607,7 +1722,7 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/linux/">
                         <span class="tag">linux</span>
-                        <span class="tag is-grey">2</span>
+                        <span class="tag is-grey">3</span>
                     </a>
                 </div>
                 
@@ -1656,7 +1771,7 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/namespace/">
                         <span class="tag">namespace</span>
-                        <span class="tag is-grey">2</span>
+                        <span class="tag is-grey">3</span>
                     </a>
                 </div>
                 
@@ -1838,6 +1953,25 @@
         
         <article class="media">
             
+            <a href="/programming/linux-namespace-part03-cgroups/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/cgroup.webp" alt="Linux namespace in Go - Part 3, Cgroups resource limit">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-21T18:21:50.000Z">2020-05-21</time></div>
+                    <a href="/programming/linux-namespace-part03-cgroups/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Linux namespace in Go - Part 3, Cgroups resource limit</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/programming/">programming</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/programming/linux-namespace-part02-uid-mount/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/linux_namespace_mount.webp" alt="Linux namespace in Go - Part 2, UID and Mount">
@@ -1912,25 +2046,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/how-to-build-a-smallest-docker-image/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/docker-build.webp" alt="how to build the smallest docker image as fast as you can">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-15T19:11:50.000Z">2020-03-15</time></div>
-                    <a href="/operation/how-to-build-a-smallest-docker-image/" class="title has-link-black-ter is-size-6 has-text-weight-normal">how to build the smallest docker image as fast as you can</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
     
@@ -1948,7 +2063,7 @@
                     <span class="level-item">May 2020</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">2</span>
+                    <span class="level-item tag">3</span>
                 </span>
             </a>
         </li>
@@ -2372,6 +2487,13 @@
                 </div>
                 
                 <div class="control">
+                    <a class="tags has-addons" href="/tags/cgroups/">
+                        <span class="tag">cgroups</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
                     <a class="tags has-addons" href="/tags/chaos-engineering/">
                         <span class="tag">chaos engineering</span>
                         <span class="tag is-grey">1</span>
@@ -2556,7 +2678,7 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/linux/">
                         <span class="tag">linux</span>
-                        <span class="tag is-grey">2</span>
+                        <span class="tag is-grey">3</span>
                     </a>
                 </div>
                 
@@ -2605,7 +2727,7 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/namespace/">
                         <span class="tag">namespace</span>
-                        <span class="tag is-grey">2</span>
+                        <span class="tag is-grey">3</span>
                     </a>
                 </div>
                 

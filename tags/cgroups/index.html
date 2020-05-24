@@ -7,13 +7,13 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>Tag: migration - Blog | Songrgg</title>
+<title>Tag: cgroups - Blog | Songrgg</title>
 
 
     <meta name="description" content="A place to share programming experience and understanding of architecture.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Blog | Songrgg">
-<meta property="og:url" content="https://songrgg.github.io/tags/migration/index.html">
+<meta property="og:url" content="https://songrgg.github.io/tags/cgroups/index.html">
 <meta property="og:site_name" content="Blog | Songrgg">
 <meta property="og:description" content="A place to share programming experience and understanding of architecture.">
 <meta property="og:locale" content="en_US">
@@ -136,7 +136,7 @@
         <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
             <li><a href="/tags">Tags</a></li>
-            <li class="is-active"><a href="#" aria-current="page">migration</a></li>
+            <li class="is-active"><a href="#" aria-current="page">cgroups</a></li>
         </ul>
         </nav>
     </div>
@@ -147,8 +147,8 @@
 <div class="card">
     
     <div class="card-image">
-        <a href="/microservice/goodbye-micro/" class="image is-7by1">
-            <img class="thumbnail" src="/images/micro.webp" alt="再见，micro: 迁移go-micro到纯gRPC框架">
+        <a href="/programming/linux-namespace-part03-cgroups/" class="image is-7by1">
+            <img class="thumbnail" src="/images/cgroup.webp" alt="Linux namespace in Go - Part 3, Cgroups resource limit">
         </a>
     </div>
     
@@ -156,17 +156,17 @@
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-10-27T22:00:00.000Z">2018-10-28</time>
+                <time class="level-item has-text-grey" datetime="2020-05-21T18:21:50.000Z">2020-05-21</time>
                 
                 <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/microservice/">microservice</a>
+                <a class="has-link-grey -link" href="/categories/programming/">programming</a>
                 </div>
                 
                 
                 <span class="level-item has-text-grey">
                     
                     
-                    11 minutes read (About 1641 words)
+                    10 minutes read (About 1462 words)
                 </span>
                 
                 
@@ -175,21 +175,18 @@
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/microservice/goodbye-micro/">再见，micro: 迁移go-micro到纯gRPC框架</a>
+                <a class="has-link-black-ter" href="/programming/linux-namespace-part03-cgroups/">Linux namespace in Go - Part 3, Cgroups resource limit</a>
             
         </h1>
         <div class="content">
-            <p><a href="https://github.com/micro/micro">micro</a>是基于golang的微服务框架，之前华尔街见闻架构升级中谈到了我们是基于go-micro的后端架构，随着我们对服务网格的调研、测试和实施，为了打通不同语言之间的服务调用，我们选择了gRPC作为服务内部的通用协议。</p>
-<p>go-micro框架的架构非常具有拓展性，它拥有自己的RPC框架，通过抽象codec,transport,selector等微服务组件，你既可以使用官方实现的各种插件<a href="https://github.com/micro/go-plugins">go-plugins</a>进行组装，又可以根据实际的情况实现自己的组件。然而，我们打算利用服务网格的优势，将微服务的基础组件下沉到基础设施中去，将组件代码从代码库中剥离开来。</p>
-<p>这样一来，我们相当于只需要最简的RPC框架，只需要服务之间有统一、稳定、高效的通信协议，由于micro在我们新架构中略显臃肿，于是我们选择逐渐剥除micro。还有一个重要原因，我们选择的服务网格方案是istio，它的代理原生支持gRPC，而micro只是将gRPC当做transport层，相当于复写了gRPC的服务路由逻辑，这样有损于istio的一些特性，譬如流量监控等功能。</p>
-<p>出于这些考虑，第一步需要将micro改成纯gRPC模式，这里的改造部分我们考虑只应该去更改基础库的代码，而尽量不要使业务代码更改，减少对已有逻辑的影响，和一些软性的譬如开发人员的工作量。</p>
+            <p>In the <a href="/programming/linux-namespace-part02-uid-mount/">previous article</a>, I did two experiments on what isolation it brings with UID and Mount, this article explains how to limit the container’s resource by using Cgroups, for instance, CPU, memory resources.</p>
         </div>
         
         
         <div class="level is-mobile">
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/microservice/goodbye-micro/#more">Read More</a>
+                <a class="button is-size-7 is-light" href="/programming/linux-namespace-part03-cgroups/#more">Read More</a>
                 </div>
             </div>
         </div>
@@ -214,19 +211,19 @@
             "name": "songrgg"
         },
         "publisher": {},
-        "headline": "再见，micro: 迁移go-micro到纯gRPC框架",
+        "headline": "Linux namespace in Go - Part 3, Cgroups resource limit",
         "image": [
-            "https://songrgg.github.io/images/micro.webp"
+            "https://songrgg.github.io/images/cgroup.webp"
         ],
-        "keywords": "microservice go-micro gRPC migration",
-        "genre": "microservice",
-        "datePublished": "2018-10-28",
-        "dateCreated": "2018-10-28",
-        "dateModified": "2020-03-20",
-        "url": "https://songrgg.github.io/microservice/goodbye-micro/",
-        "mainEntityOfPage": "https://songrgg.github.io/microservice/goodbye-micro/",
-        "description": "micro是基于golang的微服务框架，之前华尔街见闻架构升级中谈到了我们是基于go-micro的后端架构，随着我们对服务网格的调研、测试和实施，为了打通不同语言之间的服务调用，我们选择了gRPC作为服务内部的通用协议。go-micro框架的架构非常具有拓展性，它拥有自己的RPC框架，通过抽象codec,transport,selector等微服务组件，你既可以使用官方实现的各种插件go-plugins进行组装，又可以根据实际的情况实现自己的组件。然而，我们打算利用服务网格的优势，将微服务的基础组件下沉到基础设施中去，将组件代码从代码库中剥离开来。这样一来，我们相当于只需要最简的RPC框",
-        "wordCount": 300
+        "keywords": "linux namespace cgroups",
+        "genre": "programming",
+        "datePublished": "2020-05-21",
+        "dateCreated": "2020-05-21",
+        "dateModified": "2020-05-24",
+        "url": "https://songrgg.github.io/programming/linux-namespace-part03-cgroups/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/linux-namespace-part03-cgroups/",
+        "description": "In the previous article, I did two experiments on what isolation it brings with UID and Mount, this article explains how to limit the container’s resource by using Cgroups, for instance, CPU, memory resources.",
+        "wordCount": 1375
     }
 </script>
 

@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://songrgg.github.io/programming/linux-namespace-part03-cgroups/</loc>
+    
+    <lastmod>2020-05-24T17:41:22.433Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://songrgg.github.io/programming/linux-namespace-part02-uid-mount/</loc>
     
     <lastmod>2020-05-09T16:58:41.281Z</lastmod>
@@ -72,14 +79,14 @@
   </url>
   
   <url>
-    <loc>https://songrgg.github.io/programming/php-hashtable/</loc>
+    <loc>https://songrgg.github.io/operation/practice-datacenter-failover-in-production/</loc>
     
     <lastmod>2020-03-20T19:02:13.413Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://songrgg.github.io/operation/practice-datacenter-failover-in-production/</loc>
+    <loc>https://songrgg.github.io/programming/php-hashtable/</loc>
     
     <lastmod>2020-03-20T19:02:13.413Z</lastmod>
     
@@ -163,14 +170,14 @@
   </url>
   
   <url>
-    <loc>https://songrgg.github.io/operation/extend-kubernetes-dns/</loc>
+    <loc>https://songrgg.github.io/microservice/goodbye-micro/</loc>
     
     <lastmod>2020-03-20T19:02:13.399Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://songrgg.github.io/microservice/goodbye-micro/</loc>
+    <loc>https://songrgg.github.io/operation/extend-kubernetes-dns/</loc>
     
     <lastmod>2020-03-20T19:02:13.399Z</lastmod>
     
@@ -191,14 +198,14 @@
   </url>
   
   <url>
-    <loc>https://songrgg.github.io/operation/build-ci-with-gitlab/</loc>
+    <loc>https://songrgg.github.io/operation/ansible-frequently-used-commands/</loc>
     
     <lastmod>2020-03-20T19:02:13.396Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://songrgg.github.io/operation/ansible-frequently-used-commands/</loc>
+    <loc>https://songrgg.github.io/operation/build-ci-with-gitlab/</loc>
     
     <lastmod>2020-03-20T19:02:13.396Z</lastmod>
     
