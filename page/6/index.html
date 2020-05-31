@@ -140,6 +140,137 @@
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2015-08-17T21:53:30.000Z">2015-08-17</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/programming/">programming</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    9 minutes read (About 1307 words)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/programming/add-syntactic-feature-to-php7/">为PHP7添加新的语法特性</a>
+            
+        </h1>
+        <div class="content">
+            <h3 id="好文章！"><a href="#好文章！" class="headerlink" title="好文章！"></a>好文章！</h3><p><a href="http://nikic.github.io/">nikic</a>介绍了如何向PHP添加新的语法特性，<a href="http://nikic.github.io/2012/07/27/How-to-add-new-syntactic-features-to-PHP.html">原文</a>写的非常精彩，具体是添加<code>in</code>语法功能，使最终实现：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$words = [<span class="string">'hello'</span>, <span class="string">'world'</span>, <span class="string">'foo'</span>, <span class="string">'bar'</span>];</span><br><span class="line">var_dump(<span class="string">'hello'</span> in $words); <span class="comment">// true</span></span><br><span class="line">var_dump(<span class="string">'foo'</span> in $words);   <span class="comment">// true</span></span><br><span class="line">var_dump(<span class="string">'blub'</span> in $words);  <span class="comment">// false</span></span><br><span class="line"></span><br><span class="line">$string = <span class="string">'PHP is fun!'</span>;</span><br><span class="line">var_dump(<span class="string">'PHP'</span> in $string);    <span class="comment">// true</span></span><br><span class="line">var_dump(<span class="string">'Python'</span> in $string); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<p>我进行了一下实践，根据PHP7进行了些修改，具体记录下自己的实践过程和心得。</p>
+<h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><p>从<a href="https://github.com/php/php-src/tree/PHP-7.0.0">Github</a>上下载PHP7的源码，准备好PHP的开发编译环境，我是基于ubuntu，所以运行如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get -y install build-essential autoconf bison re2c</span><br><span class="line">下一步，编译PHP7</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">cd</span> php-src</span><br><span class="line"><span class="comment"># create new branch for in operator</span></span><br><span class="line">$ git checkout -b addInOperator</span><br><span class="line"><span class="comment"># build ./configure script</span></span><br><span class="line">$ ./buildconf</span><br><span class="line"><span class="comment"># configure PHP in debug mode and with thread safety</span></span><br><span class="line">$ ./configure --<span class="built_in">disable</span>-all --<span class="built_in">enable</span>-debug --<span class="built_in">enable</span>-maintainer-zts</span><br><span class="line"><span class="comment"># compile (4 is the number of cores you have)</span></span><br><span class="line">$ make -j4</span><br><span class="line"></span><br><span class="line"><span class="comment">#PHP的二进制就是`sapi/cli/php`，可以运行以下命令测试是否编译成功：</span></span><br><span class="line">$ ./sapi/cli/php -v</span><br><span class="line">$ ./sapi/cli/php -r <span class="string">'echo "Hallo World!";'</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="PHP脚本的生命历程"><a href="#PHP脚本的生命历程" class="headerlink" title="PHP脚本的生命历程"></a>PHP脚本的生命历程</h3><p>PHP脚本运行经过3个主要阶段：  </p>
+<ol>
+<li>词法分析</li>
+<li>语法分析&amp;编译</li>
+<li>执行</li>
+</ol>
+<h3 id="词法分析"><a href="#词法分析" class="headerlink" title="词法分析"></a>词法分析</h3><p>这个阶段是将源码根据规则分解成称为<code>token</code>更小的单元，为后面的语法分析提供材料。<br>修改位于<code>Zend/</code>目录的<code>zend_language_scanner.l</code>，这个文件定义了词法记号规则，为了让PHP能识别<code>in</code>作为关键词。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;ST_IN_SCRIPTING&gt;&quot;in&quot; &#123;</span><br><span class="line">    RETURN_TOKEN(T_IN);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>为了让Zend引擎能识别<code>T_IN</code>这个记号，在<code>zend_language_parser.y</code>中加入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%token T_IN &quot;in (T_IN)&quot;</span><br></pre></td></tr></table></figure>
+
+<p>重新生成<code>tokenizer</code>系列源文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd ext&#x2F;tokenizer</span><br><span class="line">$ .&#x2F;tokenizer_data_gen.sh</span><br></pre></td></tr></table></figure>
+
+<h3 id="语法分析-amp-编译"><a href="#语法分析-amp-编译" class="headerlink" title="语法分析&amp;编译"></a>语法分析&amp;编译</h3><p>向语法分析增加<code>in</code>所应用的表达式规则，在<code>zend_language_parser.y</code>加入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">expr_without_variable:</span><br><span class="line">...</span><br><span class="line">|   expr T_IN expr  &#123; $$ &#x3D; zend_ast_create_binary_op(ZEND_IN, $1, $3); &#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>再设置<code>in</code>的操作符优先级，在语法分析文件中找到以下行，并在行尾加入<code>T_IN</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%nonassoc &#39;&lt;&#39; T_IS_SMALLER_OR_EQUAL &#39;&gt;&#39; T_IS_GREATER_OR_EQUAL</span><br></pre></td></tr></table></figure>
+
+<h3 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h3><p>最后在<code>zend_vm_def.h</code>中添加具体的执行逻辑：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">ZEND_VM_HANDLER(<span class="number">173</span>, ZEND_IN, CONST|TMPVAR|CV, CONST|TMPVAR|CV)</span><br><span class="line">&#123;</span><br><span class="line">    USE_OPLINE</span><br><span class="line">    zend_free_op free_op1, free_op2;</span><br><span class="line">    zval *op1, *op2;</span><br><span class="line"></span><br><span class="line">    SAVE_OPLINE();</span><br><span class="line">    op1 = GET_OP1_ZVAL_PTR_UNDEF(BP_VAR_R);</span><br><span class="line">    op2 = GET_OP2_ZVAL_PTR_UNDEF(BP_VAR_R);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// TODO</span></span><br><span class="line"></span><br><span class="line">    FREE_OP1();</span><br><span class="line">    FREE_OP2();</span><br><span class="line">    CHECK_EXCEPTION();</span><br><span class="line">    ZEND_VM_NEXT_OPCODE();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在PHP源码根目录运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ./sapi/cli/php ./Zend/zend_vm_gen.php</span><br><span class="line">$ make -j4</span><br></pre></td></tr></table></figure>
+
+<p><code>zend_vm_gen.php</code>是根据<code>zend_vm_def.h</code>中的定义生成<code>zend_vm_*.*</code>系列的文件。</p>
+<p>之后测试编译后的<code>PHP</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./sapi/cli/php -r <span class="string">'var_dump("s" in "str");'</span></span><br></pre></td></tr></table></figure>
+
+<p>会出现<code>Segmentation fault</code>，原因是我之前在<code>zend_language_parser.y</code>中加入的操作是<code>zend_ast_create_binary_op</code>，所以在编译时会调用位于<code>zend_opcode.c</code>的<code>get_binary_op</code>方法，这个方法返回一个函数指针，用于处理<code>expr in expr</code>这个操作两个参数的语句。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">binary_op_type op = get_binary_op(ast-&gt;attr);</span><br><span class="line">ret = op(result, &amp;op1, &amp;op2);</span><br></pre></td></tr></table></figure>
+
+<p>所以之后我在3处添加代码：</p>
+<p><code>zend_opcode.c</code>中添加查询<code>ZEND_IN</code>操作函数的代码</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ZEND_API binary_op_type <span class="title">get_binary_op</span><span class="params">(<span class="keyword">int</span> opcode)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">switch</span> (opcode) &#123;</span><br><span class="line">        ... </span><br><span class="line">        <span class="keyword">case</span> ZEND_IN:</span><br><span class="line">            <span class="keyword">return</span> (binary_op_type) in_function;</span><br><span class="line">        ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>zend_operators.c</code>中添加处理函数</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ZEND_API <span class="keyword">int</span> ZEND_FASTCALL <span class="title">in_function</span><span class="params">(zval *result, zval *op1, zval *op2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    zval op1_copy, op2_copy;</span><br><span class="line">    <span class="keyword">int</span> use_copy1 = <span class="number">0</span>, use_copy2 = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">switch</span> (Z_TYPE_P(op2)) &#123;</span><br><span class="line">        <span class="keyword">case</span> IS_STRING:</span><br><span class="line">            use_copy1 = zend_make_printable_zval(op1, &amp;op1_copy);</span><br><span class="line">            <span class="keyword">if</span> (use_copy1) &#123;</span><br><span class="line">                op1 = &amp;op1_copy;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (Z_STRLEN_P(op1) == <span class="number">0</span>) &#123;</span><br><span class="line">                ZVAL_TRUE(result);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">const</span> <span class="keyword">char</span> *found = zend_memnstr_ex(</span><br><span class="line">                    Z_STRVAL_P(op2),</span><br><span class="line">                    Z_STRVAL_P(op1),</span><br><span class="line">                    Z_STRLEN_P(op1),</span><br><span class="line">                    Z_STRVAL_P(op2) + Z_STRLEN_P(op2)</span><br><span class="line">                );</span><br><span class="line"></span><br><span class="line">                ZVAL_BOOL(result, found != <span class="literal">NULL</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> IS_ARRAY:</span><br><span class="line">            use_copy1 = zend_make_printable_zval(op1, &amp;op1_copy);</span><br><span class="line">            <span class="keyword">if</span> (use_copy1) &#123;</span><br><span class="line">                op1 = &amp;op1_copy;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            ZVAL_BOOL(result, zend_hash_exists(Z_ARR_P(op2), Z_STR_P(op1)));</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            zend_error(E_EXCEPTION | E_ERROR, <span class="string">"Unsupported operand types"</span>);</span><br><span class="line">            ZVAL_FALSE(result);</span><br><span class="line">            <span class="keyword">return</span> FAILURE;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (use_copy1) &#123;</span><br><span class="line">        zval_dtor(&amp;op1_copy);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> SUCCESS;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>zend_vm_def.h</code>中补上<code>TODO</code>该做的处理逻辑</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 我在系统里的最新操作号是173，根据实际为准</span></span><br><span class="line">ZEND_VM_HANDLER(<span class="number">173</span>, ZEND_IN, CONST|TMPVAR|CV, CONST|TMPVAR|CV)</span><br><span class="line">&#123;</span><br><span class="line">    USE_OPLINE</span><br><span class="line">    zend_free_op free_op1, free_op2;</span><br><span class="line">    zval *op1, *op2;</span><br><span class="line"></span><br><span class="line">    SAVE_OPLINE();</span><br><span class="line">    op1 = GET_OP1_ZVAL_PTR_UNDEF(BP_VAR_R);</span><br><span class="line">    op2 = GET_OP2_ZVAL_PTR_UNDEF(BP_VAR_R);</span><br><span class="line"></span><br><span class="line">    in_function(EX_VAR(opline-&gt;result.var), op1, op2);</span><br><span class="line">    ZVAL_TRUE(EX_VAR(opline-&gt;result.var));</span><br><span class="line"></span><br><span class="line">    FREE_OP1();</span><br><span class="line">    FREE_OP2();</span><br><span class="line">    CHECK_EXCEPTION();</span><br><span class="line">    ZEND_VM_NEXT_OPCODE();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>依旧是在PHP源码根目录下运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ./sapi/cli/php ./Zend/zend_vm_gen.php</span><br><span class="line">$ make -j4</span><br></pre></td></tr></table></figure>
+
+<p>现在再测试生成的<code>php</code>，应该会满足：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ ./sapi/cli/php -r <span class="string">'var_dump("s" in "str");'</span></span><br><span class="line">bool(<span class="literal">true</span>)</span><br><span class="line">$ ./sapi/cli/php -r <span class="string">'var_dump("s" in "xxx");'</span></span><br><span class="line">bool(<span class="literal">false</span>)</span><br><span class="line">$ ./sapi/cli/php -r <span class="string">'var_dump("a" in ["a"=&gt;1]);'</span></span><br><span class="line">bool(<span class="literal">true</span>)</span><br><span class="line">$ ./sapi/cli/php -r <span class="string">'var_dump("a" in ["b"=&gt;1]);'</span></span><br><span class="line">bool(<span class="literal">false</span>)</span><br><span class="line">$ ./sapi/cli/php -r <span class="string">'var_dump("s" in 123);'</span></span><br><span class="line">Fatal error: Unsupported operand types <span class="keyword">in</span> Command line code on line 1</span><br></pre></td></tr></table></figure>
+
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>实际进行了一番操作之后，对于<code>PHP</code>的运行机制会落实到更小的单位，从解释阶段到文件级别。<br><code>PHP7</code>版本引入了<code>ast</code>这个中间结构，比起<a href="http://nikic.github.io/">nikic</a>那个版本来说，需要修改更多文件，下一步要剖析一下<code>ast</code>在<code>PHP7</code>中的作用和在执行过程中的角色。</p>
+
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "songrgg"
+        },
+        "publisher": {},
+        "headline": "为PHP7添加新的语法特性",
+        "image": [
+            "https://songrgg.github.io/images/thumbnail.svg"
+        ],
+        "keywords": "",
+        "genre": "programming",
+        "datePublished": "2015-08-17",
+        "dateCreated": "2015-08-17",
+        "dateModified": "2019-09-12",
+        "url": "https://songrgg.github.io/programming/add-syntactic-feature-to-php7/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/add-syntactic-feature-to-php7/",
+        "description": "好文章！nikic介绍了如何向PHP添加新的语法特性，原文写的非常精彩，具体是添加in语法功能，使最终实现：12345678$words = ['hello', 'world', 'foo', 'bar'];var_dump('hello' in $words); // truevar_dump('foo' in $words);   // truevar_dump('blub' in $wor",
+        "wordCount": 1272
+    }
+</script>
+
+
+
+    
+
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2015-07-23T15:15:07.000Z">2015-07-23</time>
                 
                 <div class="level-item">
@@ -846,88 +977,6 @@
 
 
 
-    
-
-<div class="card">
-    
-    <div class="card-image">
-        <a href="/programming/wechat-local-debug/" class="image is-7by1">
-            <img class="thumbnail" src="/images/wechat.webp" alt="微信本地测试">
-        </a>
-    </div>
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2015-03-11T20:10:00.000Z">2015-03-11</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/programming/">programming</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    a minute read (About 187 words)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/programming/wechat-local-debug/">微信本地测试</a>
-            
-        </h1>
-        <div class="content">
-            <p>项目里要测试微信公众号, 但又不愿意忍受每次改下代码就提交到版本库, 再发布到生产这个琐碎的流程, 所以必须有一个本地能测试的方法, 到知乎上找了一个方法(引用<a href="http://www.zhihu.com/question/25456655">知乎操晓峰的回答</a>).</p>
-<p>原理是HTTP请求重定向, 将微信中要访问的url转发到你设置的代理服务器, 代理服务器转发到你的开发服务器.</p>
-<p>有趣的是, 在公司一直没有完全成功, 总有一个页面是刷不出来, 查看Charles发现传输速度极慢, 真想吐槽公司的网络. 回家后重试了一次, 完全成功.</p>
-
-        </div>
-        
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "author": {
-            "@type": "Person",
-            "name": "songrgg"
-        },
-        "publisher": {},
-        "headline": "微信本地测试",
-        "image": [
-            "https://songrgg.github.io/images/wechat.webp"
-        ],
-        "keywords": "wechat",
-        "genre": "programming",
-        "datePublished": "2015-03-11",
-        "dateCreated": "2015-03-11",
-        "dateModified": "2020-03-20",
-        "url": "https://songrgg.github.io/programming/wechat-local-debug/",
-        "mainEntityOfPage": "https://songrgg.github.io/programming/wechat-local-debug/",
-        "description": "项目里要测试微信公众号, 但又不愿意忍受每次改下代码就提交到版本库, 再发布到生产这个琐碎的流程, 所以必须有一个本地能测试的方法, 到知乎上找了一个方法(引用知乎操晓峰的回答).原理是HTTP请求重定向, 将微信中要访问的url转发到你设置的代理服务器, 代理服务器转发到你的开发服务器.有趣的是, 在公司一直没有完全成功, 总有一个页面是刷不出来, 查看Charles发现传输速度极慢, 真想",
-        "wordCount": 14
-    }
-</script>
-
-
-
 
     
 <div class="card card-transparent">
@@ -998,7 +1047,7 @@
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            55
+                            56
                         </p>
                     </a>
                 </div>
@@ -1022,7 +1071,7 @@
                     </p>
                     <a href="/tags">
                         <p class="title has-text-weight-normal">
-                            63
+                            64
                         </p>
                     </a>
                 </div>
@@ -1119,7 +1168,7 @@
                 <span class="level-item">programming</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">29</span>
+                <span class="level-item tag">30</span>
             </span>
         </a></li>
             </ul>
@@ -1132,7 +1181,7 @@
         <h3 class="menu-label">
             Tag Cloud
         </h3>
-        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/cgroups/" style="font-size: 10px;">cgroups</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/influxdb/" style="font-size: 10px;">influxdb</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 12.5px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namespace/" style="font-size: 15px;">namespace</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/oauth2/" style="font-size: 10px;">oauth2</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
+        <a href="/tags/alerting/" style="font-size: 10px;">alerting</a> <a href="/tags/app-channel-analytics/" style="font-size: 10px;">app channel analytics</a> <a href="/tags/architecture/" style="font-size: 12.5px;">architecture</a> <a href="/tags/automation/" style="font-size: 10px;">automation</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/cgroups/" style="font-size: 10px;">cgroups</a> <a href="/tags/chaos-engineering/" style="font-size: 10px;">chaos engineering</a> <a href="/tags/cicd/" style="font-size: 10px;">cicd</a> <a href="/tags/client-performance/" style="font-size: 10px;">client performance</a> <a href="/tags/configuration-management/" style="font-size: 15px;">configuration management</a> <a href="/tags/data-center-failover/" style="font-size: 10px;">data center failover</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/database-read-write-split/" style="font-size: 10px;">database read write split</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency injection</a> <a href="/tags/distributed-system/" style="font-size: 15px;">distributed system</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/docker-compose/" style="font-size: 10px;">docker-compose</a> <a href="/tags/envoy/" style="font-size: 10px;">envoy</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/fault-tolerance/" style="font-size: 10px;">fault tolerance</a> <a href="/tags/gRPC/" style="font-size: 12.5px;">gRPC</a> <a href="/tags/go-micro/" style="font-size: 10px;">go-micro</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/grafana/" style="font-size: 10px;">grafana</a> <a href="/tags/groovy/" style="font-size: 10px;">groovy</a> <a href="/tags/hive/" style="font-size: 15px;">hive</a> <a href="/tags/influxdb/" style="font-size: 10px;">influxdb</a> <a href="/tags/interview/" style="font-size: 12.5px;">interview</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/leveldb/" style="font-size: 17.5px;">leveldb</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/machine-learning/" style="font-size: 10px;">machine learning</a> <a href="/tags/mahout/" style="font-size: 10px;">mahout</a> <a href="/tags/microservice/" style="font-size: 20px;">microservice</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/monitoring/" style="font-size: 15px;">monitoring</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namespace/" style="font-size: 15px;">namespace</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/oauth2/" style="font-size: 10px;">oauth2</a> <a href="/tags/operation/" style="font-size: 10px;">operation</a> <a href="/tags/php/" style="font-size: 17.5px;">php</a> <a href="/tags/prometheus/" style="font-size: 10px;">prometheus</a> <a href="/tags/raspberry/" style="font-size: 10px;">raspberry</a> <a href="/tags/ratelimiter/" style="font-size: 10px;">ratelimiter</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/request-analysis/" style="font-size: 10px;">request analysis</a> <a href="/tags/resilience/" style="font-size: 10px;">resilience</a> <a href="/tags/service-degrade/" style="font-size: 10px;">service degrade</a> <a href="/tags/service-mesh/" style="font-size: 10px;">service mesh</a> <a href="/tags/service-orchestration/" style="font-size: 10px;">service orchestration</a> <a href="/tags/sidecar/" style="font-size: 10px;">sidecar</a> <a href="/tags/spark/" style="font-size: 12.5px;">spark</a> <a href="/tags/spinnaker/" style="font-size: 12.5px;">spinnaker</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 17.5px;">spring boot</a> <a href="/tags/sre/" style="font-size: 10px;">sre</a> <a href="/tags/swagger/" style="font-size: 10px;">swagger</a> <a href="/tags/universal-link/" style="font-size: 10px;">universal link</a> <a href="/tags/wechat/" style="font-size: 12.5px;">wechat</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a>
     </div>
 </div>
     
@@ -1144,6 +1193,25 @@
         <h3 class="menu-label">
             Recent
         </h3>
+        
+        <article class="media">
+            
+            <a href="/programming/how-does-prometheus-query-works/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/prometheus_grafana.webp" alt="How does Prometheus query work? - Part 1, Step, Query and Range">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-31T08:27:50.000Z">2020-05-31</time></div>
+                    <a href="/programming/how-does-prometheus-query-works/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How does Prometheus query work? - Part 1, Step, Query and Range</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/programming/">programming</a>
+                    </p>
+                </div>
+            </div>
+        </article>
         
         <article class="media">
             
@@ -1221,25 +1289,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/influxdb-command-cheatsheet/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/Influxdb_logo.webp" alt="InfluxDB command cheatsheet">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-17T23:11:50.000Z">2020-03-18</time></div>
-                    <a href="/operation/influxdb-command-cheatsheet/" class="title has-link-black-ter is-size-6 has-text-weight-normal">InfluxDB command cheatsheet</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
         
@@ -1257,7 +1306,7 @@
                     <span class="level-item">May 2020</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">3</span>
+                    <span class="level-item tag">4</span>
                 </span>
             </a>
         </li>
@@ -1907,7 +1956,7 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/monitoring/">
                         <span class="tag">monitoring</span>
-                        <span class="tag is-grey">2</span>
+                        <span class="tag is-grey">3</span>
                     </a>
                 </div>
                 
@@ -1950,6 +1999,13 @@
                     <a class="tags has-addons" href="/tags/php/">
                         <span class="tag">php</span>
                         <span class="tag is-grey">4</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/prometheus/">
+                        <span class="tag">prometheus</span>
+                        <span class="tag is-grey">1</span>
                     </a>
                 </div>
                 
@@ -2103,6 +2159,25 @@
         
         <article class="media">
             
+            <a href="/programming/how-does-prometheus-query-works/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/prometheus_grafana.webp" alt="How does Prometheus query work? - Part 1, Step, Query and Range">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-31T08:27:50.000Z">2020-05-31</time></div>
+                    <a href="/programming/how-does-prometheus-query-works/" class="title has-link-black-ter is-size-6 has-text-weight-normal">How does Prometheus query work? - Part 1, Step, Query and Range</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/programming/">programming</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/programming/linux-namespace-part03-cgroups/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/cgroup.webp" alt="Linux namespace in Go - Part 3, Cgroups resource limit">
@@ -2177,25 +2252,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/operation/influxdb-command-cheatsheet/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/Influxdb_logo.webp" alt="InfluxDB command cheatsheet">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-17T23:11:50.000Z">2020-03-18</time></div>
-                    <a href="/operation/influxdb-command-cheatsheet/" class="title has-link-black-ter is-size-6 has-text-weight-normal">InfluxDB command cheatsheet</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/operation/">operation</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
     
@@ -2213,7 +2269,7 @@
                     <span class="level-item">May 2020</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">3</span>
+                    <span class="level-item tag">4</span>
                 </span>
             </a>
         </li>
@@ -2863,7 +2919,7 @@
                 <div class="control">
                     <a class="tags has-addons" href="/tags/monitoring/">
                         <span class="tag">monitoring</span>
-                        <span class="tag is-grey">2</span>
+                        <span class="tag is-grey">3</span>
                     </a>
                 </div>
                 
@@ -2906,6 +2962,13 @@
                     <a class="tags has-addons" href="/tags/php/">
                         <span class="tag">php</span>
                         <span class="tag is-grey">4</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/prometheus/">
+                        <span class="tag">prometheus</span>
+                        <span class="tag is-grey">1</span>
                     </a>
                 </div>
                 

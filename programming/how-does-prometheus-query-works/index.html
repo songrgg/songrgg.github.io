@@ -7,27 +7,24 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>基于gitlab搭建CI - Blog | Songrgg</title>
+<title>How does Prometheus query work? - Part 1, Step, Query and Range - Blog | Songrgg</title>
 
 
-    <meta name="description" content="自建gitlab自建gitlab一大优势是快，之前用翻墙走github速度也在1M&#x2F;s左右，可是自建的gitlab提升了建立连接的速度，可以说体验又上升了一个档次。 用docker起一个gitlab服务尤其方便 GitLab Docker images">
+    <meta name="description" content="Prometheus is an opensource time series database, commonly used to gather and calculate monitoring metrics, with Grafana which is the visualization dashboard. This article explains how the query works">
 <meta property="og:type" content="article">
-<meta property="og:title" content="基于gitlab搭建CI">
-<meta property="og:url" content="https://songrgg.github.io/operation/build-ci-with-gitlab/index.html">
+<meta property="og:title" content="How does Prometheus query work? - Part 1, Step, Query and Range">
+<meta property="og:url" content="https://songrgg.github.io/programming/how-does-prometheus-query-works/index.html">
 <meta property="og:site_name" content="Blog | Songrgg">
-<meta property="og:description" content="自建gitlab自建gitlab一大优势是快，之前用翻墙走github速度也在1M&#x2F;s左右，可是自建的gitlab提升了建立连接的速度，可以说体验又上升了一个档次。 用docker起一个gitlab服务尤其方便 GitLab Docker images">
+<meta property="og:description" content="Prometheus is an opensource time series database, commonly used to gather and calculate monitoring metrics, with Grafana which is the visualization dashboard. This article explains how the query works">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://songrgg.github.io/images/og_image.png">
-<meta property="article:published_time" content="2017-04-17T22:00:00.000Z">
-<meta property="article:modified_time" content="2020-03-20T19:02:13.396Z">
+<meta property="og:image" content="https://songrgg.github.io/images/prometheus_grafana.webp">
+<meta property="article:published_time" content="2020-05-31T08:27:50.000Z">
+<meta property="article:modified_time" content="2020-05-31T10:26:37.134Z">
 <meta property="article:author" content="songrgg">
-<meta property="article:tag" content="programming">
-<meta property="article:tag" content="sre">
-<meta property="article:tag" content="kubernetes">
-<meta property="article:tag" content="service mesh">
-<meta property="article:tag" content="devops">
+<meta property="article:tag" content="monitoring">
+<meta property="article:tag" content="prometheus">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://songrgg.github.io/images/og_image.png">
+<meta name="twitter:image" content="https://songrgg.github.io/images/prometheus_grafana.webp">
 
 
 
@@ -137,21 +134,27 @@
 
 <div class="card">
     
+    <div class="card-image">
+        <span  class="image is-7by1">
+            <img class="thumbnail" src="/images/prometheus_grafana.webp" alt="How does Prometheus query work? - Part 1, Step, Query and Range">
+        </span>
+    </div>
+    
     <div class="card-content article ">
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2017-04-17T22:00:00.000Z">2017-04-18</time>
+                <time class="level-item has-text-grey" datetime="2020-05-31T08:27:50.000Z">2020-05-31</time>
                 
                 <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/operation/">operation</a>
+                <a class="has-link-grey -link" href="/categories/programming/">programming</a>
                 </div>
                 
                 
                 <span class="level-item has-text-grey">
                     
                     
-                    6 minutes read (About 898 words)
+                    5 minutes read (About 803 words)
                 </span>
                 
                 
@@ -160,46 +163,55 @@
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                基于gitlab搭建CI
+                How does Prometheus query work? - Part 1, Step, Query and Range
             
         </h1>
         <div class="content">
-            <h4 id="自建gitlab"><a href="#自建gitlab" class="headerlink" title="自建gitlab"></a>自建gitlab</h4><p>自建gitlab一大优势是<strong>快</strong>，之前用翻墙走github速度也在1M/s左右，可是自建的gitlab提升了建立连接的速度，可以说体验又上升了一个档次。</p>
-<p>用docker起一个gitlab服务尤其方便 <a href="https://docs.gitlab.com/omnibus/docker/README.html">GitLab Docker images</a></p>
+            <p><a href="https://prometheus.io/">Prometheus</a> is an opensource time series database, commonly used to gather and calculate monitoring metrics, with <a href="https://grafana.com/">Grafana</a> which is the visualization dashboard. This article explains how the query works with <strong>/query_range</strong> API.</p>
 <a id="more"></a>
 
-<h4 id="选择CI"><a href="#选择CI" class="headerlink" title="选择CI"></a>选择CI</h4><p>如果有人像我一样对Jenkins的UI和配置不感兴趣，那么Gitlab CI runner是不错的选择，配置用<code>YAML</code>，清晰明了，UI集成在gitlab中。<strong>对比jenkins，上手容易，颜值更高。</strong></p>
-<h4 id="Gitlab-CI-runner"><a href="#Gitlab-CI-runner" class="headerlink" title="Gitlab CI runner"></a>Gitlab CI runner</h4><ul>
-<li>找一台ubuntu 16.04，机器配置按照项目大小和数量决定</li>
-<li>安装CI runner<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install gitlab-ci-multi-runner</span><br></pre></td></tr></table></figure></li>
-<li>将runner注册到gitlab<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo gitlab-ci-multi-runner register</span><br></pre></td></tr></table></figure></li>
-<li>调整配置<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">concurrent</span> <span class="string">=</span> <span class="number">16</span> <span class="comment"># 更新并发build数量到16</span></span><br><span class="line"></span><br><span class="line"><span class="string">[[runners]]</span></span><br><span class="line">  <span class="string">name</span> <span class="string">=</span> <span class="string">"10-1-10-10"</span> <span class="comment"># 这里是runner的名字</span></span><br><span class="line">  <span class="string">url</span> <span class="string">=</span> <span class="string">"https://gitlab.com"</span> <span class="comment"># 所属gitlab的url</span></span><br><span class="line">  <span class="string">token</span> <span class="string">=</span> <span class="string">"please-input-gitlab-register-token"</span> <span class="comment"># gitlab注册token</span></span><br><span class="line">  <span class="string">executor</span> <span class="string">=</span> <span class="string">"docker"</span> <span class="comment"># 以docker形式运行每次CI任务</span></span><br><span class="line">  <span class="string">[runners.docker]</span></span><br><span class="line">    <span class="string">tls_verify</span> <span class="string">=</span> <span class="literal">false</span></span><br><span class="line">    <span class="string">image</span> <span class="string">=</span> <span class="string">"ruby:2.1"</span> <span class="comment"># docker运行的默认镜像</span></span><br><span class="line">    <span class="string">privileged</span> <span class="string">=</span> <span class="literal">false</span> <span class="comment"># 不授权</span></span><br><span class="line">    <span class="string">volumes</span> <span class="string">=</span> <span class="string">["/cache",</span> <span class="string">"/var/run/docker.sock:/var/run/docker.sock"</span><span class="string">]</span></span><br><span class="line">    <span class="string">extra_hosts</span> <span class="string">=</span> <span class="string">["gitlab.com:some-internal-ip"]</span></span><br><span class="line">  <span class="string">[runners.cache]</span></span><br></pre></td></tr></table></figure>
+<h2 id="Start-a-Prometheus"><a href="#Start-a-Prometheus" class="headerlink" title="Start a Prometheus"></a>Start a Prometheus</h2><p>According to the Prometheus doc, a prometheus server has been started and listens at <code>localhost:9090</code>.</p>
+<p>Prometheus browser is a WEB UI that is used to query the metrics for testing, the path is <code>http://localhost:9090/graph</code>, there are two APIs used to query the metrics, the first one is /query (which is used to see the metric value in a specified time point, the other one is <strong>/query_range</strong> used to query the metric during a period.</p>
+<h2 id="Metric-types"><a href="#Metric-types" class="headerlink" title="Metric types"></a>Metric types</h2><p>Before we start analyzing a query, we need to know the metric types Prometheus provides:</p>
+<h3 id="Counter"><a href="#Counter" class="headerlink" title="Counter"></a>Counter</h3><p>Indicates an cumulative number of the observable, for example the total http request number. This metric value is increasing monotonically increasing. For instance, <code>http_request_total</code> records the total count of HTTP requests the server serves.</p>
+<h3 id="Gauge"><a href="#Gauge" class="headerlink" title="Gauge"></a>Gauge</h3><p>A gauge is a metric that represents a single numerical value that can arbitrarily go up and down. For instance, the instance’s CPU usage, it’s changeable all the time.</p>
+<h3 id="Histogram"><a href="#Histogram" class="headerlink" title="Histogram"></a>Histogram</h3><p>A histogram samples observations (usually things like request durations or response sizes) and counts them in configurable buckets. It also provides a sum of all observed values.<br>The <a href="https://prometheus.io/docs/practices/histograms/">Prometheus Histograms</a> gives an example, <code>http_request_duration_seconds</code>, consider we have an SLO requirement, 95% requests’ response time is within 300ms, so the straightforward way is to divide the bucket into several segments, for example, 300ms, 1s, 5s, 10s, +inf, and each bucket contains its <strong>counter</strong> metric which counts the total number of the requests within this bucket,</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">http_request_duration_bucket</span><br><span class="line">[0 - 300ms]</span><br><span class="line">[0 - 1s]</span><br><span class="line">[0 - 5s]</span><br><span class="line">[0 - 10s]</span><br><span class="line">[0 - +inf]</span><br></pre></td></tr></table></figure>
 
-</li>
+<p>You’ll see the bucket is divided and each segment starts from 0 seconds, it means [0 - 1s] will include the [0 - 300ms]. As we said, each bucket metric is of <strong>counter</strong> type, it records the total requests number within that response time and there’s a total count metric called <code>http_request_duration_seconds_count</code>.</p>
+<p>To calculate how much does 300ms occupy, we can calculate with <code>http_request_duration_seconds_bucket{le=&quot;0.3&quot;}/http_request_duration_seconds_count</code>, it calculates the instant value of the moment, but if we only use the instant value of that moment, the data will be not smooth and the graph might be spiky, so we’d better use duration to gather more data, <code>sum(rate(http_request_duration_seconds_bucket{le=&quot;0.3&quot;}[5m]))/sum(rate(http_request_duration_seconds_count[5m]))</code>.</p>
+<h3 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h3><p>Similar to a histogram, a summary samples observations (usually things like request durations and response sizes). While it also provides a total count of observations and a sum of all observed values, it calculates configurable quantiles over a sliding time window.  </p>
+<h2 id="How-does-query-work"><a href="#How-does-query-work" class="headerlink" title="How does query work?"></a>How does query work?</h2><p>When we use Prometheus to calculate a query, normally we’re using the <strong>query_range</strong> functionality, after a time range and step is specified, the query will be applied to every step and a point will be put into the results.</p>
+<p>Let’s see an entire query API:<br><a href="http://localhost:9090/api/v1/query_range?query=prometheus_target_interval_length_seconds&amp;start=1590830727.588&amp;end=1590834327.588&amp;step=14">http://localhost:9090/api/v1/query_range?query=prometheus_target_interval_length_seconds&amp;start=1590830727.588&amp;end=1590834327.588&amp;step=14</a></p>
+<p>it might be a little messy, let’s break it down into parameters,</p>
+<ul>
+<li>query<br>query is the metric formula that needs to be calculated</li>
+<li>Time range (start and end)<br>It is easy to understand, we can specify when should the metrics start and end, I want to see the last 30 minutes or last 7 days, it’s set by the start and end parameters, their format is unix timestamp.</li>
+<li>step<br>It is used to decide how many data points we need by setting each data points’ interval and its format is second.</li>
 </ul>
-<blockquote>
-<p><strong>调整<em>concurrent</em>，最大限度利用机器</strong><br><strong>若镜像中使用<code>docker push</code>等命令，将宿主机<em>docker.sock</em>挂载到容器中</strong><br><strong>若gitlab与runner在同网络，设置docker容器内的gitlab host为内网IP，最小化网络延迟</strong></p>
-</blockquote>
-<h4 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h4><p>pipeline指CI的流程可以当做管道，只有上一个操作成功之后，下一个操作继续执行，如利用gitlab ci构建build-&gt;test-&gt;release-&gt;deployment的流程，当代码push到<code>master</code>时，CI触发，如下<br><img src="/images/gitlabci.webp" alt="gitlabci"></p>
-<h4 id="配置CI"><a href="#配置CI" class="headerlink" title="配置CI"></a>配置CI</h4><p><strong>.gitlab-ci.yml</strong>是gitlab项目的CI配置文件，文件形式是<code>yaml</code>。</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">image:</span> <span class="string">ruby:2.1</span></span><br><span class="line"><span class="attr">stages:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">test</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">build</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">release</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">deployment</span></span><br><span class="line"><span class="attr">variables:</span></span><br><span class="line">  <span class="attr">DOCKER_DRIVER:</span> <span class="string">overlay</span></span><br><span class="line">  <span class="attr">SERVICE_NAME:</span> <span class="string">test</span></span><br><span class="line">  <span class="attr">CONTAINER_TEST_IMAGE:</span> <span class="string">$IMAGE_NAME:$CI_BUILD_REF_NAME</span></span><br><span class="line">  <span class="attr">CONTAINER_RELEASE_IMAGE:</span> <span class="string">$IMAGE_NAME:latest</span></span><br><span class="line"></span><br><span class="line"><span class="attr">test:1.8.0:</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">golang:1.8</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">test</span></span><br><span class="line">  <span class="attr">before_script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"before test"</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"test"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">build:test:</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">golang:1.8</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">build</span></span><br><span class="line">  <span class="attr">before_script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"before script"</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">mkdir</span> <span class="string">-p</span> <span class="string">binaries/</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">touch</span> <span class="string">binaries/test</span></span><br><span class="line">  <span class="attr">artifacts:</span></span><br><span class="line">    <span class="attr">paths:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">binaries/</span></span><br><span class="line">    <span class="attr">expire_in:</span> <span class="string">1h</span></span><br><span class="line">  <span class="attr">only:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">test</span></span><br><span class="line"></span><br><span class="line"><span class="attr">build:prod:</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">golang:1.8</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">build</span></span><br><span class="line">  <span class="attr">before_script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"before build"</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">mkdir</span> <span class="string">-p</span> <span class="string">binaries/</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">touch</span> <span class="string">binaries/prod</span></span><br><span class="line">  <span class="attr">artifacts:</span></span><br><span class="line">    <span class="attr">paths:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">binaries/</span></span><br><span class="line">    <span class="attr">expire_in:</span> <span class="string">1h</span></span><br><span class="line">  <span class="attr">only:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">master</span></span><br><span class="line"></span><br><span class="line"><span class="attr">release:test:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">release</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"release $CONTAINER_TEST_IMAGE"</span></span><br><span class="line">  <span class="attr">only:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">test</span></span><br><span class="line">  <span class="attr">dependencies:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">build:test</span></span><br><span class="line"></span><br><span class="line"><span class="attr">release:prod:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">release</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"release $CONTAINER_RELEASE_IMAGE"</span></span><br><span class="line">  <span class="attr">only:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">master</span></span><br><span class="line">  <span class="attr">dependencies:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">build:prod</span></span><br><span class="line"></span><br><span class="line"><span class="attr">deployment:test:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">deployment</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">kroniak/ssh-client</span></span><br><span class="line">  <span class="attr">before_script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"before script"</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"deployment test"</span></span><br><span class="line">  <span class="attr">only:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">test</span></span><br><span class="line"></span><br><span class="line"><span class="attr">deployment:stage:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">deployment</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">kroniak/ssh-client</span></span><br><span class="line">  <span class="attr">before_script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"before script"</span></span><br><span class="line">  <span class="attr">only:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">master</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"deployment stage"</span></span><br></pre></td></tr></table></figure>
+<p>The result is too much, I would only paste part of it:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"status"</span>: <span class="string">"success"</span>,</span><br><span class="line">    <span class="attr">"data"</span>: &#123;</span><br><span class="line">        <span class="attr">"resultType"</span>: <span class="string">"matrix"</span>,</span><br><span class="line">        <span class="attr">"result"</span>: [&#123;</span><br><span class="line">            <span class="attr">"metric"</span>: &#123;</span><br><span class="line">                <span class="attr">"__name__"</span>: <span class="string">"prometheus_target_interval_length_seconds"</span>,</span><br><span class="line">                <span class="attr">"instance"</span>: <span class="string">"localhost:9090"</span>,</span><br><span class="line">                <span class="attr">"interval"</span>: <span class="string">"15s"</span>,</span><br><span class="line">                <span class="attr">"job"</span>: <span class="string">"prometheus"</span>,</span><br><span class="line">                <span class="attr">"quantile"</span>: <span class="string">"0.01"</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">"values"</span>: [</span><br><span class="line">                [<span class="number">1590830727.588</span>, <span class="string">"14.996369259"</span>],</span><br><span class="line">                [<span class="number">1590830741.588</span>, <span class="string">"14.996369259”]</span></span><br><span class="line"><span class="string">            ]</span></span><br><span class="line"><span class="string">        &#125;]</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>stage声明管道有几个阶段，stage的顺序代表着前置stage完成后才能进入下一个stage，每个stage有1个或多个可执行点</li>
-<li>每个可执行操作里有一些配置<ul>
-<li>stage<br>当前执行所属阶段，就是文件开头声明的<code>stages</code>列表中一个</li>
-<li>image<br>当前命令执行的基础镜像</li>
-<li>before_script<br>脚本执行前初始化命令</li>
-<li>only<br>限制执行的分支，例如只有test分支能触发<code>deployment:test</code></li>
-<li>script(required)<br>执行的脚本</li>
-<li>artifacts<br>这次执行将产生的需要传递给下一个stage的文件</li>
-<li>dependencies<br>当前执行依赖的前置执行，不仅是声明一种依赖关系，同时上个执行生成的artifacts也会传递过来</li>
+<li>status marks the calculation is successful or not</li>
+<li>result.metric shows the original metric</li>
+<li>result.values shows the actual data points we need, the left value is the timestamp, the right one is the metric value.<br>Each result value’s interval is exactly the step we set, in the previous example, it’s 14 seconds. It means every 14 second, the query will be calculated and one data point is generated.</li>
 </ul>
-</li>
-<li>在gitlab项目中设置<strong>CI/CD Pipelines</strong>的<code>variables</code>，可以为docker容器注入隐秘变量，如docker仓库秘钥，这些变量可以在CI运行脚本时被解析。</li>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>I explored the query_range API a bit in this article, in the next article, I’ll explore some frequent Prometheus functions like rate, irate, histogram_percentile, etc.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="https://prometheus.io/docs/concepts/metric_types/">Prometheus - Metric types</a></li>
+<li><a href="https://prometheus.io/docs/prometheus/latest/getting_started/">Prometheus - Get started</a></li>
 </ul>
-<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>Gitlab CI能自定义阶段和在容器里执行脚本，并且水平拓容便捷，和Gitlab的集成好。</p>
 
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/monitoring/" rel="tag">monitoring</a>, <a class="has-link-grey -link" href="/tags/prometheus/" rel="tag">prometheus</a>
+                </div>
+            </div>
         </div>
         
         
@@ -219,17 +231,10 @@
 <div class="card card-transparent">
     <div class="level post-navigation is-flex-wrap is-mobile">
         
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/programming/rate-limiter-for-distributed-system/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">分布式系统频次限制实现</span>
-            </a>
-        </div>
-        
         
         <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/microservice/microservice-in-action-4/">
-                <span class="level-item">微服务实践四: 配置管理</span>
+            <a class="level level-item has-link-grey  article-nav-next" href="/programming/linux-namespace-part03-cgroups/">
+                <span class="level-item">Linux namespace in Go - Part 3, Cgroups resource limit</span>
                 <i class="level-item fas fa-chevron-right"></i>
             </a>
         </div>
@@ -245,8 +250,8 @@
         
 <script>
     var disqus_config = function () {
-        this.page.url = 'https://songrgg.github.io/operation/build-ci-with-gitlab/';
-        this.page.identifier = 'operation/build-ci-with-gitlab/';
+        this.page.url = 'https://songrgg.github.io/programming/how-does-prometheus-query-works/';
+        this.page.identifier = 'programming/how-does-prometheus-query-works/';
     };
     (function() {
         var d = document, s = d.createElement('script');  
@@ -274,19 +279,19 @@
             "name": "songrgg"
         },
         "publisher": {},
-        "headline": "基于gitlab搭建CI",
+        "headline": "How does Prometheus query work? - Part 1, Step, Query and Range",
         "image": [
-            "https://songrgg.github.io/images/thumbnail.svg"
+            "https://songrgg.github.io/images/prometheus_grafana.webp"
         ],
-        "keywords": "",
-        "genre": "operation",
-        "datePublished": "2017-04-18",
-        "dateCreated": "2017-04-18",
-        "dateModified": "2020-03-20",
-        "url": "https://songrgg.github.io/operation/build-ci-with-gitlab/",
-        "mainEntityOfPage": "https://songrgg.github.io/operation/build-ci-with-gitlab/",
-        "description": "自建gitlab自建gitlab一大优势是快，之前用翻墙走github速度也在1M/s左右，可是自建的gitlab提升了建立连接的速度，可以说体验又上升了一个档次。用docker起一个gitlab服务尤其方便 GitLab Docker images",
-        "wordCount": 790
+        "keywords": "monitoring prometheus",
+        "genre": "programming",
+        "datePublished": "2020-05-31",
+        "dateCreated": "2020-05-31",
+        "dateModified": "2020-05-31",
+        "url": "https://songrgg.github.io/programming/how-does-prometheus-query-works/",
+        "mainEntityOfPage": "https://songrgg.github.io/programming/how-does-prometheus-query-works/",
+        "description": "Prometheus is an opensource time series database, commonly used to gather and calculate monitoring metrics, with Grafana which is the visualization dashboard. This article explains how the query works with /query_range API.",
+        "wordCount": 995
     }
 </script>
 

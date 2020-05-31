@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://songrgg.github.io/programming/how-does-prometheus-query-works/</loc>
+    
+    <lastmod>2020-05-31T10:26:37.134Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://songrgg.github.io/programming/linux-namespace-part03-cgroups/</loc>
     
     <lastmod>2020-05-24T17:41:22.433Z</lastmod>
@@ -58,14 +65,14 @@
   </url>
   
   <url>
-    <loc>https://songrgg.github.io/operation/use-grafana-api-generate-dashboards/</loc>
+    <loc>https://songrgg.github.io/programming/wechat-local-debug/</loc>
     
     <lastmod>2020-03-20T19:02:13.415Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://songrgg.github.io/programming/wechat-local-debug/</loc>
+    <loc>https://songrgg.github.io/operation/use-grafana-api-generate-dashboards/</loc>
     
     <lastmod>2020-03-20T19:02:13.415Z</lastmod>
     
@@ -100,14 +107,14 @@
   </url>
   
   <url>
-    <loc>https://songrgg.github.io/programming/mit-distributed-system-01/</loc>
+    <loc>https://songrgg.github.io/microservice/microservice-in-action-4/</loc>
     
     <lastmod>2020-03-20T19:02:13.411Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://songrgg.github.io/microservice/microservice-in-action-4/</loc>
+    <loc>https://songrgg.github.io/programming/mit-distributed-system-01/</loc>
     
     <lastmod>2020-03-20T19:02:13.411Z</lastmod>
     
