@@ -2,219 +2,394 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://songrgg.github.io/programming/linux-namespace-part03-cgroups/</loc>
+    <loc>https://songrgg.github.io/operation/influxdb-command-cheatsheet/</loc>
     
-    <lastmod>2020-05-31T21:14:16.432Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/linux-namespace-part02-uid-mount/</loc>
-    
-    <lastmod>2020-05-31T21:02:11.654Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/linux-namespace-part01-uts-pid/</loc>
-    
-    <lastmod>2020-05-31T21:02:03.838Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/how-does-prometheus-query-works/</loc>
-    
-    <lastmod>2020-05-31T20:58:50.411Z</lastmod>
+    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://songrgg.github.io/programming/django-oauth-client-setup/</loc>
     
-    <lastmod>2020-04-13T10:20:45.022Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/host-swagger-documentation-with-yaml-json-files/</loc>
-    
-    <lastmod>2020-03-30T14:06:12.616Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/hive-on-spark-practice/</loc>
-    
-    <lastmod>2020-03-30T14:04:58.033Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/</loc>
-    
-    <lastmod>2020-03-30T13:15:06.398Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/wechat-share-problem/</loc>
-    
-    <lastmod>2020-03-20T19:02:13.416Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/wechat-local-debug/</loc>
-    
-    <lastmod>2020-03-20T19:02:13.415Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/use-grafana-api-generate-dashboards/</loc>
-    
-    <lastmod>2020-03-20T19:02:13.415Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/spark-on-hive-app-channel-analytics/</loc>
-    
-    <lastmod>2020-03-20T19:02:13.414Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/practice-datacenter-failover-in-production/</loc>
-    
-    <lastmod>2020-03-20T19:02:13.413Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/php-hashtable/</loc>
-    
-    <lastmod>2020-03-20T19:02:13.413Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/nginx-kubernetes-sidecar-for-better-performance/</loc>
-    
-    <lastmod>2020-03-20T19:02:13.412Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/microservice/microservice-in-action-4/</loc>
-    
-    <lastmod>2020-03-20T19:02:13.411Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/mit-distributed-system-01/</loc>
-    
-    <lastmod>2020-03-20T19:02:13.411Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/microservice/microservice-in-action-1/</loc>
-    
-    <lastmod>2020-03-20T19:02:13.410Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/istio-version-control-on-k8s/</loc>
-    
-    <lastmod>2020-03-20T19:02:13.409Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/life/interview-and-my-ipv/</loc>
-    
-    <lastmod>2020-03-20T19:02:13.408Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/install-spinnaker-on-centos/</loc>
-    
-    <lastmod>2020-03-20T19:02:13.407Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/influxdb-command-cheatsheet/</loc>
-    
-    <lastmod>2020-03-20T19:02:13.406Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/how-to-build-a-smallest-docker-image/</loc>
-    
-    <lastmod>2020-03-20T19:02:13.404Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/hackathon-spinnaker/</loc>
-    
-    <lastmod>2020-03-20T19:02:13.401Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/grpc-go-client-performance-test/</loc>
-    
-    <lastmod>2020-03-20T19:02:13.400Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/microservice/goodbye-micro/</loc>
-    
-    <lastmod>2020-03-20T19:02:13.399Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/extend-kubernetes-dns/</loc>
-    
-    <lastmod>2020-03-20T19:02:13.399Z</lastmod>
+    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://songrgg.github.io/operation/etcd-for-production/</loc>
     
-    <lastmod>2020-03-20T19:02:13.398Z</lastmod>
+    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/extend-kubernetes-dns/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/grpc-go-client-performance-test/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/how-to-build-a-smallest-docker-image/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/life/interview-and-my-ipv/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/life/what-interview-brings-to-me/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/levelDB-skiplist/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/spark-on-hive-app-channel-analytics/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/levelDB-cache/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/mahout-tutorial/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/mysql-utf8mb4-encode/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/life/raspberry3-docker/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/php7-new-features-1/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/host-swagger-documentation-with-yaml-json-files/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/wechat-local-debug/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/iOS9-universal-links/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/install-spinnaker-on-centos/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/use-grafana-api-generate-dashboards/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/golang-channel/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/spring-data-redis-issuse/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/spring-ioc-groovy/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/jedis-utf8/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/spring-boot-database-read-write-split/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/xhprof-install-record/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/rate-limiter-for-distributed-system/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/hackathon-spinnaker/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/leveldb-status/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/yongwu-next-step/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/hive-environment-settings/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/microservice/microservice-in-action-1/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/microservice/microservice-in-action-3/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/microservice/microservice-in-action-2/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/nginx-kubernetes-sidecar-for-better-performance/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/how-does-prometheus-query-works/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/hive-on-spark-practice/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/life/first-hand-doc/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/php-hashtable/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/practice-datacenter-failover-in-production/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/microservice/microservice-in-action-4/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/php-hashtable2/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.565Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/leveldb-integer-coding/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.565Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/mit-distributed-system-01/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.565Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/linux-namespace-part02-uid-mount/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.565Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/istio-version-control-on-k8s/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.565Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/linux-namespace-part03-cgroups/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.557Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/microservice/goodbye-micro/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.557Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/wechat-share-problem/</loc>
+    
+    <lastmod>2020-06-06T23:48:33.557Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://songrgg.github.io/architecture/deeper-understanding-to-envoy/</loc>
     
-    <lastmod>2020-03-20T19:02:13.397Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/ansible-frequently-used-commands/</loc>
-    
-    <lastmod>2020-03-20T19:02:13.396Z</lastmod>
+    <lastmod>2020-06-06T23:48:13.602Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://songrgg.github.io/operation/build-ci-with-gitlab/</loc>
     
-    <lastmod>2020-03-20T19:02:13.396Z</lastmod>
+    <lastmod>2020-06-06T23:48:08.675Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/ansible-frequently-used-commands/</loc>
+    
+    <lastmod>2020-06-06T23:48:04.167Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/add-syntactic-feature-to-php7/</loc>
+    
+    <lastmod>2020-06-06T23:48:01.167Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/6.824,%20Lab2,%20part%201/</loc>
+    
+    <lastmod>2020-06-06T23:47:57.387Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/linux-namespace-part01-uts-pid/</loc>
+    
+    <lastmod>2020-06-06T23:47:43.181Z</lastmod>
     
   </url>
   
@@ -222,181 +397,6 @@
     <loc>https://songrgg.github.io/about/index.html</loc>
     
     <lastmod>2020-03-15T20:25:20.578Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/spring-data-redis-issuse/</loc>
-    
-    <lastmod>2020-02-22T15:22:31.169Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/rate-limiter-for-distributed-system/</loc>
-    
-    <lastmod>2020-02-22T14:36:02.181Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/life/what-interview-brings-to-me/</loc>
-    
-    <lastmod>2019-12-14T20:18:44.757Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/spring-boot-database-read-write-split/</loc>
-    
-    <lastmod>2019-12-14T19:38:20.889Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/iOS9-universal-links/</loc>
-    
-    <lastmod>2019-12-14T19:21:13.209Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/hive-environment-settings/</loc>
-    
-    <lastmod>2019-09-12T20:20:00.890Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/golang-channel/</loc>
-    
-    <lastmod>2019-09-12T20:19:26.240Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/life/first-hand-doc/</loc>
-    
-    <lastmod>2019-09-12T20:17:42.695Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/add-syntactic-feature-to-php7/</loc>
-    
-    <lastmod>2019-09-12T20:16:42.405Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/6.824,%20Lab2,%20part%201/</loc>
-    
-    <lastmod>2019-09-12T20:16:34.194Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/levelDB-skiplist/</loc>
-    
-    <lastmod>2019-09-12T20:14:28.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/levelDB-cache/</loc>
-    
-    <lastmod>2019-09-12T20:14:21.686Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/microservice/microservice-in-action-3/</loc>
-    
-    <lastmod>2019-09-12T20:12:38.796Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/microservice/microservice-in-action-2/</loc>
-    
-    <lastmod>2019-09-12T20:12:35.463Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/leveldb-integer-coding/</loc>
-    
-    <lastmod>2019-09-12T20:04:06.592Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/jedis-utf8/</loc>
-    
-    <lastmod>2019-09-12T20:03:52.724Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/yongwu-next-step/</loc>
-    
-    <lastmod>2019-09-12T20:03:30.003Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/xhprof-install-record/</loc>
-    
-    <lastmod>2019-09-12T20:03:08.174Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/spring-ioc-groovy/</loc>
-    
-    <lastmod>2019-09-12T20:01:53.847Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/life/raspberry3-docker/</loc>
-    
-    <lastmod>2019-09-12T20:00:39.266Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/php7-new-features-1/</loc>
-    
-    <lastmod>2019-09-12T20:00:15.003Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/php-hashtable2/</loc>
-    
-    <lastmod>2019-09-12T19:59:57.171Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/mysql-utf8mb4-encode/</loc>
-    
-    <lastmod>2019-09-12T19:59:03.425Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/leveldb-status/</loc>
-    
-    <lastmod>2019-09-12T19:58:37.268Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/mahout-tutorial/</loc>
-    
-    <lastmod>2019-09-12T19:58:17.336Z</lastmod>
     
   </url>
   
