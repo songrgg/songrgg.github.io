@@ -2,409 +2,924 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://songrgg.github.io/operation/zero-downtime-kubernetes-service-rollout/</loc>
+    <loc>https://songrgg.github.io/operation/use-traffic-control-simulate-network-chaos/</loc>
     
-    <lastmod>2020-09-17T23:02:34.895Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/microservice/microservice-in-action-1/</loc>
-    
-    <lastmod>2020-09-17T22:51:38.255Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/levelDB-skiplist/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/life/what-interview-brings-to-me/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/grpc-go-client-performance-test/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/how-to-build-a-smallest-docker-image/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/life/interview-and-my-ipv/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/influxdb-command-cheatsheet/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/etcd-for-production/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/spark-on-hive-app-channel-analytics/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/django-oauth-client-setup/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/levelDB-cache/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/mahout-tutorial/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/extend-kubernetes-dns/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/mysql-utf8mb4-encode/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/php7-new-features-1/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/life/raspberry3-docker/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.567Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/iOS9-universal-links/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/install-spinnaker-on-centos/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/wechat-local-debug/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/golang-channel/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/use-grafana-api-generate-dashboards/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/spring-data-redis-issuse/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/jedis-utf8/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/spring-ioc-groovy/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/spring-boot-database-read-write-split/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/yongwu-next-step/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/hackathon-spinnaker/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/leveldb-status/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/hive-environment-settings/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/how-does-prometheus-query-works/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/hive-on-spark-practice/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/microservice/microservice-in-action-3/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/microservice/microservice-in-action-2/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/rate-limiter-for-distributed-system/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/xhprof-install-record/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/nginx-kubernetes-sidecar-for-better-performance/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/host-swagger-documentation-with-yaml-json-files/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/php-hashtable/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/practice-datacenter-failover-in-production/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/microservice/microservice-in-action-4/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/life/first-hand-doc/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.566Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/php-hashtable2/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.565Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/leveldb-integer-coding/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.565Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/mit-distributed-system-01/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.565Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/linux-namespace-part02-uid-mount/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.565Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/operation/istio-version-control-on-k8s/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.565Z</lastmod>
+    <lastmod>2021-06-01</lastmod>
     
   </url>
   
   <url>
     <loc>https://songrgg.github.io/programming/linux-namespace-part03-cgroups/</loc>
     
-    <lastmod>2020-06-06T23:48:33.557Z</lastmod>
+    <lastmod>2020-09-25</lastmod>
     
   </url>
   
   <url>
-    <loc>https://songrgg.github.io/microservice/goodbye-micro/</loc>
+    <loc>https://songrgg.github.io/operation/zero-downtime-kubernetes-service-rollout/</loc>
     
-    <lastmod>2020-06-06T23:48:33.557Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://songrgg.github.io/programming/wechat-share-problem/</loc>
-    
-    <lastmod>2020-06-06T23:48:33.557Z</lastmod>
+    <lastmod>2020-09-25</lastmod>
     
   </url>
   
   <url>
-    <loc>https://songrgg.github.io/architecture/deeper-understanding-to-envoy/</loc>
+    <loc>https://songrgg.github.io/programming/spring-boot-database-read-write-split/</loc>
     
-    <lastmod>2020-06-06T23:48:13.602Z</lastmod>
+    <lastmod>2020-09-25</lastmod>
     
   </url>
   
   <url>
-    <loc>https://songrgg.github.io/operation/build-ci-with-gitlab/</loc>
+    <loc>https://songrgg.github.io/life/interview-and-my-ipv/</loc>
     
-    <lastmod>2020-06-06T23:48:08.675Z</lastmod>
+    <lastmod>2020-09-25</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/spring-ioc-groovy/</loc>
+    
+    <lastmod>2020-09-25</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/etcd-for-production/</loc>
+    
+    <lastmod>2020-09-25</lastmod>
     
   </url>
   
   <url>
     <loc>https://songrgg.github.io/operation/ansible-frequently-used-commands/</loc>
     
-    <lastmod>2020-06-06T23:48:04.167Z</lastmod>
+    <lastmod>2020-09-25</lastmod>
     
   </url>
   
   <url>
-    <loc>https://songrgg.github.io/programming/add-syntactic-feature-to-php7/</loc>
+    <loc>https://songrgg.github.io/programming/xhprof-install-record/</loc>
     
-    <lastmod>2020-06-06T23:48:01.167Z</lastmod>
+    <lastmod>2020-09-25</lastmod>
     
   </url>
   
   <url>
-    <loc>https://songrgg.github.io/programming/6.824,%20Lab2,%20part%201/</loc>
+    <loc>https://songrgg.github.io/programming/hive-on-spark-practice/</loc>
     
-    <lastmod>2020-06-06T23:47:57.387Z</lastmod>
+    <lastmod>2020-09-25</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/spark-on-hive-app-channel-analytics/</loc>
+    
+    <lastmod>2020-09-25</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/how-does-prometheus-query-works/</loc>
+    
+    <lastmod>2020-09-25</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/wechat-share-problem/</loc>
+    
+    <lastmod>2020-09-25</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/microservice/microservice-in-action-1/</loc>
+    
+    <lastmod>2020-09-25</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/linux-namespace-part02-uid-mount/</loc>
+    
+    <lastmod>2020-09-25</lastmod>
     
   </url>
   
   <url>
     <loc>https://songrgg.github.io/programming/linux-namespace-part01-uts-pid/</loc>
     
-    <lastmod>2020-06-06T23:47:43.181Z</lastmod>
+    <lastmod>2020-09-25</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/install-spinnaker-on-centos/</loc>
+    
+    <lastmod>2020-09-25</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/influxdb-command-cheatsheet/</loc>
+    
+    <lastmod>2020-09-25</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/how-to-check-and-monitor-tls-jks-certificates-with-telegraf/</loc>
+    
+    <lastmod>2020-09-25</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/how-to-build-a-smallest-docker-image/</loc>
+    
+    <lastmod>2020-09-25</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/host-swagger-documentation-with-yaml-json-files/</loc>
+    
+    <lastmod>2020-09-25</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/hackathon-spinnaker/</loc>
+    
+    <lastmod>2020-09-25</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/grpc-go-client-performance-test/</loc>
+    
+    <lastmod>2020-09-25</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/microservice/goodbye-micro/</loc>
+    
+    <lastmod>2020-09-25</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/extend-kubernetes-dns/</loc>
+    
+    <lastmod>2020-09-25</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/django-oauth-client-setup/</loc>
+    
+    <lastmod>2020-09-25</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/architecture/deeper-understanding-to-envoy/</loc>
+    
+    <lastmod>2020-09-25</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/microservice/microservice-in-action-4/</loc>
+    
+    <lastmod>2020-09-25</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/nginx-kubernetes-sidecar-for-better-performance/</loc>
+    
+    <lastmod>2020-09-25</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/php-hashtable/</loc>
+    
+    <lastmod>2020-09-25</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/practice-datacenter-failover-in-production/</loc>
+    
+    <lastmod>2020-09-25</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/use-grafana-api-generate-dashboards/</loc>
+    
+    <lastmod>2020-09-25</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/wechat-local-debug/</loc>
+    
+    <lastmod>2020-09-25</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/levelDB-cache/</loc>
+    
+    <lastmod>2020-06-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/levelDB-skiplist/</loc>
+    
+    <lastmod>2020-06-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/mahout-tutorial/</loc>
+    
+    <lastmod>2020-06-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/mysql-utf8mb4-encode/</loc>
+    
+    <lastmod>2020-06-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/php7-new-features-1/</loc>
+    
+    <lastmod>2020-06-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/life/raspberry3-docker/</loc>
+    
+    <lastmod>2020-06-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/life/what-interview-brings-to-me/</loc>
+    
+    <lastmod>2020-06-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/life/first-hand-doc/</loc>
+    
+    <lastmod>2020-06-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/golang-channel/</loc>
+    
+    <lastmod>2020-06-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/hive-environment-settings/</loc>
+    
+    <lastmod>2020-06-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/iOS9-universal-links/</loc>
+    
+    <lastmod>2020-06-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/jedis-utf8/</loc>
+    
+    <lastmod>2020-06-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/leveldb-status/</loc>
+    
+    <lastmod>2020-06-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/microservice/microservice-in-action-2/</loc>
+    
+    <lastmod>2020-06-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/microservice/microservice-in-action-3/</loc>
+    
+    <lastmod>2020-06-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/rate-limiter-for-distributed-system/</loc>
+    
+    <lastmod>2020-06-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/spring-data-redis-issuse/</loc>
+    
+    <lastmod>2020-06-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/yongwu-next-step/</loc>
+    
+    <lastmod>2020-06-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/istio-version-control-on-k8s/</loc>
+    
+    <lastmod>2020-06-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/leveldb-integer-coding/</loc>
+    
+    <lastmod>2020-06-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/mit-distributed-system-01/</loc>
+    
+    <lastmod>2020-06-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/php-hashtable2/</loc>
+    
+    <lastmod>2020-06-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/operation/build-ci-with-gitlab/</loc>
+    
+    <lastmod>2020-06-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/add-syntactic-feature-to-php7/</loc>
+    
+    <lastmod>2020-06-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/programming/6.824,%20Lab2,%20part%201/</loc>
+    
+    <lastmod>2020-06-06</lastmod>
     
   </url>
   
   <url>
     <loc>https://songrgg.github.io/about/index.html</loc>
     
-    <lastmod>2020-03-15T20:25:20.578Z</lastmod>
+    <lastmod>2020-03-15</lastmod>
     
+  </url>
+  
+
+  <url>
+    <loc>https://songrgg.github.io/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/envoy/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/service-mesh/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/architecture/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/request-analysis/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/microservice/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/kubernetes/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/django/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/oauth2/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/etcd/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/operation/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/configuration-management/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/golang/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/gRPC/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/client-performance/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/go-micro/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/migration/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/hive/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/sre/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/cicd/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/spinnaker/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/docker-compose/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/spark/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/swagger/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/spring-boot/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/prometheus/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/monitoring/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/docker/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/certificate/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/universal-link/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/influxdb/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/centos/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/interview/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/istio/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/redis/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/leveldb/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/linux/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/namespace/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/cgroups/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/mahout/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/machine-learning/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/fault-tolerance/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/service-degrade/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/service-orchestration/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/distributed-system/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/mysql/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/sidecar/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/nginx/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/php/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/data-center-failover/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/resilience/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/chaos-engineering/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/data-structure/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/raspberry/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/ratelimiter/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/app-channel-analytics/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/database-read-write-split/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/spring/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/groovy/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/dependency-injection/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/grafana/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/automation/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/alerting/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/wechat/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/xhprof/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/rollout/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/traffic-control/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+
+  
+  <url>
+    <loc>https://songrgg.github.io/categories/programming/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/categories/operation/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/categories/architecture/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/categories/life/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/categories/microservice/</loc>
+    <lastmod>2021-06-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
   </url>
   
 </urlset>
