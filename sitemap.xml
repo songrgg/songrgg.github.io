@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://songrgg.github.io/operation/how-to-setup-java-application-memory-limit-in-kubernetes/</loc>
+    
+    <lastmod>2021-11-28</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://songrgg.github.io/operation/use-traffic-control-simulate-network-chaos/</loc>
     
     <lastmod>2021-07-29</lastmod>
@@ -424,7 +431,7 @@
 
   <url>
     <loc>https://songrgg.github.io/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -432,462 +439,469 @@
   
   <url>
     <loc>https://songrgg.github.io/tags/django/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/oauth2/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/envoy/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/service-mesh/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/architecture/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/request-analysis/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/microservice/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/kubernetes/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/etcd/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/operation/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/configuration-management/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/go-micro/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/gRPC/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/migration/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/golang/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/client-performance/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/sre/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/cicd/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/spinnaker/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/docker-compose/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/hive/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/spark/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/swagger/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/spring-boot/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/prometheus/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/monitoring/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/docker/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/universal-link/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/certificate/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/influxdb/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/centos/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/interview/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/istio/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/redis/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/leveldb/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/linux/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/namespace/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/cgroups/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/mahout/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/machine-learning/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/fault-tolerance/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/service-degrade/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/service-orchestration/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/distributed-system/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/mysql/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/sidecar/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/nginx/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/php/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/data-structure/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/data-center-failover/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/resilience/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/chaos-engineering/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/raspberry/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/ratelimiter/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/app-channel-analytics/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/database-read-write-split/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/spring/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/groovy/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/dependency-injection/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/grafana/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/automation/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/alerting/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/wechat/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/traffic-control/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/xhprof/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/tags/rollout/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://songrgg.github.io/tags/jvm/</loc>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
@@ -896,35 +910,35 @@
   
   <url>
     <loc>https://songrgg.github.io/categories/programming/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/categories/operation/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/categories/architecture/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/categories/life/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://songrgg.github.io/categories/microservice/</loc>
-    <lastmod>2021-07-29</lastmod>
+    <lastmod>2021-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
