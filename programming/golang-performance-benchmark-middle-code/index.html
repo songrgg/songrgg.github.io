@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>Golang performance benchmark and deep into the middle code: a string operation example - Blog | Songrgg</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Blog | Songrgg"><meta name="msapplication-TileImage" content="/images/favicon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Blog | Songrgg"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="ContextRecently, I’m looking for efficient string manipulation in Golang, during the process of that, I used Golang benchmark to test the execution time and checked the Golang middle code to know the"><meta property="og:type" content="article"><meta property="og:title" content="Golang performance benchmark and deep into the middle code: a string operation example"><meta property="og:url" content="https://songrgg.github.io/programming/golang-performance-benchmark-middle-code/"><meta property="og:site_name" content="Blog | Songrgg"><meta property="og:description" content="ContextRecently, I’m looking for efficient string manipulation in Golang, during the process of that, I used Golang benchmark to test the execution time and checked the Golang middle code to know the"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://songrgg.github.io/images/golang-performance-benchmark.webp"><meta property="article:published_time" content="2023-01-15T16:00:00.000Z"><meta property="article:modified_time" content="2023-01-16T06:25:18.526Z"><meta property="article:author" content="songrgg"><meta property="article:tag" content="programming,sre,kubernetes,service mesh,devops"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://songrgg.github.io/images/golang-performance-benchmark.webp"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://songrgg.github.io/programming/golang-performance-benchmark-middle-code/"},"headline":"Golang performance benchmark and deep into the middle code: a string operation example","image":["https://songrgg.github.io/images/golang-performance-benchmark.webp"],"datePublished":"2023-01-15T16:00:00.000Z","dateModified":"2023-01-16T06:25:18.526Z","author":{"@type":"Person","name":"songrgg"},"publisher":{"@type":"Organization","name":"Blog | Songrgg","logo":{"@type":"ImageObject","url":{"text":"SongRong's Experience"}}},"description":"ContextRecently, I’m looking for efficient string manipulation in Golang, during the process of that, I used Golang benchmark to test the execution time and checked the Golang middle code to know the"}</script><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css"><!--!--><script src="https://www.googletagmanager.com/gtag/js?id=UA-74431120-1" async></script><script>window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+    
+        gtag('config', 'UA-74431120-1');</script><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const $tabMenu = document.querySelector(`a[href="${location.hash}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(location.hash);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Blog | Songrgg" type="application/atom+xml">
+</head><body class="is-1-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/">SongRong&#039;s Experience</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-12"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/images/golang-performance-benchmark.webp" alt="Golang performance benchmark and deep into the middle code: a string operation example"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2023-01-15T16:00:00.000Z" title="16/01/2023, 00:00:00">2023-01-16</time></span><span class="level-item">Updated&nbsp;<time dateTime="2023-01-16T06:25:18.526Z" title="16/01/2023, 14:25:18">2023-01-16</time></span><span class="level-item"><a class="link-muted" href="/categories/programming/">programming</a></span><span class="level-item">4 minutes read (About 538 words)</span></div></div><h1 class="title is-3 is-size-4-mobile">Golang performance benchmark and deep into the middle code: a string operation example</h1><div class="content"><h2 id="Context"><a href="#Context" class="headerlink" title="Context"></a>Context</h2><p>Recently, I’m looking for efficient string manipulation in Golang, during the process of that, I used Golang benchmark to test the execution time and checked the Golang middle code to know the underlying mechanism between different solutions.</p>
+<span id="more"></span>
+
+<h2 id="The-problem"><a href="#The-problem" class="headerlink" title="The problem"></a>The problem</h2><p>Given a long string, replace the given character with the other given character in it and return the new string.</p>
+<p>For example, the string is “aaaaaa”, replace “a” with “b”, after replacement, the return string will be “bbbbbb”.</p>
+<p>All the following code can be found at <a target="_blank" rel="noopener" href="https://gist.github.com/songrgg/40bd7517e208c970403db447d3da8baa">Github Gist</a>.</p>
+<h3 id="Solution-1-string-concatenation"><a href="#Solution-1-string-concatenation" class="headerlink" title="Solution 1: string concatenation"></a>Solution 1: string concatenation</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">replaceChar1</span><span class="params">(str <span class="type">string</span>, ch, replaceCh <span class="type">byte</span>)</span></span> <span class="type">string</span> &#123;</span><br><span class="line">	<span class="keyword">var</span> result <span class="type">string</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="built_in">len</span>(str); i++ &#123;</span><br><span class="line">		<span class="keyword">if</span> str[i] == ch &#123;</span><br><span class="line">			result = result + <span class="type">string</span>(replaceCh)</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			result = result + <span class="type">string</span>(result[i])</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Solution-2-Byte-array"><a href="#Solution-2-Byte-array" class="headerlink" title="Solution 2: Byte array"></a>Solution 2: Byte array</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">replaceChar2</span><span class="params">(str <span class="type">string</span>, ch, replaceCh <span class="type">byte</span>)</span></span> <span class="type">string</span> &#123;</span><br><span class="line">	bytes := []<span class="type">byte</span>(str)</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="built_in">len</span>(str); i++ &#123;</span><br><span class="line">		<span class="keyword">if</span> bytes[i] == ch &#123;</span><br><span class="line">			bytes[i] = replaceCh</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="type">string</span>(bytes)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Solution-3-String-builder"><a href="#Solution-3-String-builder" class="headerlink" title="Solution 3: String builder"></a>Solution 3: String builder</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">replaceChar3</span><span class="params">(str <span class="type">string</span>, ch, replaceCh <span class="type">byte</span>)</span></span> <span class="type">string</span> &#123;</span><br><span class="line">	<span class="keyword">var</span> strBuilder strings.Builder</span><br><span class="line">	strBuilder.Grow(<span class="built_in">len</span>(str))</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="built_in">len</span>(str); i++ &#123;</span><br><span class="line">		<span class="keyword">if</span> str[i] == ch &#123;</span><br><span class="line">			strBuilder.WriteByte(replaceCh)</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			strBuilder.WriteByte(str[i])</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> strBuilder.String()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Performance-Comparison"><a href="#Performance-Comparison" class="headerlink" title="Performance Comparison"></a>Performance Comparison</h2><p>With 3 solutions right now, I want to know which one is more efficient, <a target="_blank" rel="noopener" href="https://pkg.go.dev/testing#hdr-Benchmarks">Golang benchmark</a> is a good way of comparing the operation efficiency of these.</p>
+<ol>
+<li>Add a test file with <code>_test</code> suffix</li>
+<li>Add functions with <code>Benchmark</code> as prefix like</li>
+</ol>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">BenchmarkStringReplace1</span><span class="params">(b *testing.B)</span></span> &#123;</span><br><span class="line">	<span class="comment">// generate a 100,000-long string</span></span><br><span class="line">	n := <span class="number">100</span>_000</span><br><span class="line">	str := generateString(n)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// reset the timer to remove the execution time of generateString(100_000)</span></span><br><span class="line">	b.ResetTimer()</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; b.N; i++ &#123;</span><br><span class="line">		replaceChar1(str, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>Run the benchmark<br>The benchmark function must run the target code b.N times. During benchmark execution, b.N is adjusted until the benchmark function lasts long enough to be timed reliably.</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ go <span class="built_in">test</span> -bench=. string_op_benchmark.go string_op_benchmark_test.go</span><br><span class="line">goos: darwin</span><br><span class="line">goarch: arm64</span><br><span class="line">BenchmarkStringReplace1-10             3         389948722 ns/op</span><br><span class="line">BenchmarkStringReplace2-10         18235             62494 ns/op</span><br><span class="line">BenchmarkStringReplace3-10          5534            217069 ns/op</span><br></pre></td></tr></table></figure>
+
+<p>The output means that the loop <code>BenchmarkStringReplace1-10</code>  ran 3 times at a speed of 389948722 ns per loop.</p>
+<p>The BenchmarkStringReplace2 behaved the best and BenchmarkStringReplace1-10 (String concatenation) behaved the worst.</p>
+<h2 id="One-step-further"><a href="#One-step-further" class="headerlink" title="One step further"></a>One step further</h2><p>What if I’m still curious about the behind scene of the code? I want to know what <code>replaceChar2</code> did and the middle code it executed. The following command will generate the middle code of the <code>replaceChar2</code> function.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ GOSSAFUNC=replaceChar2 go build string_op_benchmark.go</span><br><span class="line"><span class="comment"># command-line-arguments</span></span><br><span class="line">dumped SSA to ./ssa.html</span><br></pre></td></tr></table></figure>
+
+<p>Open the ssa.html, we can see the original code of <code>replaceChar2</code> and its middle code, like</p>
+<p><code>bytes := []byte(str)</code> is mapped to <code>runtime.stringtoslicebyte</code>, <code>return string(bytes)</code> is mapped to <code>runtime.slicebytetostring</code></p>
+<p><img src="/images/golang-performance-benchmark.webp" alt="SSA"></p>
+<p>If we want to make the string operation faster, we might reduce the memory copy or find the other operations we can eliminate.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://pkg.go.dev/testing#hdr-Benchmarks">Golang benchmark</a></li>
+<li><a target="_blank" rel="noopener" href="https://draveness.me/golang/docs/part1-prerequisite/ch02-compile/golang-ir-ssa/">Golang design and implementation</a></li>
+</ol>
+</div><div class="sharethis-inline-share-buttons"></div><script src="//platform-api.sharethis.com/js/sharethis.js#property=5df54e9fee0f770012eb9f87&amp;product=inline-share-buttons&amp;cms=sop" defer></script></article></div><div class="card"><div class="card-content"><h3 class="menu-label has-text-centered">Like this article? Support the author with</h3><div class="buttons is-centered"><a class="button donate" href="https://www.buymeacoffee.com/songrgg" target="_blank" rel="noopener" data-type="buymeacoffee"><span class="icon is-small"><i class="fas fa-coffee"></i></span><span>Buy me a coffee</span></a></div></div></div><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/programming/python-quickstart-1-basics/"><span class="level-item">Build a production-ready web application Part 1: Python Basics</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><div id="disqus_thread"><noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div><script>var disqus_config = function () {
+            this.page.url = 'https://songrgg.github.io/programming/golang-performance-benchmark-middle-code/';
+            this.page.identifier = 'programming/golang-performance-benchmark-middle-code/';
+        };
+        (function() {
+            var d = document, s = d.createElement('script');  
+            s.src = '//' + 'srjiang' + '.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();</script></div></div></div><!--!--><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/">SongRong&#039;s Experience</a><p class="is-size-7"><span>&copy; 2023 songrgg</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+            'HTML-CSS': {
+                matchFontHeight: false
+            },
+            SVG: {
+                matchFontHeight: false
+            },
+            CommonHTML: {
+                matchFontHeight: false
+            },
+            tex2jax: {
+                inlineMath: [
+                    ['$','$'],
+                    ['\\(','\\)']
+                ]
+            }
+        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><!--!--><!--!--><div id="outdated"><h6>Your browser is out-of-date!</h6><p>Update your browser to view this website correctly.&amp;npsb;<a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p><p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p></div><script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script><script>window.addEventListener("load", function () {
+            outdatedBrowser({
+                bgColor: '#f25648',
+                color: '#ffffff',
+                lowerThan: 'object-fit' // display on IE11 or below
+            });
+        });</script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>
