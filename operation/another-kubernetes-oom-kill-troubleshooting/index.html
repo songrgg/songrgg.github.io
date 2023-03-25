@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>How to debug Kubernetes OOMKilled when the process is not using memory directly - Blog | Songrgg</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Blog | Songrgg"><meta name="msapplication-TileImage" content="/images/favicon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Blog | Songrgg"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="ContextWe investigated the memory increase problem some time ago and learned a lot about JVM metrics. This happened again, we noticed several Java applications deployed in Kubernetes got the memory us"><meta property="og:type" content="article"><meta property="og:title" content="How to debug Kubernetes OOMKilled when the process is not using memory directly"><meta property="og:url" content="https://songrgg.github.io/operation/another-kubernetes-oom-kill-troubleshooting/"><meta property="og:site_name" content="Blog | Songrgg"><meta property="og:description" content="ContextWe investigated the memory increase problem some time ago and learned a lot about JVM metrics. This happened again, we noticed several Java applications deployed in Kubernetes got the memory us"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://songrgg.github.io/images/container-memory-layout.png"><meta property="article:published_time" content="2023-03-25T15:27:50.000Z"><meta property="article:modified_time" content="2023-03-25T15:49:23.765Z"><meta property="article:author" content="songrgg"><meta property="article:tag" content="programming,sre,kubernetes,service mesh,devops"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://songrgg.github.io/images/container-memory-layout.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://songrgg.github.io/operation/another-kubernetes-oom-kill-troubleshooting/"},"headline":"How to debug Kubernetes OOMKilled when the process is not using memory directly","image":["https://songrgg.github.io/images/container-memory-layout.png"],"datePublished":"2023-03-25T15:27:50.000Z","dateModified":"2023-03-25T15:49:23.765Z","author":{"@type":"Person","name":"songrgg"},"publisher":{"@type":"Organization","name":"Blog | Songrgg","logo":{"@type":"ImageObject","url":{"text":"SongRong's Experience"}}},"description":"ContextWe investigated the memory increase problem some time ago and learned a lot about JVM metrics. This happened again, we noticed several Java applications deployed in Kubernetes got the memory us"}</script><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css"><!--!--><script src="https://www.googletagmanager.com/gtag/js?id=UA-74431120-1" async></script><script>window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+    
+        gtag('config', 'UA-74431120-1');</script><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const $tabMenu = document.querySelector(`a[href="${location.hash}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(location.hash);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Blog | Songrgg" type="application/atom+xml">
+</head><body class="is-1-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/">SongRong&#039;s Experience</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-12"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/images/container-memory-layout.png" alt="How to debug Kubernetes OOMKilled when the process is not using memory directly"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2023-03-25T15:27:50.000Z" title="25/03/2023, 16:27:50">2023-03-25</time></span><span class="level-item">Updated&nbsp;<time dateTime="2023-03-25T15:49:23.765Z" title="25/03/2023, 16:49:23">2023-03-25</time></span><span class="level-item"><a class="link-muted" href="/categories/operation/">operation</a></span><span class="level-item">6 minutes read (About 858 words)</span></div></div><h1 class="title is-3 is-size-4-mobile">How to debug Kubernetes OOMKilled when the process is not using memory directly</h1><div class="content"><h2 id="Context"><a href="#Context" class="headerlink" title="Context"></a>Context</h2><p>We <a href="/operation/how-to-setup-java-application-memory-limit-in-kubernetes/">investigated the memory increase problem some time ago</a> and learned a lot about JVM metrics. This happened again, we noticed several Java applications deployed in Kubernetes got the memory usage increasing gradually until it reached the memory limit, even after several times of increasing the memory limit, the usage can always hit above 90%, sometimes the container will be <strong>OOMKilled</strong>.</p>
+<span id="more"></span>
+
+<h2 id="A-normal-process-of-investigating-Java-memory"><a href="#A-normal-process-of-investigating-Java-memory" class="headerlink" title="A normal process of investigating Java memory"></a>A normal process of investigating Java memory</h2><p>We followed the way <a href="/operation/how-to-setup-java-application-memory-limit-in-kubernetes/">we did last time to analyze the memory usage</a>,</p>
+<p><strong>Some figures first: container’s memory limit (12 Gi); container’s memory usage (11 Gi)</strong></p>
+<ol>
+<li>check the JVM memory usage<br>We checked the Java process memory usage (3 Gi) and it was way lower than the app container memory usage (11 Gi)<br>The Java process was the main process running in the container, no other processes were consuming memory.</li>
+<li>native memory tracking<br>We thought NMT can help us find some native memory leak, so we enabled the native memory tracking and checked different regions, all looked normal.</li>
+</ol>
+<p><strong>emmm, what do we miss?</strong></p>
+<h2 id="Start-from-the-beginning"><a href="#Start-from-the-beginning" class="headerlink" title="Start from the beginning"></a>Start from the beginning</h2><h3 id="Which-memory-are-we-talking-about"><a href="#Which-memory-are-we-talking-about" class="headerlink" title="Which memory are we talking about"></a>Which memory are we talking about</h3><p>Kubernetes will kill the container when it runs out of its memory limit, the metrics it uses are <code>container_memory_working_set_bytes</code>  &amp; <code>container_memory_rss</code> , the container will be killed if either of them exceeds the memory limit.</p>
+<h3 id="What’s-in-it"><a href="#What’s-in-it" class="headerlink" title="What’s in it"></a>What’s in it</h3><p>According to the metric collector <a target="_blank" rel="noopener" href="https://github.com/google/cadvisor"><strong>cadvisor</strong></a>, </p>
+<ol>
+<li><code>container_memory_rss</code> <strong><strong>:</strong></strong> <a target="_blank" rel="noopener" href="https://github.com/google/cadvisor/blob/50b23f4ed9bc53cf068316b67bee04c4145f1e73/info/v1/container.go#L379">The amount of anonymous and swap cache memory (includes transparent hugepages).</a></li>
+<li><code>working_set_bytes</code>: <a target="_blank" rel="noopener" href="https://github.com/google/cadvisor/blob/50b23f4ed9bc53cf068316b67bee04c4145f1e73/container/libcontainer/handler.go#L862">The amount of working set memory, this includes recently accessed memory, dirty memory, and kernel memory. Working set is &lt;= “usage”. Units: Bytes.</a><br>cadvisor’s code: <code>working_set_bytes = usage_in_bytes - memoryStat.inactive_file</code> </li>
+</ol>
+<p>cadvisor fetches this data from the <strong>cgroup memory stats</strong> in each container’s <code>/sys/fs/cgroup/memory</code> folder, the <a target="_blank" rel="noopener" href="https://lwn.net/Articles/432224/">lwn.net</a> explains this data well.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">memory.usage_in_bytes		 <span class="comment"># show current memory(RSS+Cache) usage.</span></span><br><span class="line">memory.memsw.usage_in_bytes	 <span class="comment"># show current memory+Swap usage</span></span><br><span class="line">memory.limit_in_bytes		 <span class="comment"># set/show limit of memory usage</span></span><br><span class="line">memory.memsw.limit_in_bytes	 <span class="comment"># set/show limit of memory+Swap usage</span></span><br><span class="line">memory.failcnt			 <span class="comment"># show the number of memory usage hits limits</span></span><br><span class="line">memory.memsw.failcnt		 <span class="comment"># show the number of memory+Swap hits limits</span></span><br><span class="line">memory.max_usage_in_bytes	 <span class="comment"># show max memory usage recorded</span></span><br><span class="line">memory.memsw.usage_in_bytes	 <span class="comment"># show max memory+Swap usage recorded</span></span><br><span class="line">memory.soft_limit_in_bytes	 <span class="comment"># set/show soft limit of memory usage</span></span><br><span class="line">memory.stat			 <span class="comment"># show various statistics</span></span><br><span class="line">memory.use_hierarchy		 <span class="comment"># set/show hierarchical account enabled</span></span><br><span class="line">memory.force_empty		 <span class="comment"># trigger forced move charge to parent</span></span><br><span class="line">memory.swappiness		 <span class="comment"># set/show swappiness parameter of vmscan</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>Based on this, the <code>working_set_bytes</code> contains the <code>page cache</code> and <code>memory_rss</code>, we went to the container and printed the memory stats.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">bash-4.2$ <span class="built_in">cat</span> /sys/fs/cgroup/memory/memory.stat </span><br><span class="line">cache 8815085056 <span class="comment"># of bytes of page cache memory.</span></span><br><span class="line">rss 2360238080   <span class="comment"># of bytes of anonymous and swap cache memory.</span></span><br><span class="line">rss_huge 0</span><br><span class="line">shmem 0</span><br><span class="line">mapped_file 540672</span><br><span class="line">dirty 0</span><br><span class="line">writeback 2162688</span><br><span class="line">swap 0</span><br><span class="line">pgpgin 6545913</span><br><span class="line">pgpgout 5526026</span><br><span class="line">pgfault 1145124816</span><br><span class="line">pgmajfault 0</span><br><span class="line">inactive_anon 0</span><br><span class="line">total_inactive_file 484167680</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>The <code>page cache</code> (cache) consumed almost 9 Gi memory, after excluding the <code>total_inactive_file</code> (~480Mi), it’s above 8 Gi.</p>
+<p>Page cache is allocated by the operating system to improve the performance of disk I/O, after some investigation, <strong>we found we had a big file written by the app without file rotation, at that moment, it reached 100Gi.</strong></p>
+<p>We truncated that file and the page cache dropped down to tens of megabytes.</p>
+<h2 id="A-thorough-check-routine"><a href="#A-thorough-check-routine" class="headerlink" title="A thorough check routine"></a>A thorough check routine</h2><p>This is the complete memory layout we have now, based on this, a thorough check routine will be</p>
+<p><img src="/images/container-memory-layout.png" alt="Container memory layout"></p>
+<ol>
+<li>Find a pod with the issue, get the metrics  <ul>
+<li>memory_usage_bytes</li>
+<li>memory_rss_bytes</li>
+</ul>
+</li>
+<li>Check if the file cache (memory_usage_bytes - memory_rss_bytes) is high<br> <code>memory_usage_bytes - memory_rss_bytes</code> is the active page cache size, if it’s above hundreds of MBs or several GBs, it means I/O is quite heavy and OS improves it by caching file. Sometimes, it’s reasonable but usually you need to check if it’s what you expect.</li>
+<li>Check if the <strong>rss</strong> is equal to memory usage<br>If so, check the application metrics instead, JVM metrics, Golang metrics etc.<br>Otherwise, things are interesting again …</li>
+</ol>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>Now we know page cache can be an important contributor to the memory increase, therefore we need to monitor the page cache size.</p>
+<p>In Cadvisor, it’s <code>container_memory_working_set_bytes - container_memory_rss</code>, when the application is I/O intensive, the page cache can be high because the OS tries to improve the I/O efficiency, but for CPU intensive applications, take care of those unnecessary page cache.</p>
+</div><div class="sharethis-inline-share-buttons"></div><script src="//platform-api.sharethis.com/js/sharethis.js#property=5df54e9fee0f770012eb9f87&amp;product=inline-share-buttons&amp;cms=sop" defer></script></article></div><div class="card"><div class="card-content"><h3 class="menu-label has-text-centered">Like this article? Support the author with</h3><div class="buttons is-centered"><a class="button donate" href="https://www.buymeacoffee.com/songrgg" target="_blank" rel="noopener" data-type="buymeacoffee"><span class="icon is-small"><i class="fas fa-coffee"></i></span><span>Buy me a coffee</span></a></div></div></div><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/programming/golang-performance-benchmark-middle-code/"><span class="level-item">Golang performance benchmark and deep into the middle code: a string operation example</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><div id="disqus_thread"><noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div><script>var disqus_config = function () {
+            this.page.url = 'https://songrgg.github.io/operation/another-kubernetes-oom-kill-troubleshooting/';
+            this.page.identifier = 'operation/another-kubernetes-oom-kill-troubleshooting/';
+        };
+        (function() {
+            var d = document, s = d.createElement('script');  
+            s.src = '//' + 'srjiang' + '.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();</script></div></div></div><!--!--><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/">SongRong&#039;s Experience</a><p class="is-size-7"><span>&copy; 2023 songrgg</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+            'HTML-CSS': {
+                matchFontHeight: false
+            },
+            SVG: {
+                matchFontHeight: false
+            },
+            CommonHTML: {
+                matchFontHeight: false
+            },
+            tex2jax: {
+                inlineMath: [
+                    ['$','$'],
+                    ['\\(','\\)']
+                ]
+            }
+        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><!--!--><!--!--><div id="outdated"><h6>Your browser is out-of-date!</h6><p>Update your browser to view this website correctly.&amp;npsb;<a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p><p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p></div><script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script><script>window.addEventListener("load", function () {
+            outdatedBrowser({
+                bgColor: '#f25648',
+                color: '#ffffff',
+                lowerThan: 'object-fit' // display on IE11 or below
+            });
+        });</script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>
